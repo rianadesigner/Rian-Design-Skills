@@ -1,0 +1,14 @@
+import { hash } from 'rsvp';
+import Route from '@ember/routing/route';
+
+export default Route.extend({
+  model(params) {
+    const store = this.store;
+
+    return hash({
+      ingress:                store.find('ingress', params.ingress_id),
+      certificates:           store.findAll('certificate'),
+      namespacedCertificates: store.findAll('namespacedcertificate'),
+    });
+  },
+});

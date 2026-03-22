@@ -1,0 +1,18 @@
+{{#banner-message color="bg-warning"}}
+  <p>{{t 'banner.globalCatalogs' htmlSafe=true}}</p>
+{{/banner-message}}
+
+<section class="header">
+  <h1>{{t 'catalogSettings.header'}}</h1>
+  <div class="right-buttons">
+    <button disabled={{rbac-prevents resource="catalog" scope="global" permission="create" }}
+      class="btn bg-primary btn-sm" type="button" {{action "add" }}>
+      {{t 'catalogSettings.more.addActionLabel'}}
+    </button>
+  </div>
+</section>
+
+{{custom-catalog
+    catalogs=model
+    mode="global"
+}}

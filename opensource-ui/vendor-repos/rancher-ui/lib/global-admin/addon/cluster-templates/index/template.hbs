@@ -1,0 +1,25 @@
+<div class="header">
+  <h1>
+    {{t "clusterTemplatesPage.index.header"}}
+  </h1>
+
+  <div class="right-buttons">
+    <button class="btn btn-sm bg-primary mr-10"
+      disabled={{not canCompare}}
+      type="button" {{action "showDiff" }}>
+      {{t "clusterTemplatesPage.compare.label"}}
+    </button>
+    {{#link-to
+       "cluster-templates.new"
+       class="btn btn-sm bg-primary"
+       disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
+    }}
+      {{t "clusterTemplatesPage.index.newTemplate"}}
+    {{/link-to}}
+  </div>
+</div>
+
+<div class="cluster-templates-index-container">
+  <ClusterTemplatesTable @selectionChanged={{action "selectionChanged" }} @clusterTemplates={{model.clusterTemplates}}
+    @clusterTemplateRevisions={{model.clusterTemplateRevisions}} />
+</div>

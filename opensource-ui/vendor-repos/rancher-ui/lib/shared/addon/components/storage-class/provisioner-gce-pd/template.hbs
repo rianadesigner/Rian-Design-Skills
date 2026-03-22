@@ -1,0 +1,82 @@
+<div class="row">
+  <div class="col span-4">
+    <label class="acc-label">{{t "cruStorageClass.gce-pd.type.label"}}</label>
+    {{#if editing}}
+      {{#each volumeTypes as |name|}}
+        <div class="radio">
+          <label>
+            {{radio-button selection=volumeType value=name}}
+            {{t (concat "cruStorageClass.gce-pd.type." name)}}
+          </label>
+        </div>
+      {{/each}}
+    {{else}}
+      <div>
+        {{t (concat "cruStorageClass.gce-pd.type." volumeType)}}
+      </div>
+    {{/if}}
+  </div>
+  <div class="col span-4">
+    <label class="acc-label">{{t "cruStorageClass.gce-pd.zone.label"}}</label>
+    {{#if editing}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=zoneAutomatic value=true}}
+          {{t "cruStorageClass.gce-pd.zone.automatic"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=zoneAutomatic value=false}}
+          {{t "cruStorageClass.gce-pd.zone.manual"}}
+        </label>
+      </div>
+      {{#unless zoneAutomatic}}
+        {{textarea-autogrow placeholder="cruStorageClass.gce-pd.zone.placeholder" spellcheck="false" required=true value=zones}}
+      {{/unless}}
+    {{else}}
+      <div>
+        {{#if zoneAutomatic}}
+          {{t "cruStorageClass.gce-pd.zone.automatic"}}
+        {{else}}
+          {{zones}}
+        {{/if}}
+      </div>
+    {{/if}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-4">
+    <label class="acc-label">
+      {{t "cruStorageClass.gce-pd.fsType.label"}}
+    </label>
+    {{#input-or-display editable=editing value=fsType}}
+      {{input
+        type="text"
+        value=fsType
+        classNames="form-control"
+        placeholder=(t "cruStorageClass.gce-pd.fsType.placeholder")
+      }}
+    {{/input-or-display}}
+  </div>
+  <div class="col span-4">
+    <label class="acc-label">
+      {{t "cruStorageClass.gce-pd.replicationType.label"}}
+    </label>
+    {{#input-or-display editable=editing value=replicationType}}
+      <div class="radio">
+        <label>
+          {{radio-button selection=replicationType value="none"}}
+          {{t "cruStorageClass.gce-pd.replicationType.none"}}
+        </label>
+      </div>
+      <div class="radio">
+        <label>
+          {{radio-button selection=replicationType value="regional-pd"}}
+          {{t "cruStorageClass.gce-pd.replicationType.regionalPd"}}
+        </label>
+      </div>
+    {{/input-or-display}}
+  </div>
+</div>

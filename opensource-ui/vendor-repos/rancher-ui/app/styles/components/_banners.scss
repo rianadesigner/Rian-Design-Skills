@@ -1,0 +1,195 @@
+.banner {
+  display: table;
+  position: relative;
+  transition: all 0.2s ease;
+  margin: 15px 0;
+  width: 100%;
+
+  &.tight {
+    margin-top: 0;
+
+    P {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  }
+
+  &.inline {
+    width: initial;
+    display: inline-block;
+    margin: 0 5px 0 0;
+  }
+
+  .banner-icon {
+    display: table-cell;
+    vertical-align: middle;
+    width: 40px;
+    text-align: center;
+    background-color: rgba(black, 0.05);
+
+    > .icon {
+      width: 20px;
+      font-size: 20px;
+      line-height: 23px;
+      color: white;
+    }
+  }
+
+  .banner-link {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: center;
+
+      a {
+        text-decoration: none;
+        border: none;
+      }
+  }
+
+  .banner-title {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    padding: 0 20px;
+    background-color: rgba(black, 0.05);
+  }
+
+  .banner-message {
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 15px;
+    font-size: .85em;
+
+    p {
+      margin: .5em 0;
+    }
+  }
+
+  .banner-close {
+    display: table-cell;
+    vertical-align: middle;
+    width: 40px;
+    text-align: center;
+    cursor: pointer;
+
+    > .icon {
+      width: 20px;
+      line-height: 23px;
+    }
+  }
+
+  &.bg-default {
+    background: $banner-default;
+    color: $banner-color;
+
+    .banner-icon, .banner-title {
+      background: $bg-default;
+      @include contrasted($bg-default);
+    }
+  }
+
+  &.bg-primary {
+    background: $banner-primary;
+    color: $banner-color;
+
+    .banner-icon, .banner-title {
+      background: $primary;
+      @include contrasted($primary);
+    }
+  }
+
+  &.bg-secondary {
+    background: $banner-secondary;
+    color: $banner-color;
+
+    .banner-icon, .banner-title {
+      background: $secondary;
+      @include contrasted($secondary);
+    }
+  }
+
+  &.bg-success {
+    background: $banner-success;
+    color: $banner-color;
+
+    .banner-icon, .banner-title {
+      background: $success;
+      color: white;
+    }
+  }
+
+  &.bg-info {
+    background: $banner-info;
+    color: $banner-color;
+
+    .banner-icon, .banner-title, .banner-close {
+      background: $info;
+      // color: darken($info, 15);
+    }
+  }
+
+  &.bg-warning {
+    background: $banner-warning;
+    color: $banner-color;
+
+    .banner-icon, .banner-title, .banner-close {
+      background: $warning;
+      // color: darken($warning, 10);
+    }
+  }
+
+  &.bg-error {
+    background: $banner-error;
+    color: $error;
+
+    .banner-icon, .banner-title, .banner-close {
+      background: $error;
+      // color: darken($error, 10);
+    }
+  }
+
+  &.basics {
+    padding: 10px;
+    font-size: 14px;
+    display: flex !important;
+    flex-flow: row wrap;
+    justify-content: space-around;
+
+
+    > .vertical-middle {
+      text-align: center;
+      padding: 0 25px;
+      border-right: solid 2px $info;
+      flex: 1 1;
+
+      label, span, div {
+        vertical-align: bottom;
+      }
+
+      &:last-child {
+        border: 0;
+      }
+
+      .hr {
+        border-bottom: 1px dashed #78C9CF;
+      }
+    }
+    &.basics-stack-detail {
+      span[class*='tag-'] {
+          display:inline-block;
+          margin-right: 5px;
+      }
+
+    }
+    .block .text-small {
+      font-size: 0.7em;
+    }
+
+    span.cluster-template-revision-upgrade-notification {
+      height: 0px;
+      display: inline-block;
+      margin-top: -1.5%;
+      vertical-align: top;
+    }
+  }
+}

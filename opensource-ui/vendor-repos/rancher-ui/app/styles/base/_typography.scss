@@ -1,0 +1,57 @@
+/**
+ * Basic typography style for copy text
+ */
+body {
+  color: $text-color;
+  font-family: $text-font-stack;
+  font-size: $base-font-size;
+  line-height: $base-line-height;
+}
+
+H1, H2, H3, H4, H5, H6 {
+  color: $text-color;
+  font-style: normal;
+  font-weight: 400;
+  margin: 0 0 10px 0;
+}
+
+H1 {
+  font-size: 24px;
+}
+
+H2 {
+  font-size: 21px;
+}
+
+H3 {
+  font-size: 18px;
+}
+
+H4 {
+  font-size: 16px;
+}
+
+H5 {
+  font-size: 14px;
+}
+
+H6 {
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.text-mono {
+  font-family : Consolas, "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace;
+}
+
+@mixin no-inline-space() {
+  font-family: zerowidthspace;
+
+  & > * {
+    font-family: $text-font-stack;
+  }
+}
+
+.no-inline-space {
+  @include no-inline-space;
+}

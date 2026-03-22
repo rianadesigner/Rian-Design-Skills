@@ -1,0 +1,1571 @@
+---
+languageName: "Norsk"
+languageContribute: "Hjelp til med å oversette Rancher"
+##############################
+#Really generic things used in multiple places (use sparingly)
+##############################
+generic:
+  actions: Handlinger
+  active: Aktiv
+  activate: Aktiver
+  add: Legg til
+  advanced: Avansert
+  all: Alle
+  back: Tilbake
+  cancel: Avbryt
+  closeModal: Lukk
+  cluster: Klynge
+  created: Oppprettet
+  default: Standard
+  description: Beskrivelse
+  details: Detaljer
+  disable: Deaktiver
+  disabled: Deaktivert
+  displayName: Visningsnavn
+  dockerId: Docker ID
+  domainName: Domenenavn
+  done: Fullført
+  download: Last ned
+  edit: Rediger
+  enable: Aktiver
+  enabled: Aktivert
+  experimental: "(eksperimentell)"
+  from: fra
+  false: 'Usant'
+  gigabyte: 'GB'
+  group: 'Gruppe'
+  hardware: Maskinvare
+  healthy: Frisk
+  help: Hjelp
+  hostname: Vertsnavn
+  hours: timer
+  hpa: HPA
+  id: ID
+  image: Bilde
+  import: Importer
+  internal: Intern
+  ipAddress: IP-adresse
+  limit: Grense
+  loading: "Laster inn..."
+  member: Medlem
+  mbps: Mbps
+  mibibyte: 'MiB'
+  minutes: minutter
+  milliseconds: 'Millisekunder'
+  missing: "*%MISSING% *"
+  moreActions: Flere handlinger
+  na: 'Ikke tilgjengelig'
+  name: Navn
+  namespace: Navneområde
+  namespaces: Navneområder
+  never: Aldri
+  no: "Nei"
+  noRating: Ingen vurdering
+  none: Ingen
+  owner: Eier
+  paste: Lim inn
+  port: Port
+  ports: Porter
+  prefix: prefiks
+  project: Prosjekt
+  random: Tilfeldig
+  remove: Fjern
+  role: Rolle
+  save: Lagre
+  saved: Lagret
+  saving: Lagrer
+  search: Søk
+  searching: 'Søker...'
+  seconds: sekunder
+  select: Velg
+  service: Tjeneste
+  services: Tjenester
+  size: Størrelse
+  state: Tilstand
+  test: Test
+  testing: Tester
+  to: Til
+  total: Totalt
+  true: 'Sant'
+  type: Type
+  unknown: Ukjent
+  upload: Last opp
+  url: URL
+  user: Bruker
+  uuid: UUID
+  value: Verdi
+  version: Versjon
+  yes: "Ja"
+  github: GitHub
+  gitlab: GitLab
+  bitbucket: Bitbucket
+realmNames:
+  all: Alle
+  usWest: USA vest
+  usEast: USA øst
+  asia: Asia
+  euWest: EU vest
+  euEast: EU øst
+##############################
+#Routes
+##############################
+accountsPage:
+  detail:
+    table:
+      headers:
+        role: Rolle
+        clusterName: Klyngen
+        projectName: Prosjekt
+        active: Aktiv
+      project:
+        title: Prosjektroller
+      roles:
+        title: Roller
+  index:
+    header: Brukere
+    localLink: Legg til bruker
+    table:
+      id: ID
+      kind: Type
+      username: Lokalt brukernavn
+      identity: Identitet
+      noName: Ingen
+  groups:
+    header: Grupper
+    table:
+      noName: Ingen
+  new:
+    header: Legg til bruker
+    errors:
+      usernameReq: Brukernavn er påkrevd.
+      usernameInExists: Brukernavnet er allerede i bruk. Vennligst velg et nytt brukernavn.
+      pwReq: Passord er påkrevd.
+    form:
+      username:
+        labelText: Brukernavn
+        placeholder: "f.eks onormann"
+      password:
+        labelText: Passord
+      name:
+        labelText: Visningsnavn
+        placeholder: "f.eks Ola Normann"
+      type:
+        labelText: Kontotype
+      description:
+        labelText: Beskrivelse
+        placeholder: "f.eks denne kontoen er for Ola Normann"
+  modal:
+    password: Endre passord
+appDetailPage:
+  endpoints:
+    protocol: Protokoll
+  answers:
+    variable: Variabel
+  services:
+    title: Tjenester
+alertPage:
+  na: Ikke konfigurert
+  items: Elementer
+  create: Opprett
+  save: Lagre
+  cluster: Klynge
+  project: Prosjekt
+  alertGroups: Varsler
+  newOrEdit:
+    interval: Intervall
+    to: Til
+    alert: Varsel
+    is: Er
+    lessThan: mindre enn
+    and: Og
+    critical: Kritisk
+    info: Informasjon
+    normal: Vanlig
+    warning: Advarsel
+    notReady: Ikke klar
+    unhealthy: Usunn
+    notRunning: Kjører ikke
+    notScheduled: Ikke planlagt
+    minutes: Minutter
+    available: tilgjengelig
+    createOne: opprett en
+  targetTypes:
+    event: Hendelse
+    systemService: System tjeneste
+    metric: Metrisk
+    undefined: Ingen
+  index:
+    table:
+      condition: Tilstand
+      displayCondition:
+        notready: Ikke klar
+        unhealthy: Usunn
+        notReady: Ikke klar
+        cpuUsage: 'Prosessorbruk over {percent}%'
+        memUsage: 'MEM bruk over {percent}%'
+        expression: Uttrykk
+  comparison:
+    equal: Lik
+    not-equal: Ikke lik
+    greater-than: Større enn
+    less-than: Mindre enn
+    greater-or-equal: Større eller lik
+    less-or-equal: Mindre eller lik
+rolesPage:
+  title: Rolle
+  index:
+    localLink: Legg til rolle
+    table:
+      enabled: Aktivert
+      name: Navn
+  editRole: Rediger rolle
+  saveEdit: Rediger
+  saveNew: Opprett
+  new:
+    errors:
+      nameReq: Navn er påkrevd.
+      nameInExists: Navnet finnes allerede. Vennligst bruk et nytt rollenavn.
+    form:
+      name:
+        labelText: Navn
+      locked:
+        disabled: "Nei"
+      allow:
+        create: Opprett
+        delete: Slett
+        get: Hent
+        list: Liste
+        update: Oppdater
+        labelText: Tillat
+        apiGroups: API-grupper
+      otherRole:
+        role: Rolle
+        addAction: Legg til rolle
+      default:
+        disabled: "Nei"
+apiPage:
+  header: API & Nøkler
+  actionButton: Legg til nøkkel
+  currentEndpoint: 'Endepunkt:'
+  table:
+    description: Beskrivelse
+    created: Oppprettet
+authPage:
+  authenticated:
+    header:
+      enterpriseHostName: "Vert:"
+      clientId:
+        text: "Klient-ID:"
+      key:
+        text: "Nøkkel:"
+  gitlab:
+    form:
+      clientSecret:
+        labelText: Hemmelighet
+  bitbucketcloud:
+    form:
+      clientId:
+        labelText: Nøkkel
+      clientSecret:
+        labelText: Hemmelighet
+  bitbucketserver:
+    ul:
+      li2:
+        ul:
+          li7: 'Offentlig nøkkel:'
+          li8: '<b>Klikk "Fortsett"</b>'
+    form:
+      hostname:
+        placeholder: f.eks eksempel.no
+      tls:
+        labelText: Bruk en https-tilkobling
+  saml:
+    enabled:
+      groupsField: 'Grupper:'
+      displayName: 'Visningsnavn:'
+      userName: 'Brukernavn:'
+      userId: 'Bruker-ID:'
+    disabled:
+      uid:
+        labelText: UID-felt
+        display: "UID-felt:"
+      rancherApiHost:
+        labelText: "{appName} API-vert"
+        display: "{appName} API-vert:"
+    providerName:
+      ping: Ping
+      adfs: AD FS
+      okta: Okta
+  shibboleth:
+    enabled:
+      authenticated:
+        header:
+          text: Autentisering
+      disableAccess:
+        header: "Danger Zone&trade;"
+        warning: '<b class="text-danger">Advarsel:</b> Ved å deaktivere tilgangskontrollen, så gir man full kontroll over {appName} til alle som kan komme til denne siden eller nå den via API.'
+        confirmDisable: "Er du sikker?  Klikk igjen for å godkjenne deaktivering av tilgangskontroll"
+        disable: Deaktiver tilgangskontroll
+      groupsField: 'Grupper:'
+      displayName: 'Visningsnavn:'
+      userName: 'Brukernavn:'
+      userId: 'Bruker-ID:'
+    disabled:
+      header: '1. Konfigurer Shibboleth konto'
+      label: "{providerName} er ikke konfigurert"
+      uid:
+        labelText: UID-felt
+    providerName:
+      shibboleth: Shibboleth
+  root:
+    header: Tilgangskontroll
+  github:
+    standard: GitHub
+    enterprise: GitHub Enterprise
+    header:
+      disabled:
+        label: GitHub er ikke konfigurert
+    authenticated:
+      header:
+        text: Autentisering
+        clientId:
+          text: "Klient-ID:"
+      disableAccess:
+        header: "Danger Zone&trade;"
+    notAuthenticated:
+      header: "1. Opprett en GitHub applikasjon"
+      ul:
+        li2:
+          ul:
+            li1: '<b>Navn:</b> <span class="text-muted"> noe du ønsker å bruke, f.eks min {appName}</span>'
+        li3:
+          text: 'Trykk "Registrer program"'
+      form:
+        clientId:
+          labelText: Klient-ID
+        clientSecret:
+          labelText: Klient hemmelighet
+        isGHEnterprise:
+          labelText: Bruk en sikker tilkobling
+        enterpriseHost:
+          placeholder: 'f.eks github.eksempel.no'
+    testAuth:
+      buttonText:
+        pre: Autentiser med GitHub
+        post: Venter på tilbakemelding fra GitHub
+  googleoauth:
+    authenticated:
+      header:
+        adminEmail:
+          text: "Admin e-post: "
+    notAuthenticated:
+      ul:
+        li2:
+          ul:
+            li4: 'Klikk på "Lagre".'
+      form:
+        adminEmail:
+          labelText: Admin e-post
+        hostname:
+          labelText: Domene
+          helperText: Angi domenet til kontoen din.
+  azuread:
+    enabled:
+      header: 'Danger Zone&trade;'
+      promptDisable: Deaktiver tilgangskontroll
+      general:
+        header: Generelt
+    configure:
+      applicationId:
+        label: Applikasjons-ID
+      azureADEndpoint:
+        label: Endepunkt
+      regions:
+        china: Kina
+        custom: Egendefinert
+      tenantId:
+        label: Leietaker-ID
+        placeholder: En lang UUID-streng
+    test:
+      username:
+        label: Brukernavn for innlogging
+        placeholder: 'f.eks onormann'
+      password:
+        label: Innloggings passord
+      pre: Autentiser med Azure
+      post: Venter på tilbakemelding fra Azure
+  localAuth:
+    subtext:
+      enabled:
+        linkText: Administrer kontoer
+    accessEnabled:
+      buttonText:
+        prompt: Deaktiver tilgangskontroll
+    accessDisabled:
+      form:
+        login:
+          labelText: Brukernavn for innlogging
+          placeholder: 'f.eks onormann'
+        name:
+          labelText: Fullt navn
+          placeholder: 'f.eks Ola Normann'
+        password:
+          labelText: Passord
+        confirmPassword:
+          labelText: Bekreft passord
+    accessControl:
+      header: '2. Aktiver tilgangskontroll'
+      helpText: 'Klikk for å aktivere tilgangskontroll og logg inn.'
+      buttonText:
+        pre: Aktiver lokal autentisering
+        post: 'Aktiverer...'
+backupsPage:
+  table:
+    target:
+      s3: S3
+      local: Lokal
+    name: Navn
+    created: Opprettet
+catalogPage:
+  index:
+    certified:
+      rancher:
+        rancher: Rancher Labs
+        partner: Offisielle
+      pl:
+        rancher: Kjerne
+        partner: Offisielle
+    noData:
+      singular: Det er ingen kompatible maler.
+      plural: Det er ingen kompatible maler i denne katalogen.
+    action:
+      launch: Se detaljer
+      notCompatible: Ikke kompatibel
+      alreadyDeployed: Allerede distribuert
+cis:
+  scan:
+    actions:
+      delete: Slett
+      download: Last ned
+      search:
+        placeholder: Søk
+    table:
+      state: Tilstand
+      name: Navn
+      passed: Bestått
+      date: Dato
+    detail:
+      actions:
+        delete: Slett
+        download: Last ned
+        search:
+          placeholder: Søk
+      table:
+        state: Tilstand
+        number: Nummer
+        description: Beskrivelse
+clusterIstioPage:
+  header: Istio
+  disable: Deaktiver
+  enableActionLabel: Aktiver
+  version: Istio versjon
+  links:
+    kiali:
+      label: Kiali UI
+    jaeger:
+      label: Jaeger UI
+    grafana:
+      label: Grafana UI
+    prometheus:
+      label: Prometheus UI
+  config:
+    header:
+      grafana: Grafana
+certificatesPage:
+  cn: Domenenavn
+  expiresDate: Utløper
+  fingerprint: Fingeravtrykk
+  algorithm: Algoritme
+  domainNames:
+    labelText: Domene navn
+    wildcardSingle: '{cn}'
+  index:
+    header: Sertifikater
+    linkTo: Legge til sertifikat
+  new:
+    header: Legge til sertifikat
+    form:
+      name:
+        placeholder: f.eks mittdomene.no
+      description:
+        placeholder: f.eks EV sertifikat for mittdomene.no
+membersPage:
+  title: Medlemmer
+  add:
+    title: 'Legg til {type} medlem'
+    form:
+      member: Medlem
+      role: Rolle
+  index:
+    localLink: 'Legg til medlem'
+    table:
+      name: Navn
+namespacesPage:
+  header: Navneområder
+  addNamespace: Legg til navneområde
+  table:
+    name:
+      label: Navneområde
+    description:
+      label: Beskrivelse
+    project:
+      label: Prosjekt
+    created:
+      label: Oppprettet
+projectsListNamespacePage:
+  header: Navneområder
+  notIn: Ikke i et prosjekt
+  current: I dette prosjektet
+projectsPage:
+  header: Prosjekter / Navneområder
+  headerNS: Navneområder
+  addProject: Legg til prosjekt
+  editProject: Rediger prosjekt
+  ns:
+    label: Navneområdenavn
+    placeholder: f.eks. lab
+  name:
+    label: Prosjektnavn
+    placeholder: f.eks lab
+  created:
+    label: Opprettet
+  members:
+    user: Bruker
+    group: Gruppe
+    labelText: Medlemmer
+    addUser: Legg til bruker
+    addGroup: Legg til gruppe
+    name:
+      label: Navn
+    role:
+      label: Rolle
+    errors:
+      nameReq: Navn er påkrevd.
+      nameInExists: Navnet finnes allerede. Vennligst bruk et nytt prosjektnavn.
+clustersPage:
+  header: Klynger
+  newCluster: Legg til klynge
+  provider:
+    label: Leverandør
+  kubernetesVersion:
+    label: Kubernetes versjon
+  cpu:
+    label: CPU
+  memory:
+    label: RAM
+  storage:
+    label: Disk
+containerPage:
+  portsTab:
+    header: Porter
+    hostPrimaryIp: '({ip})'
+  linksTab:
+    header: Lenker
+  volumesTab:
+    table:
+      shared: Delt med
+      writable: Skrivbar
+containersPage:
+  table:
+    sparkPrefixCpu: "CPU: "
+    sparkPrefixMemory: "Minne: "
+    sparkPrefixNetwork: "Network: "
+    sparkPrefixStorage: "Lagring: "
+clusterDashboard:
+  used: Brukt
+  cpu: CPU
+  memory: Minne
+  value: Verdi
+  more: Mer
+  liveTitle: "{used} av {total} brukt"
+ingressResponse:
+  host: Vert
+monitoringPage:
+  disable: Deaktiver
+  enableActionLabel: Aktiver
+  config:
+    types:
+      none: Ingen
+      prometheus: Prometheus
+    header: Prometheus konfigurasjon
+    prometheus:
+      cpuLimit:
+        label: Prometheus CPU-grense
+        placeholder: f.eks 1000
+        unit: milli CPUer
+      cpuRequest:
+        label: Prometheus CPU-reservasjon
+        placeholder: f.eks 1000
+        unit: milli CPUer
+      memoryLimit:
+        label: Prometheus Minne-grense
+        placeholder: f.eks 1000
+      memoryRequest:
+        label: Prometheus Minne-reservasjon
+    nodeexporter:
+      cpuLimit:
+        placeholder: f.eks 200
+        unit: milli CPUer
+      memoryLimit:
+        placeholder: f.eks 200
+metricsAction:
+  grafana:
+    label: Grafana
+  summary:
+    label: Sammendrag
+  detail:
+    label: Detaljer
+  from:
+    label: Fra
+  to:
+    label: Til
+  periods:
+    5m: 5 minutter
+    1h: 1 time
+    6h: 6 timer
+    24h: 24 timer
+    7d: 7 dager
+    30d: 30 dager
+metrics:
+  cluster-disk-io: Disk I/O
+  cluster-fs-usage-percent: Diskutnyttelse
+  cluster-memory-usage: Minneutnyttelse
+  cluster-network-io: Nettverk I/O
+  cluster-network-packet: Nettverkspakker
+  container-cpu-usage: CPU-utnyttelse
+  container-disk-io: Disk I/O
+  container-memory-usage-bytes-sum: Minneutnyttelse
+  etcd-db-bytes-sum: DB størrelse
+  etcd-disk-operate: Disk operasjoner
+  pod-cpu-usage: CPU-utnyttelse
+  pod-disk-io: Disk I/O
+  pod-memory-usage-bytes-sum: Minneutnyttelse
+  workload-cpu-usage: CPU-utnyttelse
+  workload-disk-io: Disk I/O
+  workload-memory-usage-bytes-sum: Minneutnyttelse
+  workload-network-io: Nettverk I/O
+dnsPage:
+  noMatch: Ingen oppføringer stemmer med det gjeldende søket
+  type:
+    arecord: Ekstern IP
+    cname: Vertsnavn
+    clusterIp: Klynge IP
+    unknown: Ukjent
+cruHpa:
+  name:
+    placeholder: f.eks. myscaler
+  minReplicas:
+    placeholder: f.eks 1
+  maxReplicas:
+    placeholder: f.eks 10
+  metrics:
+    selector:
+      labels:
+        addSelectorLabel: Legg til etikett
+    value:
+      label: Antall
+      placeholder: f.eks 200
+      cpuPlaceholder: f.eks 200 m
+      utilizationPlaceholder: f.eks 50
+editDns:
+  name:
+    placeholder: f.eks minapplikasjon
+  externalIPs:
+    placeholder: f.eks 80.11.12.10
+  loadBalancerIP:
+    placeholder: f.eks 78.11.24.19
+  loadBalancerSourceRanges:
+    placeholder: f.eks 143.231.0.0/16
+  healthCheckNodePort:
+    placeholder: f.eks 8080
+  externalTrafficPolicy:
+    cluster: Klynge
+  sessionAffinityConfig:
+    placeholder: f.eks 10800
+  description:
+    placeholder: f.eks gjeldende versjon av minapplikasjon
+  selector:
+    keyLabel: Etikett
+  recordType:
+    clusterIp: "Klynge IP"
+  placeholder:
+    cname: f.eks eksempel.no
+cruPersistentVolumeClaim:
+  capacity:
+    unit: GiB
+  name:
+    placeholder: f.eks minvol
+cruVolumeClaimTemplate:
+  capacity:
+    unit: GiB
+cruPrivateRegistry:
+  registry:
+    user:
+      label: Bruker
+    password:
+      label: Passord
+    url:
+      label: Nettadresse
+cruVolume:
+  name:
+    placeholder: f.eks minvol
+  source:
+    label: Kilde
+    title: Kilde konfigurasjon
+globalRegistryPage:
+  enableActionLabel: Aktiver
+  config:
+    header:
+      postgresql: PostgreSQL database
+      redis: Redis
+    databaseRequestCpu:
+      placeholder: f.eks 1000
+    databaseLimitCpu:
+      label: Database CPU-grense
+      placeholder: f.eks 1000
+    databaseRequestMemory:
+      placeholder: f.eks 1000
+    databaseLimitMemory:
+      label: Database Minne-grense
+      placeholder: f.eks 1000
+    redisRequestCpu:
+      placeholder: f.eks 1000
+    redisLimitCpu:
+      label: Redis CPU-grense
+      placeholder: f.eks 1000
+    redisRequestMemory:
+      placeholder: f.eks 1000
+    redisLimitMemory:
+      label: Redis Minne-grense
+    database:
+      external:
+        host:
+          label: Vert for PostgreSQL
+          placeholder: f.eks 192.168.0.1
+        port:
+          label: Port for PostgreSQL
+          placeholder: f.eks 5432
+        username:
+          label: Brukernavn for PostgreSQL
+          placeholder: f.eks bruker
+        password:
+          label: Passord for PostgreSQL
+          placeholder: f.eks passord
+globalDnsPage:
+  entriesPage:
+    table:
+      name: Navn
+      fqdn: FQDN
+    config:
+      project: Prosjekter
+      fqdn:
+        label: FQDN
+        placeholder: dev.eksempel.no
+      ttl:
+        label: DNS TTL
+  providersPage:
+    table:
+      name: Navn
+    config:
+      apiKey:
+        label: API-nøkkel
+        placeholder: Din API-nøkkel
+      credentialsPath:
+        placeholder: "/.aws"
+      region:
+        label: Region
+      zone:
+        label: Sone
+        placeholder: offentlig
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
+failWhalePage:
+  header: Feil
+  logoutButton: Logg ut
+haPage:
+  header: Høy tilgjengelighet
+  setup:
+    link: Se i dokumentasjonen
+    suffix: " for informasjon om installasjon og bruk."
+  table:
+    port: Port
+    heartbeat: Sist sett
+nodesPage:
+  editCluster: Rediger klynge
+  table:
+    clusterName: Klynge
+    role: Roller
+    cpu: CPU
+    memory: RAM
+    disk: Disk
+    version: Versjon
+    docker: Docker
+hostsPage:
+  cloudHostsPage:
+    addPage:
+      name:
+        placeholder: f.eks node01
+      transferUnit: TB
+      instance: 'Type:'
+      storage: 'Lagring:'
+      transfer: 'Overføre:'
+      zone: 'Sone:'
+      env: 'Miljø:'
+      size: 'Størrelse:'
+      os: 'OPERATIVSYSTEM:'
+      driver: 'Driver:'
+      template: 'Malnavn:'
+  addContainer: Legge til en beholder
+  new:
+    name:
+      placeholder: f.eks node01
+    addCluster:
+      cluster:
+        label: Klynge
+      roles:
+        label: Roller
+  hostPage:
+    hostname: Vertsnavn
+    version: Versjon
+    kernelVersion: Kjerne versjon
+    operatingSystem: OS
+    conditions:
+      diskSpace: Diskplass
+      diskPressure: Disktrykk
+      memoryPressure: Minnetrykk
+    limits:
+      cpu: 'Grense for CPU:'
+      memory: 'Minnegrense:'
+    infoMultiStats:
+      ip: 'IP'
+      cpu: 'CPU'
+      memory: 'Minne'
+      storage: 'Volumer'
+      provider:
+        labelText: 'Leverandør:'
+        noHost: Egendefinert
+      kernel: 'Kjerne'
+      docker: 'Docker:'
+      os: 'OPERATIVSYSTEM'
+      milliCpu:
+        labelText: mCPU
+    portsTab:
+      header: Porter
+      table:
+        header:
+          ip: IP-adresse
+          port: Port
+          service: Tjeneste
+          container: Beholder
+        body:
+          noData: Denne verten har ikke noen porter
+    storageTab:
+      table:
+        header:
+          state: Tilstand
+k8sPage:
+  header: Kubernetes
+loginPage:
+  shibbolethError:
+    401: "Uautorisert"
+    500: "Internal Server Error"
+  readableProviders:
+    ad: Active Directory
+    azureAd: Azure AD
+    local: en lokal bruker
+    openldap: OpenLDAP
+    freeipa: FreeIPA
+machinePage:
+  inactive: Inaktiv
+  builtin: Innebygd
+#If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+#those are present in case we have an error in the app and can not load the translations file
+#the error page will at least make a little sense
+notFoundPage:
+  linkTo: Gå til startsiden
+registriesPage:
+  index:
+    table:
+      header:
+        state: Tilstand
+        address: Adresse
+        username: Brukernavn
+        created: Opprettet
+  new:
+    form:
+      custom:
+        labelText: Adresse
+        placeholder: f.eks register.eksempel.no
+      username:
+        labelText: Brukernavn
+        placeholder: f.eks brukernavn
+      password:
+        labelText: Passord
+        placeholder: f.eks passord
+secretsPage:
+  table:
+    keys: Nøkler
+configMapsPage:
+  table:
+    keys: Nøkler
+servicePage:
+  multistat:
+    fqdn: 'FQDN:'
+    namespace: 'Navneområde:'
+  linksTab:
+    header: Koblinger
+  new:
+    form:
+      name:
+        placeholder: f.eks minapplikasjon
+      description:
+        placeholder: f.eks min applikasjon
+  newBalancer:
+    form:
+      name:
+        placeholder: f.eks nettsted
+      description:
+        placeholder: f.eks lastbalanserer for mittfirma.no
+  newIngress:
+    form:
+      name:
+        placeholder: f.eks nettsted
+  type:
+    service: Tjeneste
+signupPage:
+  form:
+    labels:
+      loginUsername: Navn
+      email: E-post
+newStack:
+  name:
+    placeholder: f.eks minapplikasjon
+  files:
+    label: Filer
+    namePlaceholder: Filnavn
+nodeTemplatesPage:
+  table:
+    state: Tilstand
+    name: Navn
+    size: Størrelse
+    unknown: Ukjent
+    owner: Eier
+userPreferencesPage:
+  theme:
+    header: Tema
+  generalInfo:
+    header: Min konto
+    name:
+      label: Navn
+    username:
+      label: Brukernavn
+    email:
+      label: E-post
+virtualServicePage:
+  table:
+    hosts:
+      label: Verter
+waitingPage:
+  hosts:
+    setup:
+      kubernetes: Definer Kubernetes
+notifierPage:
+  testedBtnLabel: Ok
+  slack:
+    defaultRecipientPlaceholder: 'f.eks #eksempel'
+  smtp:
+    server: Smtp tjener
+    host: Vert
+    hostPlaceholder: f.eks 192.168.1.121
+    port: Port
+    portPlaceholder: f.eks 465
+    sender: Avsender
+    userName: Brukernavn
+    userNamePlaceholder: f.eks Ola Normann
+    password: Passord
+    passwordPlaceholder: Ditt passord
+    defaultRecipientPlaceholder: f.eks admin@eksempel.no
+    tls: Bruk TLS
+  wechat:
+    recipientType:
+      user: Bruker
+    agentPlaceholder: f.eks 1000003
+    defaultRecipientPlaceholder: f.eks 2
+  webhook:
+    url: Nettadresse
+  testAction:
+    test: TEST
+  index:
+    table:
+      created: Opprettet
+##############################
+#Partials
+##############################
+ldap:
+  providerName:
+    openldap: OpenLDAP
+    ad: Active Directory
+  accessConfig:
+    port:
+      labelText: Port
+      checkbox: TLS
+    groupSearchBase:
+      placeholder: "f.eks ou=Gruppe,dc=mittfirma,dc=no"
+    defaultDomain:
+      placeholder: "f.eks mittfirma"
+  customizeSchema:
+    users:
+      header: Brukere
+    groups:
+      header: Grupper
+      groupMemberUser:
+        placeholder: uid
+  testAuth:
+    userName:
+      labelText: Ditt brukernavn
+    authenticate:
+      post: "Tester..."
+servicePartial:
+  noContainers:
+    label: Ingen beholdere ennå.
+catalogSettings:
+  more:
+    addActionLabel: Legge til katalog
+    name:
+      label: Navn
+      placeholder: f.eks minkatalog
+    branch:
+      label: Gren
+      placeholder: 'f.eks hovedgren'
+clusterNew:
+  rke:
+    registry:
+      user:
+        label: Brukernavn
+confirmDelete:
+  confirmAction: Slett
+  cancelAction: Avbryt
+containerLogs:
+  onlyCombined: "<b>Merk:</b> Bare kombinert stdout/stderr logger er tilgjengelig for denne beholderen, fordi det ble kjørt med aktivert TTY (-t) flagg."
+  combined: Kombinert
+  scrollTop: Rull til toppen
+  scrollBottom: Rull til bunnen
+  clear: Tøm skjermen
+  status:
+    initializing: Initialiserer...
+    connecting: Kobler til...
+    connected: Tilkoblet
+    disconnected: Frakoblet
+    closed: Lukket
+containerShell:
+  status:
+    initializing: Initialiserer...
+    error: "Feil: {error}"
+    connecting: Kobler til...
+    connected: Tilkoblet
+    disconnected: Frakoblet
+    closed: Lukket
+copyToClipboard:
+  tooltip: Kopier til utklippstavlen
+  copied: Kopiert!
+cruPersistentVolume:
+  azureFile:
+    secretNamespace:
+      label: Hemmelig navneområde
+      placeholder: "f.eks. standard"
+    shareName:
+      placeholder: "f.eks abc"
+  cephfs:
+    secretRef:
+      name:
+        placeholder: "f.eks abc"
+      namespace:
+        label: Hemmelig navneområde
+        placeholder: "f.eks. standard"
+      label: Hemmelig navn
+  rbd:
+    secretRef:
+      label: Hemmelig navn
+  flexVolume:
+    secretRef:
+      label: Hemmelig navn
+  gcePersistentDisk:
+    pdName:
+      placeholder: "f.eks abc"
+  iscsi:
+    initiatorName:
+      placeholder: "f.eks abc"
+    secretRef:
+      label: Hemmelig navn
+  scaleIO:
+    secretRef:
+      namespace:
+        label: Hemmelig navneområde
+        placeholder: "f.eks. standard"
+      label: Hemmelig navn
+  storageos:
+    secretRef:
+      namespace:
+        label: Hemmelig navneområde
+        placeholder: "f.eks. standard"
+      label: Hemmelig navn
+    volumeNamespace:
+      placeholder: "f.eks. standard"
+cruStorageClass:
+  storageos:
+    adminSecretNamespace:
+      placeholder: "f.eks. standard"
+  glusterfs:
+    secretNamespace:
+      placeholder: "f.eks. standard"
+dangerZone:
+  header: Avanserte innstillinger
+editAccount:
+  title: Rediger konto
+  form:
+    name:
+      placeholder: f.eks Ola Normann
+    kind:
+      label: Kontotype
+    description:
+      label: Beskrivelse
+      placeholder: f.eks denne kontoen er for Ola Normann
+    newPassword:
+      label: Nytt passord
+    confirmPassword:
+      label: Bekreft passord
+    identity:
+      label: Identitet
+editApiKey:
+  title:
+    justCreated: API-nøkkel opprettet
+    editing: Redigere API-nøkkel
+  saveWarning2: Dersom du mister denne, så må du lage et par med nye API-nøkler.
+editCertificate:
+  name:
+    placeholder: f.eks mittdomene.no
+  description:
+    placeholder: f.eks EV sertifikat for mittdomene.no
+editCluster:
+  name:
+    label: Navn
+editContainer:
+  title:
+    vm: Rediger VM
+    container: Redigere beholder
+  name:
+    placeholder: f.eks minapplikasjon
+  description:
+    placeholder: f.eks min applikasjon
+editHost:
+  hostname:
+    label: Vertsnavn
+  customName:
+    label: Egendefinert navn
+    placeholder: f.eks dev1
+  description:
+    label: Beskrivelse
+  labels:
+    label: Etiketter
+  ips:
+    valueLabel: IP-adresse
+    valuePlaceholder: f.eks 1.2.3.4
+    addActionLabel: Legge til IP-addresse
+editStack:
+  title: Rediger navneområdet
+  name:
+    label: Navn
+    error: Navneområdenavn er allerede i bruk. Vennligst velg et nytt navneområdenavn.
+    placeholder: f.eks minapplikasjon
+  description:
+    label: Beskrivelse
+    placeholder: f.eks. MinApp navneområde
+  group:
+    placeholder: f.eks frontend, produksjon
+stackHeader:
+  title: 'Navneområde: {name}'
+formatIp:
+  noIp: Ingen
+formBalancerListeners:
+  sourceIp:
+    placeholder: "f.eks 1.2.3.4; Standard: Alle"
+  sourcePort:
+    placeholder: f.eks 80
+formBalancerRules:
+  sourceIp:
+    placeholder: "f.eks 1.2.3.4; Standard: Alle"
+  sourcePort:
+    placeholder: f.eks 80
+  path:
+    placeholder: f.eks /foo
+  hostname:
+    placeholder: f.eks eksempel.no
+  backendName:
+    placeholder: f.eks webapplikasjon
+  targetPort:
+    placeholder: f.eks 80
+  priority:
+    label: Prioritet
+  selector:
+    placeholder: f.eks foo = bar
+formCommand:
+  command:
+    placeholder: f.eks /usr/sbin/httpd -f httpd.conf
+  entryPoint:
+    placeholder: f.eks /bin/sh
+  workingDir:
+    label: Arbeidsmappe
+    placeholder: f.eks /minapplikasjon
+  console:
+    label: Konsoll
+    terminal: 'TTY <span class="text-muted">(-t)</span>'
+    none: Ingen
+  autoRestart:
+    label: Automatisk omstart
+    no: Aldri
+    always: Alltid
+formContainerLinks:
+  addActionLabel: Legg til kobling
+formDisks:
+  addDiskLabel: Legg til disk
+  addRootDiskLabel: Legg til root disk
+  name:
+    rootDisk: Root disk
+    label: Navn
+    placeholder: f.eks data
+  size:
+    label: Størrelse
+  readIops:
+    label: Lese iops
+    placeholder: f.eks 1000
+  writeIops:
+    label: Skrive iops
+    placeholder: f.eks 1000
+  driver:
+    label: Driver
+formEngineOpts:
+  engineInstallUrl:
+    label: Docker installasjons URL
+    placeholder: f.eks http://get.docker.com/
+  engineOpts:
+    valuePlaceholder: f.eks syslog
+  engineLabels:
+    keyLabel: Etikett
+  engineEnv:
+    addActionLabel: Legg til miljøvariabel
+    keyPlaceholder: f.eks HTTP_PROXY
+    valuePlaceholder: f.eks http://din-proxy:8080
+  engineInsecureRegistry:
+    valuePlaceholder: f.eks registry.eksempel.no
+  engineRegistryMirror:
+    valuePlaceholder: f.eks https://min-klone.eksempel.no:5000
+formResourceQuota:
+  table:
+    namespaceLimit:
+      placeholder: f.eks. 10
+      milliCpuPlaceholder: f.eks. 500
+      memoryPlaceholder: f.eks. 1024
+formMembers:
+  members:
+    name:
+      label: Navn
+formHealthCheck:
+  checkType:
+    none: Ingen
+  port:
+    placeholder: f.eks 80
+formKeyValue:
+  key:
+    label: Nøkkel
+    placeholder: Nøkkel
+  separator: "="
+  value:
+    label: Verdi
+    placeholder: Verdi
+formImage:
+  container:
+    placeholder: "f.eks ubuntu:xenial"
+formNameDescription:
+  name:
+    label: Navn
+    placeholder: Navn
+  description:
+    label: Beskrivelse
+    placeholder: Beskrivelse
+formNetwork:
+  requestedIp:
+    placeholder: Valgfritt; f.eks 10.42.2.24
+  hostname:
+    label: Vertsnavn
+    placeholder: f.eks web
+    containerName: Bruke beholder navnet
+  domainName:
+    label: Domenenavn
+    placeholder: f.eks eksempel.no
+  resolvingServers:
+    addActionLabel: Legg til tjener
+    placeholder: f.eks 8.8.4.4
+  searchDomains:
+    label: Søk i domener
+    placeholder: f.eks produksjon.eksempel.no
+    addActionLabel: Legg til domene
+  hostAlias:
+    host:
+      label: Vertsnavn
+formPorts:
+  name:
+    label: Navn
+formScheduling:
+  field: Felt
+  value: Verdi
+formSecurity:
+  cpuPinning:
+    placeholder: "f.eks 0,1,3; Standard: Alle"
+  shares:
+    placeholder: f.eks 1024
+  capabilities:
+    helpBlock:
+      link: Mer informasjon
+  deviceBinding:
+    pathHost:
+      placeholder: f.eks/dev/sdc
+    pathContainer:
+      placeholder: f.eks/dev/xsdc
+    permissions:
+      label: Rettigheter
+  isolation:
+    label: Isolasjon
+    hyperv: HyperV (VM)
+formSslTermination:
+  alternateCerts: Alternative sertifikater
+  addAlternate: Legg til alternativt sertifikat
+formNamespace:
+  label:
+    reuse: Navneområde
+    create: Navneområde
+    default: Standard navneområde
+  toggle:
+    simple: Tilpass
+  create:
+    placeholder: f.eks minapplikasjon
+  errors:
+    validation: "Navneområde: {error}"
+formUserLabels:
+  addAction: Legg til etikett
+  key:
+    label: Nøkkel
+    placeholder: f.eks foo
+  separator: "="
+  value:
+    label: Verdi
+    placeholder: f.eks bar
+formValueArray:
+  addActionLabel: Legge til verdi
+  valueLabel: Verdi
+hostSettings:
+  hostUrl:
+    new:
+      placeholder: "f.eks http://eksempel.no:8080"
+  helpText:
+    sslTerm: SSL terminering
+hostPod:
+  supportState:
+    untested: Ikke testet Docker versjon
+  groupedInstances:
+    namespace: 'Navneområde:'
+    standalone: Frittstående beholdere
+identityBlock:
+  loading: Laster inn...
+inputIdentity:
+  dropdownLabel:
+    groups: Dine grupper
+inputTextFile:
+  tooltip: Lese fra en fil
+labelsSection:
+  key: Nøkkel
+  value: Verdi
+loginUserPass:
+  userLabel: Brukernavn
+  userPlaceholder: f.eks onormann
+  loggingInLabel: Logger inn...
+modalAboutComponent:
+  component: Komponent
+  version: Versjon
+  cli: CLI
+  ui: Brukergrensesnitt
+modalContainerStop:
+  header: "Er du sikker på at du vil stoppe"
+modalConfirmDeactivate:
+  cancel: Avbryt
+  buttons:
+    project:
+      message: deaktiver ditt miljø
+      button: Deaktiver
+    environment:
+      message: stopp tjenestene for
+      button: Stopp tjenester
+    default:
+      message: deaktiver
+      button: Deaktiver
+modalEditSetting:
+  name:
+    label: Navn
+  value:
+    label: Verdi
+  reset:
+    label: Tilbakestill til standard
+modalFeedback:
+  header: Velkommen til {appName}!
+modalProcessError:
+  none: Ikke tilgjengelig
+  close: Lukk
+modalWelcome:
+  header: Velkommen til {appName}!
+namespaceGroup:
+  project: "Navneområde: Alle"
+newCatalog:
+  catalog: "Katalog:"
+  category: "Kategori:"
+  maintainedBy: Vedlikeholdes av fellesskapmedlemmer
+  maintainer: "Utvikler:"
+  newNamespace: Nytt navneområde
+  noConfig: Denne malen har ingen konfigurasjonsalternativer
+  official: Offisielt sertifisert
+  preview: Forhåndsvisning
+  saveUpgrade: Oppgrader
+  startService: Start tjenestene etter opprettelse
+  support: "Støtte:"
+  txt: svar.txt
+  upgrade: "Oppgrader:"
+newContainer:
+  name:
+    placeholder: f.eks minapplikasjon
+  description:
+    placeholder: f.eks min applikasjon
+  environment:
+    keyPlaceholder: f.eks FOO
+    valuePlaceholder: f.eks bar
+nodeDriver:
+  displayName:
+    exoscale: Exoscale
+    openstack: OpenStack
+    rackspace: Rackspace
+    vmwarevsphere: vSphere
+    zstack: ZStack
+  amazoneks:
+    associateWorkerNodePublicIp:
+      radio:
+        default: "true"
+projectGroup:
+  none: Navneområde
+pageFooter:
+  issues: Rapporter et problem
+projectRow:
+  none: Ingen beskrivelse
+registryRow:
+  username: Brukernavn
+reservationParameters:
+  memory:
+    labelText: 'Minne'
+    unit: 'MB'
+  milliCpu:
+    labelText: CPU
+    unit: 'mCPU'
+saveCancel:
+  saving: Lagrer...
+  saved: Lagret!
+  edit: Lagre
+  create: Opprett
+  cancel: Avbryt
+schema:
+  inputBoolean:
+    y: "Sann"
+    n: "Falsk"
+  inputCertificate:
+    prompt: Velg et sertifikat...
+  inputEnum:
+    option: Velg et alternativ...
+schedulingRuleRow:
+  must: må
+  should: bør
+  shouldNot: bør ikke
+  mustNot: må ikke
+  haveA: ha en
+  hostLabel: vert etikett
+  serviceName: tjenesten med navnet
+siteAccess:
+  header: Områdetilgang
+  noIdentity: Ingen
+telemetryOpt:
+  header: Statistikker
+  learnMore:
+    label: Få mer informasjon
+viewEditDescription:
+  form:
+    name:
+      placeholder: f.eks lab
+vmConsole:
+  footerActions:
+    buttonCancel: Lukk
+volumeRow:
+  mounts:
+    readOnly: "(read-only)"
+waitOrchestration:
+  count: '({sub} av {count})'
+##############################
+#Mixins
+##############################
+containerChoices:
+  hostGroup: "Vert: {name}"
+  hostGroupWithState: "Vert: {name} ({state})"
+  unknownHost: "Vert: ???"
+  containerOption: "{name}"
+##############################
+#Navigation
+##############################
+nav:
+  cluster:
+    namespaces: Navneområder
+    projects: Prosjekter / Navneområder
+  user:
+    logout: Logg ut
+  project:
+    namespaces: Navneområder
+##############################
+#Resource Actions
+##############################
+action:
+  viewInstance: Vis forekomst
+##############################
+#Resource Actions
+##############################
+validation:
+  required: '"{key}" er påkrevd'
+##############################
+#Model Properties
+##############################
+model:
+  account:
+    kind:
+      user: Bruker
+      admin: Administrator
+      project: Miljø
+  identity:
+    displayType:
+      user: Bruker
+      group: Gruppe
+  projectMember:
+    role:
+      readonly: Kun lese
+      restricted: Begrenset

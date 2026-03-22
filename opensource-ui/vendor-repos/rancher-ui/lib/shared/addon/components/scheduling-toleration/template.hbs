@@ -1,0 +1,158 @@
+<div>
+  <label class="acc-label">
+    {{#if title}}
+      {{title}}
+    {{else}}
+      {{t "formScheduling.toleration.title"}}
+    {{/if}}
+  </label>
+</div>
+{{#if tolerationArray.length}}
+  <table class="table fixed no-lines mb-20">
+    <thead>
+      <tr>
+        <th class="acc-label">
+          {{t "formScheduling.key"}}
+        </th>
+        <th width="40"></th>
+        <th class="acc-label">
+          {{t "formScheduling.operator"}}
+        </th>
+        <th width="40"></th>
+        <th class="acc-label">
+          {{t "formScheduling.value"}}
+        </th>
+        <th width="40"></th>
+        <th class="acc-label">
+          {{t "formScheduling.effect"}}
+        </th>
+        <th width="40"></th>
+        <th class="acc-label">
+          {{t "formScheduling.time"}}
+        </th>
+        <th width="10">&nbsp;</th>
+        <th width="40"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each tolerationArray as |toleration idx|}}
+        <tr data-testid="toleration-row">
+          <td>
+            {{#input-or-display
+               editable=editing
+               value=(if (and (not toleration.key) (eq toleration.operator "Exists")) "*" toleration.key)
+            }}
+              {{input
+                type="text"
+                class="form-control input-sm"
+                value=toleration.key
+                data-testid='input-toleration-key'
+              }}
+            {{/input-or-display}}
+          </td>
+          <td>
+            &nbsp;
+          </td>
+          <td>
+            {{#input-or-display
+               editable=editing
+               value=(or toleration.operator "Equal")
+            }}
+              {{searchable-select
+                class="form-control input-sm"
+                content=operatorChoices
+                value=toleration.operator
+                data-testid='input-toleration-operator'
+              }}
+            {{/input-or-display}}
+          </td>
+          <td>
+            &nbsp;
+          </td>
+          <td>
+            {{#if (or (eq toleration.operator "Equal") (not toleration.operator))}}
+              {{#input-or-display
+              editable=editing
+              value=toleration.value
+              }}
+              {{input
+                type="text"
+                class="form-control input-sm"
+                value=toleration.value
+                data-testid='input-toleration-value'
+              }}
+              {{/input-or-display}}
+            {{else}}
+              {{t "generic.na"}}
+            {{/if}}
+          </td>
+          <td>
+            &nbsp;
+          </td>
+          <td>
+            {{#input-or-display
+               editable=editing
+               value=(or toleration.effect "*")
+            }}
+              {{searchable-select
+                class="form-control input-sm"
+                content=effectChoices
+                value=toleration.effect
+                data-testid='input-toleration-effect'
+              }}
+            {{/input-or-display}}
+          </td>
+          <td>
+            &nbsp;
+          </td>
+          <td>
+            {{#if (eq toleration.effect "NoExecute")}}
+              {{#input-or-display
+                 editable=editing
+                 value=toleration.tolerationSeconds
+              }}
+                <div class="input-group">
+                  {{input-integer
+                    classNames="form-control input-sm"
+                    value=toleration.tolerationSeconds
+                    data-testid='input-toleration-seconds'
+                  }}
+                  <span class="input-group-addon bg-default">
+                    {{t "generic.seconds"}}
+                  </span>
+                </div>
+              {{/input-or-display}}
+            {{else}}
+              {{t "generic.na"}}
+            {{/if}}
+          </td>
+          <td>
+            &nbsp;
+          </td>
+          {{#if editing}}
+            <div class="input-group-btn">
+              <button data-testid="button-toleration-remove" class="btn bg-primary btn-sm" type="button" {{action "removeToleration" toleration}}>
+                <i class="icon icon-minus"/>
+              </button>
+            </div>
+          {{/if }}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  {{#unless editing}}
+    <div class="text-muted">
+      {{t "formScheduling.noToleration"}}
+    </div>
+  {{/unless}}
+{{/if}}
+
+{{#if editing}}
+  <button data-testid="button-add-toleration" class="btn bg-link icon-btn" type="button" {{action "addToleration"}}>
+    <i class="icon icon-plus text-small"/>
+    <span>
+      {{t "formScheduling.toleration.add"}}
+    </span>
+  </button>
+{{/if}}

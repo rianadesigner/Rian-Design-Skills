@@ -1,0 +1,58 @@
+{{#if hasWindowsRke1Cluster}}
+<div>
+  {{banner-message icon='icon-alert' color='bg-warning mb-10 mt-10' message=(t
+  'clusterNew.rke.windowsSupport.deprecated')}}
+</div>
+{{/if}}
+<section class="header">
+  <h1>
+    {{t "clustersPage.header"}}
+  </h1>
+
+  <div class="right-buttons">
+    {{#link-to
+       "clusters.new"
+       class="btn btn-sm bg-primary"
+       disabled=(rbac-prevents resource="cluster" scope="global" permission="create")
+    }}
+      {{t "clustersPage.newCluster"}}
+    {{/link-to}}
+  </div>
+</section>
+
+{{#sortable-table
+   classNames="grid"
+   body=filteredClusters
+   searchText=searchText
+   descending=descending
+   sortBy=sortBy
+   bulkActions=true
+   extraSearchFields=extraSearchFields
+   extraSearchSubFields=extraSearchSubFields
+   subSearchField="nodes"
+   pagingLabel="pagination.cluster"
+   headers=headers as |sortable kind inst dt|
+}}
+  {{#if (eq kind "row")}}
+    {{cluster-row
+      model=inst
+      fullColspan=sortable.fullColspan
+      launchOnCluster=(action "launchOnCluster")
+      useKubernetes=(action "useKubernetes")
+      subMatches=sortable.subMatches
+      dt=dt
+    }}
+  {{else if (eq kind "nomatch")}}
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+        {{t "clusterRow.noClusterMatch"}}
+      </td>
+    </tr>
+  {{else if (eq kind "norows")}}
+    <tr>
+      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">
+        {{t "clusterRow.noClusterData"}}
+      </td>
+    </tr>
+  {{/if}}
+{{/sortable-table}}

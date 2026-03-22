@@ -1,0 +1,46 @@
+<section class="header">
+  <h1>
+    {{t 'projectsPage.header'}}
+  </h1>
+
+
+  <div class="right-buttons">
+    <div class="btn-group p-0 mr-10">
+      {{~#tooltip-element type="tooltip-basic" model=(t 'projectsPage.groups.none') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
+      {{~#link-to (query-params group="none") classNames="btn bg-default"~}}<i
+        class="icon icon-list-nested"></i>{{~/link-to~}}
+      {{~/tooltip-element~}}
+      {{~#tooltip-element type="tooltip-basic" model=(t 'projectsPage.groups.namespaces') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"~}}
+      {{~#link-to (query-params group="project") classNames="btn bg-default"~}}<i
+        class="icon icon-folder"></i>{{~/link-to~}}
+      {{~/tooltip-element~}}
+    </div>
+    {{#link-to
+      "authenticated.cluster.projects.new"
+      class="btn bg-primary"
+      disabled=(rbac-prevents resource="project" scope="global" permission="create")
+    }}
+      {{t 'projectsPage.addProject'}}
+    {{/link-to}}
+    {{#unless (eq group 'project')}}
+      {{#link-to
+        "authenticated.cluster.projects.new-ns" (query-params addTo=null)
+        class="btn bg-primary ml-10"
+        disabled=(rbac-prevents resource="namespace" scope="cluster" permission="create")
+      }}
+        {{t 'namespacesPage.addNamespace'}}
+      {{/link-to}}
+    {{/unless}}
+  </div>
+</section>
+
+{{#if (eq group 'project')}}
+  {{namespace-table
+    model=rows
+    projectsWithoutNamespaces=projectsWithoutNamespaces
+  }}
+{{else}}
+  {{namespace-list
+    model=rows
+  }}
+{{/if}}

@@ -1,0 +1,55 @@
+<div class="box mb-10 affinity-term">
+  {{#if editing}}
+    <div class="affinity-remove">
+      <button data-testid="button-node-selector-remove" class="btn btn-sm " type="button" {{action "removeTerm"}}>
+          <i class="icon icon-x"/>
+      </button>
+    </div>
+  {{/if }}
+  <div class="row mt-10">
+    <div class="col span-6">
+      {{#input-or-display
+        editable=editing
+        value=priority
+      }}
+        <NewSelect 
+          @class="form-control"
+          @value={{priority}}
+          @optionLabelPath="label"
+          @optionValuePath="value"
+          @localizedLabel={{true}}
+          @content={{priorityOptions}}
+          @disabled={{not editing}}
+          data-testid="select-node-selector-priority"
+        />
+      {{/input-or-display}}
+    </div>
+  </div>
+  <div class="row">
+    <FormMatchExpressionsK8s
+      @matchExpressions={{matchExpressions}}
+      @matchFields={{matchFields}}
+      @editing={{editing}}
+      data-testid="match-expressions"
+    />
+  </div>
+  <div class="row">
+    {{#if (eq value.priority TERM_PRIORITY.PREFERRED)}}
+      <div class="col span-6">
+        <label class="acc-label">{{t "clusterNew.agentConfig.overrideAffinity.podAffinity.weight.label"}}</label>
+        {{#input-or-display
+          editable=editing
+          value=weight
+        }}
+        {{input
+          type="text"
+          class="form-control input-sm"
+          value=weight
+          placeholder=(t "clusterNew.agentConfig.overrideAffinity.podAffinity.weight.placeholder")
+          data-testid='input-node-selector-weight'
+        }}
+        {{/input-or-display}}
+      </div>
+    {{/if}}
+  </div>
+</div>

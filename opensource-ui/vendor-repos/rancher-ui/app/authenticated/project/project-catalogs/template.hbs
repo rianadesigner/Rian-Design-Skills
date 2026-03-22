@@ -1,0 +1,34 @@
+{{#banner-message color="bg-warning"}}
+  <p>{{t 'banner.catalogs' htmlSafe=true}}</p>
+{{/banner-message}}
+
+<section class="header">
+  <h1>{{t 'catalogSettings.header'}}</h1>
+  <div class="right-buttons">
+    <button class="btn bg-primary" type="button" {{action "add" }}>
+      {{t 'catalogSettings.more.addActionLabel'}}
+    </button>
+  </div>
+</section>
+
+{{#if istio}}
+  <div class="row">
+    <div class="col span-12">
+      {{banner-message
+        icon="icon-info"
+        color="bg-info mb-0 mt-10"
+        message=(t "globalDnsPage.entriesPage.istioHelp" htmlSafe=true)
+      }}
+    </div>
+  </div>
+{{/if}}
+
+{{custom-catalog
+  catalogs=filtered
+  mode="project"
+}}
+
+
+<div class="footer-actions mt-20">
+  <button class="btn bg-transparent" type="button" {{action "goBack" }}>{{t 'generic.back'}}</button>
+</div>

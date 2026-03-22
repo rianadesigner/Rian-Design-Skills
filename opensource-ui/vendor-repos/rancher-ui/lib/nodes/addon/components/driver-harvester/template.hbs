@@ -1,0 +1,433 @@
+{{#accordion-list showExpandAll=false as | al expandFn |}}
+  <div class="over-hr">
+    <span>
+      {{driverContentTitle}}
+    </span>
+  </div>
+
+  {{#accordion-list-item
+     title="Account Access"
+     detail="Configure KubeconfigContent"
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
+  }}
+
+    {{form-auth-cloud-credential
+      driverName=driverName
+      parseAndCollectErrors=(action "errorHandler")
+      primaryResource=model
+      cloudCredentials=cloudCredentials
+      finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
+      progressStep=(action "finishAndSelectCloudCredential")
+      cancel=(action "cancel")
+      hideSave=true
+    }}
+
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+      title=(t "nodeDriver.harvester.instance.title")
+      detail=(t "nodeDriver.harvester.instance.detail")
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
+    }}
+      {{#if loading}}
+        <i class="icon icon-spinner icon-spin"/> {{t "generic.loading"}}
+      {{else}}
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.cpuCount.label"}}{{field-required}}
+            </label>
+            <div class="input-group">
+              {{input-integer
+                min=1
+                value=config.cpuCount
+                classNames="form-control"
+                placeholder=(t "nodeDriver.harvester.cpuCount.placeholder")
+              }}
+              <div class="input-group-addon bg-default">
+                {{t "nodeDriver.harvester.cpuCount.unit" cores=config.cpuCount}}
+              </div>
+            </div>
+          </div>
+
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.memorySize.label"}}{{field-required}}
+            </label>
+            <div class="input-group">
+              {{input-integer
+                min=1
+                value=config.memorySize
+                classNames="form-control"
+                placeholder=(t "nodeDriver.harvester.memorySize.placeholder")
+              }}
+              <div class="input-group-addon bg-default">
+                {{t "nodeDriver.harvester.memorySize.unit"}}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.namespace.label"}}{{field-required}}
+            </label>
+
+            <SearchableSelect
+              @class="form-control"
+              @content={{namespaceContent}}
+              @value={{config.vmNamespace}}
+              @placeholder={{t "nodeDriver.harvester.namespace.placeholder"}}
+            />
+          </div>
+
+          <div class="col span-6">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.sshUser.label"}}{{field-required}}
+              <span class="inline-block">
+                {{#tooltip-element
+                  type="tooltip-basic"
+                  model=(t "nodeDriver.harvester.sshUser.toolTip" htmlSafe=true)
+                  tooltipTemplate="tooltip-static"
+                  aria-describedby="tooltip-base"
+                  tooltipFor="tooltipPoolCreateAfter"
+                  placement="top"
+                  tagName="div"
+                }}
+                  <i class="icon icon-help icon-blue"></i>
+                {{/tooltip-element}}
+              </span>
+            </label>
+            {{input
+              type="text"
+              value=config.sshUser
+              classNames="form-control"
+              placeholder=(t "nodeDriver.harvester.sshUser.placeholder")
+            }}
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="acc-label">
+            {{t "nodeDriver.harvester.disks.title"}}
+          </label>
+        </div>
+        {{#each disks as |disk idx|}}
+          <div class="box mb-10">
+            <div class="row">
+              <div class="pull-left">
+                {{#if (has-property disk 'imageName') }}
+                  <h4>{{t 'nodeDriver.harvester.disks.diskType.imageVolume'}}</h4>
+                {{else}}
+                  <h4>{{t 'nodeDriver.harvester.disks.diskType.volume'}}</h4>
+                {{/if}}
+              </div>
+              <div class="pull-right">
+                <button class="btn bg-link icon-btn" type="button" disabled={{eq idx 0}} {{action "removeDisk" disk}}>
+                  <i class="icon icon-minus text-small" />
+                  <span>{{t "generic.remove" }}</span>
+                </button>
+              </div>
+            </div>
+                
+            <div class="row">
+              <div class="col mt-0 span-6">
+                {{#if (has-property disk 'imageName') }}
+                  <label class="acc-label">
+                    {{t "nodeDriver.harvester.imageName.label"}}{{field-required}}
+                  </label>
+                  <SearchableSelect
+                    @class="form-control"
+                    @content={{imageContent}}
+                    @value={{disk.imageName}}
+                    @placeholder={{t "nodeDriver.harvester.imageName.placeholder"}}
+                  />
+                {{else}}
+                  <label class="acc-label">
+                    {{t "nodeDriver.harvester.storageClass.label"}}{{field-required}}
+                  </label>
+                  <SearchableSelect
+                    @class="form-control"
+                    @content={{storageClassContent}}
+                    @value={{disk.storageClassName}}
+                    @placeholder={{t "nodeDriver.harvester.storageClass.placeholder"}}
+                  />
+                {{/if}}
+              </div>
+
+              <div class="col mt-0 span-6">
+                <label class="acc-label">
+                  {{t "nodeDriver.harvester.disks.bootOrder.label"}}{{field-required}}
+                </label>
+
+                {{boot-order-select disk=disk disks=disks idx=idx}}
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col span-6">
+                <label class="acc-label">
+                  {{t "nodeDriver.harvester.diskSize.label"}}{{field-required}}
+                </label>
+                <div class="input-group">
+                  {{input-integer
+                    min=1
+                    value=disk.size
+                    classNames="form-control"
+                    placeholder=(t "nodeDriver.harvester.diskSize.placeholder")
+                  }}
+                  <div class="input-group-addon bg-default">
+                    {{t "nodeDriver.harvester.diskSize.unit"}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+       
+        <button class="btn bg-link icon-btn" type="button" {{action "addVolume" "volume" }}>
+          <i class="icon icon-plus text-small" />
+          <span>{{t "nodeDriver.harvester.disks.addVolume.volume"}}</span>
+        </button>
+
+        <button class="btn bg-link icon-btn" type="button" {{action "addVolume" "image"}}>
+          <i class="icon icon-plus text-small" />
+          <span>{{t "nodeDriver.harvester.disks.addVolume.imageVolume"}}</span>
+        </button>
+
+        <hr class="mb-20 mt-20">
+
+        <div class="row">
+          <label class="acc-label">
+            {{t "nodeDriver.harvester.network.title"}}
+          </label>
+        </div>
+        {{#each interfaces as |network idx|}}
+          <div class="box mb-10">
+            <div class="row">
+              <div class="pull-left">
+                <h4>{{t "nodeDriver.harvester.network.label"}}</h4>
+              </div>
+
+              <div class="pull-right">
+                <button class="btn bg-link icon-btn" type="button" disabled={{eq idx 0}} {{action "removeNetwork" network}}>
+                  <i class="icon icon-minus text-small" />
+                  <span>{{t "generic.remove" }}</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col mt-0 span-6">
+                <label class="acc-label">
+                  {{t "nodeDriver.harvester.networkName.label"}}{{field-required}}
+                </label>
+                <SearchableSelect
+                  @class="form-control"
+                  @content={{networkContent}}
+                  @value={{network.networkName}}
+                  @placeholder={{t "nodeDriver.harvester.networkName.placeholder"}}
+                />
+              </div>
+
+              {{!-- <div class="col mt-0 span-6">
+                <label class="acc-label">
+                  {{t "nodeDriver.harvester.macAddress.label"}}
+                  <span class="inline-block">
+                    {{#tooltip-element
+                      type="tooltip-basic"
+                      model=(t "nodeDriver.harvester.macAddress.toolTip" htmlSafe=true)
+                      tooltipTemplate="tooltip-static"
+                      aria-describedby="tooltip-base"
+                      tooltipFor="tooltipPoolCreateAfter"
+                      placement="top"
+                      tagName="div"
+                    }}
+                      <i class="icon icon-help icon-blue"></i>
+                    {{/tooltip-element}}
+                  </span>
+                </label>
+                {{input
+                  type="text"
+                  value=network.macAddress
+                  classNames="form-control"
+                }}
+              </div> --}}
+            </div>
+          </div>
+        {{/each}}
+
+        <button class="btn bg-link icon-btn" type="button" {{action "addNetwork" }}>
+          <i class="icon icon-plus text-small" />
+          <span>{{ t "nodeDriver.harvester.network.addNetwork.network" }}</span>
+        </button>
+
+      {{/if}}
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+      title=(t "nodeDriver.harvester.advanced.title")
+      detail=(t "nodeDriver.harvester.advanced.detail")
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
+    }}
+      {{#if loading}}
+        <i class="icon icon-spinner icon-spin"/> {{t "generic.loading"}}
+      {{else}}
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.scheduling.node.label"}}
+            </label>
+          </div>
+        </div>
+        <div>
+          {{#each nodeSchedulings as |nodeScheduling|}}
+            {{form-node-scheduling-row model=nodeScheduling remove=(action "removeNodeScheduling") update=(action "updateNodeScheduling")}}
+          {{/each}}
+
+          <button class="btn bg-link icon-btn" type="button" {{action "addNodeScheduling" }}>
+            <i class="icon icon-plus text-small" />
+            <span>{{t "formNodeAffinity.addRuleLabel"}}</span>
+          </button>
+        </div>
+
+        <div class="row">
+          <div class="col span-12">
+            <label class="acc-label">
+              {{t "nodeDriver.harvester.scheduling.pod.label"}}
+            </label>
+          </div>
+        </div>
+        <div>
+          {{#each podSchedulings as |podScheduling|}}
+            {{form-pod-scheduling-row model=podScheduling nodes=nodes namespaces=namespaceContent remove=(action "removePodScheduling") update=(action "updatePodScheduling")}}
+          {{/each}}
+
+          <button class="btn bg-link icon-btn" type="button" {{action "addPodScheduling" }}>
+            <i class="icon icon-plus text-small" />
+            <span>{{t "nodeDriver.harvester.scheduling.pod.addLabel"}}</span>
+          </button>
+        </div>
+      {{/if}}
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.harvester.userData.template.label"}}
+          </label>
+          <SearchableSelect
+            @class="form-control"
+            @content={{userDataContent}}
+            @value={{userDataTemplate}}
+            @change={{action "chooseUserDataTemplate" userDataTemplate}}
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "nodeDriver.harvester.userData.label"}}
+          </label>
+
+          {{input-yaml
+            showDownload=false
+            showUpload=false
+            canChangeName=false
+            gutters=(array)
+            value=config.userData
+            valueUpdated=(action "updateYaml" "userData")
+          }}
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12 mt-0">
+          <label class="acc-label">
+            {{input
+              type="checkbox"
+              classNames="form-control"
+              checked=installAgent
+              click=(action "updateAgent")
+            }}
+            
+            {{t "nodeDriver.harvester.installAgent.label"}}
+          </label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">
+            {{t "nodeDriver.harvester.networkData.template.label"}}
+          </label>
+          <SearchableSelect
+            @class="form-control"
+            @content={{networkDataContent}}
+            @value={{config.networkData}}
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col span-12">
+          <label class="acc-label">
+            {{t "nodeDriver.harvester.networkData.label"}}
+          </label>
+
+          {{input-yaml
+            class="modal-yaml"
+            showDownload=false
+            showUpload=false
+            canChangeName=false
+            gutters=(array)
+            minHeight=500
+            value=config.networkData
+            valueUpdated=(action  'updateYaml' 'networkData')
+          }}
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+  <div class="over-hr">
+    <span>
+      {{templateOptionsTitle}}
+    </span>
+  </div>
+
+  {{form-name-description
+    model=model
+    nameRequired=true
+    rowClass="row mb-10"
+  }}
+
+  {{form-user-labels
+    initialLabels=labelResource.labels
+    setLabels=(action "setLabels")
+    expand=(action expandFn)
+  }}
+
+  {{form-node-taints
+    model=model
+    expand=(action expandFn)
+  }}
+
+  {{form-engine-opts
+    machine=model
+    showEngineUrl=showEngineUrl
+  }}
+
+  {{top-errors errors=errors}}
+  {{save-cancel
+    save=(action "save")
+    cancel=(action "cancel")
+    editing=editing
+  }}
+{{/accordion-list}}

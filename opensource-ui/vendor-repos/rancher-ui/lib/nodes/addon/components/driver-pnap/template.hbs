@@ -1,0 +1,183 @@
+{{#accordion-list showExpandAll=false as | al expandFn |}}
+  <div class="over-hr">
+    <span>
+      {{driverOptionsTitle}}
+    </span>
+  </div>
+
+  {{#accordion-list-item
+    title=(t "nodeDriver.pnap.access.title")
+    detail=(t "nodeDriver.pnap.access.detail")
+    expandAll=expandAll
+    expand=(action expandFn)
+    expandOnInit=true
+  }}
+    {{form-auth-cloud-credential
+      driverName=driverName
+      parseAndCollectErrors=(action "errorHandler")
+      primaryResource=primaryResource
+      cloudCredentials=cloudCredentials
+      finishAndSelectCloudCredential=(action "finishAndSelectCloudCredential")
+      progressStep=(action "finishAndSelectCloudCredential")
+      cancel=(action "cancel")
+      hideSave=true
+    }}
+
+  {{/accordion-list-item}}
+
+  {{#accordion-list-item
+     title=(t "nodeDriver.pnap.serverDetails.title")
+     detail=(t "nodeDriver.pnap.serverDetails.detail")
+     expandAll=expandAll
+     expand=(action expandFn)
+     expandOnInit=true
+  }}
+    <div class="row">
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.location.label"}}
+        </label>
+        {{new-select
+          classNames="form-control"
+          content=locationChoices
+          optionLabelPath="value"
+          value=config.serverLocation
+        }}
+      </div>
+      <div class="col span-6">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.type.label"}}
+        </label>
+        {{new-select
+        classNames="form-control"
+        content=typeChoices
+        optionLabelPath="label"
+        optionValuePath="value"
+        value=config.serverType
+        }}
+        <p class="text-info">
+          {{t "nodeDriver.pnap.type.help" htmlSafe=true}}
+        </p>
+      </div>
+    </div>
+   
+    <div class="row mt-20">
+      {{!-- <h4>{{t "nodeDriver.pnap.product.label"}}</h4> --}}
+    
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.cpu"}}
+        </label>
+        <div>
+          {{type.metadata.cpu}}
+        </div>
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.cpucores"}}
+        </label>
+        <div>
+          {{type.metadata.coresPerCpu}}
+        </div>
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.cpucount"}}
+        </label>
+        <div>
+          {{type.metadata.cpuCount}}
+        </div>
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.cpufrequency"}}
+        </label>
+        <div>
+          {{type.metadata.cpuFrequency}}
+        </div>
+      </div>
+    
+    </div>
+    <div class="row">
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.memory"}}
+        </label>
+    
+        <div>
+          {{type.metadata.ramInGb}}
+        </div>
+    
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.storage"}}
+        </label>
+    
+        <div>
+          {{type.metadata.storage}}
+        </div>
+    
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.product.network"}}
+        </label>
+    
+        <div>
+          {{type.metadata.network}}
+        </div>
+    
+      </div>
+      <div class="col span-3">
+        <label class="acc-label">
+          {{t "nodeDriver.pnap.os.label"}}
+        </label>
+        {{new-select
+        classNames="form-control"
+        content=osChoices
+        optionLabelPath="value"
+        value=config.serverOs
+        }}
+      </div>
+    </div>
+  {{/accordion-list-item}}
+
+  <div class="over-hr">
+    <span>
+      {{templateOptionsTitle}}
+    </span>
+  </div>
+
+  {{form-name-description
+    model=model
+    nameRequired=true
+    rowClass="row mb-10"
+  }}
+
+  {{form-user-labels
+    initialLabels=labelResource.labels
+    setLabels=(action "setLabels")
+    expand=(action expandFn)
+  }}
+
+  {{form-node-taints
+    model=model
+    expand=(action expandFn)
+  }}
+
+  {{form-engine-opts
+    machine=model
+    showEngineUrl=showEngineUrl
+  }}
+
+  {{top-errors
+    errors=errors
+  }}
+
+  {{save-cancel
+    save=(action "save")
+    cancel=(action "cancel")
+    editing=editing
+  }}
+{{/accordion-list}}

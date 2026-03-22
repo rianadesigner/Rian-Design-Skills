@@ -1,0 +1,10 @@
+<div class="row mb-20">
+  <div class="col span-6">
+    <FormKeyValue
+      @addActionLabel="clusterNew.googlegke.nodeLabels.addAction"
+      @changed={{action (mut model)}}
+      @editing={{not (eq mode "edit")}}
+      @initialMap={{model}}
+    />
+  </div>
+</div>

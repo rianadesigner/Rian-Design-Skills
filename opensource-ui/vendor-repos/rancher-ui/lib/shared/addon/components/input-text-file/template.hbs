@@ -1,0 +1,78 @@
+<div class="row">
+  <div class="pull-right vertical-middle">
+    {{#if canUpload}}
+      {{#if showUploadLabel}}
+        <button
+          class="btn bg-link icon-btn"
+          disabled={{disabled}}
+          type="button"
+          {{action "click"}}
+        >
+          <i class="icon icon-upload text-small"></i>
+          <span>
+            {{t "inputTextFile.tooltip"}}
+          </span>
+        </button>
+      {{else}}
+        {{#tooltip-element
+          type="tooltip-basic"
+          model=(t "inputTextFile.tooltip")
+          tooltipTemplate="tooltip-static"
+          aria-describedby="tooltip-base"
+          tooltipFor="inputTextFile"
+        }}
+          <button type="button" class="btn bg-link" {{action "click"}}>
+            <i class="icon icon-upload"></i>
+          </button>
+        {{/tooltip-element}}
+      {{/if}}
+    {{/if}}
+    {{yield}}
+  </div>
+  <div class="col span-6 clip vertical-middle mt-5 mb-5">
+    {{#if (and canChangeName shouldChangeName)}}
+      {{input value=name placeholder=(if namePlaceholder (t namePlaceholder) "")}}
+    {{else}}
+      <h4 class="mb-0">
+        {{#if label}}
+          {{t label}}
+        {{else}}
+          {{name}}
+        {{/if}}
+        {{#if nameRequired}}
+          {{field-required}}
+        {{/if}}
+        {{#if canChangeName}}
+          <button
+            class="btn btn-sm bg-link acc-label-hover"
+            type="button"
+            {{action "wantsChange"}}
+          >
+            {{t "action.edit"}}
+          </button>
+        {{/if}}
+      </h4>
+    {{/if}}
+  </div>
+</div>
+<hr class="mt-10 mb-10"/>
+<div class="row">
+  <div class="col span-12 m-0 p-0">
+    {{textarea-autogrow
+      value=value
+      class=(concat "form-control text-small" (if concealValue "conceal"))
+      placeholder=placeholder
+      minHeight=minHeight
+      maxHeight=maxHeight
+      required=true
+      disabled=disabled
+    }}
+  </div>
+</div>
+{{yield "description"}}
+<input
+  type="file"
+  accept="{{actualAccept}}"
+  multiple={{multiple}}
+  class="hide"
+/>

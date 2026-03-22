@@ -1,0 +1,22 @@
+<Input
+  @class={{concat (if invalid "input-error ") inputStyles}}
+  @disabled={{disabled}}
+  @focus-in={{action "focusInHandler"}}
+  @focus-out={{action "focusOutHandler"}}
+  @id={{inputId}}
+  @placeholder={{placeholder}}
+  @type="text"
+  @value={{value}}
+/>
+{{#if invalid}}
+  <TooltipElement
+    @classNames="cidr-error-tooltip"
+    @focus-in={{"tooltipFocus"}}
+    @type="tooltip-basic"
+    @tooltipTemplate="tooltip-static"
+    @model={{errorMessage}}
+    @placement="top"
+  >
+    <i class="icon icon-info text-error"></i>
+  </TooltipElement>
+{{/if}}

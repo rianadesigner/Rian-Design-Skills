@@ -1,0 +1,20 @@
+{
+  "name": "nodes",
+  "keywords": [
+    "ember-addon",
+    "ember-engine"
+  ],
+  "dependencies": {
+    "ember-auto-import": "*",
+    "ember-intl": "*",
+    "ember-cli-htmlbars": "*",
+    "ember-cli-babel": "*",
+    "yaml": "*",
+    "js-yaml": "*"
+  },
+  "ember-addon": {
+    "paths": [
+      "../shared"
+    ]
+  }
+}

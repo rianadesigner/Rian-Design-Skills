@@ -1,0 +1,17 @@
+<div>
+  <div class="row mb-10">
+    <FormNodeAffinityK8s
+      @editing={{editing}}
+      @nodeAffinity={{nodeAffinity}}
+      data-testid="node-affinity"
+    />
+  </div>
+  <div class="row">
+    <FormPodAffinityK8s
+      @editing={{editing}}
+      @podAffinity={{podAffinity}}
+      @podAntiAffinity={{podAntiAffinity}}
+      data-testid="pod-affinity"
+    />
+  </div>
+</div>

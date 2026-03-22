@@ -1,0 +1,16 @@
+{{#unless cancelDisabled}}
+  <button class="btn-large btn {{cancelColor}}" type="button" {{action "cancel"}}>
+    {{t cancelLabel}}
+  </button>
+{{/unless}}
+{{yield}}
+{{#if saving}}
+  <button class="btn-large btn btn-disabled {{savingColor}}" type="button" {{action "doNothing"}}>
+    <i class="icon icon-spinner icon-spin"></i>
+    {{t savingLabel}}
+  </button>
+{{else}}
+  <button type="submit" {{action "save"}} disabled={{saveDisabled}} class="btn-large btn {{if saved savedColor saveColor}}">
+    {{t btnLabel}}
+  </button>
+{{/if}}

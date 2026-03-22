@@ -1,0 +1,38 @@
+<AccordionListItem
+  @title={{t "formGlobalRoles.title"}}
+  @detail={{t "formGlobalRoles.description" appName=settings.appName type=(if user "user" "group")}}
+  @expandOnInit={{true}}
+  @showExpand={{false}}
+>
+  {{#each baseRoles as |baseRole|}}
+    <FormGlobalRolesRow
+      @model={{baseRole}}
+    />
+  {{/each}}
+</AccordionListItem>
+
+<AccordionListItem
+  @title={{t "formGlobalRoles.mode.userCreated.label"}}
+  @detail={{t "formGlobalRoles.mode.userCreated.detail" type=(if user "user" "group")}}
+  @expandOnInit={{true}}
+  @showExpand={{false}}
+>
+  {{#each userRoles as |role|}}
+    <FormGlobalRolesRow
+      @model={{role}}
+    />
+  {{/each}}
+</AccordionListItem>
+
+<AccordionListItem
+  @title={{t "formGlobalRoles.mode.custom.label"}}
+  @detail={{t "formGlobalRoles.mode.custom.detail" type=(if user "user" "group")}}
+  @expandOnInit={{true}}
+  @showExpand={{false}}
+>
+  {{#each additionalRoles as |role|}}
+    <FormGlobalRolesRow
+      @model={{role}}
+    />
+  {{/each}}
+</AccordionListItem>

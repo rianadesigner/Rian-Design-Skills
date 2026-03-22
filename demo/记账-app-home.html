@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <title>轻账 · 本月概览</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="暖色极简记账：本月收支、结余与最近流水一览。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    *, *::before, *::after { font-family: 'Outfit', system-ui, sans-serif; box-sizing: border-box; }
+
+    /* 间距体系对齐 预览demo：环境光晕改为冷蓝 + 暖底协调 */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -120px;
+      right: -80px;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(47,111,237,0.10) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -80px;
+      left: -60px;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(56,142,130,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -9999px;
+      left: 16px;
+      background: #2F6FED;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 0 0 8px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 9999;
+      transition: top 0.15s;
+    }
+    .skip-link:focus { top: 0; }
+
+    :focus-visible {
+      outline: 2px solid #2F6FED;
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 0.52s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .d1 { animation-delay: 0.04s; }
+    .d2 { animation-delay: 0.10s; }
+    .d3 { animation-delay: 0.16s; }
+    .d4 { animation-delay: 0.22s; }
+    .d5 { animation-delay: 0.28s; }
+    .d6 { animation-delay: 0.34s; }
+    .d7 { animation-delay: 0.40s; }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .slide-in {
+      opacity: 0;
+      transform: translateX(-10px);
+      animation: slideIn 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .s1 { animation-delay: 0.32s; }
+    .s2 { animation-delay: 0.42s; }
+    .s3 { animation-delay: 0.52s; }
+    @keyframes slideIn {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .btn { transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .btn:active { transform: scale(0.97); }
+
+    .card-hover {
+      transition: box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+    .card-hover:hover {
+      box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+      border-color: #D4D0C8;
+    }
+
+    .num { font-variant-numeric: tabular-nums; }
+    .kpi-col + .kpi-col { border-left: 1px solid #E8E4DC; }
+
+    html { scroll-behavior: smooth; }
+    @media (prefers-reduced-motion: reduce) {
+      .fade-up, .slide-in { animation: none; opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body class="min-h-dvh bg-[#F7F5F1] text-[#1C1A17] relative">
+  <a href="#main-content" class="skip-link">跳至主要内容</a>
+
+  <div class="relative z-10 mx-auto max-w-md px-4 pb-10 pt-5">
+    <header class="flex items-center justify-between mb-5 fade-up d1">
+      <div>
+        <p class="text-[10px] font-semibold uppercase tracking-[0.18em] text-[#8A8580]">March 2026</p>
+        <h1 class="text-xl font-bold tracking-tight text-[#1C1A17] mt-0.5">轻账 · 本月概览</h1>
+      </div>
+      <button
+        type="button"
+        aria-label="打开预算与分类设置"
+        class="btn h-11 w-11 rounded-2xl bg-white border border-[#E4E0D8] flex items-center justify-center shadow-[0_2px_8px_rgba(0,0,0,0.05)] hover:border-[#2F6FED] hover:shadow-[0_4px_14px_rgba(47,111,237,0.18)]"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2F6FED" stroke-width="1.7" stroke-linecap="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/>
+        </svg>
+      </button>
+    </header>
+
+    <main id="main-content" class="flex flex-col gap-4">
+      <!-- 概览卡：对齐预览 demo 的 hero 卡结构 -->
+      <section aria-label="本月结余与预算" class="fade-up d2">
+        <div class="card-hover rounded-2xl bg-white border border-[#E4E0D8] p-4 shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+          <div class="flex items-start gap-4">
+            <div
+              class="h-[60px] w-[60px] rounded-xl bg-[#EEF4FF] border border-[#D6E4FF] flex items-center justify-center flex-shrink-0"
+              aria-hidden="true"
+            >
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2F6FED" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                <path d="M2 10h20"/>
+              </svg>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-2 mb-0.5">
+                <p class="text-sm font-semibold text-[#1C1A17]">本月可支配结余</p>
+                <span class="inline-flex items-center gap-1 rounded-full bg-[#EDF5F2] px-2 py-[2px] text-[10px] font-semibold text-[#3A7D6B] whitespace-nowrap flex-shrink-0">
+                  <span class="h-1.5 w-1.5 rounded-full bg-[#3A7D6B]" aria-hidden="true"></span>
+                  健康
+                </span>
+              </div>
+              <p class="text-[12px] text-[#6F6A63] mb-3">
+                已用预算 <strong class="font-bold text-[#1C1A17] num">62%</strong> · 还剩 11 天
+              </p>
+              <div
+                role="progressbar"
+                aria-valuenow="62"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-label="本月预算使用进度 62%"
+                class="h-2 w-full rounded-full bg-[#E8E4DC] overflow-hidden"
+              >
+                <div class="h-full rounded-full bg-[#2F6FED] w-[62%] transition-[width] duration-500 ease-out"></div>
+              </div>
+              <p class="mt-1.5 text-[10px] text-[#8A8580] num">可支配 ¥3,280 · 预算上限 ¥5,200</p>
+            </div>
+          </div>
+          <div class="mt-3.5 flex items-start gap-2 rounded-xl bg-[#FAF9F6] border border-[#EDEAE3] px-3 py-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2F6FED" stroke-width="2" stroke-linecap="round" class="mt-[1px] flex-shrink-0" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <circle cx="12" cy="16" r="0.5" fill="#2F6FED"/>
+            </svg>
+            <p class="text-[11px] leading-relaxed text-[#6F6A63]">
+              餐饮与交通已连续 3 天低于日均，周末可小幅放宽「娱乐」分类。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- KPI：三列 + 竖线，与预览 demo 一致 -->
+      <section aria-label="本月收支摘要" class="fade-up d3">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-sm font-semibold text-[#1C1A17]">本月数据</h2>
+          <button type="button" class="btn text-[11px] text-[#8A8580] hover:text-[#2F6FED]">
+            查看趋势
+          </button>
+        </div>
+        <div class="card-hover rounded-2xl bg-white border border-[#E4E0D8] overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.04)]">
+          <div class="grid grid-cols-3">
+            <div class="kpi-col px-3 py-3">
+              <div class="flex items-center gap-1.5 mb-1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A8580" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+                </svg>
+                <span class="text-[10px] text-[#8A8580]">收入</span>
+              </div>
+              <p class="text-[17px] font-bold text-[#3A7D6B] num leading-none">¥8,420</p>
+              <p class="mt-1 text-[10px] text-[#8A8580]">工资 + 兼职</p>
+            </div>
+            <div class="kpi-col px-3 py-3">
+              <div class="flex items-center gap-1.5 mb-1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A8580" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+                </svg>
+                <span class="text-[10px] text-[#8A8580]">支出</span>
+              </div>
+              <p class="text-[17px] font-bold text-[#C45C4A] num leading-none">¥5,140</p>
+              <p class="mt-1 text-[10px] text-[#8A8580]">环比 -6%</p>
+            </div>
+            <div class="kpi-col px-3 py-3">
+              <div class="flex items-center gap-1.5 mb-1.5">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#8A8580" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                  <path d="M3 3v18h18"/><path d="M7 16l4-4 4 4 6-6"/>
+                </svg>
+                <span class="text-[10px] text-[#8A8580]">结余</span>
+              </div>
+              <p class="text-[17px] font-bold text-[#1C1A17] num leading-none">¥3,280</p>
+              <p class="mt-1 text-[10px] text-[#2F6FED] font-medium">+12%</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 最近流水：列表间距 gap-2.5，卡片 py-2.5 px-3 -->
+      <section aria-label="最近记账" class="fade-up d4">
+        <div class="flex items-center justify-between mb-2">
+          <h2 class="text-sm font-semibold text-[#1C1A17]">最近流水</h2>
+          <button type="button" class="btn text-[11px] text-[#8A8580] hover:text-[#2F6FED]">
+            全部明细
+          </button>
+        </div>
+        <ul class="flex flex-col gap-2.5" role="list">
+          <li class="slide-in s1">
+            <article class="flex items-center gap-3 rounded-xl bg-white border border-[#E4E0D8] px-3 py-2.5 card-hover shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+              <div class="h-9 w-9 rounded-xl bg-[#EEF4FF] flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2F6FED" stroke-width="2" aria-hidden="true">
+                  <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-semibold text-[#1C1A17]">住房 · 房租</p>
+                <p class="text-[11px] text-[#8A8580] num">3月1日 · 自动记账</p>
+              </div>
+              <span class="text-sm font-bold text-[#C45C4A] num whitespace-nowrap">-¥2,400</span>
+            </article>
+          </li>
+          <li class="slide-in s2">
+            <article class="flex items-center gap-3 rounded-xl bg-white border border-[#E4E0D8] px-3 py-2.5 card-hover shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+              <div class="h-9 w-9 rounded-xl bg-[#EDF5F2] flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3A7D6B" stroke-width="2" aria-hidden="true">
+                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+                </svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-semibold text-[#1C1A17]">收入 · 工资</p>
+                <p class="text-[11px] text-[#8A8580] num">2月28日 · 银行入账</p>
+              </div>
+              <span class="text-sm font-bold text-[#3A7D6B] num whitespace-nowrap">+¥8,200</span>
+            </article>
+          </li>
+          <li class="slide-in s3">
+            <article class="flex items-center gap-3 rounded-xl bg-white border border-[#E4E0D8] px-3 py-2.5 card-hover shadow-[0_2px_10px_rgba(0,0,0,0.03)]">
+              <div class="h-9 w-9 rounded-xl bg-[#FFF4E8] flex items-center justify-center flex-shrink-0" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C47A3A" stroke-width="2" aria-hidden="true">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-xs font-semibold text-[#1C1A17]">餐饮 · 外食</p>
+                <p class="text-[11px] text-[#8A8580] num">昨天 19:12</p>
+              </div>
+              <span class="text-sm font-bold text-[#C45C4A] num whitespace-nowrap">-¥86</span>
+            </article>
+          </li>
+        </ul>
+      </section>
+
+      <!-- 快捷条：与预览 demo 的「最近记录」条同级 -->
+      <section aria-label="快捷入口" class="fade-up d5">
+        <div class="flex items-center justify-between rounded-xl bg-[#FAF9F6] border border-[#EDEAE3] px-3 py-2.5">
+          <div class="flex items-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#8A8580" stroke-width="2" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+            <p class="text-[12px] text-[#6F6A63]">本周已记 <strong class="text-[#1C1A17] num">12</strong> 笔</p>
+          </div>
+          <button type="button" class="btn text-[11px] font-semibold text-[#2F6FED] hover:text-[#2563D4]">
+            补记一笔
+          </button>
+        </div>
+      </section>
+
+      <!-- 主操作：h-11 min-h-[44px] gap-3 -->
+      <footer class="flex items-center gap-3 fade-up d6 pt-1" aria-label="主要操作">
+        <button
+          type="button"
+          class="btn flex-1 h-11 min-h-[44px] rounded-full border border-[#E4E0D8] bg-white text-[13px] font-semibold text-[#3D3933] hover:border-[#2F6FED] hover:text-[#2F6FED] shadow-[0_2px_8px_rgba(0,0,0,0.04)]"
+        >
+          导入账单
+        </button>
+        <button
+          type="button"
+          class="btn flex-1 h-11 min-h-[44px] rounded-full bg-[#2F6FED] text-[13px] font-semibold text-white hover:bg-[#2563D4] shadow-[0_8px_24px_rgba(47,111,237,0.38)] hover:shadow-[0_10px_28px_rgba(47,111,237,0.48)]"
+        >
+          记一笔
+        </button>
+      </footer>
+
+      <!-- 底部导航：与预览 demo 一致结构 -->
+      <nav aria-label="底部导航" class="fade-up d7 pt-2">
+        <ul class="flex items-center justify-around" role="list">
+          <li>
+            <button type="button" aria-current="page" class="btn flex flex-col items-center gap-1 px-4 py-2 rounded-xl" aria-label="首页">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#2F6FED" aria-hidden="true">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              </svg>
+              <span class="text-[10px] font-semibold text-[#2F6FED]">首页</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="btn flex flex-col items-center gap-1 px-4 py-2 rounded-xl" aria-label="明细">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A8580" stroke-width="1.8" aria-hidden="true">
+                <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+              <span class="text-[10px] text-[#8A8580]">明细</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="btn flex flex-col items-center gap-1 px-4 py-2 rounded-xl" aria-label="统计">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A8580" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+              <span class="text-[10px] text-[#8A8580]">统计</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="btn flex flex-col items-center gap-1 px-4 py-2 rounded-xl" aria-label="我的">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8A8580" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span class="text-[10px] text-[#8A8580]">我的</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

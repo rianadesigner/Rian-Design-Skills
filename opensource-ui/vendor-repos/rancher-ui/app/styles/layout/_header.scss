@@ -1,0 +1,39 @@
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the header of the site/application.
+// -----------------------------------------------------------------------------
+header {
+  clear: both;
+}
+
+.header {
+    display: grid;
+    grid-template-areas:
+        "type-banner type-banner"
+        "title actions"
+        "state-banner state-banner";
+    grid-template-columns: auto auto;
+    margin-bottom: 20px;
+    // align-content: center;
+    min-height: 48px;
+    align-items: center;
+
+    > * {
+      flex-grow: 1;
+    }
+
+    h1 {
+      margin: 0;
+    }
+  .right-buttons {
+    @include clearfix;
+    justify-content: flex-end;
+    align-self: center;
+    text-align: right;
+    // float: right;
+  }
+}
+
+.header-borderless {
+  @extend .header;
+  border-bottom: none;
+}

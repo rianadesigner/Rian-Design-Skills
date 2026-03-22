@@ -1,0 +1,9 @@
+<div class="header">
+  <h1>
+    {{t "clusterTemplatesPage.new.header"}}
+  </h1>
+</div>
+
+<CruClusterTemplate @clusterTemplate={{model.clusterTemplate}}
+  @clusterTemplateRevision={{model.clusterTemplateRevision}} @users={{model.users}} @psacs={{model.psacs}} @mode="new"
+  @forceExpandOnInit={{false}} @cancel={{action "cancel" }} @done={{action "done" }} />

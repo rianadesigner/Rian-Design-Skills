@@ -1,0 +1,55 @@
+<td class="pr-10">
+  {{#if noUpdate}}
+    {{#if principal}}
+      {{identity-block principal=principal}}
+    {{else if principalId}}
+      <div class="gh-block">
+        <div class="gh-avatar">
+          <img
+            src="{{principalGravatarSrc}}"
+            width="34"
+            height="34"
+          >
+        </div>
+        <div class="gh-block-content">
+          <div class="clip gh-block-name">
+            {{principalId}}
+          </div>
+        </div>
+      </div>
+    {{else}}
+      {{!-- we should never get here, but if we did you can start with a error in principal search by id --}}
+      {{t "generic.unknown"}}&nbsp;{{t "generic.user"}}
+    {{/if}}
+  {{else}}
+    {{input-identity
+      allowTeams=true
+      action=(action "addAuthorized")
+      onError=(action "gotError")
+    }}
+  {{/if}}
+</td>
+<td class="pr-10">
+  {{#if noUpdate}}
+    {{#if roleTemplate}}
+      {{roleTemplate.displayName}}
+    {{else}}
+      {{t "generic.custom"}}
+    {{/if}}
+  {{else}}
+    {{searchable-select
+      change=(action "onSelect")
+      content=choices
+      value=roleTemplateId
+      readOnly=noUpdate
+    }}
+  {{/if}}
+</td>
+<td>&nbsp;</td>
+<div class="input-group-btn">
+  {{#if (and (not isCreatorMember) editing)}}
+    <button class="btn bg-primary btn-sm" type="button" {{action "remove"}}>
+      <i class="icon icon-minus" />
+    </button>
+  {{/if}}
+</div>

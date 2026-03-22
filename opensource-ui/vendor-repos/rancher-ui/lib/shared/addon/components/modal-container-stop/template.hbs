@@ -1,0 +1,16 @@
+<h3 class="container-header-text">
+  {{t 'modalContainerStop.header'}}:
+  <div class="display-name">
+    {{#each resources as |resource|}}
+      {{resource.displayName}}
+    {{/each}}
+  </div>
+</h3>
+
+<div class="footer-actions">
+  <button class="btn bg-error" type="button" {{action "stop"}}>{{t 'modalContainerStop.button'}}</button>
+  <button class="btn bg-transparent" type="button" {{action "cancel"}}>{{t 'generic.cancel'}}</button>
+</div>
+
+<hr/>
+<div class="protip">{{t 'modalContainerStop.protip' key=alternateLabel}}</div>

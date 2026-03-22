@@ -1,0 +1,19 @@
+import Route from '@ember/routing/route';
+import { inject as service } from '@ember/service';
+import { hash } from 'rsvp';
+
+export default Route.extend({
+  globalStore:         service(),
+  roleTemplateService: service('roleTemplate'),
+
+  model() {
+    const gs  = this.globalStore;
+    const pid = this.paramsFor('authenticated.project');
+
+    return hash({
+      project:      gs.find('project', pid.project_id, { forceReload: true }),
+      roles:        this.roleTemplateService.get('allFilteredRoleTemplates'),
+      roleBindings: gs.findAll('projectRoleTemplateBinding'),
+    });
+  }
+});

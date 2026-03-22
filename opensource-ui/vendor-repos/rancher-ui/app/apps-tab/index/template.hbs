@@ -1,0 +1,43 @@
+{{#banner-message color="bg-warning"}}
+  <p>{{t 'banner.apps' htmlSafe=true}}</p>
+{{/banner-message}}
+
+{{#banner-message color="bg-info"}}
+  <p>{{t 'banner.longhorn' htmlSafe=true}}</p>
+{{/banner-message}}
+
+<section class="header">
+  <div class="pull-left">
+    <h1>{{t 'nav.apps.apps'}}</h1>
+  </div>
+
+  <div class="right-buttons">
+    {{#link-to "authenticated.project.project-catalogs" classNames="btn bg-primary mr-10 hide-when-embedded"}}<i
+        class="icon icon-gear icon-fw" />{{t 'nav.apps.manage'}}{{/link-to}}
+    {{#link-to "catalog-tab" classNames="btn bg-primary mr-10" disabled=(rbac-prevents resource="app" scope="project" permission="create")}}{{t 'nav.apps.launch'}}{{/link-to}}
+  </div>
+</section>
+
+<section class="pl-0 pr-0">
+  <div class="row mb-15">
+    {{search-text searchText=searchText}}
+  </div>
+
+  {{#each filteredApps as |group|}}
+    <div class="row flex">
+      {{#each group as |ns|}}
+        <div class="col span-6 mt-0">
+          {{namespace-app model=ns}}
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <div class="text-center text-muted">
+      {{#if searchText}}
+        {{t "nav.apps.noMatch"}}
+      {{else}}
+        {{t "nav.apps.noData"}}
+      {{/if}}
+    </div>
+  {{/each}}
+</section>

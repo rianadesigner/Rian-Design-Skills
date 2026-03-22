@@ -1,0 +1,19 @@
+{{#banner-message color="bg-warning"}}
+  <p>{{t 'banner.catalogs' htmlSafe=true}}</p>
+{{/banner-message}}
+
+<section class="header">
+  <h1>{{t 'catalogSettings.header'}}</h1>
+  <div class="right-buttons">
+    <button class="btn bg-primary" type="button" {{action "add" }}>
+      {{t 'catalogSettings.more.addActionLabel'}}
+    </button>
+  </div>
+
+
+</section>
+
+{{custom-catalog
+    catalogs=filtered
+    mode="cluster"
+}}
