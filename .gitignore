@@ -1,5 +1,0 @@
-.DS_Store
-.cursor/
-
-# Nested clones: track working tree only, not each repo's .git (avoids huge packs / duplicate history)
-**/.git/

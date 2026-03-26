@@ -1,0 +1,19 @@
+---
+description: 本仓库「All skills.md」设计技能库——在 UI/UX、视觉、设计系统、可用性、图标、Figma、设计点评、前端质感与动效等任务中自动启用路由，无需用户每次 @ 文件夹。
+alwaysApply: true
+---
+
+# 设计技能库（自动）
+
+本工作区的设计类 Agent Skills **根目录**为：`All skills.md/`（与根目录下的 `All skills.md/All skills.md` 路由表同级，内含 `1.*`～`22.*` 子包）。
+
+## 你必须遵守
+
+1. **先路由，再精读**：当用户问题涉及界面、设计、组件、动效、无障碍、设计稿还原、Figma、截图点评等时，**先阅读** `All skills.md/All skills.md`，按其中的「总览表 / 快速决策流程」选择 **最少必要** 的 `SKILL.md`。
+2. **不要一次性读完全部技能**：禁止在无差别情况下把 22 个子包的全部 `SKILL.md` 正文同时载入上下文；只读取与当前任务相关的若干文件。
+3. **路径**：所有技能路径相对于仓库根目录，形如 `All skills.md/14.ui-ux-design/SKILL.md`、`All skills.md/2.impeccable/.agents/skills/audit/SKILL.md`。
+4. **开源组件库**：若用户明确使用某 UI 框架且需对照源码，可额外查阅 `opensource-ui/vendor-repos/<库>/`（见路由表 § 七）。
+
+## 用户未 @ 任何文件时
+
+视为仍可使用本库：主动按任务从 `All skills.md/All skills.md` 路由到具体 `SKILL.md` 并执行，**无需**用户重复输入 `@All skills.md`。

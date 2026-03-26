@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "Vibma": {
+      "command": "node",
+      "args": [
+        "/Users/rian/Rian-s-Design-skills/Rian-s-Design-skills/figma/vibma/packages/core/dist/mcp.js",
+        "--edit"
+      ]
+    }
+  }
+}

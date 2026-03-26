@@ -1,0 +1,71 @@
+---
+description: Figma MCP 与本仓库结合时的设计系统约定（技能库 + 可选 Demo 工程 + Vibma）
+globs:
+  - "**/*.{tsx,jsx,vue,svelte,css}"
+  - "**/figma/**/*"
+---
+
+# Figma × MCP 集成规则（本仓库）
+
+本仓库**不是单一产品应用**，而是**设计技能库**为主，附带 **Figma/Vibma 桥**与少量 **Demo**。从 Figma 落代码时，先确认目标子项目再套用对应栈。
+
+## 1. Token 定义
+
+| 来源 | 路径 / 说明 |
+|------|-------------|
+| 文档与技能中的约定 | `All skills.md/` 各包 SKILL（如设计系统、UI 基线、Tailwind 相关） |
+| 本仓库内 Figma 侧 | `figma/vibma/`：MCP 与插件；变量/样式以 **Figma 文件内** 为准 |
+| 示例前端 Demo | `demo/dot/dotgrid-1080-demo/`：无集中 design tokens 文件，样式以组件内联 / 后续你可引入 Tailwind 为准 |
+
+**格式**：无统一 `tokens.json`；Figma 中建议使用 **Variables + Styles**，与 Vibma `variables` / `styles` / `lint` 工具对齐。
+
+## 2. 组件库
+
+- **无** monorepo 级 `src/components` 设计系统。
+- **可复用实现参考**：`All skills.md/` 内各技能与 `demo/*` 中的示例组件。
+- **Storybook**：当前未作为仓库默认结构；若新增，建议在具体 Demo 的 `package.json` 中声明。
+
+## 3. 框架与构建
+
+| 区域 | 技术栈 |
+|------|--------|
+| `demo/dot/dotgrid-1080-demo` | React 18 + Vite 6 |
+| `figma/vibma` | TypeScript，Node MCP + Figma 插件 |
+| 仓库主体 | Markdown / Cursor rules / 技能包 |
+
+**默认**：若用户未指定子项目，Figma 实现任务应**先问目标目录**或默认落在用户指定的应用仓库，而非随意写入技能库根目录。
+
+## 4. 资源
+
+- 静态资源：按子项目约定（Demo 可放 `public/`）。
+- 本库未定义统一 CDN；以各 Demo `vite.config` / 部署环境为准。
+
+## 5. 图标
+
+- 技能路由见 `All skills.md/All skills.md`（如 **better-icons** 等）。
+- 具体 Demo 未强制图标目录；优先使用项目已选图标方案（SVG 组件或图标库）。
+
+## 6. 样式方法
+
+- Demo：**无全局方法论强制**；新代码可优先 **CSS Modules 或 Tailwind**（与技能包 14/3 等一致时需对齐项目）。
+- 从 Figma 还原：**优先 token/变量绑定**，避免硬编码色值（与 Vibma `design_strategy` / `lint` 一致）。
+
+## 7. 项目结构
+
+```
+All skills.md/          # 1–23 号设计技能包（路由：All skills.md/All skills.md）
+.cursor/rules/          # Cursor 规则（含本文件）
+figma/vibma/            # Vibma 源码与文档（DRAGME 等）
+demo/                   # 独立示例应用（按子目录拆分）
+wibma-ds-toolkits/      # 可选：设计系统扫描工具包（若存在）
+```
+
+**特征组织**：按**技能包编号**与 **demo 子文件夹**，而非按业务 feature。
+
+---
+
+## MCP 工作流提示（给 Agent）
+
+1. **官方 Figma MCP**（`plugin-figma-figma`）：读设计、`get_design_context`、Code Connect、部分生成能力；需有效 Figma 链接与权限。
+2. **Vibma**（`project-0-Rian-s-Design-skills-Vibma`）：`connection` → `document` / `frames` / `components` / `variables` / `lint`；写入前确认插件与中继已连接。
+3. 实现代码时：**映射到目标项目的真实路径与栈**，不要假设存在根级 `src/app`。
