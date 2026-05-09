@@ -9,6 +9,25 @@ globs:
 
 本仓库**不是单一产品应用**，而是**设计技能库**为主，附带 **Figma/Vibma 桥**与少量 **Demo**。从 Figma 落代码时，先确认目标子项目再套用对应栈。
 
+## 0. Vibma：本地 Relay（必须先开）
+
+Vibma MCP（`npx @ufira/vibma`）**不会**自带 WebSocket 中继。若出现 **`Relay not reachable on port 3055. Start the relay first, then connect.`**，说明本机 **3055 上没有跑 tunnel**。
+
+**启动顺序（缺一不可）：**
+
+1. **终端 1 — 启动 Relay（保持运行）**
+   ```bash
+   cd figma/vibma && npm install && npm run socket
+   ```
+   成功时应看到类似：`Vibma tunnel running on http://127.0.0.1:3055`  
+   可选自检：`curl -s http://127.0.0.1:3055/channels`（有 HTTP 响应即 relay 在跑）。
+
+2. **Figma 桌面端**：打开设计文件 → 运行 **Vibma 插件** → 频道与 MCP 一致（默认 `vibma`）→ 端口选 **3055**（或与下面环境变量一致）→ 显示已连接。
+
+3. **Cursor**：再使用 Vibma 的 `connection` 工具或重载 MCP。
+
+**端口占用**：默认 **3055**。若改用 `3056`–`3058`，需同时设置 `VIBMA_PORT` 启动 relay，并在 Figma 插件里选同一端口；必要时在 Cursor 的 Vibma MCP 配置里为 `env` 设置相同的 `VIBMA_PORT`。详见 `figma/vibma/DRAGME.zh-CN.md`。
+
 ## 1. Token 定义
 
 | 来源 | 路径 / 说明 |
@@ -67,5 +86,5 @@ wibma-ds-toolkits/      # 可选：设计系统扫描工具包（若存在）
 ## MCP 工作流提示（给 Agent）
 
 1. **官方 Figma MCP**（`plugin-figma-figma`）：读设计、`get_design_context`、Code Connect、部分生成能力；需有效 Figma 链接与权限。
-2. **Vibma**（`project-0-Rian-s-Design-skills-Vibma`）：`connection` → `document` / `frames` / `components` / `variables` / `lint`；写入前确认插件与中继已连接。
+2. **Vibma**（`project-0-Rian-s-Design-skills-Vibma`）：**先** `npm run socket`（见上文 §0），再 `connection` → `document` / `frames` / `components` / `variables` / `lint`；写入前确认插件与中继已连接。
 3. 实现代码时：**映射到目标项目的真实路径与栈**，不要假设存在根级 `src/app`。

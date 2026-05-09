@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>知识库下拉 · 输入条</title>
+    <style>
+      :root {
+        --border: #e8eaef;
+        --border-strong: #dfe3ec;
+        --text: #1a1a1a;
+        --text-secondary: #8b9099;
+        --text-muted: #a8adb5;
+        --pill-bg: #ffffff;
+        --panel-bg: #ffffff;
+        --shadow: 0 4px 24px rgba(15, 23, 42, 0.08);
+        --radius-outer: 18px;
+        --radius-pill: 999px;
+        --font: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: var(--font);
+        background: #f0f2f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .composer {
+        width: 100%;
+        max-width: 560px;
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-outer);
+        padding: 14px 14px 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+      }
+
+      .composer__input-wrap {
+        min-height: 44px;
+        padding: 4px 4px 8px;
+      }
+      .composer__textarea {
+        width: 100%;
+        border: none;
+        outline: none;
+        resize: none;
+        font: inherit;
+        font-size: 15px;
+        line-height: 1.5;
+        color: var(--text);
+        background: transparent;
+        min-height: 24px;
+      }
+      .composer__textarea::placeholder {
+        color: var(--text-secondary);
+      }
+
+      .composer__toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .composer__left {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .icon-btn {
+        width: 28px;
+        height: 28px;
+        border: 1px solid var(--border-strong);
+        border-radius: 50%;
+        background: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--text-secondary);
+        padding: 0;
+      }
+      .icon-btn:hover {
+        background: #f8f9fb;
+        color: var(--text);
+      }
+      .icon-btn:focus-visible {
+        outline: 2px solid #5057f6;
+        outline-offset: 2px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: 28px;
+        padding: 0 10px;
+        border: 1px solid var(--border-strong);
+        border-radius: var(--radius-pill);
+        background: var(--pill-bg);
+        font-size: 13px;
+        color: var(--text);
+        white-space: nowrap;
+      }
+      .pill svg {
+        flex-shrink: 0;
+        opacity: 0.85;
+      }
+
+      .kb-trigger {
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+      }
+      .kb-trigger:hover {
+        background: #fafbfc;
+      }
+      .kb-trigger[aria-expanded="true"] {
+        border-color: #c5cad4;
+        background: #fafbfc;
+      }
+      .kb-trigger__chev {
+        opacity: 0.55;
+        margin-left: 2px;
+      }
+
+      .kb-panel {
+        position: absolute;
+        left: 0;
+        bottom: calc(100% + 8px);
+        min-width: 240px;
+        max-width: min(320px, 92vw);
+        background: var(--panel-bg);
+        border: 1px solid var(--border-strong);
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        padding: 6px 0;
+        z-index: 20;
+        display: none;
+      }
+      .kb-panel.is-open {
+        display: block;
+      }
+      .kb-panel__title {
+        padding: 8px 12px 4px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+      .kb-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        font-size: 14px;
+        color: var(--text);
+        cursor: pointer;
+      }
+      .kb-option:hover {
+        background: #f5f6f8;
+      }
+      .kb-option input {
+        width: 16px;
+        height: 16px;
+        accent-color: #5057f6;
+      }
+
+      .send-btn {
+        width: 36px;
+        height: 36px;
+        border: none;
+        border-radius: 50%;
+        background: #d8dce3;
+        color: #fff;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: not-allowed;
+        flex-shrink: 0;
+      }
+      .send-btn.is-active {
+        background: #5057f6;
+        cursor: pointer;
+      }
+      .send-btn.is-active:hover {
+        background: #3f46d6;
+      }
+
+      .hint {
+        margin-top: 16px;
+        font-size: 12px;
+        color: var(--text-muted);
+        text-align: center;
+        max-width: 560px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div
+        class="composer"
+        role="region"
+        aria-label="对话输入"
+        id="composer"
+      >
+        <div class="composer__input-wrap">
+          <textarea
+            class="composer__textarea"
+            rows="1"
+            placeholder="基于当前知识库提问"
+            aria-label="问题输入"
+            id="q"
+          ></textarea>
+        </div>
+        <div class="composer__toolbar">
+          <div class="composer__left">
+            <button type="button" class="icon-btn" aria-label="添加附件" title="添加">
+              <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                <path
+                  d="M6 1v10M1 6h10"
+                  stroke="currentColor"
+                  stroke-width="1.4"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </button>
+
+            <div class="pill" aria-hidden="true">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M12 3l1.5 3.5L17 8l-3.5 1.5L12 13l-1.5-3.5L7 8l3.5-1.5L12 3z"
+                  fill="currentColor"
+                  opacity="0.75"
+                />
+                <path
+                  d="M19 14l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8.8-2z"
+                  fill="currentColor"
+                  opacity="0.45"
+                />
+              </svg>
+              <span>自动模式</span>
+            </div>
+
+            <div class="kb-trigger pill" id="kbTrigger" role="button" tabindex="0" aria-haspopup="listbox" aria-expanded="false" aria-controls="kbPanel">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path
+                  d="M4 19.5A2.5 2.5 0 016.5 17H20"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linejoin="round"
+                />
+                <path d="M8 7h8M8 11h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+              <span id="kbLabel">1个知识库</span>
+              <svg class="kb-trigger__chev" width="10" height="10" viewBox="0 0 12 12" aria-hidden="true">
+                <path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+
+              <div class="kb-panel" id="kbPanel" role="listbox" aria-multiselectable="true" aria-label="选择知识库">
+                <div class="kb-panel__title">知识库</div>
+                <label class="kb-option">
+                  <input type="checkbox" name="kb" value="产品文档" checked data-kb />
+                  <span>产品文档</span>
+                </label>
+                <label class="kb-option">
+                  <input type="checkbox" name="kb" value="设计规范" data-kb />
+                  <span>设计规范</span>
+                </label>
+                <label class="kb-option">
+                  <input type="checkbox" name="kb" value="客服 FAQ" data-kb />
+                  <span>客服 FAQ</span>
+                </label>
+                <label class="kb-option">
+                  <input type="checkbox" name="kb" value="内部 Wiki" data-kb />
+                  <span>内部 Wiki</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <button type="button" class="send-btn" id="sendBtn" disabled aria-label="发送" title="输入内容后发送">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M12 19V5M12 5l-6 6M12 5l6 6"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+      <p class="hint">点击「知识库」展开多选；已选数量会显示在胶囊上。点击外侧或按 Esc 关闭。</p>
+    </div>
+
+    <script>
+      (function () {
+        const trigger = document.getElementById("kbTrigger");
+        const panel = document.getElementById("kbPanel");
+        const label = document.getElementById("kbLabel");
+        const boxes = () => Array.from(document.querySelectorAll("[data-kb]"));
+        const textarea = document.getElementById("q");
+        const sendBtn = document.getElementById("sendBtn");
+
+        function countSelected() {
+          return boxes().filter((c) => c.checked).length;
+        }
+
+        function updateLabel() {
+          const n = countSelected();
+          label.textContent = n === 0 ? "未选知识库" : n + "个知识库";
+        }
+
+        function setOpen(open) {
+          panel.classList.toggle("is-open", open);
+          trigger.setAttribute("aria-expanded", open ? "true" : "false");
+        }
+
+        function toggle() {
+          setOpen(!panel.classList.contains("is-open"));
+        }
+
+        trigger.addEventListener("click", function (e) {
+          if (e.target.closest(".kb-panel")) return;
+          e.stopPropagation();
+          toggle();
+        });
+        trigger.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggle();
+          }
+          if (e.key === "Escape") setOpen(false);
+        });
+
+        boxes().forEach(function (cb) {
+          cb.addEventListener("change", function () {
+            updateLabel();
+          });
+        });
+
+        document.addEventListener("click", function () {
+          setOpen(false);
+        });
+        panel.addEventListener("click", function (e) {
+          e.stopPropagation();
+        });
+
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") setOpen(false);
+        });
+
+        updateLabel();
+
+        textarea.addEventListener("input", function () {
+          const has = textarea.value.trim().length > 0;
+          sendBtn.disabled = !has;
+          sendBtn.classList.toggle("is-active", has);
+          sendBtn.style.cursor = has ? "pointer" : "not-allowed";
+        });
+      })();
+    </script>
+  </body>
+</html>

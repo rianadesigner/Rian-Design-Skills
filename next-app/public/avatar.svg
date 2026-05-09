@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="152" height="152" viewBox="0 0 152 152" fill="none">
+  <circle cx="76" cy="76" r="76" fill="url(#g)"/>
+  <text x="76" y="92" text-anchor="middle" font-family="ui-sans-serif, system-ui, sans-serif" font-size="48" font-weight="600" fill="#5a5652">R</text>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="152" y2="152" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fdfbf9"/>
+      <stop offset="1" stop-color="#ebe7e1"/>
+    </linearGradient>
+  </defs>
+</svg>

@@ -1,10 +1,23 @@
 {
   "mcpServers": {
+    "figma": {
+      "type": "http",
+      "url": "https://mcp.figma.com/mcp"
+    },
     "Vibma": {
-      "command": "node",
+      "command": "/bin/bash",
       "args": [
-        "/Users/rian/Rian-s-Design-skills/Rian-s-Design-skills/figma/vibma/packages/core/dist/mcp.js",
-        "--edit"
+        "-c",
+        "export VIBMA_PORT=${VIBMA_PORT:-3055}; export PATH=\"/opt/homebrew/bin:/usr/local/bin:${HOME}/.local/bin:${PATH}\"; [ -f \"${HOME}/.nvm/nvm.sh\" ] && . \"${HOME}/.nvm/nvm.sh\"; command -v fnm >/dev/null 2>&1 && eval \"$(fnm env)\"; L=\"${TMPDIR:-/tmp}/vibma-relay.log\"; NEED=1; if command -v nc >/dev/null 2>&1 && nc -z 127.0.0.1 ${VIBMA_PORT} 2>/dev/null; then NEED=0; elif lsof -nP -iTCP:${VIBMA_PORT} -sTCP:LISTEN 2>/dev/null | grep -q .; then NEED=0; fi; if [ \"$NEED\" -eq 1 ]; then echo \"Vibma: 正在启动 WebSocket relay (127.0.0.1:${VIBMA_PORT})…\" >&2; (export VIBMA_PORT; nohup npx -y @ufira/vibma-tunnel@latest </dev/null >>\"$L\" 2>&1 &); n=0; while [ \"$n\" -lt 100 ]; do if command -v nc >/dev/null 2>&1 && nc -z 127.0.0.1 ${VIBMA_PORT} 2>/dev/null; then echo \"Vibma: relay 已就绪（${VIBMA_PORT}，日志: $L）\" >&2; break; fi; sleep 0.1; n=$((n+1)); done; else echo \"Vibma: relay 已在 ${VIBMA_PORT} 运行\" >&2; fi; exec npx -y @ufira/vibma@latest --edit"
+      ],
+      "env": {
+        "VIBMA_PORT": "3055"
+      }
+    },
+    "marquex-mcp": {
+      "command": "/bin/bash",
+      "args": [
+        ".cursor/scripts/run-marquex-mcp-for-cursor.sh"
       ]
     }
   }

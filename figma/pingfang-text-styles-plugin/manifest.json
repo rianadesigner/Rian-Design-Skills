@@ -1,0 +1,8 @@
+{
+  "name": "PingFang — 批量文字样式",
+  "id": "9012345678901234567",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page"
+}
