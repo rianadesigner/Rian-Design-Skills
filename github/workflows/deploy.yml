@@ -1,9 +1,9 @@
-name: Deploy Next.js to ECS
+name: Deploy Next.js Static to ECS
 
 on:
   push:
     branches:
-      - main  # 请确认您的主分支名称是 main 还是 master，如有不同请修改此处
+      - main  # ⚠️ 注意：如果您的主分支是 master，请改为 master
 
 jobs:
   deploy:
@@ -16,16 +16,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # 根据您的项目需求调整版本
+          node-version: '18'
 
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build Next.js
+      - name: Build Next.js (Static Export)
         run: npm run build
-        env:
-          # 如果您的构建过程需要环境变量，请在此处添加
-          # NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+        # 确保您的 package.json 中 build 命令包含 next export 或 output: 'export'
 
       - name: Deploy to ECS via SSH
         uses: easingthemes/ssh-deploy@v4
@@ -34,13 +32,16 @@ jobs:
           REMOTE_HOST: ${{ secrets.SSH_HOST }}
           REMOTE_USER: ${{ secrets.SSH_USER }}
           REMOTE_PORT: ${{ secrets.SSH_PORT }}
-          SOURCE: ".next/" # 或者 "out/" 如果您是静态导出
-          TARGET: "/root/code/Rian-Design-Skills/next-app/.next/" # 服务器上的目标路径
-          # 如果是静态导出 (npm run export)，请将 SOURCE 改为 "out/"，TARGET 改为 ".../out/"
-          # 下面这行命令用于重启 serve 进程以应用更改（如果是静态文件通常不需要，但为了保险起见）
+          
+          # ✅ 关键配置：同步 out 目录
+          SOURCE: "out/"
+          TARGET: "/root/code/Rian-Design-Skills/next-app/out/"
+          
+          # 部署后清理旧文件（避免删除旧页面导致残留）
+          ARGS: "-az --delete"
+          
           SCRIPT_AFTER: |
-            cd /root/code/Rian-Design-Skills/next-app
-            # 如果是 SSR 模式，可能需要重启进程。如果是纯静态 out 目录，serve 会自动检测文件变化
-            # 这里我们强制刷新一下文件权限
-            chown -R root:root .next
-            echo "Deployment finished at $(date)"
+            echo "✅ Deployment successful at $(date)"
+            # 静态文件更新后，serve 通常会自动检测到变化，无需重启
+            # 但为了保险，我们可以检查一下进程状态
+            pgrep -f "serve out" || echo "⚠️ Warning: serve process not found!"
