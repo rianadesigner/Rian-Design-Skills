@@ -20,10 +20,11 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
+        working-directory: next-app
 
       - name: Build Next.js (Static Export)
         run: npm run build
-        # 确保您的 package.json 中 build 命令包含 next export 或 output: 'export'
+        working-directory: next-app
 
       - name: Deploy to ECS via SSH
         uses: easingthemes/ssh-deploy@v4
@@ -34,7 +35,7 @@ jobs:
           REMOTE_PORT: ${{ secrets.SSH_PORT }}
           
           # ✅ 关键配置：同步 out 目录
-          SOURCE: "out/"
+          SOURCE: "next-app/out/"
           TARGET: "/root/code/Rian-Design-Skills/next-app/out/"
           
           # 部署后清理旧文件（避免删除旧页面导致残留）
