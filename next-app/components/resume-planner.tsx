@@ -16,7 +16,7 @@ const iconFigma         = "/icons/figma.png"
 const iconAiSearch      = "/icons/ai-search.png"
 const iconAiAgent       = "/icons/ai-agent.png"
 const iconAiCoding      = "/icons/ai-coding.png"
-const iconAiDesign      = "/icons/ai-design.png"
+const iconDesignSkill   = "/icons/design-skill.png"
 const iconAiVideo       = "/icons/ai-video.png"
 
 // 翻页动画总时长（含落定回弹）
@@ -31,13 +31,13 @@ const HOVER_CURL = 0.82
 type SkillDockItem = { label: string; src: string }
 
 const skillDockItems: SkillDockItem[] = [
-  { label: "Figma",       src: iconFigma },
-  { label: "AI Search",   src: iconAiSearch },
-  { label: "AI Workflow", src: iconAiWorkflow },
-  { label: "AI Agent",    src: iconAiAgent  },
-  { label: "AI Coding",   src: iconAiCoding },
-  { label: "AI Design",   src: iconAiDesign },
-  { label: "AI Video",    src: iconAiVideo  },
+  { label: "Vibe Coding",  src: iconAiCoding },
+  { label: "Vibe Design",  src: iconFigma },
+  { label: "Design Skill", src: iconDesignSkill },
+  { label: "AI Search",    src: iconAiSearch },
+  { label: "AI Agent",     src: iconAiAgent  },
+  { label: "AI Workflow",  src: iconAiWorkflow },
+  { label: "AI Video",     src: iconAiVideo  },
 ]
 
 /** Highlights 卡片：与 Figma 65:478 顺序与文案一致；截图为导出资源 */
@@ -65,7 +65,7 @@ const highlightCards: readonly HighlightCardData[] = [
     outerRadius: "rounded-[8px]",
     frameRadius: "rounded-lg",
     frameTint:   "mist",
-    imgClassName: "absolute left-0 top-[-22%] h-[96%] w-full max-w-none min-w-full object-cover",
+    imgClassName: "absolute left-0 top-[-21.85%] h-[95.23%] w-full max-w-none object-cover",
   },
   {
     title:       "iFlow APP Builder",
@@ -75,7 +75,7 @@ const highlightCards: readonly HighlightCardData[] = [
     outerRadius: "rounded-[8px]",
     frameRadius: "rounded",
     frameTint:   "white",
-    imgClassName: "absolute left-0 top-[2%] h-[70%] w-full max-w-none object-cover object-top",
+    imgClassName: "absolute left-0 top-[1.64%] h-[66.14%] w-full max-w-none object-cover object-top",
   },
   {
     title:       "iFlow Agentic AI",
@@ -85,7 +85,7 @@ const highlightCards: readonly HighlightCardData[] = [
     outerRadius: "rounded-[8px]",
     frameRadius: "rounded",
     frameTint:   "mist",
-    imgClassName: "absolute left-0 top-[0.2%] h-[89%] w-full max-w-none object-cover",
+    imgClassName: "absolute left-0 top-[0.19%] h-[88.54%] w-full max-w-none object-cover",
   },
   {
     title:       "iFlow CLI",
@@ -95,7 +95,7 @@ const highlightCards: readonly HighlightCardData[] = [
     outerRadius: "rounded-[4px]",
     frameRadius: "rounded",
     frameTint:   "mist",
-    imgClassName: "absolute left-0 top-[-8%] h-[144%] w-full max-w-none object-cover object-top",
+    imgClassName: "absolute left-0 top-[-7.52%] h-[142.43%] w-full max-w-none object-cover object-top",
   },
   {
     title:       "iFlow AI搜索",
@@ -105,7 +105,7 @@ const highlightCards: readonly HighlightCardData[] = [
     outerRadius: "rounded-[8px]",
     frameRadius: "rounded",
     frameTint:   "mist",
-    imgClassName: "absolute left-0 top-[0.3%] h-[89%] w-full max-w-none object-cover",
+    imgClassName: "absolute left-0 top-[0.31%] h-[88.54%] w-full max-w-none object-cover",
   },
   {
     title:       "AI应用开发",
@@ -115,7 +115,7 @@ const highlightCards: readonly HighlightCardData[] = [
     outerRadius: "rounded-[8px]",
     frameRadius: "rounded",
     frameTint:   "mist",
-    imgClassName: "absolute left-0 top-0 h-[90%] w-full max-w-none object-cover",
+    imgClassName: "absolute left-0 top-0 h-[89.95%] w-full max-w-none object-cover",
   },
   {
     title:       "商家创意平台",
@@ -125,7 +125,7 @@ const highlightCards: readonly HighlightCardData[] = [
     outerRadius: "rounded-[8px]",
     frameRadius: "rounded",
     frameTint:   "mist",
-    imgClassName: "absolute left-0 top-[0.35%] h-[80%] w-full max-w-none object-cover",
+    imgClassName: "absolute left-0 top-[0.35%] h-[79.5%] w-full max-w-none object-cover",
   },
   {
     title:       "广告外投",
@@ -135,7 +135,7 @@ const highlightCards: readonly HighlightCardData[] = [
     outerRadius: "rounded-[8px]",
     frameRadius: "rounded",
     frameTint:   "mist",
-    imgClassName: "absolute left-0 top-0 h-[81%] w-full max-w-none object-cover",
+    imgClassName: "absolute left-0 top-[-0.05%] h-[80.43%] w-full max-w-none object-cover",
   },
 ] as const
 
@@ -151,7 +151,7 @@ const careerEntries: CareerEntry[] = [
     title:  "淘天集团 · 高级体验设计师",
     body: {
       type: "text",
-      text: "0-1打造iFlow全产品线，统筹 5 条核心产品线与体验链路，覆盖通用/学术/coding/Builder 4 个关键场景，核心指标包括DAU 10w+, 次留60%+。核心贡献包括：多 Agent 能力编排、iFlow CLI（UNIX 美学范式）、本地/云端/项目知识库一体化建设、设计并持续优化 Design Skill、显著提升 APP Builder 视觉质量与整体Vibe Design对个人及团队管理提效。",
+      text: "0-1打造iFlow全产品线，统筹 5 条核心产品线&体验链路，覆盖通用/学术/coding/Builder 4 个关键场景，核心指标包括DAU 10w+, 次留60%+。核心贡献包括：多 Agent 能力编排、iFlow CLI（UNIX 美学范式）、本地/云端/项目知识库一体化建设、设计并持续优化 Design Skill、显著提升 APP Builder 视觉质量与整体Vibe Design对个人及团队管理提效。",
     },
   },
   {
@@ -223,6 +223,20 @@ export function ResumePlanner() {
   const curlSize   = useTransform(pageCurl, [0, 1], [0, CURL_MAX_PX])
   const brCurlSize = useTransform([curlSize, curlDir], ([s, d]) => (d === 1 ? s : 0)) as MotionValue<number>
   const blCurlSize = useTransform([curlSize, curlDir], ([s, d]) => (d === -1 ? s : 0)) as MotionValue<number>
+  /**
+   * 翻页时 3D 透视缩短会露出 Layer0 右页内容（Skill Dock 等"页脚"）。
+   * rotateY 0→-85°：右页内容 opacity=0（card 正面朝向观众，Layer0 右页内容不可见）
+   * rotateY -85→-90°：渐变至 1（近立边时过渡，肉眼不可察觉）
+   * rotateY ≤-90°：opacity=1（card 已翻到左侧，右页作为真实右页正常展示）
+   */
+  const layer0RightOpacity = useTransform(rotateY, [-90, -85], [1, 0])
+  /**
+   * 对称修复左页：card 背面落下时（-90°→-180°）因透视缩短会露出 Layer0 左页内容。
+   * rotateY ≥-90°：左页 opacity=1（card 在右侧或立边，左页正常显示）
+   * rotateY -90→-95°：渐变至 0（背面刚露出，近立边时过渡不可察觉）
+   * rotateY ≤-95°：opacity=0（card 背面覆盖左侧，隐藏左页内容，背景色 div 保持纸张色）
+   */
+  const layer0LeftOpacity = useTransform(rotateY, [-90, -95], [1, 0])
   /** 切掉被卷起的页角，避免出现「直角底层 + 卷边」双层一角 */
   const clipPathFront = useTransform(brCurlSize, (s) =>
     s < 1
@@ -239,6 +253,22 @@ export function ResumePlanner() {
     const update = () => {
       const w = wrapperRef.current?.clientWidth ?? 1000
       setScale(Math.min(1, w / 1000))
+    }
+    update()
+    window.addEventListener("resize", update)
+    return () => window.removeEventListener("resize", update)
+  }, [])
+
+  // ── 移动端单页轮播 ────────────────────────────────────────────────────────────
+  const [mobilePage, setMobilePage]   = useState(0)
+  const mobileRef                     = useRef<HTMLDivElement>(null)
+  const [mobileScale, setMobileScale] = useState(1)
+  const swipeStart                    = useRef(0)
+
+  useEffect(() => {
+    const update = () => {
+      const w = mobileRef.current?.clientWidth ?? 500
+      setMobileScale(w / 500)
     }
     update()
     window.addEventListener("resize", update)
@@ -308,7 +338,191 @@ export function ResumePlanner() {
 
   return (
     <main className="min-h-screen overflow-x-auto bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.94),_rgba(240,237,232,0.92)_50%,_rgba(227,222,216,0.96))] px-6 py-10 text-[#171717] sm:px-10">
-      <div ref={wrapperRef} className="mx-auto w-full max-w-[1000px]">
+
+      {/* ── 移动端单页轮播（< sm） ──────────────────────────────────────────── */}
+      <div className="sm:hidden" ref={mobileRef}>
+        {/* 滑动区域：一次只展示一页 500×700，按 mobileScale 缩放至屏宽 */}
+        <div
+          className="relative w-full overflow-hidden select-none"
+          style={{ height: `${700 * mobileScale}px` }}
+          onTouchStart={(e) => { swipeStart.current = e.touches[0].clientX }}
+          onTouchEnd={(e) => {
+            const dx = e.changedTouches[0].clientX - swipeStart.current
+            if (Math.abs(dx) > 40)
+              setMobilePage((p) => dx < 0 ? Math.min(3, p + 1) : Math.max(0, p - 1))
+          }}
+        >
+          {/* 4 页横向排列，translateX 切换当前页 */}
+          <div
+            className="absolute top-0 left-0 flex h-[700px]"
+            style={{
+              width: `${4 * 500}px`,
+              transformOrigin: "top left",
+              transform: `scale(${mobileScale}) translateX(${-mobilePage * 500}px)`,
+              transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+          >
+            {/* ── Page 1: Profile ─────────────────────────────────────────── */}
+            <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_L }}>
+              <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+                <span className={cn(bodyFont, "text-[12px] leading-5")}>2022-2026</span>
+                <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+                <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>1/4</span>
+              </div>
+              <div className="absolute left-[56px] top-[110px] flex w-[388px] flex-col items-center gap-6">
+                <div className="flex flex-col items-center gap-4">
+                  <img alt="Rian avatar" src={avatarSrc} onError={() => setAvatarSrc(AVATAR_FALLBACK)} className="h-[76px] w-[76px] rounded-full object-cover object-[center_12%]" />
+                  <div className={cn(ballet.className, "text-[24px] leading-[32.56px] tracking-[0.02em] text-[#171717]")}>Rian</div>
+                </div>
+                <h1 className={cn(bodyFont, "w-full text-center text-[14px] font-semibold leading-[22px] text-[#5a5652]")}>AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放</h1>
+                <div className={cn(bodyFont, "w-full text-justify text-[12px] leading-[22px] tracking-[-0.04em] text-[#5a5652]")}>
+                  <p>同济&米兰理工大学双学位硕士，阿里工作四年多，0-1 负责多款AI原生产品</p>
+                  <p>视野前瞻，经验驱动：负责应用搭建/智能体/AI搜/知识库/Vibe Design 落地</p>
+                  <p>独当一面，长期支持：支持阿里妈妈创意中心/万相营造商家AI创意平台设计</p>
+                  <p>拓展视野，熟悉业务：围绕广告大外投推动需求/平台/供给侧多端平台基建</p>
+                </div>
+                <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>
+                  <div className="flex w-full items-center">
+                    <div className="flex flex-1 items-center"><span className="w-12 text-[#a39e99]">电话</span><span className="whitespace-nowrap text-[#ba6d73]">18578323924</span></div>
+                    <div className="flex flex-1 items-center gap-1.5"><span className="w-[30px] text-[#a39e99]">邮箱</span><span className="whitespace-nowrap text-[#ba6d73]">rianadesigner@gmail.com</span></div>
+                  </div>
+                  <div className="flex w-full items-center">
+                    <div className="flex flex-1 items-center"><span className="w-12 text-[#a39e99]">工作地</span><span className="whitespace-nowrap text-[#ba6d73]">杭州/上海</span></div>
+                    <div className="flex flex-1 items-center gap-1.5"><span className="w-[30px] text-[#a39e99]">微信</span><span className="whitespace-nowrap text-[#ba6d73]">rianadesigner</span></div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute left-[56px] top-[610px] flex w-[388px] min-w-0 flex-col gap-3">
+                <TagRow labels={topTags} />
+                <TagRow labels={bottomTags} />
+              </div>
+            </div>
+
+            {/* ── Page 2: Highlights ──────────────────────────────────────── */}
+            <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_R }}>
+              <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
+                <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
+              </div>
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-6" style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
+              <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1">
+                <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]" />
+                <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]/50" />
+              </div>
+              <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+                <span className={cn(bodyFont, "text-[12px] leading-5")}>Highlights</span>
+                <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+                <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>2/4</span>
+              </div>
+              <div className="absolute left-[56px] top-[76px] flex flex-wrap items-baseline gap-x-3">
+                <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Highlights</h2>
+                <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>AI 核心工作项目</p>
+              </div>
+              <div className="absolute left-[56px] top-[111px] w-[388px]">
+                <div className="grid w-[388px] grid-cols-2 gap-2">
+                  {highlightCards.map((card) => (
+                    <article key={card.title} className={cn(bodyFont, "relative h-[134px] w-[190px] shrink-0 overflow-hidden border border-[rgba(23,23,23,0.08)]", card.outerRadius)} style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}>
+                      <h3 className="absolute left-[9px] top-[7px] pr-12 text-[12px] font-semibold leading-5 tracking-[-0.02em] text-[#171717]">{card.title}</h3>
+                      <p className="absolute left-[9px] top-[31px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">{card.description}</p>
+                      <span className="absolute right-[9px] top-[8px] text-right text-[10px] leading-[18px] text-[#ba6d73]">{card.period}</span>
+                      <div className={cn("absolute left-[9px] top-[52px] h-[120px] w-[170px] overflow-hidden border-[0.5px] border-[#f2f3f5]", card.frameRadius)}>
+                        <div aria-hidden className={cn("pointer-events-none absolute inset-0", card.frameRadius, card.frameTint === "white" ? "bg-white" : "bg-[rgba(255,255,255,0.5)]")} />
+                        <div className={cn("absolute inset-0 overflow-hidden", card.frameRadius)}>
+                          <img alt="" src={card.image} width={340} height={240} draggable={false} className={cn(card.imgClassName)} />
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* ── Page 3: Career ──────────────────────────────────────────── */}
+            <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_L }}>
+              <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+                <span className={cn(bodyFont, "text-[12px] leading-5")}>Career</span>
+                <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+                <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>3/4</span>
+              </div>
+              <div className="absolute left-[56px] top-[76px] w-[388px]">
+                <div className="mb-4 flex items-baseline gap-x-2">
+                  <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Career</h2>
+                  <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>从学习到实习到正式工作的设计生涯</p>
+                </div>
+                <CareerList entries={workEntries} />
+              </div>
+            </div>
+
+            {/* ── Page 4: Education / Skills ──────────────────────────────── */}
+            <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_R }}>
+              <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
+                <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
+              </div>
+              <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1">
+                <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]" />
+                <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]/50" />
+              </div>
+              <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+                <span className={cn(bodyFont, "text-[12px] leading-5")}>Education/Skills</span>
+                <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+                <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>4/4</span>
+              </div>
+              <div className="absolute left-[56px] top-[76px] flex w-[388px] flex-col gap-6">
+                <div>
+                  <div className="mb-4 flex items-baseline gap-x-2">
+                    <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Education</h2>
+                    <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>双学位硕士/设计/机械</p>
+                  </div>
+                  <CareerList entries={eduEntries} />
+                </div>
+                <div className="flex flex-col gap-4">
+                  <div className="relative h-[26px] w-full">
+                    <h2 className={cn(bodyFont, "absolute left-0 top-0 text-[18px] font-semibold leading-[26px] text-[#171717]")}>Skills</h2>
+                    <p className={cn(bodyFont, "absolute left-[54px] top-[6px] text-[10px] leading-[18px] text-[#a39e99]")}>Vibe Coding/Design</p>
+                  </div>
+                  <div className="flex w-full items-center justify-between overflow-hidden rounded-[12px] border border-[rgba(23,23,23,0.08)] px-[4px]">
+                    {skillDockItems.map((item, idx) => (
+                      <div key={item.label} className={cn("flex flex-col items-center gap-2 overflow-hidden pb-[8px] pt-[12px] px-[18px] shrink-0 w-[55px]", idx < skillDockItems.length - 1 && "-mr-px")}>
+                        <div className="relative shrink-0 size-[12px]">
+                          <img alt="" src={item.src} className="absolute inset-0 block size-full object-contain" draggable={false} />
+                        </div>
+                        <span className="whitespace-nowrap text-center text-[8px] leading-[16px] text-[#171717]" style={{ fontFamily: "'PingFang SC', 'SF Pro Text', -apple-system, sans-serif" }}>{item.label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 页码导航 */}
+        <div className="flex items-center justify-center gap-2 pt-5">
+          <button
+            onClick={() => setMobilePage((p) => Math.max(0, p - 1))}
+            disabled={mobilePage === 0}
+            className={cn(
+              "flex size-9 items-center justify-center rounded-full text-xl transition-colors",
+              mobilePage === 0 ? "cursor-not-allowed text-[rgba(186,109,115,0.3)]" : "text-[#ba6d73] hover:bg-[rgba(241,186,186,0.15)]",
+            )}
+          >‹</button>
+          {[0, 1, 2, 3].map((i) => (
+            <button key={i} onClick={() => setMobilePage(i)} className="flex size-6 items-center justify-center" aria-label={`Page ${i + 1}`}>
+              <span className={cn("block rounded-full transition-all duration-200", mobilePage === i ? "size-[7px] bg-[#ba6d73]" : "size-[5px] bg-[rgba(186,109,115,0.3)]")} />
+            </button>
+          ))}
+          <button
+            onClick={() => setMobilePage((p) => Math.min(3, p + 1))}
+            disabled={mobilePage === 3}
+            className={cn(
+              "flex size-9 items-center justify-center rounded-full text-xl transition-colors",
+              mobilePage === 3 ? "cursor-not-allowed text-[rgba(186,109,115,0.3)]" : "text-[#ba6d73] hover:bg-[rgba(241,186,186,0.15)]",
+            )}
+          >›</button>
+        </div>
+      </div>
+
+      {/* ── 桌面端双页展开（≥ sm） ────────────────────────────────────────────── */}
+      <div ref={wrapperRef} className="hidden sm:block mx-auto w-full max-w-[1000px]">
         <div className="relative" style={{ height: `${700 * scale}px` }}>
           <div
             className="absolute left-0 top-0 h-[700px] w-[1000px] origin-top-left"
@@ -325,19 +539,19 @@ export function ResumePlanner() {
                 style={{ background: GRAD_L }}
               />
 
-              {/* 右页底色（Education 页常驻在此，被 flip 遮住） */}
-              <motion.div
+              {/* 右页底色：底层始终铺满纸张色，避免 clipPath 掏空后透出下层 fake「页脚」 */}
+              <div
                 className="absolute inset-y-0 right-0 w-[500px] rounded-br-[12px] rounded-tr-[12px]"
-                style={{ background: GRAD_R, clipPath: clipPathFront }}
+                style={{ background: GRAD_R }}
               />
 
               {/* ── Layer 0：Profile 页（左半，永远在底部） ──────────────── */}
-              <div className="absolute inset-y-0 left-0 w-[500px] overflow-hidden">
+              <motion.div className="absolute inset-y-0 left-0 w-[500px] overflow-hidden" style={{ opacity: layer0LeftOpacity }}>
                 {/* 页眉 */}
                 <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-                  <span className={cn(bodyFont, "text-[12px] leading-5")}>Guo Ruixuan</span>
+                  <span className={cn(bodyFont, "text-[12px] leading-5")}>2022-2026</span>
                   <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-                  <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>2022-2026</span>
+                  <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>1/4</span>
                 </div>
 
                 {/* 主体内容 */}
@@ -390,20 +604,20 @@ export function ResumePlanner() {
                 </div>
 
                 {/* 底部标签（两行；标签内文字单行不换行） */}
-                <div className="absolute left-[56px] top-[602px] flex w-[388px] min-w-0 flex-col gap-3">
+                <div className="absolute left-[56px] top-[610px] flex w-[388px] min-w-0 flex-col gap-3">
                   <TagRow labels={topTags} />
                   <TagRow labels={bottomTags} />
                 </div>
-              </div>
+              </motion.div>
 
               {/* ── Layer 0：Education+Skills 页（右半，永远在底部） ──────── */}
               <motion.div
-                className="absolute inset-y-0 right-0 w-[500px] overflow-hidden"
-                style={{ clipPath: clipPathFront }}
+                className="absolute inset-y-0 right-0 w-[500px] overflow-hidden bg-transparent"
+                style={{ clipPath: clipPathFront, opacity: layer0RightOpacity }}
               >
                 {/* 水印 */}
                 <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
-                  <div className="-rotate-6 size-[400px]">
+                  <div className="-rotate-[5deg] size-[400px]">
                     <PlannerBotanicalWatermark />
                   </div>
                 </div>
@@ -413,44 +627,52 @@ export function ResumePlanner() {
                   <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]/50" />
                 </div>
 
-                {/* 内容 */}
-                <div className="absolute left-[56px] top-[28px] flex items-center gap-[6px]">
-                  <span className={cn(bodyFont, "text-[12px] font-medium leading-5 text-[#ba6d73]")}>Career · Education</span>
-                  <div className="h-px w-4 bg-[rgba(241,186,186,0.4)]" />
-                  <span className={cn(bodyFont, "text-[10px] leading-[18px] text-[#ba6d73]/45")}>4 / 4</span>
+                {/* 页眉：页面名称 + 页码 */}
+                <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+                  <span className={cn(bodyFont, "text-[12px] leading-5")}>Education/Skills</span>
+                  <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+                  <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>4/4</span>
                 </div>
 
-                <div className="absolute left-[56px] right-[56px] top-[60px]">
+                <div className="absolute left-[56px] top-[76px] flex w-[388px] flex-col gap-6">
                   {/* Education 时间轴 */}
-                  <div className="mb-[10px] flex items-baseline gap-x-2">
-                    <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Education</h2>
-                    <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>双学位 · 工程 · 设计</p>
+                  <div>
+                    <div className="mb-4 flex items-baseline gap-x-2">
+                      <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Education</h2>
+                      <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>双学位硕士/设计/机械</p>
+                    </div>
+                    <CareerList entries={eduEntries} />
                   </div>
-                  <CareerList entries={eduEntries} />
 
-                  {/* Skill Dock — 对齐 Figma 65:256 */}
-                  <div className="mt-6 flex h-[44px] w-full items-stretch overflow-hidden rounded-[12px] border border-[rgba(23,23,23,0.08)] bg-[rgba(255,255,255,0.45)]">
-                    {skillDockItems.map((item, i) => (
-                      <div key={item.label} className="relative flex flex-1 flex-col items-center justify-center">
-                        {/* 各 item 左侧分隔线 */}
-                        {i > 0 && (
-                          <div className="absolute inset-y-[6px] left-0 w-px bg-[rgba(23,23,23,0.06)]" />
-                        )}
-                        {/* 磨砂背景 + 白色细边，对齐 Figma Overlay+Border */}
-                        <div className="absolute inset-[0.5px] rounded-[4.5px] border border-[rgba(255,255,255,0.12)] backdrop-blur-[3.7px]" />
-                        {/* 图标 */}
-                        <div className="relative z-[1] mb-[3px] flex h-[12px] w-[12px] items-center justify-center">
-                          <img alt="" src={item.src} className="h-[12px] w-[12px] object-contain" draggable={false} />
-                        </div>
-                        {/* 标签：对齐 Figma PingFang SC 约 5px */}
-                        <span
-                          className="relative z-[1] text-center leading-[8px] text-[#171717]"
-                          style={{ fontSize: "5.1px", fontFamily: "'PingFang SC', 'SF Pro Text', -apple-system, sans-serif" }}
+                  {/* Skills 区块 */}
+                  <div className="flex flex-col gap-4">
+                    {/* 标题：对齐 Figma 72:1520 绝对定位结构 */}
+                    <div className="relative h-[26px] w-full">
+                      <h2 className={cn(bodyFont, "absolute left-0 top-0 text-[18px] font-semibold leading-[26px] text-[#171717]")}>Skills</h2>
+                      <p className={cn(bodyFont, "absolute left-[54px] top-[6px] text-[10px] leading-[18px] text-[#a39e99]")}>Vibe Coding/Design</p>
+                    </div>
+                    {/* Skill Dock — 对齐 Figma 72:1671 */}
+                    <div className="flex w-full items-center justify-between overflow-hidden rounded-[12px] border border-[rgba(23,23,23,0.08)] px-[4px]">
+                      {skillDockItems.map((item, i) => (
+                        <div
+                          key={item.label}
+                          className={cn(
+                            "flex flex-col items-center gap-2 overflow-hidden pb-[8px] pt-[12px] px-[18px] shrink-0 w-[55px]",
+                            i < skillDockItems.length - 1 && "-mr-px",
+                          )}
                         >
-                          {item.label}
-                        </span>
-                      </div>
-                    ))}
+                          <div className="relative shrink-0 size-[12px]">
+                            <img alt="" src={item.src} className="absolute inset-0 block size-full object-contain" draggable={false} />
+                          </div>
+                          <span
+                            className="whitespace-nowrap text-center text-[8px] leading-[16px] text-[#171717]"
+                            style={{ fontFamily: "'PingFang SC', 'SF Pro Text', -apple-system, sans-serif" }}
+                          >
+                            {item.label}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -481,25 +703,28 @@ export function ResumePlanner() {
                 onHoverStart={handleHoverStart}
                 onHoverEnd={handleHoverEnd}
               >
-                {/* ── 正面：Highlights（右页样式）；内层 clip 掉被折起的角，卷角叠在外层之上 ── */}
+                {/* ── 正面：Highlights（右页样式）
+                 *  face 容器不设 overflow:hidden，确保 backface-visibility 正常工作。
+                 *  背景与内容统一在 clipPath 层内，裁角时二者同步 → 仅一张纸的视觉。 ── */}
                 <motion.div
-                  className="absolute right-0 bottom-0 h-full w-full overflow-hidden"
-                  style={{
-                    backfaceVisibility: "hidden",
-                    borderRadius:       "0 12px 12px 0",
-                  }}
+                  className="absolute inset-0"
+                  style={{ backfaceVisibility: "hidden" as const }}
                 >
                   <motion.div
                     className="absolute inset-0 overflow-hidden"
                     style={{
-                      background:   GRAD_R,
                       borderRadius: "0 12px 12px 0",
                       clipPath:     clipPathFront,
                     }}
                   >
+                    {/* 背景与内容同处一层：clipPath 裁角时背景随之裁切，Layer0 背景色兜底填充，视觉连贯 */}
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: GRAD_R }}
+                    />
                     {/* 水印 */}
                     <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
-                      <div className="-rotate-6 size-[400px]">
+                      <div className="-rotate-[5deg] size-[400px]">
                         <PlannerBotanicalWatermark />
                       </div>
                     </div>
@@ -511,37 +736,44 @@ export function ResumePlanner() {
                       <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]/50" />
                     </div>
 
-                    {/* 页眉 — 对齐 Figma 65:478（标题 + 副标题） */}
-                    <div className="absolute left-[56px] top-[32px] flex flex-wrap items-baseline gap-x-3">
+                    {/* 页眉：页面名称 + 页码 */}
+                    <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+                      <span className={cn(bodyFont, "text-[12px] leading-5")}>Highlights</span>
+                      <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+                      <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>2/4</span>
+                    </div>
+
+                    {/* 标题区：大标题 + 副标题 */}
+                    <div className="absolute left-[56px] top-[76px] flex flex-wrap items-baseline gap-x-3">
                       <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Highlights</h2>
                       <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>AI 核心工作项目</p>
                     </div>
 
                     {/* 项目网格：2×4 + 每卡底部截图框 */}
-                    <div className="absolute left-[56px] top-[70px] w-[388px]">
+                    <div className="absolute left-[56px] top-[111px] w-[388px]">
                       <div className="grid w-[388px] grid-cols-2 gap-2">
                         {highlightCards.map((card) => (
                           <article
                             key={card.title}
                             className={cn(
                               bodyFont,
-                              "relative h-[144px] w-[190px] shrink-0 overflow-hidden border border-[rgba(23,23,23,0.08)]",
+                              "relative h-[134px] w-[190px] shrink-0 overflow-hidden border border-[rgba(23,23,23,0.08)]",
                               card.outerRadius,
                             )}
-                            style={{ background: "linear-gradient(168.52deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}
+                            style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}
                           >
-                            <h3 className="absolute left-[9px] top-[7px] pr-12 text-[12px] font-semibold leading-5 text-[#171717]">
+                            <h3 className="absolute left-[9px] top-[7px] pr-12 text-[12px] font-semibold leading-5 tracking-[-0.02em] text-[#171717]">
                               {card.title}
                             </h3>
-                            <p className="absolute left-[9px] top-[35px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">
+                            <p className="absolute left-[9px] top-[31px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">
                               {card.description}
                             </p>
-                            <span className="absolute right-[9px] top-[7px] text-right text-[10px] font-semibold leading-[18px] text-[#ba6d73]">
+                            <span className="absolute right-[9px] top-[8px] text-right text-[10px] leading-[18px] text-[#ba6d73]">
                               {card.period}
                             </span>
                             <div
                               className={cn(
-                                "absolute left-[9px] top-[57px] h-[120px] w-[170px] overflow-hidden border-[0.5px] border-[#f2f3f5]",
+                                "absolute left-[9px] top-[52px] h-[120px] w-[170px] overflow-hidden border-[0.5px] border-[#f2f3f5]",
                                 card.frameRadius,
                               )}
                             >
@@ -595,35 +827,38 @@ export function ResumePlanner() {
                   <PageCurlStack corner="br" size={brCurlSize} />
                 </motion.div>
 
-                {/* ── 背面：Career Work（左页样式） ───────────────────── */}
+                {/* ── 背面：Career Work（左页样式）
+                 *  同理：face 容器不设 overflow:hidden，背景进入 clipPath 层内统一裁切 ── */}
                 <motion.div
-                  className="absolute inset-0 overflow-hidden"
+                  className="absolute inset-0"
                   style={{
-                    backfaceVisibility: "hidden",
+                    backfaceVisibility: "hidden" as const,
                     transform:          "rotateY(180deg)",
-                    borderRadius:       "4px 0 0 4px",
                   }}
                 >
                   <motion.div
                     className="absolute inset-0 overflow-hidden"
                     style={{
-                      background:   GRAD_L,
                       borderRadius: "4px 0 0 4px",
                       clipPath:     clipPathBack,
                     }}
                   >
+                    <div
+                      className="absolute inset-0 rounded-bl-[4px] rounded-tl-[4px]"
+                      style={{ background: GRAD_L }}
+                    />
                     {/* 脊柱阴影（右侧为书脊） */}
                     <div className="pointer-events-none absolute inset-y-0 right-0 w-6" style={{ background: "linear-gradient(270deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
 
-                    {/* 页眉 */}
-                    <div className="absolute left-[56px] top-[28px] flex items-center gap-[6px]">
-                      <span className={cn(bodyFont, "text-[12px] font-medium leading-5 text-[#ba6d73]")}>Career · Work</span>
-                      <div className="h-px w-4 bg-[rgba(241,186,186,0.4)]" />
-                      <span className={cn(bodyFont, "text-[10px] leading-[18px] text-[#ba6d73]/45")}>3 / 4</span>
+                    {/* 页眉：页面名称 + 页码 */}
+                    <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+                      <span className={cn(bodyFont, "text-[12px] leading-5")}>Career</span>
+                      <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+                      <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>3/4</span>
                     </div>
 
                     {/* 内容 */}
-                    <div className="absolute left-[56px] right-[56px] top-[60px]">
+                    <div className="absolute left-[56px] top-[76px] w-[388px]">
                       <div className="mb-4 flex items-baseline gap-x-2">
                         <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Career</h2>
                         <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>从学习到实习到正式工作的设计生涯</p>
