@@ -2,7 +2,7 @@
 
 import { animate, motion, useMotionValue, useTransform } from "motion/react"
 import type { MotionValue } from "motion/react"
-import { useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { Ballet } from "next/font/google"
 
 import { cn } from "@/lib/utils"
@@ -39,6 +39,33 @@ const skillDockItems: SkillDockItem[] = [
   { label: "AI Workflow",  src: iconAiWorkflow },
   { label: "AI Video",     src: iconAiVideo  },
 ]
+
+/**
+ * Dock 图标：矢量优先。
+ * — 与同名的 `/icons/*.svg` 会先尝试加载（锐利、任意缩放）。
+ * — 若没有 SVG（或加载失败），回退现有 12×12 PNG，并用邻近插值减轻 Retina 上的糊边。
+ */
+function SkillDockIcon({ pngFallbackSrc }: { pngFallbackSrc: string }) {
+  const svgSrc       = pngFallbackSrc.replace(/\.png$/i, ".svg")
+  const [mode, setMode] = useState<"svg" | "png">("svg")
+  const onImgError      = useCallback(() => setMode("png"), [])
+  const src             = mode === "svg" ? svgSrc : pngFallbackSrc
+  const isRasterFallback = mode === "png"
+
+  return (
+    <img
+      alt=""
+      src={src}
+      onError={isRasterFallback ? undefined : onImgError}
+      className={cn(
+        "absolute inset-0 block size-full max-h-none max-w-none object-contain",
+        isRasterFallback && "[image-rendering:-webkit-optimize-contrast] [image-rendering:pixelated]",
+      )}
+      style={isRasterFallback ? { imageRendering: "pixelated" } : undefined}
+      draggable={false}
+    />
+  )
+}
 
 /** Highlights 卡片：与 Figma 65:478 顺序与文案一致；截图为导出资源 */
 type HighlightCardData = {
@@ -405,8 +432,8 @@ export function ResumePlanner() {
               </div>
               <div className="pointer-events-none absolute inset-y-0 left-0 w-6" style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
               <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1">
-                <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]" />
-                <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]/50" />
+                <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]/50" />
+                <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]" />
               </div>
               <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
                 <span className={cn(bodyFont, "text-[12px] leading-5")}>Highlights</span>
@@ -458,8 +485,8 @@ export function ResumePlanner() {
                 <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
               </div>
               <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1">
-                <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]" />
-                <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]/50" />
+                <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]/50" />
+                <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]" />
               </div>
               <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
                 <span className={cn(bodyFont, "text-[12px] leading-5")}>Education/Skills</span>
@@ -482,8 +509,8 @@ export function ResumePlanner() {
                   <div className="flex w-full items-center justify-between overflow-hidden rounded-[12px] border border-[rgba(23,23,23,0.08)] px-[4px]">
                     {skillDockItems.map((item, idx) => (
                       <div key={item.label} className={cn("flex flex-col items-center gap-2 overflow-hidden pb-[8px] pt-[12px] px-[18px] shrink-0 w-[55px]", idx < skillDockItems.length - 1 && "-mr-px")}>
-                        <div className="relative shrink-0 size-[12px]">
-                          <img alt="" src={item.src} className="absolute inset-0 block size-full object-contain" draggable={false} />
+                        <div className="relative shrink-0 size-[16px]" aria-hidden>
+                          <SkillDockIcon pngFallbackSrc={item.src} />
                         </div>
                         <span className="whitespace-nowrap text-center text-[8px] leading-[16px] text-[#171717]" style={{ fontFamily: "'PingFang SC', 'SF Pro Text', -apple-system, sans-serif" }}>{item.label}</span>
                       </div>
@@ -623,8 +650,8 @@ export function ResumePlanner() {
                 </div>
                 {/* 右上装饰点 */}
                 <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1">
-                  <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]" />
-                  <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]/50" />
+                  <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]/50" />
+                  <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]" />
                 </div>
 
                 {/* 页眉：页面名称 + 页码 */}
@@ -661,8 +688,8 @@ export function ResumePlanner() {
                             i < skillDockItems.length - 1 && "-mr-px",
                           )}
                         >
-                          <div className="relative shrink-0 size-[12px]">
-                            <img alt="" src={item.src} className="absolute inset-0 block size-full object-contain" draggable={false} />
+                          <div className="relative shrink-0 size-[16px]" aria-hidden>
+                            <SkillDockIcon pngFallbackSrc={item.src} />
                           </div>
                           <span
                             className="whitespace-nowrap text-center text-[8px] leading-[16px] text-[#171717]"
@@ -732,8 +759,8 @@ export function ResumePlanner() {
                     <div className="pointer-events-none absolute inset-y-0 left-0 w-6" style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
                     {/* 右上装饰点 */}
                     <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1">
-                      <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]" />
-                      <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]/50" />
+                      <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]/50" />
+                      <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]" />
                     </div>
 
                     {/* 页眉：页面名称 + 页码 */}
