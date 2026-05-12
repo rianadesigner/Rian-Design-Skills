@@ -67,6 +67,31 @@ function SkillDockIcon({ pngFallbackSrc }: { pngFallbackSrc: string }) {
   )
 }
 
+/**
+ * 右上双点装饰（Figma 基准：左小点实色、右长条半透明）
+ * - normal：与 Figma 一致
+ * - swapped：左右对调（左半透、右实色）
+ */
+function CornerDecorDots({ variant }: { variant: "swapped" | "normal" }) {
+  const swapped = variant === "swapped"
+  return (
+    <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1" aria-hidden>
+      <div
+        className={cn(
+          "h-1 w-1 rounded-[2px]",
+          swapped ? "bg-[#f1baba]/50" : "bg-[#f1baba]",
+        )}
+      />
+      <div
+        className={cn(
+          "h-1 w-1 flex-1 rounded-[2px]",
+          swapped ? "bg-[#f1baba]" : "bg-[#f1baba]/50",
+        )}
+      />
+    </div>
+  )
+}
+
 /** Highlights 卡片：与 Figma 65:478 顺序与文案一致；截图为导出资源 */
 type HighlightCardData = {
   title: string
@@ -251,19 +276,13 @@ export function ResumePlanner() {
   const brCurlSize = useTransform([curlSize, curlDir], ([s, d]) => (d === 1 ? s : 0)) as MotionValue<number>
   const blCurlSize = useTransform([curlSize, curlDir], ([s, d]) => (d === -1 ? s : 0)) as MotionValue<number>
   /**
-   * 翻页时 3D 透视缩短会露出 Layer0 右页内容（Skill Dock 等"页脚"）。
-   * rotateY 0→-85°：右页内容 opacity=0（card 正面朝向观众，Layer0 右页内容不可见）
-   * rotateY -85→-90°：渐变至 1（近立边时过渡，肉眼不可察觉）
-   * rotateY ≤-90°：opacity=1（card 已翻到左侧，右页作为真实右页正常展示）
+   * Layer0 右页（Education/Skills）：不按角度隐藏。
+   * 第四页始终在纸片下层完整渲染，靠上层不透明版面挡住；掀开时再露出，避免临近竖页时突然闪现。
+   *
+   * 左页 Profile：须在纸片**物理盖住**之后再淡出（见 layer0LeftOpacity）。
+   * 仅在 rotateY 接近落页末尾（背面即将铺满左半屏）时 1→0；其余区间保持可见。
    */
-  const layer0RightOpacity = useTransform(rotateY, [-90, -85], [1, 0])
-  /**
-   * 对称修复左页：card 背面落下时（-90°→-180°）因透视缩短会露出 Layer0 左页内容。
-   * rotateY ≥-90°：左页 opacity=1（card 在右侧或立边，左页正常显示）
-   * rotateY -90→-95°：渐变至 0（背面刚露出，近立边时过渡不可察觉）
-   * rotateY ≤-95°：opacity=0（card 背面覆盖左侧，隐藏左页内容，背景色 div 保持纸张色）
-   */
-  const layer0LeftOpacity = useTransform(rotateY, [-90, -95], [1, 0])
+  const layer0LeftOpacity = useTransform(rotateY, [-178, -165], [0, 1])
   /** 切掉被卷起的页角，避免出现「直角底层 + 卷边」双层一角 */
   const clipPathFront = useTransform(brCurlSize, (s) =>
     s < 1
@@ -431,10 +450,7 @@ export function ResumePlanner() {
                 <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
               </div>
               <div className="pointer-events-none absolute inset-y-0 left-0 w-6" style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
-              <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1">
-                <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]/50" />
-                <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]" />
-              </div>
+              <CornerDecorDots variant="normal" />
               <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
                 <span className={cn(bodyFont, "text-[12px] leading-5")}>Highlights</span>
                 <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
@@ -484,10 +500,7 @@ export function ResumePlanner() {
               <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
                 <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
               </div>
-              <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1">
-                <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]/50" />
-                <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]" />
-              </div>
+              <CornerDecorDots variant="swapped" />
               <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
                 <span className={cn(bodyFont, "text-[12px] leading-5")}>Education/Skills</span>
                 <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
@@ -640,7 +653,7 @@ export function ResumePlanner() {
               {/* ── Layer 0：Education+Skills 页（右半，永远在底部） ──────── */}
               <motion.div
                 className="absolute inset-y-0 right-0 w-[500px] overflow-hidden bg-transparent"
-                style={{ clipPath: clipPathFront, opacity: layer0RightOpacity }}
+                style={{ clipPath: clipPathFront }}
               >
                 {/* 水印 */}
                 <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
@@ -648,11 +661,8 @@ export function ResumePlanner() {
                     <PlannerBotanicalWatermark />
                   </div>
                 </div>
-                {/* 右上装饰点 */}
-                <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1">
-                  <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]/50" />
-                  <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]" />
-                </div>
+                {/* 右上装饰点：翻开后露出的底页（与 Highlights 呈对调色） */}
+                <CornerDecorDots variant="swapped" />
 
                 {/* 页眉：页面名称 + 页码 */}
                 <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
@@ -757,11 +767,8 @@ export function ResumePlanner() {
                     </div>
                     {/* 书脊阴影 */}
                     <div className="pointer-events-none absolute inset-y-0 left-0 w-6" style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
-                    {/* 右上装饰点 */}
-                    <div className="absolute right-[24px] top-[24px] flex h-1 w-3 gap-1">
-                      <div className="h-1 w-1 rounded-[2px] bg-[#f1baba]/50" />
-                      <div className="h-1 w-1 flex-1 rounded-[2px] bg-[#f1baba]" />
-                    </div>
+                    {/* 右上装饰点：翻开前 Highlights（与底页 Education 呈对调色） */}
+                    <CornerDecorDots variant="normal" />
 
                     {/* 页眉：页面名称 + 页码 */}
                     <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
