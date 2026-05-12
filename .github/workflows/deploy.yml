@@ -16,11 +16,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 拉取代码
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 安装 Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -28,47 +26,35 @@ jobs:
           cache: npm
           cache-dependency-path: next-app/package-lock.json
 
-      # 安装依赖
       - name: Install dependencies
         working-directory: next-app
-        run: npm install --legacy-peer-deps
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install --legacy-peer-deps
+          npm install next@16.1.7 react@19.2.4 react-dom@19.2.4 --legacy-peer-deps
+          ls -la node_modules/.bin | grep next || true
+          ./node_modules/.bin/next --version
 
-      # 构建 Next.js
       - name: Build Next.js
         working-directory: next-app
-        run: npm run build
+        run: |
+          ./node_modules/.bin/next build
 
-      # SSH 部署
       - name: Deploy via SSH
         uses: easingthemes/ssh-deploy@v4
         with:
           SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
           REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
           REMOTE_USER: ${{ secrets.DEPLOY_USER }}
-
-          SOURCE: "./next-app"
+          SOURCE: "./next-app/"
           TARGET: "/root/rian-build-temp"
 
           SCRIPT_AFTER: |
             cd /root/rian-build-temp
 
             npm install --legacy-peer-deps
-            npm run build
-
-            if [ -d ".next" ]; then
-              echo "✅ Next.js build 成功"
-            else
-              echo "❌ .next 目录不存在"
-              exit 1
-            fi
-
-            # 这里按你的部署方式修改
-            # 如果是 next start:
-            # pm2 restart app
-
-            # 如果是静态部署:
-            # npm run export
-            # cp -r out/* /var/www/rian-app/
+            npm install next@16.1.7 react@19.2.4 react-dom@19.2.4 --legacy-peer-deps
+            ./node_modules/.bin/next build
 
             nginx -t && systemctl reload nginx
 
