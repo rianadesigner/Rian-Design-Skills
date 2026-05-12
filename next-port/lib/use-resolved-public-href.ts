@@ -1,22 +1,21 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { fileSiteRelativePublicHref } from "@/lib/file-protocol-paths";
 
 /**
- * `/documents/foo.pdf` 在 `npm run dev` / 正经网站根路径托管下是正常的；
- * 若用「双击打开」`out/index.html`（`file://` 协议），以 `/` 开头的链接会落到磁盘根目录导致打不开。
- * 挂载后若为 file 协议则改为相对路径 `./documents/foo.pdf`。
+ * `/documents/foo.pdf` 在 `npm run dev` / 网站根路径托管下是正常的；
+ * 若用「双击打开」导出目录里的 `.html`（`file://`），以 `/` 开头的链接会落到磁盘根目录，
+ * 且子目录页面不能使用 `./documents/`，必须按相对于 `out/` 的深度拼 `../`。
  */
 export function useResolvedPublicHref(absoluteWithinSitePath: string): string {
   const [href, setHref] = useState(absoluteWithinSitePath);
 
-  useEffect(() => {
-    if (
-      typeof window === "undefined" ||
-      window.location.protocol !== "file:" ||
-      !absoluteWithinSitePath.startsWith("/")
-    ) {
+  useLayoutEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.protocol !== "file:") {
+      setHref(absoluteWithinSitePath);
       return;
     }
-    setHref(`.${absoluteWithinSitePath}`);
+    setHref(fileSiteRelativePublicHref(absoluteWithinSitePath));
   }, [absoluteWithinSitePath]);
 
   return href;

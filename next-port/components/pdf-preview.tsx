@@ -68,19 +68,11 @@ export function PdfPreview({ forcedFile }: PdfPreviewProps = {}) {
       if (!cancelled) setIframeSrc(pdfViewerUrl);
     };
 
-    let disposeLoad: (() => void) | undefined;
-
-    if (typeof window.requestIdleCallback === "function") {
-      const idleId = window.requestIdleCallback(apply, { timeout: 1200 });
-      disposeLoad = () => window.cancelIdleCallback(idleId);
-    } else {
-      const tid = window.setTimeout(apply, 120);
-      disposeLoad = () => window.clearTimeout(tid);
-    }
+    const tid = window.setTimeout(apply, 0);
 
     return () => {
       cancelled = true;
-      disposeLoad?.();
+      window.clearTimeout(tid);
       setIframeSrc(null);
     };
   }, [embedInPage, pdfViewerUrl]);
