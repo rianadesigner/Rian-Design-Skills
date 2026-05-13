@@ -37,22 +37,34 @@ jobs:
         run: |
           ./node_modules/.bin/next build
 
-      - name: Deploy via SSH
-        uses: easingthemes/ssh-deploy@v4
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}
-          REMOTE_HOST: ${{ secrets.DEPLOY_HOST }}
-          REMOTE_USER: ${{ secrets.DEPLOY_USER }}
-          SOURCE: "./next-app/"
-          TARGET: "/root/rian-build-temp"
+           - name: Deploy via SSH
+        run: |
+          mkdir -p ~/.ssh
 
-          SCRIPT_AFTER: |
-            cd /root/rian-build-temp
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
 
-            npm install --legacy-peer-deps
-            npm install next@16.1.7 react@19.2.4 react-dom@19.2.4 --legacy-peer-deps
-            ./node_modules/.bin/next build
+          echo "Checking SSH key format..."
+          ssh-keygen -y -f ~/.ssh/deploy_key > /tmp/deploy_key.pub
+          echo "SSH key format OK"
 
-            nginx -t && systemctl reload nginx
+          ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
 
-            echo "🎉 部署完成！"
+          echo "Testing SSH connection..."
+          ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "echo SSH connection OK"
+
+          echo "Starting rsync..."
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            ./next-app/ \
+            ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/root/rian-build-temp
+
+          echo "Running remote deploy script..."
+          ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
+          cd /root/rian-build-temp
+          npm install --legacy-peer-deps
+          npm install next@16.1.7 react@19.2.4 react-dom@19.2.4 --legacy-peer-deps
+          ./node_modules/.bin/next build
+          nginx -t && systemctl reload nginx
+          echo "🎉 部署完成！"
+          EOF
