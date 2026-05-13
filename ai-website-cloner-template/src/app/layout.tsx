@@ -9,9 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "NeuroSync | Master Your Mind",
+  title: "SynapseXR | Expand Your Mind",
   description:
-    "NeuroSync monitors your cognitive state in real-time — clone built from Neuform NeuroSync template reference.",
+    "SynapseXR evaluates mental frequencies continuously and converts neural signals into actionable insights.",
 };
 
 export default function RootLayout({
