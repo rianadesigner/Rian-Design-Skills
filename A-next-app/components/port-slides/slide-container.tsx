@@ -53,6 +53,7 @@ export default function SlideContainer() {
   const [[current, direction], setCurrent] = useState([0, 0]);
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const zoomRef = useRef(1);
   const gestureRef = useRef({
     startX: 0,
     startY: 0,
@@ -70,8 +71,11 @@ export default function SlideContainer() {
       const matches = mq.matches;
       setIsMobilePortrait(matches);
       if (matches) {
-        document.documentElement.style.setProperty("--slide-zoom", String(window.innerHeight / 1440));
+        const zoom = window.innerHeight / 1440;
+        zoomRef.current = zoom;
+        document.documentElement.style.setProperty("--slide-zoom", String(zoom));
       } else {
+        zoomRef.current = 1;
         document.documentElement.style.removeProperty("--slide-zoom");
       }
     };
@@ -115,6 +119,15 @@ export default function SlideContainer() {
     };
   }, []);
 
+  const getMaxScroll = useCallback(() => {
+    if (!scrollRef.current) return 0;
+    const el = scrollRef.current;
+    const contentH = 900 * zoomRef.current;
+    const viewH = el.clientHeight;
+    const fromDOM = el.scrollHeight - viewH;
+    return Math.max(fromDOM, contentH - viewH, 0);
+  }, []);
+
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
     const g = gestureRef.current;
     const cx = e.touches[0].clientX;
@@ -132,13 +145,13 @@ export default function SlideContainer() {
 
     if (g.direction === "x" && scrollRef.current) {
       const el = scrollRef.current;
-      const maxScroll = el.scrollHeight - el.clientHeight;
+      const maxScroll = getMaxScroll();
       el.scrollTop = Math.max(0, Math.min(maxScroll, g.startScrollTop - dx));
       g.lastX = cx;
       g.lastTime = Date.now();
       e.preventDefault();
     }
-  }, []);
+  }, [getMaxScroll]);
 
   const handleTouchEnd = useCallback(
     (e: React.TouchEvent) => {
@@ -159,9 +172,9 @@ export default function SlideContainer() {
         const dt = Math.max(1, Date.now() - g.lastTime);
         let velocity = -(dx / dt) * 12;
         const el = scrollRef.current;
+        const maxScroll = getMaxScroll();
         const decay = () => {
           if (Math.abs(velocity) < 0.5 || !scrollRef.current) return;
-          const maxScroll = el.scrollHeight - el.clientHeight;
           el.scrollTop = Math.max(0, Math.min(maxScroll, el.scrollTop + velocity));
           velocity *= 0.94;
           momentumRef.current = requestAnimationFrame(decay);
@@ -169,7 +182,7 @@ export default function SlideContainer() {
         momentumRef.current = requestAnimationFrame(decay);
       }
     },
-    [paginate],
+    [paginate, getMaxScroll],
   );
 
   useEffect(() => {
@@ -221,7 +234,13 @@ export default function SlideContainer() {
           .slide-scroll {
             width: 100% !important;
             height: 100% !important;
-            overflow: hidden !important;
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+          }
+          .slide-scroll::-webkit-scrollbar {
+            display: none;
           }
           .slide-scroll > * {
             width: 1440px !important;
