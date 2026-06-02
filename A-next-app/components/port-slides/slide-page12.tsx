@@ -10,7 +10,7 @@ export default function SlidePage12() {
       <div className="absolute inset-0 overflow-hidden bg-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -35,15 +35,15 @@ export default function SlidePage12() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P12}/logo.svg`} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img src={`${P12}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             云端CLI：&nbsp;&nbsp;面向技术开发者的免费开源云端AI助手 / 12
           </p>
         </div>
         <div className="absolute" style={{ left: "7.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2024 / 2025
             </p>
           </div>
@@ -58,7 +58,7 @@ export default function SlidePage12() {
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -69,7 +69,7 @@ export default function SlidePage12() {
         <span
           style={{
             color: "#1F1F1F",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -82,7 +82,7 @@ export default function SlidePage12() {
       {/* ── Decorative wavy line ─────────────────────────────────── */}
       <svg
         className="absolute z-10"
-        style={{ left: "4.17%", top: "13.33%", width: "clamp(75px, 8.33vw, 120px)", height: "13px", opacity: 0.5 }}
+        style={{ left: "4.17%", top: "13.33%", width: "clamp(75px, calc(8.33 * var(--u)), 120px)", height: "13px", opacity: 0.5 }}
         viewBox="0 0 152 13"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +103,7 @@ export default function SlidePage12() {
           right: "4.17%",
           top: "11.11%",
           color: "#434343",
-          fontSize: "clamp(11px, 1.11vw, 16px)",
+          fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
           textAlign: "right",
@@ -145,10 +145,10 @@ export default function SlidePage12() {
           }}
         />
         <div className="absolute" style={{ left: "3.89%", top: "4.72%", width: "22%" }}>
-          <span style={{ color: "#434343", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
+          <span style={{ color: "#434343", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
             1. 打通用户可用
           </span>
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "4px" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "4px" }}>
             · 用户登录<br />· 授权代码仓库<br />· 连接成功提示
           </p>
         </div>
@@ -196,10 +196,10 @@ export default function SlidePage12() {
           }}
         />
         <div className="absolute" style={{ left: "2.52%", top: "4.72%", width: "46%" }}>
-          <span style={{ color: "#434343", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
+          <span style={{ color: "#434343", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
             2. 用户清晰表达任务
           </span>
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "4px" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "4px" }}>
             · 引导配置环境/模型/分支/版本数量等信息简化专业门槛
           </p>
         </div>
@@ -248,10 +248,10 @@ export default function SlidePage12() {
           }}
         />
         <div className="absolute" style={{ left: "2.91%", top: "2.98%", width: "30%" }}>
-          <span style={{ color: "#434343", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
+          <span style={{ color: "#434343", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
             3. 代码执行过程的明确反馈
           </span>
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "4px" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "4px" }}>
             · 左侧实时日志 / 阶段展示进度
           </p>
         </div>
@@ -268,7 +268,7 @@ export default function SlidePage12() {
             boxShadow: "0px 2px 4px rgba(25,33,61,0.08)",
           }}
         >
-          <span style={{ color: "#434343", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             1、执行中planlist分步执行
           </span>
         </div>
@@ -284,7 +284,7 @@ export default function SlidePage12() {
             boxShadow: "0px 2px 4px rgba(25,33,61,0.08)",
           }}
         >
-          <span style={{ color: "#434343", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             2、执行完毕显示改动
           </span>
         </div>
@@ -332,10 +332,10 @@ export default function SlidePage12() {
           }}
         />
         <div className="absolute" style={{ left: "3.23%", top: "4%", width: "90%" }}>
-          <span style={{ color: "#434343", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
+          <span style={{ color: "#434343", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
             4. 交付结果并理解结果
           </span>
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "4px" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "4px" }}>
             · 生成代码diff，通过变更动机/核心逻辑/测试情况等强化可信度
           </p>
         </div>
@@ -357,10 +357,10 @@ export default function SlidePage12() {
         }}
       >
         <div className="absolute" style={{ left: "3.23%", top: "6%", width: "90%" }}>
-          <span style={{ color: "#434343", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
+          <span style={{ color: "#434343", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
             5. PR集成让协作最简化
           </span>
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "4px" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "4px" }}>
             · 简化执行完成到可提交git仓库，自动生成完整 PR 描述
           </p>
         </div>

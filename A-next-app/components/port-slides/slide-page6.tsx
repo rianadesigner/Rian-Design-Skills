@@ -10,7 +10,7 @@ export default function SlidePage6() {
       <div className="absolute inset-0 overflow-hidden bg-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -35,15 +35,15 @@ export default function SlidePage6() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P6}/logo.svg`} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img src={`${P6}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             专业研究场景3:&nbsp;&nbsp;学术阅读 / 06
           </p>
         </div>
         <div className="absolute" style={{ left: "7.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2024 / 2025
             </p>
           </div>
@@ -55,7 +55,7 @@ export default function SlidePage6() {
         <span
           style={{
             color: "#1F1F1F",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -69,7 +69,7 @@ export default function SlidePage6() {
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -86,7 +86,7 @@ export default function SlidePage6() {
           right: "4.17%",
           top: "11.11%",
           color: "#434343",
-          fontSize: "clamp(11px, 1.11vw, 16px)",
+          fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
           textAlign: "right",
@@ -111,8 +111,8 @@ export default function SlidePage6() {
           objectFit: "cover",
           objectPosition: "center top",
           border: "2px solid #F0F3FF",
-          borderTopLeftRadius: "0.83vw",
-          borderTopRightRadius: "0.83vw",
+          borderTopLeftRadius: "calc(0.83 * var(--u))",
+          borderTopRightRadius: "calc(0.83 * var(--u))",
           borderBottomLeftRadius: 0,
           borderBottomRightRadius: 0,
           boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
@@ -133,7 +133,7 @@ export default function SlidePage6() {
           width: "93.33%",
           bottom: 0,
           background: "#FFFFFF",
-          borderRadius: "0.83vw",
+          borderRadius: "calc(0.83 * var(--u))",
           boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
           overflow: "hidden",
         }}
@@ -202,7 +202,7 @@ function TooltipBalloon({
       <span
         style={{
           color: "#434343",
-          fontSize: "clamp(9px, 0.83vw, 12px)",
+          fontSize: "clamp(9px, calc(0.83 * var(--u)), 12px)",
           fontFamily: "'Alimama ShuHeiTi', sans-serif",
           fontWeight: 700,
           lineHeight: 1.5,

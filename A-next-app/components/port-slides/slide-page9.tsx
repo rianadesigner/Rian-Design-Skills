@@ -10,7 +10,7 @@ export default function SlidePage9() {
       <div className="absolute inset-0 overflow-hidden bg-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -34,15 +34,15 @@ export default function SlidePage9() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P9}/logo.svg`} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img src={`${P9}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             日常消费场景2:&nbsp;&nbsp;专注用户碎片化知识管理 / 09
           </p>
         </div>
         <div className="absolute" style={{ left: "7.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2024 / 2025
             </p>
           </div>
@@ -57,7 +57,7 @@ export default function SlidePage9() {
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -68,7 +68,7 @@ export default function SlidePage9() {
         <span
           style={{
             color: "#1F1F1F",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -76,7 +76,7 @@ export default function SlidePage9() {
         >
           知识管理
         </span>
-        <svg height="13" viewBox="0 0 152 13" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "clamp(72px, 9vw, 128px)", display: "block", marginTop: "-6px", opacity: 0.5 }}>
+        <svg height="13" viewBox="0 0 152 13" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "clamp(72px, calc(9 * var(--u)), 128px)", display: "block", marginTop: "-6px", opacity: 0.5 }}>
           <defs>
             <linearGradient x1="0.0735" y1="0.129" x2="1.003" y2="0.132" id="p9wv">
               <stop offset="0%" stopColor="#5C5CFF" />
@@ -90,7 +90,7 @@ export default function SlidePage9() {
       {/* ── 副标题 (右侧对齐) ────────────────────────────────────── */}
       <p
         className="absolute z-10"
-        style={{ right: "4.17%", top: "11.11%", color: "#434343", fontSize: "clamp(11px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, textAlign: "right", lineHeight: 1.7, margin: 0, whiteSpace: "nowrap" }}
+        style={{ right: "4.17%", top: "11.11%", color: "#434343", fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, textAlign: "right", lineHeight: 1.7, margin: 0, whiteSpace: "nowrap" }}
       >
         知识库支持用户快速上传/阅读/问答，专注用户碎片化资源管理
       </p>
@@ -104,93 +104,93 @@ export default function SlidePage9() {
         <div className="relative" style={{ width: "33%", height: "100%" }}>
           <div className="absolute z-20" style={{ left: "4%", top: "7%" }}>
             <div style={{ background: "#FFFFFF", borderRadius: "48px", padding: "4px 14px", boxShadow: "0px 4px 12px 0px rgba(0,0,0,0.1)", whiteSpace: "nowrap" }}>
-              <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.76vw, 11px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.7 }}>知识库快速切换</span>
+              <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.7 }}>知识库快速切换</span>
             </div>
           </div>
           <div className="absolute z-20" style={{ right: "2%", top: "6.5%" }}>
             <div style={{ background: "#FFFFFF", borderRadius: "48px", padding: "4px 14px", boxShadow: "0px 4px 12px 0px rgba(0,0,0,0.1)", whiteSpace: "nowrap" }}>
-              <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.76vw, 11px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.7 }}>常规搜索&多模态上传</span>
+              <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.7 }}>常规搜索&多模态上传</span>
             </div>
           </div>
           <img src={`${P9}/phone-mockup.png`} alt="" style={{ position: "absolute", left: "0", top: "0", width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
           <div className="absolute z-20" style={{ left: "66%", bottom: "4.5%", transform: "translateX(-50%)" }}>
             <div style={{ background: "#FFFFFF", borderRadius: "48px", padding: "4px 14px", boxShadow: "0px 4px 12px 0px rgba(0,0,0,0.1)", whiteSpace: "nowrap" }}>
-              <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.76vw, 11px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.7 }}>【AI聊】入口</span>
+              <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.7 }}>【AI聊】入口</span>
             </div>
           </div>
         </div>
 
         {/* ── 右侧：卡片区域 (上方2x2 + 下方05) ─────── */}
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "clamp(6px, 0.7vw, 10px)" }}>
+        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "clamp(6px, calc(0.7 * var(--u)), 10px)" }}>
           {/* 上方 2x2：01/02左列 + 03/04右列 */}
-          <div style={{ display: "flex", gap: "clamp(6px, 0.7vw, 10px)", flex: "0 0 70%", minHeight: 0, overflow: "hidden" }}>
+          <div style={{ display: "flex", gap: "clamp(6px, calc(0.7 * var(--u)), 10px)", flex: "0 0 70%", minHeight: 0, overflow: "hidden" }}>
             {/* 左列：01 + 02 */}
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "clamp(6px, 0.7vw, 10px)", minHeight: 0 }}>
-              <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid #FFFFFF", borderRadius: "clamp(8px, 0.83vw, 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.06)", padding: "clamp(10px, 1vw, 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "clamp(6px, calc(0.7 * var(--u)), 10px)", minHeight: 0 }}>
+              <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid #FFFFFF", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.06)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
                   <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.76vw, 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>01</span>
+                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>01</span>
                   </div>
                   <div>
-                    <p style={{ color: "#1F1F1F", fontSize: "clamp(10px, 0.9vw, 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>明确路径引导</p>
-                    <p style={{ color: "#8C8C8C", fontSize: "clamp(8px, 0.69vw, 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>辅助用户解决上传复杂度</p>
+                    <p style={{ color: "#1F1F1F", fontSize: "clamp(10px, calc(0.9 * var(--u)), 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>明确路径引导</p>
+                    <p style={{ color: "#8C8C8C", fontSize: "clamp(8px, calc(0.69 * var(--u)), 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>辅助用户解决上传复杂度</p>
                   </div>
                 </div>
-                <img src={`${P9}/card-01.png`} alt="" style={{ flex: 1, width: "100%", height: 0, minHeight: "100%", objectFit: "cover", objectPosition: "bottom", borderRadius: "clamp(6px, 0.6vw, 8px)", marginTop: "4px" }} />
+                <img src={`${P9}/card-01.png`} alt="" style={{ flex: 1, width: "100%", height: 0, minHeight: "100%", objectFit: "cover", objectPosition: "bottom", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
               </div>
-              <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid #FFFFFF", borderRadius: "clamp(8px, 0.83vw, 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.06)", padding: "clamp(10px, 1vw, 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+              <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid #FFFFFF", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.06)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
                   <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.76vw, 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>02</span>
+                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>02</span>
                   </div>
                   <div>
-                    <p style={{ color: "#1F1F1F", fontSize: "clamp(10px, 0.9vw, 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>知识库ai搜</p>
-                    <p style={{ color: "#8C8C8C", fontSize: "clamp(8px, 0.69vw, 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>用户数据库rag能力</p>
+                    <p style={{ color: "#1F1F1F", fontSize: "clamp(10px, calc(0.9 * var(--u)), 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>知识库ai搜</p>
+                    <p style={{ color: "#8C8C8C", fontSize: "clamp(8px, calc(0.69 * var(--u)), 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>用户数据库rag能力</p>
                   </div>
                 </div>
-                <img src={`${P9}/card-02.png`} alt="" style={{ flex: 1, width: "100%", height: 0, minHeight: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, 0.6vw, 8px)", marginTop: "4px" }} />
+                <img src={`${P9}/card-02.png`} alt="" style={{ flex: 1, width: "100%", height: 0, minHeight: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
               </div>
             </div>
             {/* 右列：03 + 04 */}
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "clamp(6px, 0.7vw, 10px)", minHeight: 0 }}>
-              <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid #FFFFFF", borderRadius: "clamp(8px, 0.83vw, 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.06)", padding: "clamp(10px, 1vw, 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "clamp(6px, calc(0.7 * var(--u)), 10px)", minHeight: 0 }}>
+              <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid #FFFFFF", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.06)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
                   <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.76vw, 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>03</span>
+                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>03</span>
                   </div>
                   <div>
-                    <p style={{ color: "#1F1F1F", fontSize: "clamp(10px, 0.9vw, 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>调用AI搜能力</p>
-                    <p style={{ color: "#8C8C8C", fontSize: "clamp(8px, 0.69vw, 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>沿用通用搜索框架</p>
+                    <p style={{ color: "#1F1F1F", fontSize: "clamp(10px, calc(0.9 * var(--u)), 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>调用AI搜能力</p>
+                    <p style={{ color: "#8C8C8C", fontSize: "clamp(8px, calc(0.69 * var(--u)), 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>沿用通用搜索框架</p>
                   </div>
                 </div>
-                <img src={`${P9}/card-03.png`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, 0.6vw, 8px)", marginTop: "4px" }} />
+                <img src={`${P9}/card-03.png`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
               </div>
-              <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid #FFFFFF", borderRadius: "clamp(8px, 0.83vw, 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.06)", padding: "clamp(10px, 1vw, 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+              <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.7)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid #FFFFFF", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.06)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
                   <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.76vw, 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>04</span>
+                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>04</span>
                   </div>
                   <div>
-                    <p style={{ color: "#1F1F1F", fontSize: "clamp(10px, 0.9vw, 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>沉浸式AI辅助</p>
-                    <p style={{ color: "#8C8C8C", fontSize: "clamp(8px, 0.69vw, 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>解读/翻译/复制</p>
+                    <p style={{ color: "#1F1F1F", fontSize: "clamp(10px, calc(0.9 * var(--u)), 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>沉浸式AI辅助</p>
+                    <p style={{ color: "#8C8C8C", fontSize: "clamp(8px, calc(0.69 * var(--u)), 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>解读/翻译/复制</p>
                   </div>
                 </div>
-                <img src={`${P9}/card-04.png`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, 0.6vw, 8px)", marginTop: "4px" }} />
+                <img src={`${P9}/card-04.png`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
               </div>
             </div>
           </div>
 
           {/* 底部：深色卡片 05 横跨两列 */}
-          <div style={{ background: "#1F1F1F", borderRadius: "clamp(8px, 0.83vw, 12px) clamp(8px, 0.83vw, 12px) 0 0", padding: "clamp(10px, 1vw, 16px)", display: "flex", flexDirection: "column", overflow: "hidden", flex: 1 }}>
+          <div style={{ background: "#1F1F1F", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px) clamp(8px, calc(0.83 * var(--u)), 12px) 0 0", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden", flex: 1 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-              <div style={{ minWidth: "clamp(22px, 2vw, 30px)", height: "clamp(22px, 2vw, 30px)", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ color: "#1F1F1F", fontSize: "clamp(9px, 0.9vw, 13px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>05</span>
+              <div style={{ minWidth: "clamp(22px, calc(2 * var(--u)), 30px)", height: "clamp(22px, calc(2 * var(--u)), 30px)", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <span style={{ color: "#1F1F1F", fontSize: "clamp(9px, calc(0.9 * var(--u)), 13px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>05</span>
               </div>
-              <p style={{ color: "#FFFFFF", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>
+              <p style={{ color: "#FFFFFF", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>
                 更清晰的数据展示和管理：可视化查看所有库&文件信息
               </p>
             </div>
-            <img src={`${P9}/card-05.png`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, 0.6vw, 8px)" }} />
+            <img src={`${P9}/card-05.png`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)" }} />
           </div>
         </div>
       </div>

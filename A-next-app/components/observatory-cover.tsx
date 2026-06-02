@@ -340,6 +340,7 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
 
           {/* Bottom area: hints + CTA, aligned to bottom-left */}
           <div
+            className="cover-cta-area"
             style={{
               position: "absolute",
               left: 40,

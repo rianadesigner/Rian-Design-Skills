@@ -66,10 +66,22 @@ export default function SlideContainer() {
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
-    const update = () => setIsMobilePortrait(mq.matches);
+    const update = () => {
+      const matches = mq.matches;
+      setIsMobilePortrait(matches);
+      if (matches) {
+        document.documentElement.style.setProperty("--slide-zoom", String(window.innerHeight / 1440));
+      } else {
+        document.documentElement.style.removeProperty("--slide-zoom");
+      }
+    };
     update();
     mq.addEventListener("change", update);
-    return () => mq.removeEventListener("change", update);
+    window.addEventListener("resize", update);
+    return () => {
+      mq.removeEventListener("change", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   const paginate = useCallback(
@@ -188,7 +200,9 @@ export default function SlideContainer() {
   return (
     <>
       <style>{`
+        .slide-root { --u: 1vw; }
         @media (max-width: 640px) and (orientation: portrait) {
+          .slide-root { --u: calc(1440px / 100); }
           .slide-root {
             transform: rotate(90deg) translateY(-100%);
             transform-origin: top left;
@@ -210,14 +224,19 @@ export default function SlideContainer() {
             overflow: hidden !important;
           }
           .slide-scroll > * {
-            width: 100% !important;
-            height: calc(100vh * 10 / 16) !important;
-            min-height: calc(100vh * 10 / 16) !important;
+            width: 1440px !important;
+            height: 900px !important;
+            min-height: 900px !important;
+            zoom: var(--slide-zoom, 1) !important;
           }
           .slide-scroll .three-canvas-container,
           .slide-scroll .three-canvas-container canvas {
             touch-action: auto !important;
             pointer-events: none !important;
+          }
+          .slide-scroll .cover-cta-area {
+            top: 55% !important;
+            bottom: auto !important;
           }
         }
       `}</style>

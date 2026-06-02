@@ -13,7 +13,7 @@ export default function SlidePage2() {
             className="absolute"
             style={{ left: "-1%", top: "3.4%" }}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -51,20 +51,20 @@ export default function SlidePage2() {
           style={{ width: "5.97%" }}
         />
         {/* 右侧信息 */}
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img
             src={`${P2}/avatar.png`}
             alt=""
             className="h-full aspect-square object-cover"
           />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             专业研究场景1: AI搜 / 02
           </p>
         </div>
         {/* 年份标签 */}
         <div className="absolute" style={{ left: "7.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2024 / 2025
             </p>
           </div>
@@ -79,7 +79,7 @@ export default function SlidePage2() {
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -90,7 +90,7 @@ export default function SlidePage2() {
         <span
           style={{
             color: "#1F1F1F",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -107,7 +107,7 @@ export default function SlidePage2() {
           right: "4.17%",
           top: "11.11%",
           color: "#434343",
-          fontSize: "clamp(11px, 1.11vw, 16px)",
+          fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
           textAlign: "right",
@@ -127,7 +127,7 @@ export default function SlidePage2() {
           top: "16.67%",
           width: "55%",
           height: "48.89%",
-          borderRadius: "0.83vw",
+          borderRadius: "calc(0.83 * var(--u))",
           boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
           overflow: "hidden",
         }}
@@ -136,7 +136,7 @@ export default function SlidePage2() {
           src={`${P2}/screenshot-main.png`}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ borderRadius: "0.83vw" }}
+          style={{ borderRadius: "calc(0.83 * var(--u))" }}
         />
       </div>
 
@@ -150,33 +150,33 @@ export default function SlidePage2() {
           height: "48.89%",
           background: "#FFFFFF",
           border: "1px solid #F0F2FA",
-          borderRadius: "0.83vw",
+          borderRadius: "calc(0.83 * var(--u))",
           boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
           overflow: "hidden",
         }}
       >
         {/* 卡片内容 (flex 布局，文字与图片间距 4px) */}
         <div className="flex flex-col" style={{ padding: "16px 20px", height: "100%", gap: "4px" }}>
-          <div className="flex items-start gap-[0.42vw] shrink-0">
+          <div className="flex items-start gap-[calc(0.42 * var(--u))] shrink-0">
             <div
               className="flex shrink-0 items-center justify-center"
               style={{
-                width: "clamp(18px, 1.67vw, 24px)",
-                height: "clamp(18px, 1.67vw, 24px)",
+                width: "clamp(18px, calc(1.67 * var(--u)), 24px)",
+                height: "clamp(18px, calc(1.67 * var(--u)), 24px)",
                 background: "#D1FB39",
                 borderRadius: "66.67px",
                 padding: "4px",
               }}
             >
-              <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.83vw, 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+              <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
                 00
               </p>
             </div>
-            <div className="flex flex-col gap-[0.42vw]">
-              <p style={{ color: "#1F1F1F", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.3, margin: 0 }}>
+            <div className="flex flex-col gap-[calc(0.42 * var(--u))]">
+              <p style={{ color: "#1F1F1F", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.3, margin: 0 }}>
                 深度搜索_多轮
               </p>
-              <p style={{ color: "#8C8C8C", fontSize: "clamp(9px, 0.83vw, 12px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1, margin: 0 }}>
+              <p style={{ color: "#8C8C8C", fontSize: "clamp(9px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1, margin: 0 }}>
                 通过多轮推理深化问题认知并进行规划纠偏, 打造完整deep research能力
               </p>
             </div>
@@ -188,7 +188,7 @@ export default function SlidePage2() {
             style={{
               width: "100%",
               objectFit: "cover",
-              borderRadius: "0.63vw",
+              borderRadius: "calc(0.63 * var(--u))",
               boxShadow: "0px -2px 4px 1px rgba(77,145,225,0.1)",
             }}
           />
@@ -257,7 +257,7 @@ function TooltipBalloon({
       <span
         style={{
           color: "#434343",
-          fontSize: "clamp(9px, 0.83vw, 12px)",
+          fontSize: "clamp(9px, calc(0.83 * var(--u)), 12px)",
           fontFamily: "'Alimama ShuHeiTi', sans-serif",
           fontWeight: 700,
           lineHeight: 1.5,
@@ -322,33 +322,33 @@ function BottomCard({
         height: "27.78%",
         background: "#FFFFFF",
         border: "1px solid #F0F2FA",
-        borderRadius: "0.83vw",
+        borderRadius: "calc(0.83 * var(--u))",
         boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
         overflow: "hidden",
       }}
     >
       {/* 卡片内容 (flex 布局，文字与图片间距 4px) */}
       <div className="flex flex-col" style={{ padding: "16px 24px", height: "100%", gap: "4px" }}>
-        <div className="flex items-start gap-[0.42vw] shrink-0">
+        <div className="flex items-start gap-[calc(0.42 * var(--u))] shrink-0">
           <div
             className="flex shrink-0 items-center justify-center"
             style={{
-              width: "clamp(18px, 1.67vw, 24px)",
-              height: "clamp(18px, 1.67vw, 24px)",
+              width: "clamp(18px, calc(1.67 * var(--u)), 24px)",
+              height: "clamp(18px, calc(1.67 * var(--u)), 24px)",
               background: "#D1FB39",
               borderRadius: "66.67px",
               padding: "4px",
             }}
           >
-            <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.83vw, 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+            <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
               {num}
             </p>
           </div>
-          <div className="flex flex-col gap-[0.42vw]">
-            <span style={{ color: "#434343", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
+          <div className="flex flex-col gap-[calc(0.42 * var(--u))]">
+            <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
               {title}
             </span>
-            <p style={{ color: "#8C8C8C", fontSize: "clamp(9px, 0.83vw, 12px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1, margin: 0 }}>
+            <p style={{ color: "#8C8C8C", fontSize: "clamp(9px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1, margin: 0 }}>
               {desc}
             </p>
           </div>
@@ -360,8 +360,8 @@ function BottomCard({
           style={{
             width: "100%",
             objectFit: "cover",
-            borderTopLeftRadius: "0.63vw",
-            borderTopRightRadius: "0.63vw",
+            borderTopLeftRadius: "calc(0.63 * var(--u))",
+            borderTopRightRadius: "calc(0.63 * var(--u))",
             boxShadow: "0px -2px 4px 0px rgba(77,145,225,0.1)",
           }}
         />

@@ -10,7 +10,7 @@ export default function SlidePage15() {
       <div className="absolute inset-0 overflow-hidden bg-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -35,15 +35,15 @@ export default function SlidePage15() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P15}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img src={`${P15}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             工作空间新建智能体 / 15
           </p>
         </div>
         <div className="absolute" style={{ left: "9.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2022 / 2024
             </p>
           </div>
@@ -55,7 +55,7 @@ export default function SlidePage15() {
         <span
           style={{
             color: "#1F1F1F",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -69,7 +69,7 @@ export default function SlidePage15() {
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -82,7 +82,7 @@ export default function SlidePage15() {
       {/* ── Decorative wavy line ─────────────────────────────────── */}
       <svg
         className="absolute z-10"
-        style={{ left: "4.17%", top: "13.06%", width: "clamp(80px, 9.03vw, 130px)", height: "13px", opacity: 0.5 }}
+        style={{ left: "4.17%", top: "13.06%", width: "clamp(80px, calc(9.03 * var(--u)), 130px)", height: "13px", opacity: 0.5 }}
         viewBox="0 0 152 13"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -103,7 +103,7 @@ export default function SlidePage15() {
           right: "4.17%",
           top: "11.11%",
           color: "#434343",
-          fontSize: "clamp(11px, 1.11vw, 16px)",
+          fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
           textAlign: "right",
@@ -122,7 +122,7 @@ export default function SlidePage15() {
           left: "4.17%",
           top: "16.67%",
           width: "91.67%",
-          gap: "clamp(12px, 1.67vw, 24px) clamp(12px, 1.67vw, 24px)",
+          gap: "clamp(12px, calc(1.67 * var(--u)), 24px) clamp(12px, calc(1.67 * var(--u)), 24px)",
         }}
       >
         {/* Card 1 */}
@@ -137,10 +137,10 @@ export default function SlidePage15() {
           }}
         >
           <div className="absolute" style={{ left: "4.63%", top: "4.73%" }}>
-            <span style={{ color: "#1F1F1F", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.3 }}>
+            <span style={{ color: "#1F1F1F", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.3 }}>
               1. Agent主/子模式创建
             </span>
-            <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "6px" }}>
+            <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "6px" }}>
               单智能体/多智能体分别进行执行及调度
             </p>
           </div>
@@ -170,10 +170,10 @@ export default function SlidePage15() {
           }}
         >
           <div className="absolute" style={{ left: "4.63%", top: "4.73%" }}>
-            <span style={{ color: "#1F1F1F", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.3 }}>
+            <span style={{ color: "#1F1F1F", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.3 }}>
               2.系统化提示词工程能力
             </span>
-            <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "6px" }}>
+            <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "6px" }}>
               撰写prompt规则说明&支持推荐示例
             </p>
           </div>
@@ -205,10 +205,10 @@ export default function SlidePage15() {
           }}
         >
           <div className="absolute" style={{ left: "4.63%", top: "4.4%" }}>
-            <span style={{ color: "#1F1F1F", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.3 }}>
+            <span style={{ color: "#1F1F1F", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.3 }}>
               3.如何调用外部工具能力
             </span>
-            <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "6px" }}>
+            <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "6px" }}>
               支持节点/工作流/知识库/MCP等能力接入
             </p>
           </div>
@@ -239,10 +239,10 @@ export default function SlidePage15() {
           }}
         >
           <div className="absolute" style={{ left: "4.63%", top: "4.73%" }}>
-            <span style={{ color: "#1F1F1F", fontSize: "clamp(12px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.3 }}>
+            <span style={{ color: "#1F1F1F", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.3 }}>
               4.CUI结果逻辑
             </span>
-            <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "6px" }}>
+            <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, marginTop: "6px" }}>
               支持运行, 展示执行结果
             </p>
           </div>

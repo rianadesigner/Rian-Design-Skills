@@ -1,33 +1,33 @@
 const P25 = "/images/page25";
 
-const avatarSize = "clamp(16px, 2.08vw, 30px)";
+const avatarSize = "clamp(16px, calc(2.08 * var(--u)), 30px)";
 
 const userBubble = {
-  padding: "clamp(3px, 0.42vw, 6px) clamp(6px, 0.83vw, 12px)",
+  padding: "clamp(3px, calc(0.42 * var(--u)), 6px) clamp(6px, calc(0.83 * var(--u)), 12px)",
   background: "#FFFFFF",
   border: "1px solid #222222",
-  borderRadius: "clamp(6px, 0.83vw, 12px)",
+  borderRadius: "clamp(6px, calc(0.83 * var(--u)), 12px)",
   overflow: "hidden" as const,
 } as const;
 
 const userText = {
   color: "#222222",
-  fontSize: "clamp(9px, 0.97vw, 14px)",
+  fontSize: "clamp(9px, calc(0.97 * var(--u)), 14px)",
   fontFamily: "'PingFang SC', sans-serif",
   lineHeight: 1.5,
   whiteSpace: "nowrap" as const,
 } as const;
 
 const botBubble = {
-  padding: "clamp(5px, 0.63vw, 9px)",
+  padding: "clamp(5px, calc(0.63 * var(--u)), 9px)",
   background: "#507AFC",
-  borderRadius: "clamp(6px, 0.83vw, 12px)",
+  borderRadius: "clamp(6px, calc(0.83 * var(--u)), 12px)",
   overflow: "hidden" as const,
 } as const;
 
 const botText = {
   color: "#FFFFFF",
-  fontSize: "clamp(8px, 0.83vw, 12px)",
+  fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)",
   fontFamily: "'PingFang SC', sans-serif",
   fontWeight: 500,
   lineHeight: 2,
@@ -35,14 +35,14 @@ const botText = {
 
 const badgeStyle = {
   circle: {
-    width: "clamp(14px, 1.39vw, 20px)",
-    height: "clamp(14px, 1.39vw, 20px)",
+    width: "clamp(14px, calc(1.39 * var(--u)), 20px)",
+    height: "clamp(14px, calc(1.39 * var(--u)), 20px)",
     background: "#D1FB39",
     borderRadius: "10px",
   } as const,
   num: {
     color: "#111111",
-    fontSize: "clamp(7px, 0.69vw, 10px)",
+    fontSize: "clamp(7px, calc(0.69 * var(--u)), 10px)",
     fontFamily: "'LogoSC Unbounded Sans', sans-serif",
     textAlign: "center" as const,
     lineHeight: 1,
@@ -50,7 +50,7 @@ const badgeStyle = {
   },
   label: {
     color: "#222222",
-    fontSize: "clamp(8px, 0.83vw, 12px)",
+    fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)",
     fontFamily: "'Alimama ShuHeiTi', sans-serif",
     fontWeight: 700,
     lineHeight: 1.7,
@@ -87,7 +87,7 @@ export default function SlidePage25() {
       <div className="absolute inset-0 overflow-hidden bg-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -118,7 +118,7 @@ export default function SlidePage25() {
       {/* ── Top Cards (2x2 grid) ─────────────────────────────────── */}
       {topCards.map((card) => (
         <div key={card.num}>
-          <div className="absolute z-10 flex items-center" style={{ left: card.left, top: card.badgeTop, gap: "clamp(3px, 0.42vw, 6px)" }}>
+          <div className="absolute z-10 flex items-center" style={{ left: card.left, top: card.badgeTop, gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
             <div className="flex items-center justify-center flex-shrink-0" style={badgeStyle.circle}>
               <p style={badgeStyle.num}>{card.num}</p>
             </div>
@@ -143,7 +143,7 @@ export default function SlidePage25() {
       {/* ── Bottom Cards (3 across) ──────────────────────────────── */}
       {bottomCards.map((card) => (
         <div key={card.num}>
-          <div className="absolute z-10 flex items-center" style={{ left: card.left, top: "75.93%", gap: "clamp(3px, 0.42vw, 6px)" }}>
+          <div className="absolute z-10 flex items-center" style={{ left: card.left, top: "75.93%", gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
             <div className="flex items-center justify-center flex-shrink-0" style={badgeStyle.circle}>
               <p style={badgeStyle.num}>{card.num}</p>
             </div>
@@ -174,7 +174,7 @@ export default function SlidePage25() {
           width: "23.61%",
           height: "100%",
           padding: "5% 2% 2% 2%",
-          gap: "clamp(8px, 1.11vw, 16px)",
+          gap: "clamp(8px, calc(1.11 * var(--u)), 16px)",
           borderRight: "1px solid rgba(61,94,255,0.12)",
           backdropFilter: "blur(10px)",
           WebkitBackdropFilter: "blur(10px)",
@@ -192,13 +192,13 @@ export default function SlidePage25() {
             boxShadow: "0px 0px 6px rgba(0,0,0,0.06)",
           }}
         >
-          <span style={{ color: "#111111", fontSize: "clamp(10px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#111111", fontSize: "clamp(10px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, whiteSpace: "nowrap" }}>
             万相营造-体验驱动AI工具创新
           </span>
         </div>
 
         {/* User 1 */}
-        <div className="flex items-center" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <img src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>万相营造是什么?</span>
@@ -206,7 +206,7 @@ export default function SlidePage25() {
         </div>
 
         {/* Bot 1: Platform description */}
-        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <div style={botBubble}>
             <p style={{ ...botText, margin: 0 }}>
               万相营造是阿里妈妈旗下，面向淘天生态(广告/内容/消费者)的AI创意工具平台。围绕广告创意生产的核心链路，涵盖了商品图、服饰图、视频和文案等创意类型的智能生成。
@@ -216,7 +216,7 @@ export default function SlidePage25() {
         </div>
 
         {/* User 2 */}
-        <div className="flex items-center" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <img src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>平台核心功能有哪些？</span>
@@ -224,7 +224,7 @@ export default function SlidePage25() {
         </div>
 
         {/* Bot 2: Feature list */}
-        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <div style={botBubble}>
             <span style={{ ...botText, lineHeight: 1.75, display: "block" }}>核心功能包括：</span>
             <span style={botText}>
@@ -238,7 +238,7 @@ export default function SlidePage25() {
         </div>
 
         {/* User 3 */}
-        <div className="flex items-center" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <img src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>设计应该发挥什么角色？</span>
@@ -246,7 +246,7 @@ export default function SlidePage25() {
         </div>
 
         {/* Bot 3: Role */}
-        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <div style={botBubble}>
             <p style={{ ...botText, lineHeight: 1.75, margin: 0 }}>
               CUI/GUI交互设计<br />
@@ -258,10 +258,10 @@ export default function SlidePage25() {
         </div>
 
         {/* Final dark */}
-        <div className="flex items-center" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <img src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
-          <div style={{ padding: "clamp(3px, 0.42vw, 6px) clamp(6px, 0.83vw, 12px)", background: "#222222", borderRadius: "clamp(6px, 0.83vw, 12px)", overflow: "hidden" }}>
-            <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, 0.83vw, 12px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.75, whiteSpace: "nowrap" }}>
+          <div style={{ padding: "clamp(3px, calc(0.42 * var(--u)), 6px) clamp(6px, calc(0.83 * var(--u)), 12px)", background: "#222222", borderRadius: "clamp(6px, calc(0.83 * var(--u)), 12px)", overflow: "hidden" }}>
+            <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.75, whiteSpace: "nowrap" }}>
               ✅ 来看看你的设计成果吧！
             </span>
           </div>
@@ -271,15 +271,15 @@ export default function SlidePage25() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-20" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P25}/logo.png`} alt="" className="absolute top-0 h-full object-contain" style={{ left: "-2.5%" }} />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img src={`${P25}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             用AI创造-让效果说话 / 25
           </p>
         </div>
         <div className="absolute" style={{ left: "6.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2022 / 2024
             </p>
           </div>

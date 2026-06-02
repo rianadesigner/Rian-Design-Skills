@@ -41,7 +41,7 @@ export default function SlidePage4() {
       <div className="absolute inset-0 overflow-hidden bg-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -66,15 +66,15 @@ export default function SlidePage4() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P4}/logo.svg`} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img src={`${P4}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             专业研究场景2:&nbsp;&nbsp;高级研究模式 / 04
           </p>
         </div>
         <div className="absolute" style={{ left: "7.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2024 / 2025
             </p>
           </div>
@@ -89,7 +89,7 @@ export default function SlidePage4() {
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -100,7 +100,7 @@ export default function SlidePage4() {
         <span
           style={{
             color: "#1F1F1F",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
           }}
@@ -116,7 +116,7 @@ export default function SlidePage4() {
           right: "4.17%",
           top: "11.11%",
           color: "#434343",
-          fontSize: "clamp(11px, 1.11vw, 16px)",
+          fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
           textAlign: "right",
@@ -150,7 +150,7 @@ export default function SlidePage4() {
           height: "45.19%",
           background: "#FFFFFF",
           border: "1px solid #F0F2FA",
-          borderRadius: "0.83vw",
+          borderRadius: "calc(0.83 * var(--u))",
           boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
           overflow: "hidden",
         }}
@@ -161,24 +161,24 @@ export default function SlidePage4() {
           style={{
             left: "1.82%",
             top: "4.92%",
-            width: "clamp(18px, 1.67vw, 24px)",
-            height: "clamp(18px, 1.67vw, 24px)",
+            width: "clamp(18px, calc(1.67 * var(--u)), 24px)",
+            height: "clamp(18px, calc(1.67 * var(--u)), 24px)",
             background: "#D1FB39",
             borderRadius: "66.67px",
             padding: "4px",
           }}
         >
-          <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.83vw, 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+          <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
             05
           </p>
         </div>
 
         {/* 文字信息 */}
         <div className="absolute flex flex-col" style={{ left: "4.24%", top: "5.74%", width: "29.55%", gap: "6px" }}>
-          <span style={{ color: "#434343", fontSize: "clamp(9px, 0.83vw, 12px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
+          <span style={{ color: "#434343", fontSize: "clamp(9px, calc(0.83 * var(--u)), 12px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
             Formatting Agent(美工)
           </span>
-          <span style={{ color: "#8C8C8C", fontSize: "clamp(9px, 0.83vw, 12px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", display: "block" }}>
+          <span style={{ color: "#8C8C8C", fontSize: "clamp(9px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", display: "block" }}>
             输入多种格式的文档研究报告, 并支持用户在研究过程中脑图查看研究框架
           </span>
           <div className="flex items-start gap-[6px]">
@@ -193,14 +193,14 @@ export default function SlidePage4() {
           style={{
             left: "1.82%",
             top: "29.51%",
-            padding: "0.56vw 0.83vw",
+            padding: "calc(0.56 * var(--u)) calc(0.83 * var(--u))",
             background: "#FFFFFF",
             border: "1px solid #F0F3FF",
-            borderRadius: "3.33vw",
+            borderRadius: "calc(3.33 * var(--u))",
             boxShadow: "0px 2px 4px 0px rgba(25,33,61,0.08)",
           }}
         >
-          <span style={{ color: "#434343", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             脑图辅助用户进行研究类报告产出
           </span>
         </div>
@@ -217,7 +217,7 @@ export default function SlidePage4() {
             height: "63.93%",
             objectFit: "cover",
             objectPosition: "center top",
-            borderRadius: "0.63vw",
+            borderRadius: "calc(0.63 * var(--u))",
             boxShadow: "0px 2px 4px 1px rgba(77,145,225,0.1)",
           }}
         />
@@ -234,7 +234,7 @@ export default function SlidePage4() {
             height: "94.26%",
             objectFit: "cover",
             objectPosition: "center top",
-            borderRadius: "0.63vw",
+            borderRadius: "calc(0.63 * var(--u))",
             boxShadow: "0px 2px 4px 1px rgba(77,145,225,0.1)",
           }}
         />
@@ -267,7 +267,7 @@ function AgentCard({
         height: "33.33%",
         background: "#FFFFFF",
         border: "1px solid #F0F2FA",
-        borderRadius: "0.83vw",
+        borderRadius: "calc(0.83 * var(--u))",
         boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
         overflow: "hidden",
       }}
@@ -279,22 +279,22 @@ function AgentCard({
           <div
             className="absolute right-0 top-0 flex items-center justify-center"
             style={{
-              width: "clamp(18px, 1.67vw, 24px)",
-              height: "clamp(18px, 1.67vw, 24px)",
+              width: "clamp(18px, calc(1.67 * var(--u)), 24px)",
+              height: "clamp(18px, calc(1.67 * var(--u)), 24px)",
               background: "#D1FB39",
               borderRadius: "66.67px",
               padding: "4px",
             }}
           >
-            <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.83vw, 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+            <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
               {num}
             </p>
           </div>
           <div className="flex flex-col" style={{ gap: "6px", paddingRight: "30px" }}>
-            <span style={{ color: "#434343", fontSize: "clamp(9px, 0.83vw, 12px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
+            <span style={{ color: "#434343", fontSize: "clamp(9px, calc(0.83 * var(--u)), 12px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5 }}>
               {title}
             </span>
-            <p style={{ color: "#8C8C8C", fontSize: "clamp(9px, 0.83vw, 12px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            <p style={{ color: "#8C8C8C", fontSize: "clamp(9px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               {desc}
             </p>
             <div className="flex items-start gap-[6px]">
@@ -312,7 +312,7 @@ function AgentCard({
           style={{
             width: "100%",
             objectFit: "cover",
-            borderRadius: "0.63vw",
+            borderRadius: "calc(0.63 * var(--u))",
             boxShadow: "0px 2px 4px 1px rgba(77,145,225,0.1)",
           }}
         />
@@ -330,7 +330,7 @@ function Tag({ label }: { label: string }) {
         borderRadius: "20px",
       }}
     >
-      <p style={{ color: "#434343", fontSize: "clamp(7px, 0.69vw, 10px)", fontFamily: "'PingFang SC', sans-serif", textAlign: "center", fontWeight: 500, lineHeight: "14px", margin: 0, whiteSpace: "nowrap" }}>
+      <p style={{ color: "#434343", fontSize: "clamp(7px, calc(0.69 * var(--u)), 10px)", fontFamily: "'PingFang SC', sans-serif", textAlign: "center", fontWeight: 500, lineHeight: "14px", margin: 0, whiteSpace: "nowrap" }}>
         {label}
       </p>
     </div>

@@ -19,7 +19,7 @@ export default function SlidePage21() {
       <div className="absolute inset-0 overflow-hidden bg-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -44,15 +44,15 @@ export default function SlidePage21() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P21}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img src={`${P21}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             P2F搭建助手 / 21
           </p>
         </div>
         <div className="absolute" style={{ left: "9.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2022 / 2024
             </p>
           </div>
@@ -64,7 +64,7 @@ export default function SlidePage21() {
         <span
           style={{
             color: "#1F1F1F",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -78,7 +78,7 @@ export default function SlidePage21() {
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -91,7 +91,7 @@ export default function SlidePage21() {
       {/* ── Decorative wavy line ─────────────────────────────────── */}
       <svg
         className="absolute z-10"
-        style={{ left: "21.74%", top: "13.06%", width: "clamp(80px, 9.03vw, 130px)", height: "13px", opacity: 0.5 }}
+        style={{ left: "21.74%", top: "13.06%", width: "clamp(80px, calc(9.03 * var(--u)), 130px)", height: "13px", opacity: 0.5 }}
         viewBox="0 0 152 13"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +112,7 @@ export default function SlidePage21() {
           right: "4.17%",
           top: "11.11%",
           color: "#434343",
-          fontSize: "clamp(11px, 1.11vw, 16px)",
+          fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
           textAlign: "right",
@@ -161,34 +161,34 @@ export default function SlidePage21() {
       {/* ── Floating emoji badges ────────────────────────────────── */}
       <div
         className="absolute z-20 flex items-center"
-        style={{ left: "18.68%", top: "14.72%", gap: "clamp(4px, 0.56vw, 8px)", padding: "clamp(4px, 0.56vw, 8px)", background: "#FFFFFF", borderRadius: "60px", boxShadow: "0px 0px 6px rgba(0,0,0,0.06)" }}
+        style={{ left: "18.68%", top: "14.72%", gap: "clamp(4px, calc(0.56 * var(--u)), 8px)", padding: "clamp(4px, calc(0.56 * var(--u)), 8px)", background: "#FFFFFF", borderRadius: "60px", boxShadow: "0px 0px 6px rgba(0,0,0,0.06)" }}
       >
-        <div className="flex items-center justify-center" style={{ width: "clamp(16px, 1.74vw, 25px)", height: "clamp(16px, 1.74vw, 25px)", background: "#D1FB39", borderRadius: "66.67px" }}>
-          <span style={{ fontSize: "clamp(10px, 0.97vw, 14px)", lineHeight: 1 }}>👀</span>
+        <div className="flex items-center justify-center" style={{ width: "clamp(16px, calc(1.74 * var(--u)), 25px)", height: "clamp(16px, calc(1.74 * var(--u)), 25px)", background: "#D1FB39", borderRadius: "66.67px" }}>
+          <span style={{ fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", lineHeight: 1 }}>👀</span>
         </div>
-        <span style={{ color: "#434343", fontSize: "clamp(10px, 1.02vw, 14.66px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
+        <span style={{ color: "#434343", fontSize: "clamp(10px, calc(1.02 * var(--u)), 14.66px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
           前：设计器空空如也
         </span>
       </div>
       <div
         className="absolute z-20 flex items-center"
-        style={{ left: "67.71%", top: "14.81%", gap: "clamp(4px, 0.56vw, 8px)", padding: "clamp(4px, 0.56vw, 8px)", background: "#FFFFFF", borderRadius: "60px", boxShadow: "0px 0px 6px rgba(0,0,0,0.06)" }}
+        style={{ left: "67.71%", top: "14.81%", gap: "clamp(4px, calc(0.56 * var(--u)), 8px)", padding: "clamp(4px, calc(0.56 * var(--u)), 8px)", background: "#FFFFFF", borderRadius: "60px", boxShadow: "0px 0px 6px rgba(0,0,0,0.06)" }}
       >
-        <div className="flex items-center justify-center" style={{ width: "clamp(16px, 1.67vw, 24px)", height: "clamp(16px, 1.67vw, 24px)", background: "#D1FB39", borderRadius: "66.67px" }}>
-          <span style={{ fontSize: "clamp(10px, 0.97vw, 14px)", lineHeight: 1 }}>😄</span>
+        <div className="flex items-center justify-center" style={{ width: "clamp(16px, calc(1.67 * var(--u)), 24px)", height: "clamp(16px, calc(1.67 * var(--u)), 24px)", background: "#D1FB39", borderRadius: "66.67px" }}>
+          <span style={{ fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", lineHeight: 1 }}>😄</span>
         </div>
-        <span style={{ color: "#434343", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
+        <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
           后：生成结果/工作流保存
         </span>
       </div>
       <div
         className="absolute z-20 flex items-center"
-        style={{ left: "42.99%", top: "50%", gap: "clamp(4px, 0.56vw, 8px)", padding: "clamp(4px, 0.56vw, 8px)", background: "#FFFFFF", borderRadius: "60px", boxShadow: "0px 0px 6px rgba(0,0,0,0.06)" }}
+        style={{ left: "42.99%", top: "50%", gap: "clamp(4px, calc(0.56 * var(--u)), 8px)", padding: "clamp(4px, calc(0.56 * var(--u)), 8px)", background: "#FFFFFF", borderRadius: "60px", boxShadow: "0px 0px 6px rgba(0,0,0,0.06)" }}
       >
-        <div className="flex items-center justify-center" style={{ width: "clamp(16px, 1.67vw, 24px)", height: "clamp(16px, 1.67vw, 24px)", background: "#D1FB39", borderRadius: "66.67px" }}>
-          <span style={{ fontSize: "clamp(10px, 0.97vw, 14px)", lineHeight: 1 }}>🧐</span>
+        <div className="flex items-center justify-center" style={{ width: "clamp(16px, calc(1.67 * var(--u)), 24px)", height: "clamp(16px, calc(1.67 * var(--u)), 24px)", background: "#D1FB39", borderRadius: "66.67px" }}>
+          <span style={{ fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", lineHeight: 1 }}>🧐</span>
         </div>
-        <span style={{ color: "#434343", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
+        <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
           中：自动搭建/执行/运行
         </span>
       </div>
@@ -201,8 +201,8 @@ export default function SlidePage21() {
           top: "51.94%",
           width: "100%",
           height: "56.02%",
-          padding: "clamp(16px, 2.08vw, 30px)",
-          gap: "clamp(8px, 0.83vw, 12px)",
+          padding: "clamp(16px, calc(2.08 * var(--u)), 30px)",
+          gap: "clamp(8px, calc(0.83 * var(--u)), 12px)",
           background: "rgba(255,255,255,0.2)",
           border: "1px solid #FFFFFF",
           borderRadius: "12px",
@@ -212,29 +212,29 @@ export default function SlidePage21() {
         }}
       >
         {/* Step labels row */}
-        <div className="flex items-start" style={{ gap: "clamp(8px, 0.83vw, 12px)" }}>
+        <div className="flex items-start" style={{ gap: "clamp(8px, calc(0.83 * var(--u)), 12px)" }}>
           {steps.map((step) => (
             <div
               key={step.num}
               className="flex items-center"
-              style={{ width: "16.67%", gap: "clamp(4px, 0.42vw, 6px)" }}
+              style={{ width: "16.67%", gap: "clamp(4px, calc(0.42 * var(--u)), 6px)" }}
             >
               <div
                 className="flex items-center justify-center flex-shrink-0"
-                style={{ width: "clamp(16px, 1.67vw, 24px)", height: "clamp(16px, 1.67vw, 24px)", background: "#D1FB39", borderRadius: "66.67px" }}
+                style={{ width: "clamp(16px, calc(1.67 * var(--u)), 24px)", height: "clamp(16px, calc(1.67 * var(--u)), 24px)", background: "#D1FB39", borderRadius: "66.67px" }}
               >
-                <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, 0.83vw, 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+                <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
                   {step.num}
                 </p>
               </div>
-              <span style={{ color: "#434343", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
+              <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
                 {step.label}
               </span>
             </div>
           ))}
         </div>
         {/* Step images row */}
-        <div className="flex flex-1 min-h-0" style={{ gap: "clamp(8px, 0.83vw, 12px)" }}>
+        <div className="flex flex-1 min-h-0" style={{ gap: "clamp(8px, calc(0.83 * var(--u)), 12px)" }}>
           {steps.map((step) => (
             <img
               key={step.img}

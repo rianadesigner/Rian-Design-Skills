@@ -32,7 +32,7 @@ export default function SlidePage13() {
       <div className="absolute inset-0 overflow-hidden bg-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -57,15 +57,15 @@ export default function SlidePage13() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P13}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img src={`${P13}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             星链-AI应用开发平台 / 13
           </p>
         </div>
         <div className="absolute" style={{ left: "9.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2022 / 2024
             </p>
           </div>
@@ -74,7 +74,7 @@ export default function SlidePage13() {
 
       {/* ── Main Title (centered) ────────────────────────────────── */}
       <div
-        className="absolute z-10 flex items-center justify-center gap-[0.83vw]"
+        className="absolute z-10 flex items-center justify-center gap-[calc(0.83 * var(--u))]"
         style={{ left: "25.14%", top: "12.87%", width: "49.79%", height: "6.48%" }}
       >
         <span
@@ -83,7 +83,7 @@ export default function SlidePage13() {
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: "clamp(28px, 3.33vw, 48px)",
+            fontSize: "clamp(28px, calc(3.33 * var(--u)), 48px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: 1.46,
             letterSpacing: "2.88px",
@@ -94,7 +94,7 @@ export default function SlidePage13() {
         <span
           style={{
             color: "#1F1F1F",
-            fontSize: "clamp(28px, 3.33vw, 48px)",
+            fontSize: "clamp(28px, calc(3.33 * var(--u)), 48px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: 1.46,
             letterSpacing: "2.88px",
@@ -111,7 +111,7 @@ export default function SlidePage13() {
           left: "28.47%",
           top: "21.57%",
           color: "#A0A0A0",
-          fontSize: "clamp(12px, 1.25vw, 18px)",
+          fontSize: "clamp(12px, calc(1.25 * var(--u)), 18px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
           textAlign: "center",
@@ -137,45 +137,45 @@ export default function SlidePage13() {
         className="absolute z-10 flex flex-col items-center gap-[0.74vh]"
         style={{ left: "36.63%", top: "76.85%", width: "26.74%" }}
       >
-        <p style={{ color: "#434343", fontSize: "clamp(16px, 1.94vw, 28px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, textAlign: "center", lineHeight: 1.4, margin: 0 }}>
+        <p style={{ color: "#434343", fontSize: "clamp(16px, calc(1.94 * var(--u)), 28px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, textAlign: "center", lineHeight: 1.4, margin: 0 }}>
           用Quick重定义技术创新的边界
         </p>
-        <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, 0.97vw, 14px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, textAlign: "center", lineHeight: 1.7, letterSpacing: "0.28px", margin: 0 }}>
+        <p style={{ color: "#8C8C8C", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, textAlign: "center", lineHeight: 1.7, letterSpacing: "0.28px", margin: 0 }}>
           一个平台，五大能力，无限可能
         </p>
       </div>
 
       {/* ── Bottom Q&A cards ──────────────────────────────────────── */}
       <div
-        className="absolute z-10 flex items-start gap-[1.67vw]"
+        className="absolute z-10 flex items-start gap-[calc(1.67 * var(--u))]"
         style={{ left: "8.47%", top: "86.67%", width: "83.06%" }}
       >
         {qaCards.map((card, i) => (
           <div
             key={i}
-            className="flex items-center gap-[0.83vw]"
+            className="flex items-center gap-[calc(0.83 * var(--u))]"
             style={{
-              padding: "clamp(10px, 1.11vw, 16px) clamp(14px, 1.67vw, 24px)",
+              padding: "clamp(10px, calc(1.11 * var(--u)), 16px) clamp(14px, calc(1.67 * var(--u)), 24px)",
               background: "rgba(255,255,255,0.2)",
               border: "1px solid #FFFFFF",
               borderRadius: "12px",
               boxShadow: "0px 0px 6px rgba(0,0,0,0.06)",
             }}
           >
-            <div className="flex flex-col gap-[0.83vw]">
+            <div className="flex flex-col gap-[calc(0.83 * var(--u))]">
               <div className="flex items-center gap-[4px]">
-                <p style={{ color: "#1F1F1F", fontSize: "clamp(11px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.25, opacity: 0.5, margin: 0, whiteSpace: "nowrap" }}>
+                <p style={{ color: "#1F1F1F", fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.25, opacity: 0.5, margin: 0, whiteSpace: "nowrap" }}>
                   Q:
                 </p>
-                <p style={{ color: "#1F1F1F", fontSize: "clamp(11px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.25, opacity: 0.5, margin: 0, whiteSpace: "nowrap" }}>
+                <p style={{ color: "#1F1F1F", fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.25, opacity: 0.5, margin: 0, whiteSpace: "nowrap" }}>
                   {card.q}
                 </p>
               </div>
               <div className="flex items-center gap-[4px]">
-                <p style={{ color: "#1F1F1F", fontSize: "clamp(11px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.25, margin: 0, whiteSpace: "nowrap" }}>
+                <p style={{ color: "#1F1F1F", fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.25, margin: 0, whiteSpace: "nowrap" }}>
                   A:
                 </p>
-                <p style={{ color: "#1F1F1F", fontSize: "clamp(11px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.25, margin: 0, whiteSpace: "nowrap" }}>
+                <p style={{ color: "#1F1F1F", fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.25, margin: 0, whiteSpace: "nowrap" }}>
                   {card.a}
                 </p>
               </div>

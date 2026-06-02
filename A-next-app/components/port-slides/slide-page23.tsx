@@ -20,14 +20,14 @@ const col4Items = [
 
 const badgeStyle = {
   circle: {
-    width: "clamp(14px, 1.39vw, 20px)",
-    height: "clamp(14px, 1.39vw, 20px)",
+    width: "clamp(14px, calc(1.39 * var(--u)), 20px)",
+    height: "clamp(14px, calc(1.39 * var(--u)), 20px)",
     background: "#D1FB39",
     borderRadius: "10px",
   } as const,
   num: {
     color: "#111111",
-    fontSize: "clamp(7px, 0.69vw, 10px)",
+    fontSize: "clamp(7px, calc(0.69 * var(--u)), 10px)",
     fontFamily: "'LogoSC Unbounded Sans', sans-serif",
     textAlign: "center" as const,
     lineHeight: 1,
@@ -35,7 +35,7 @@ const badgeStyle = {
   },
   label: {
     color: "#222222",
-    fontSize: "clamp(8px, 0.83vw, 12px)",
+    fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)",
     fontFamily: "'Alimama ShuHeiTi', sans-serif",
     fontWeight: 700,
     lineHeight: 1.7,
@@ -48,34 +48,34 @@ const imgBorder = {
   borderRadius: "6px",
 } as const;
 
-const avatarSize = "clamp(16px, 2.08vw, 30px)";
+const avatarSize = "clamp(16px, calc(2.08 * var(--u)), 30px)";
 
 const userBubble = {
-  padding: "clamp(3px, 0.42vw, 6px) clamp(6px, 0.83vw, 12px)",
+  padding: "clamp(3px, calc(0.42 * var(--u)), 6px) clamp(6px, calc(0.83 * var(--u)), 12px)",
   background: "#FFFFFF",
   border: "1px solid #222222",
-  borderRadius: "clamp(6px, 0.83vw, 12px)",
+  borderRadius: "clamp(6px, calc(0.83 * var(--u)), 12px)",
   overflow: "hidden" as const,
 } as const;
 
 const userText = {
   color: "#222222",
-  fontSize: "clamp(9px, 0.97vw, 14px)",
+  fontSize: "clamp(9px, calc(0.97 * var(--u)), 14px)",
   fontFamily: "'PingFang SC', sans-serif",
   lineHeight: 1.5,
   whiteSpace: "nowrap" as const,
 } as const;
 
 const botBubble = {
-  padding: "clamp(5px, 0.63vw, 9px)",
+  padding: "clamp(5px, calc(0.63 * var(--u)), 9px)",
   background: "#507AFC",
-  borderRadius: "clamp(6px, 0.83vw, 12px)",
+  borderRadius: "clamp(6px, calc(0.83 * var(--u)), 12px)",
   overflow: "hidden" as const,
 } as const;
 
 const botText = {
   color: "#FFFFFF",
-  fontSize: "clamp(8px, 0.83vw, 12px)",
+  fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)",
   fontFamily: "'PingFang SC', sans-serif",
   fontWeight: 500,
   lineHeight: 2,
@@ -97,7 +97,7 @@ export default function SlidePage23() {
       <div className="absolute inset-0 overflow-hidden bg-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -128,7 +128,7 @@ export default function SlidePage23() {
           width: "23.61%",
           height: "100%",
           padding: "5% 2% 2% 2%",
-          gap: "clamp(8px, 1.11vw, 16px)",
+          gap: "clamp(8px, calc(1.11 * var(--u)), 16px)",
           borderRight: "1px solid rgba(61,94,255,0.12)",
           backdropFilter: "blur(10px)",
           WebkitBackdropFilter: "blur(10px)",
@@ -146,13 +146,13 @@ export default function SlidePage23() {
             boxShadow: "2px 2px 0px 0px rgba(80,87,246,0.12)",
           }}
         >
-          <span style={{ color: "#111111", fontSize: "clamp(10px, 1.11vw, 16px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#111111", fontSize: "clamp(10px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7, whiteSpace: "nowrap" }}>
             一键成片, 10s智能视频创意神器
           </span>
         </div>
 
         {/* User 1: 😎今年工具我们定个什么O？ */}
-        <div className="flex items-center" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <img src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>😎 今年工具我们定个什么O？</span>
@@ -160,12 +160,12 @@ export default function SlidePage23() {
         </div>
 
         {/* Bot 1: 目标 pill */}
-        <div className="flex items-center" style={{ alignSelf: "flex-end", gap: "clamp(3px, 0.42vw, 6px)" }}>
-          <div className="flex items-center" style={{ ...botBubble, padding: 0, height: "clamp(24px, 2.5vw, 36px)", gap: 0 }}>
-            <div className="flex items-center justify-center flex-shrink-0" style={{ width: "clamp(24px, 2.5vw, 36px)", height: "clamp(12px, 1.25vw, 18px)", background: "#FFFFFF", borderRadius: "clamp(12px, 1.56vw, 22.5px)", marginLeft: "clamp(5px, 0.63vw, 9px)" }}>
-              <span style={{ color: "#4554E5", fontSize: "clamp(7px, 0.78vw, 11px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1 }}>目标</span>
+        <div className="flex items-center" style={{ alignSelf: "flex-end", gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
+          <div className="flex items-center" style={{ ...botBubble, padding: 0, height: "clamp(24px, calc(2.5 * var(--u)), 36px)", gap: 0 }}>
+            <div className="flex items-center justify-center flex-shrink-0" style={{ width: "clamp(24px, calc(2.5 * var(--u)), 36px)", height: "clamp(12px, calc(1.25 * var(--u)), 18px)", background: "#FFFFFF", borderRadius: "clamp(12px, calc(1.56 * var(--u)), 22.5px)", marginLeft: "clamp(5px, calc(0.63 * var(--u)), 9px)" }}>
+              <span style={{ color: "#4554E5", fontSize: "clamp(7px, calc(0.78 * var(--u)), 11px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1 }}>目标</span>
             </div>
-            <span style={{ ...botText, lineHeight: 1.75, paddingLeft: "clamp(3px, 0.28vw, 4px)", paddingRight: "clamp(5px, 0.63vw, 9px)", whiteSpace: "nowrap" as const }}>
+            <span style={{ ...botText, lineHeight: 1.75, paddingLeft: "clamp(3px, calc(0.28 * var(--u)), 4px)", paddingRight: "clamp(5px, calc(0.63 * var(--u)), 9px)", whiteSpace: "nowrap" as const }}>
               视频精品率&覆盖广告消耗提升
             </span>
           </div>
@@ -173,7 +173,7 @@ export default function SlidePage23() {
         </div>
 
         {/* User 2: 🫡请告诉我该怎么做KR！ */}
-        <div className="flex items-center" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <img src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>🫡 请告诉我该怎么做KR！</span>
@@ -181,7 +181,7 @@ export default function SlidePage23() {
         </div>
 
         {/* Bot 2: KR list */}
-        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <div style={botBubble}>
             <span style={botTitle}>重点聚焦以下KR：</span>
             <span style={botText}>
@@ -194,7 +194,7 @@ export default function SlidePage23() {
         </div>
 
         {/* User 3: 🤔KR该如何完成？ */}
-        <div className="flex items-center" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <img src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>🤔 KR该如何完成？</span>
@@ -202,7 +202,7 @@ export default function SlidePage23() {
         </div>
 
         {/* Bot 3: Plan */}
-        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <div style={botBubble}>
             <span style={botTitle}>我的规划如下：</span>
             <p style={{ ...botText, margin: 0 }}>
@@ -215,7 +215,7 @@ export default function SlidePage23() {
         </div>
 
         {/* User 4: 阐述你的设计策略? */}
-        <div className="flex items-center" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <img src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>阐述你的设计策略?</span>
@@ -223,7 +223,7 @@ export default function SlidePage23() {
         </div>
 
         {/* Bot 4: Strategy */}
-        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-start" style={{ alignSelf: "flex-end", maxWidth: "88%", gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <div style={botBubble}>
             <span style={botTitle}>我的策略如下：</span>
             <p style={{ ...botText, margin: 0 }}>
@@ -236,10 +236,10 @@ export default function SlidePage23() {
         </div>
 
         {/* User 5 (dark): ✅已完成OKR */}
-        <div className="flex items-center" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+        <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
           <img src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
-          <div style={{ padding: "clamp(3px, 0.42vw, 6px) clamp(6px, 0.83vw, 12px)", background: "#222222", borderRadius: "clamp(6px, 0.83vw, 12px)", overflow: "hidden" }}>
-            <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, 0.83vw, 12px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.75, whiteSpace: "nowrap" }}>
+          <div style={{ padding: "clamp(3px, calc(0.42 * var(--u)), 6px) clamp(6px, calc(0.83 * var(--u)), 12px)", background: "#222222", borderRadius: "clamp(6px, calc(0.83 * var(--u)), 12px)", overflow: "hidden" }}>
+            <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.75, whiteSpace: "nowrap" }}>
               ✅ 已完成OKR，查看你的成果吧！
             </span>
           </div>
@@ -253,7 +253,7 @@ export default function SlidePage23() {
       >
         {col2Items.map((item, i) => (
           <div key={item.num} className="flex flex-col" style={{ gap: "4px", flex: i === 0 ? "0 0 auto" : "1 1 0", minHeight: 0 }}>
-            <div className="flex items-center flex-shrink-0" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+            <div className="flex items-center flex-shrink-0" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
               <div className="flex items-center justify-center flex-shrink-0" style={badgeStyle.circle}>
                 <p style={badgeStyle.num}>{item.num}</p>
               </div>
@@ -271,7 +271,7 @@ export default function SlidePage23() {
       >
         {col3Items.map((item, i) => (
           <div key={item.num} className="flex flex-col" style={{ gap: "4px", flex: i === 0 ? "0 0 auto" : "1 1 0", minHeight: 0 }}>
-            <div className="flex items-center flex-shrink-0" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+            <div className="flex items-center flex-shrink-0" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
               <div className="flex items-center justify-center flex-shrink-0" style={badgeStyle.circle}>
                 <p style={badgeStyle.num}>{item.num}</p>
               </div>
@@ -290,7 +290,7 @@ export default function SlidePage23() {
       >
         {col4Items.map((item, i) => (
           <div key={item.num} className="flex flex-col" style={{ gap: "4px", flex: i === 0 ? "0 0 auto" : "1 1 0", minHeight: 0 }}>
-            <div className="flex items-center flex-shrink-0" style={{ gap: "clamp(3px, 0.42vw, 6px)" }}>
+            <div className="flex items-center flex-shrink-0" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
               <div className="flex items-center justify-center flex-shrink-0" style={badgeStyle.circle}>
                 <p style={badgeStyle.num}>{item.num}</p>
               </div>
@@ -304,15 +304,15 @@ export default function SlidePage23() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-20" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P23}/logo.png`} alt="" className="absolute top-0 h-full object-contain" style={{ left: "-2.5%" }} />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img src={`${P23}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             绘剪-淘系短视频播种机 / 23
           </p>
         </div>
         <div className="absolute" style={{ left: "6.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2022 / 2024
             </p>
           </div>

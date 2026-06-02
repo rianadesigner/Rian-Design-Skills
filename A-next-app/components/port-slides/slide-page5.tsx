@@ -31,7 +31,7 @@ export default function SlidePage5() {
       <div className="absolute inset-0 overflow-hidden bg-white">
         <div className="absolute inset-0 opacity-20">
           <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[112vw] opacity-50" viewBox="0 0 1620 1259">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
               <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
               <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
               <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
@@ -56,15 +56,15 @@ export default function SlidePage5() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P5}/logo.svg`} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[0.7vw]">
+        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <img src={`${P5}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, 1.67vw, 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             复盘：&nbsp;&nbsp;如何构建AI搜索多模式 / 05
           </p>
         </div>
         <div className="absolute" style={{ left: "7.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "0.3vw 0.8vw", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, 1.1vw, 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2024 / 2025
             </p>
           </div>
@@ -76,7 +76,7 @@ export default function SlidePage5() {
         <span
           style={{
             color: "#1F1F1F",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -90,7 +90,7 @@ export default function SlidePage5() {
             backgroundClip: "text",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
-            fontSize: "clamp(20px, 2.5vw, 36px)",
+            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
@@ -107,7 +107,7 @@ export default function SlidePage5() {
           right: "4.17%",
           top: "11.11%",
           color: "#434343",
-          fontSize: "clamp(11px, 1.11vw, 16px)",
+          fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
           textAlign: "right",
@@ -129,7 +129,7 @@ export default function SlidePage5() {
           height: "19.63%",
           background: "#FFFFFF",
           border: "1px solid #F2F8FF",
-          borderRadius: "0.83vw",
+          borderRadius: "calc(0.83 * var(--u))",
           boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
           overflow: "hidden",
         }}
@@ -145,7 +145,7 @@ export default function SlidePage5() {
             height: "100%",
             objectFit: "contain",
             objectPosition: "center center",
-            borderRadius: "0.83vw",
+            borderRadius: "calc(0.83 * var(--u))",
           }}
         />
         {/* Speech bubble */}
@@ -182,8 +182,8 @@ export default function SlidePage5() {
           top: "37.41%",
           right: "4.17%",
           bottom: 0,
-          borderTopLeftRadius: "0.83vw",
-          borderTopRightRadius: "0.83vw",
+          borderTopLeftRadius: "calc(0.83 * var(--u))",
+          borderTopRightRadius: "calc(0.83 * var(--u))",
           borderBottomLeftRadius: 0,
           borderBottomRightRadius: 0,
           boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
@@ -194,7 +194,7 @@ export default function SlidePage5() {
           src={`${P5}/bottom-card.png`}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
-          style={{ objectPosition: "center top", borderTopLeftRadius: "0.83vw", borderTopRightRadius: "0.83vw", borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
+          style={{ objectPosition: "center top", borderTopLeftRadius: "calc(0.83 * var(--u))", borderTopRightRadius: "calc(0.83 * var(--u))", borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
         />
       </div>
     </div>
@@ -214,19 +214,19 @@ function SkeletonRow({ top, highlighted }: { top: string; highlighted: boolean }
         borderRadius: highlighted ? "5.88px" : undefined,
       }}
     >
-      <div className="flex items-center gap-[0.4vw] absolute" style={{ left: "3.7%", top: "15.8%" }}>
+      <div className="flex items-center gap-[calc(0.4 * var(--u))] absolute" style={{ left: "3.7%", top: "15.8%" }}>
         <div
           style={{
-            width: "clamp(8px, 0.96vw, 14px)",
-            height: "clamp(8px, 0.96vw, 14px)",
+            width: "clamp(8px, calc(0.96 * var(--u)), 14px)",
+            height: "clamp(8px, calc(0.96 * var(--u)), 14px)",
             background: highlighted ? "rgba(80,87,246,0.3)" : "#E0E0E0",
             borderRadius: "2px",
           }}
         />
         <div
           style={{
-            width: "clamp(40px, 5vw, 72px)",
-            height: "clamp(6px, 0.7vw, 10px)",
+            width: "clamp(40px, calc(5 * var(--u)), 72px)",
+            height: "clamp(6px, calc(0.7 * var(--u)), 10px)",
             background: highlighted ? "rgba(80,87,246,0.2)" : "#E8E8E8",
             borderRadius: "2px",
           }}
@@ -240,8 +240,8 @@ function SkeletonRow({ top, highlighted }: { top: string; highlighted: boolean }
         >
           <div
             style={{
-              width: "clamp(24px, 2.7vw, 38px)",
-              height: "clamp(4px, 0.5vw, 8px)",
+              width: "clamp(24px, calc(2.7 * var(--u)), 38px)",
+              height: "clamp(4px, calc(0.5 * var(--u)), 8px)",
               background: highlighted ? "rgba(80,87,246,0.15)" : "#E8E8E8",
               borderRadius: "2px",
             }}
@@ -253,8 +253,8 @@ function SkeletonRow({ top, highlighted }: { top: string; highlighted: boolean }
         style={{
           left: "3.7%",
           top: "63%",
-          width: "clamp(100px, 12vw, 180px)",
-          height: "clamp(4px, 0.5vw, 8px)",
+          width: "clamp(100px, calc(12 * var(--u)), 180px)",
+          height: "clamp(4px, calc(0.5 * var(--u)), 8px)",
           background: highlighted ? "rgba(80,87,246,0.15)" : "#E8E8E8",
           borderRadius: "2px",
         }}
@@ -283,16 +283,16 @@ function TextCard({
         width: "22.32%",
         height: "19.63%",
         background: "#FFFFFF",
-        borderRadius: "0.83vw",
+        borderRadius: "calc(0.83 * var(--u))",
         boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
         overflow: "hidden",
       }}
     >
-      <div className="flex flex-col items-center justify-center" style={{ padding: "clamp(12px, 1.67vw, 24px)", height: "100%", textAlign: "center" }}>
+      <div className="flex flex-col items-center justify-center" style={{ padding: "clamp(12px, calc(1.67 * var(--u)), 24px)", height: "100%", textAlign: "center" }}>
         <span
           style={{
             color: "#1F1F1F",
-            fontSize: "clamp(12px, 1.39vw, 20px)",
+            fontSize: "clamp(12px, calc(1.39 * var(--u)), 20px)",
             fontFamily: "'Alimama ShuHeiTi', sans-serif",
             fontWeight: 700,
             lineHeight: 1.7,
@@ -300,7 +300,7 @@ function TextCard({
         >
           {title}
         </span>
-        <svg height="13" viewBox="0 0 152 13" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "clamp(100px, 14vw, 201px)", display: "block", marginTop: "-6px", opacity: 0.5 }}>
+        <svg height="13" viewBox="0 0 152 13" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "clamp(100px, calc(14 * var(--u)), 201px)", display: "block", marginTop: "-6px", opacity: 0.5 }}>
           <defs>
             <linearGradient x1="0.0735" y1="0.129" x2="1.003" y2="0.132" id="p5wv">
               <stop offset="0%" stopColor="#5C5CFF" />
@@ -312,20 +312,20 @@ function TextCard({
         <span
           style={{
             color: "#434343",
-            fontSize: "clamp(10px, 1.25vw, 18px)",
+            fontSize: "clamp(10px, calc(1.25 * var(--u)), 18px)",
             fontFamily: "'PingFang SC', sans-serif",
             lineHeight: 1.7,
           }}
         >
           {subtitle}
         </span>
-        <div className="flex flex-col items-center" style={{ background: "#F8F9FD", borderRadius: "8px", padding: "clamp(4px, 0.5vw, 8px) clamp(8px, 1vw, 14px)", marginTop: "4px", width: "100%" }}>
+        <div className="flex flex-col items-center" style={{ background: "#F8F9FD", borderRadius: "8px", padding: "clamp(4px, calc(0.5 * var(--u)), 8px) clamp(8px, calc(1 * var(--u)), 14px)", marginTop: "4px", width: "100%" }}>
           {bullets.map((b) => (
             <span
               key={b}
               style={{
                 color: "#434343",
-                fontSize: "clamp(9px, 1.11vw, 16px)",
+                fontSize: "clamp(9px, calc(1.11 * var(--u)), 16px)",
                 fontFamily: "'PingFang SC', sans-serif",
                 lineHeight: 1.7,
                 whiteSpace: "nowrap",
