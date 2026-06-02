@@ -121,11 +121,9 @@ export default function SlideContainer() {
 
   const getMaxScroll = useCallback(() => {
     if (!scrollRef.current) return 0;
-    const el = scrollRef.current;
-    const contentH = 900 * zoomRef.current;
-    const viewH = el.clientHeight;
-    const fromDOM = el.scrollHeight - viewH;
-    return Math.max(fromDOM, contentH - viewH, 0);
+    const viewH = scrollRef.current.clientHeight;
+    const visibleContentH = 900 * zoomRef.current;
+    return Math.max(visibleContentH - viewH, 0);
   }, []);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
@@ -234,19 +232,14 @@ export default function SlideContainer() {
           .slide-scroll {
             width: 100% !important;
             height: 100% !important;
-            overflow-x: hidden !important;
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-          }
-          .slide-scroll::-webkit-scrollbar {
-            display: none;
+            overflow: hidden !important;
           }
           .slide-scroll > * {
             width: 1440px !important;
             height: 900px !important;
             min-height: 900px !important;
-            zoom: var(--slide-zoom, 1) !important;
+            transform: scale(var(--slide-zoom, 1)) !important;
+            transform-origin: top left !important;
           }
           .slide-scroll .three-canvas-container,
           .slide-scroll .three-canvas-container canvas {
