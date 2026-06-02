@@ -34,26 +34,44 @@ import SlidePage26 from "./slide-page26";
 const slideComponents = [ObservatoryCover, /* SlidePage0, */ SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
 const slideIds = ["cover", /* "page0", */ "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
 
-const SWIPE_THRESHOLD = 100;
-const SWIPE_VELOCITY = 500;
+const SWIPE_THRESHOLD = 80;
+const SWIPE_VELOCITY = 400;
 
-const variants = {
+const variantsX = {
   enter: (direction: number) => ({
     x: direction > 0 ? "100%" : "-100%",
     opacity: 0.5,
   }),
-  center: {
-    x: 0,
-    opacity: 1,
-  },
+  center: { x: 0, opacity: 1 },
   exit: (direction: number) => ({
     x: direction > 0 ? "-100%" : "100%",
     opacity: 0.5,
   }),
 };
 
+const variantsY = {
+  enter: (direction: number) => ({
+    y: direction > 0 ? "100%" : "-100%",
+    opacity: 0.5,
+  }),
+  center: { y: 0, opacity: 1 },
+  exit: (direction: number) => ({
+    y: direction > 0 ? "-100%" : "100%",
+    opacity: 0.5,
+  }),
+};
+
 export default function SlideContainer() {
   const [[current, direction], setCurrent] = useState([0, 0]);
+  const [isMobilePortrait, setIsMobilePortrait] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
+    setIsMobilePortrait(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setIsMobilePortrait(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   const paginate = useCallback(
     (newDirection: number) => {
@@ -66,17 +84,25 @@ export default function SlideContainer() {
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     const { offset, velocity } = info;
-    if (offset.x < -SWIPE_THRESHOLD || velocity.x < -SWIPE_VELOCITY) {
-      paginate(1);
-    } else if (offset.x > SWIPE_THRESHOLD || velocity.x > SWIPE_VELOCITY) {
-      paginate(-1);
+    if (isMobilePortrait) {
+      if (offset.y > SWIPE_THRESHOLD || velocity.y > SWIPE_VELOCITY) {
+        paginate(1);
+      } else if (offset.y < -SWIPE_THRESHOLD || velocity.y < -SWIPE_VELOCITY) {
+        paginate(-1);
+      }
+    } else {
+      if (offset.x < -SWIPE_THRESHOLD || velocity.x < -SWIPE_VELOCITY) {
+        paginate(1);
+      } else if (offset.x > SWIPE_THRESHOLD || velocity.x > SWIPE_VELOCITY) {
+        paginate(-1);
+      }
     }
   };
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") paginate(1);
-      if (e.key === "ArrowLeft") paginate(-1);
+      if (e.key === "ArrowRight" || e.key === "ArrowDown") paginate(1);
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") paginate(-1);
     };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
@@ -106,7 +132,7 @@ export default function SlideContainer() {
             width: 100vh !important;
             height: 100vw !important;
             transform: none !important;
-            touch-action: pan-y !important;
+            touch-action: pan-x !important;
           }
           .slide-scroll {
             width: 100% !important;
@@ -128,13 +154,13 @@ export default function SlideContainer() {
         <motion.div
           key={slideIds[current]}
           custom={direction}
-          variants={variants}
+          variants={isMobilePortrait ? variantsY : variantsX}
           initial="enter"
           animate="center"
           exit="exit"
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          drag="x"
-          dragConstraints={{ left: 0, right: 0 }}
+          drag={isMobilePortrait ? "y" : "x"}
+          dragConstraints={isMobilePortrait ? { top: 0, bottom: 0 } : { left: 0, right: 0 }}
           dragElastic={0.2}
           onDragEnd={handleDragEnd}
           className="slide-inner absolute inset-0 h-full w-full cursor-grab active:cursor-grabbing"
@@ -145,7 +171,7 @@ export default function SlideContainer() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Arrow hints — hidden on cover */}
+      {/* Arrow hints — hidden on mobile */}
       {current > 1 && (
         <button
           onClick={() => paginate(-1)}
