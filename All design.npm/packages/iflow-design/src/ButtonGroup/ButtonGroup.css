@@ -1,0 +1,47 @@
+/* ButtonGroup & ButtonPlainTextGroup — 对齐 button.ai */
+
+/* ── 实体按钮组 ── */
+.iflow-btn-group {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  gap: var(--iflow-gap-sm, 12px);
+}
+
+.iflow-btn-group--large  { height: var(--iflow-control-lg, 36px); }
+.iflow-btn-group--middle { height: var(--iflow-control-md, 32px); }
+.iflow-btn-group--small  { height: var(--iflow-control-sm, 24px); }
+
+/* ── 纯文本按钮组 ── */
+.iflow-btn-plain-group {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  flex-shrink: 0;
+  gap: var(--iflow-gap-sm, 12px);
+}
+
+/* ── 分割线 ── */
+.iflow-btn-divider {
+  display: inline-block;
+  width: 1px;
+  height: 10px;
+  flex-shrink: 0;
+  align-self: center;
+  background: var(--iflow-color-split, #e4e6ed);
+  padding: 0;
+  margin: 0;
+}
+
+/* ── 混合排布容器（左纯文本组 + 右按钮组）── */
+.iflow-btn-mixed {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--iflow-gap-sm, 12px);
+}

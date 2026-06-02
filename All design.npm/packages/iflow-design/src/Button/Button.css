@@ -1,0 +1,158 @@
+/* Button — 对齐 taobao refer/button.ai */
+
+.iflow-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: var(--iflow-radius-base, 4px);
+  font-family: var(--iflow-font-family, "PingFang SC", -apple-system, system-ui, sans-serif);
+  font-size: var(--iflow-font-size-sm, 12px);
+  font-weight: var(--iflow-font-weight-medium, 500);
+  line-height: var(--iflow-line-height-sm, 20px);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+.iflow-btn:focus-visible {
+  box-shadow: var(--iflow-focus-ring-primary, 0 0 0 2px rgba(61, 94, 255, 0.2));
+}
+
+/* ── 尺寸 ── */
+.iflow-btn--large {
+  height: var(--iflow-control-lg, 36px);
+  padding: 0 var(--iflow-btn-px-lg, 14px);
+  gap: var(--iflow-btn-gap-md, 6px);
+}
+
+.iflow-btn--middle {
+  height: var(--iflow-control-md, 32px);
+  padding: 0 var(--iflow-btn-px-md, 12px);
+  gap: var(--iflow-btn-gap-md, 6px);
+}
+
+.iflow-btn--small {
+  height: var(--iflow-control-sm, 24px);
+  padding: 0 var(--iflow-btn-px-sm, 10px);
+  gap: var(--iflow-btn-gap-sm, 4px);
+}
+
+/* ── 类型：default ── */
+.iflow-btn--default {
+  background: var(--iflow-color-bg-base, #ffffff);
+  border-color: var(--iflow-color-border-secondary, #e8e8e8);
+  color: var(--iflow-color-text, #111111);
+}
+
+.iflow-btn--default:hover:not(:disabled) {
+  border-color: var(--iflow-primary-border-hover, #94a9ff);
+  color: var(--iflow-primary-text-hover, #6984ff);
+}
+
+.iflow-btn--default:active:not(:disabled) {
+  border-color: var(--iflow-primary-active, #2944d9);
+  color: var(--iflow-primary-active, #2944d9);
+}
+
+/* ── 类型：primary ── */
+.iflow-btn--primary {
+  background: var(--iflow-color-primary, #3d5eff);
+  border-color: var(--iflow-color-primary, #3d5eff);
+  color: var(--iflow-color-white, #ffffff);
+}
+
+.iflow-btn--primary:hover:not(:disabled) {
+  background: var(--iflow-primary-hover, #6984ff);
+  border-color: var(--iflow-primary-hover, #6984ff);
+}
+
+.iflow-btn--primary:active:not(:disabled) {
+  background: var(--iflow-primary-active, #2944d9);
+  border-color: var(--iflow-primary-active, #2944d9);
+}
+
+.iflow-btn--primary:focus-visible {
+  box-shadow: var(--iflow-focus-ring-primary);
+}
+
+/* ── 禁用 ── */
+.iflow-btn:disabled,
+.iflow-btn--disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── 加载 ── */
+.iflow-btn--loading {
+  cursor: default;
+  opacity: 0.8;
+}
+
+/* ── 图标槽 ── */
+.iflow-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.iflow-btn__text {
+  white-space: nowrap;
+}
+
+/* ── 纯文本按钮 ButtonPlainText ── */
+.iflow-btn-plain {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0;
+  font-family: var(--iflow-font-family, "PingFang SC", -apple-system, system-ui, sans-serif);
+  font-size: var(--iflow-font-size-sm, 12px);
+  font-weight: var(--iflow-font-weight-normal, 400);
+  line-height: var(--iflow-line-height-sm, 20px);
+  cursor: pointer;
+  outline: none;
+  gap: var(--iflow-btn-gap-sm, 4px);
+  transition: color 0.15s ease;
+  -webkit-font-smoothing: antialiased;
+}
+
+.iflow-btn-plain--default {
+  color: var(--iflow-color-text, #111111);
+}
+
+.iflow-btn-plain--default:hover:not(:disabled) {
+  color: var(--iflow-primary-text-hover, #6984ff);
+}
+
+.iflow-btn-plain--primary {
+  color: var(--iflow-color-link, #3d5eff);
+}
+
+.iflow-btn-plain--primary:hover:not(:disabled) {
+  color: var(--iflow-color-link-hover, #94a9ff);
+}
+
+.iflow-btn-plain--primary:active:not(:disabled) {
+  color: var(--iflow-color-link-active, #2944d9);
+}
+
+.iflow-btn-plain:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

@@ -1,0 +1,327 @@
+列表操作页 TablePage
+核心依赖（建议搜索知识库获取）：FrameLayout.ai.md、TabsBasic.ai.md、Alert.ai.md、TabsCapsule.ai.md、FilterSection.ai.md、Table.ai.md、Pagination.ai.md、Badge.ai.md、Tag.ai.md、ActionBar.ai.md
+原子依赖（核心依赖已含基础规格，如需定制可进一步搜索）：TableCell.ai.md、CheckboxButton.ai.md、Button.ai.md、Link.ai.md、Input.ai.md、Select.ai.md、DatePicker.ai.md
+定义
+展示数据集并支持筛选、排序、编辑、删除等操作。场景：商品/订单/物流/库存/售后/客户等以「表格 + 筛选 + 行操作 / 批量」为主干的列表页。
+
+样式
+● 框架 FrameLayout：
+● FrameLayout：使用 FrameLayout 标准结构
+● Header、Main&Sider、Sider、Content 使用 FrameLayout 标准结构；业务块在 main.main-content 的 Content。
+● Content：主内容区，w-full h-auto pt-0 px-0 pb-0 m-0 flex flex-col gap-[16px] bg-[#fff]
+● 一级子节点（纵向 gap-[16px]）：TabsBasic → Alert → TabsCapsule → FilterSection → Table
+● 无指标 Card、无 ToolCard 横排
+● Footer：无批量 ActionBar 时 Footer=false
+● 需要批量：Footer=true + ActionBar
+● overflow-visible
+● 底部操作 ActionBar：
+● ActionBar：w-full h-[68px]，Scene=Page，type=table，Left=true，Center=false，Right=true，Settings=false，Extra=false（扩展区 Extra=true）
+● Left：Checkbox，Label=true，Text（如 已选 (1245/2400)）
+● 表内勾选：TableHeaderControl / TableRowControl
+● 底栏不放无文案 Checkbox
+● Right：按钮组 ButtonGroup size=large，内按钮 Button，最右 type=primary
+● Extra：要放 Message 等时 Extra=true
+● 一级导航 TabsBasic：
+● TabsBasic：w-full h-auto，Size=Middle，底边线粗 3px
+● TabItems：gap-[32px]，仅 TabsBasicItem；我的商品（Active）｜仓储库存｜商品装修
+● ExtraContent：ButtonPlainTextGroup → 链接 Link（全屏）+ Divider + 链接 Link（产品说明书）
+● 警告提示 Alert：
+● Alert：w-full
+● Icon：BellOutlined
+● 标题：重要通知
+● 正文：长通知文案
+● Pagination：2 / 10
+● 关闭：Close now；CloseOutlined
+● 二级导航 TabsCapsule：
+● TabsCapsule：w-full h-[36px]
+● 内层：Tabs → TabItems + ExtraContent
+● TabItems：仅 TabsCapsuleItem；全部（Active）｜出售中｜仓库中｜预售｜已售空｜违规（separator）
+● ExtraContent：ButtonPlainTextGroup → 链接 Link（全屏）+ Divider + 链接 Link（产品说明书）
+● 顶栏「模块种类」：不计 TabsCapsule
+● 计入：PanoInfo 标题区、Breadcrumb、Alert、TabsBasic
+● 筛选区域 FilterSection：
+● FilterSection：w-full h-auto
+● ActionRow：Selects + Actions（ActionsLow、竖 divider、ActionsHigh 横向并列）
+● Selects：复选标签选择 CheckboxButton（Items-Large）
+● 项：全部、质量分低、库存不足、销量最高（计数 12）
+● 组前：内联标题 InlineLabel 两组（输入标题 + required）
+● ActionsLow：ButtonPlainTextGroup：全部筛选项｜重置筛选｜保存筛选方案
+● 相邻 ButtonPlainText 之间：Divider（Vertical，Size=1，高 10px）
+● ActionsHigh：按钮组 ButtonGroup size=large：搜索（default）｜库存管理（default）｜发布商品（primary，最右）
+● Filters：FilterRow 单行
+● Input×3：请输入、属性/ID/简称、订单号/运单号
+● Select：属性/简称/D/商家编码
+● 行内：flex-1 min-w-0
+● 表格 Table：
+● Bordered：TableRow / TableGroupingRow 随容器 type
+● Default → Bordered=None
+● Horizontal → Bordered=Horizontal
+● Full → Bordered=Full
+● TableBody 首段：TableSetting（链接 Link·列设置）与表头行 TableHeaderRow 同宽并列表头区
+● TableHeaderRow：TableHeaderControl（w-[48px]）+ TableHeaderCell
+● 列宽序：w-[300px]（商品）+ flex-1 min-w-[110px]×4（中档列）+ flex-1 min-w-[138px]（信息组）+ flex-1 min-w-[138px]（时间）+ flex-1 min-w-[80px]（操作）
+● TableRow×4：TableRowControl + TableCellProduct + TableCellData×4 + TableCellQualityScore + TableCellInfoGroup + TableCellTime + TableCellAction
+● TableCellData：部分行 Trend=true；TableCellQualityScore：min-w-[110px]
+● TableFooter：Pagination 分页（w-full）
+● TableHeaderControl / TableRowControl：行选 Checkbox 只在控制列，不进数据列
+● TableHeaderCell / TableCell：同列同宽
+● 数据列高：h-auto
+● 商品信息单元格 TableCellProduct：
+● 列宽：w-[300px] shrink-0
+● 主图：Default 80×80（h-[80px] w-[80px]）
+● 主图：Small 40×40（h-[40px] w-[40px]）
+● 未写时：Default
+● ProductName：必填，单条 20～26 字
+● SubTitle：一行 SKU
+● 主图 img，object-fit: cover
+● ImageTag：默认关；开时用标签 Tag（Text）或营销标签 TagMarketing（Type；60×20 px）
+● 根下同级：Image、IconEdit（可关）、OtherInfo；Image / IconEdit 不进 OtherInfo
+● IconEdit：横排图标 Icon（编辑、复制等）；IconEdit=false 不写 IconEdit
+● OtherInfo：标签 + 值（商品 ID、价格等）
+● 排行单元格 TableCellRank：
+● 列宽：w-[56px] min-w-[56px]
+● **操作单元格 TableCellAction：
+● 列宽：flex-1 min-w-[80px]
+● 全宽横排、可换行：gap-[4px] p-0 m-0
+● 每条链接 Link 外：mr-[8px]
+● Link：Type=Bold，Color=Default
+● 留言备注单元格 TableCellNote：
+● 列宽：flex-1 min-w-[80px]
+● 整列：纵向 gap-[4px] min-w-0
+● 两条 item：买家留言、后台备注；每条横向 items-start gap-[4px]
+● 左：图标区高 20px；Icon 14px #666666（InteractiveFilled / FlagFilled）
+● 右：12px / 400 / #111111，min-w-0 flex-1
+● 信息组单元格 TableCellInfoGroup：
+● 列宽：flex-1 min-w-[80px]
+● 两栏横向：gap-[8px]
+● 左 Labels：纵向 gap-[4px]；小标题 12px / 400 / #666666
+● 右 items：纵向 gap-[4px] min-w-0 flex-1，与 Label 逐行对齐
+● 正文：#111111；时间：Time；单号：Number Style=Default Size=Base Color=Default
+● 时间警告单元格 TableCellTimeAlarm：
+● 列宽：flex-1 min-w-[120px]（可与 Help 列 min-w-[80px]）
+● 纵向：gap-[4px]
+● 顺序：原因 → QuestionCircleOutlined（12px，#999）→ 时间主文案（语义色）
+● 可选：Label + 数字 Number Style=Default Size=Base
+● 可选：链接 Link，gap-[8px]
+● 数据单元格 TableCellData（库存、销量、访客等 KPI）：
+● 列宽：flex-1 min-w-[80px]
+● 纵向 gap-0 p-0 m-0；主值 + 对比（若有）同列排布
+● 主值数字 Number Type=Default Color=Default Style=Default Size=Base
+● Trend=false：仅主值；Trend=true：对比数字 Number Color=DataUp / DataDown；价格用 TableCellPrice，不用 TableCellData
+● 时间单元格 TableCellTime：
+● 列宽：flex-1 min-w-[80px]
+● 时间 Time；Date / Time / DateValue / TimeValue 等 props 写在 Time 上
+● 其余数据列 TableCell：
+● 列宽：flex-1 min-w-[80px]；与表头弹性对齐
+● 列高 h-auto
+
+结构
+FrameLayout（使用 FrameLayout 标准结构；Footer=false）
+├── Header（FrameLayout 标准 Header）
+├── Main&Sider
+│ ├── Sider（FrameLayout 标准 Sider）
+│ └── Content（main.main-content；w-full h-auto pt-0 px-0 pb-0 m-0 flex flex-col gap-[16px] bg-[#fff]）
+│     ├── 基础选项卡 TabsBasic（w-full h-auto；Size=Middle；IndicatorBg=true；底边 3px）
+│     │ ├── TabItems（`gap-[32px]`）→ TabsBasicItem：我的商品（Active）｜仓储库存｜商品装修
+│     │ └── ExtraContent → ButtonPlainTextGroup → 链接 Link（全屏）｜Divider｜链接 Link（产品说明书）
+│     ├── 警告提示 Alert（w-full）→ BellOutlined｜重要通知｜正文｜Pagination（2/10）｜Close now｜CloseOutlined
+│     ├── 胶囊选项卡 TabsCapsule（w-full h-[36px]）
+│     │ └── Tabs → TabItems（TabsCapsuleItem：全部（Active）｜出售中｜…｜违规；项间 separator）+ ExtraContent → ButtonPlainTextGroup（全屏｜Divider｜产品说明书）
+│     ├── 筛选区域 FilterSection（w-full h-auto）
+│     │ ├── ActionRow
+│     │ │ ├── Selects → CheckboxButton（InlineLabel×2 占位；全部｜质量分低｜库存不足｜销量最高 + 12）
+│     │ │ └── Actions → ActionsLow（全部筛选项｜Divider｜重置筛选｜Divider｜保存筛选方案）+ divider + ActionsHigh（ButtonGroup：搜索｜库存管理｜发布商品 primary）
+│     │ └── Filters → FilterRow → Input×3 + Select
+│     └── 表格 Table（w-full h-auto；type=Default；TableRow Bordered=None）
+│         └── TableBody → 表头区（TableSetting 列设置 Link + TableHeaderRow：行控 + 商品 + 中档列×4 + 信息组 + 时间 + 操作）+ TableRow×4 + TableFooter（Pagination）
+└── Footer（false）
+
+代码
+<div data-name="FrameLayout" class="flex min-h-screen w-[1440px] flex-col bg-white text-[#111111]">
+  <!-- Header / Sider 采用 FrameLayout 标准结构；以下为 Content -->
+  <main data-name="Content" class="flex min-h-[280px] min-w-0 flex-1 flex-col gap-[16px] overflow-y-auto bg-white px-12 pt-6">
+      <!-- TabsBasic -->
+      <div data-name="基础选项卡 TabsBasic" class="w-full h-auto">
+        <div class="flex w-full flex-row items-center justify-between gap-[16px]">
+          <section data-name="TabItems" class="w-auto h-auto p-0 m-0 flex flex-row flex-wrap items-center gap-[32px]">
+            <div></div>
+            <div></div>
+            <div></div>
+          </section>
+          <section data-name="ExtraContent" class="w-auto shrink-0">
+            <section data-name="Items" class="flex flex-row items-center gap-[12px]">
+              <div></div>
+              <div></div>
+            </section>
+          </section>
+        </div>
+      </div>
+
+      <!-- 警告提示 Alert -->
+      <section data-name="Alert" class="flex w-full flex-row flex-wrap items-center gap-[8px]">
+        <div data-name="Icon" class="h-4 w-4 shrink-0"></div>
+        <div class="shrink-0 text-sm font-medium">重要通知</div>
+        <p class="min-w-0 flex-1 truncate text-xs">直接展示在页面上的通知直接展示在页面上的通知直接展示在页面上的通知</p>
+        <nav data-name="Pagination" class="flex shrink-0 items-center gap-1 text-xs" aria-label="分页"></nav>
+        <button type="button" class="w-auto h-[20px] px-0 py-0 m-0 inline-flex items-center justify-center border-0 bg-transparent rounded-none gap-[4px] text-[#111111] text-[12px] font-normal leading-[20px] shrink-0">
+          <span class="whitespace-nowrap">Close now</span>
+        </button>
+      </section>
+
+      <!-- TabsCapsule -->
+      <div data-name="胶囊选项卡 TabsCapsule" class="w-full h-[36px]">
+        <div data-name="Tabs" class="flex w-full flex-row items-center justify-between gap-[16px]">
+          <section data-name="TabItems" class="w-auto h-auto p-0 m-0 flex flex-row flex-wrap items-center">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </section>
+          <section data-name="ExtraContent" class="w-auto shrink-0">
+            <section data-name="Items" class="flex flex-row items-center gap-[12px]">
+              <div></div>
+              <div></div>
+            </section>
+          </section>
+        </div>
+      </div>
+
+      <!-- 筛选区域 FilterSection -->
+      <div data-name="筛选区域 FilterSection" class="flex w-full flex-col gap-[16px]">
+        <section data-name="ActionRow" class="flex w-full flex-row flex-wrap items-center justify-between gap-x-[12px] gap-y-[8px]">
+          <section data-name="Selects" class="flex min-w-0 flex-1 flex-row flex-wrap items-center gap-[12px] p-0 m-0">
+            <div class="w-auto h-auto">
+              <section data-name="Items-Large" class="flex flex-row flex-wrap items-center gap-[12px]">
+                <div></div>
+                <div></div>
+                <div></div>
+                <div></div>
+              </section>
+            </div>
+          </section>
+          <section data-name="Actions" class="flex shrink-0 flex-row items-center gap-[12px]">
+            <section data-name="ActionsLow" class="w-auto shrink-0 p-0 m-0">
+              <section data-name="Items" class="flex flex-row items-center gap-[12px]">
+                <div></div>
+                <div></div>
+                <div></div>
+              </section>
+            </section>
+            <span class="h-[10px] w-px shrink-0 bg-[#e4e6ed]" aria-hidden="true"></span>
+            <section data-name="ActionsHigh" class="w-auto shrink-0 p-0 m-0">
+              <section data-name="Items-Large" class="flex flex-row items-center gap-[12px]">
+                <div></div>
+                <div></div>
+                <div></div>
+              </section>
+            </section>
+          </section>
+        </section>
+        <section data-name="Filters" class="flex w-full flex-col gap-[12px] p-0 m-0">
+          <section data-name="FilterRow" class="flex w-full flex-row gap-[12px] p-0 m-0">
+            <div class="flex h-[36px] min-w-0 flex-1"><div data-name="Input"></div></div>
+            <div class="flex h-[36px] min-w-0 flex-1"><div data-name="Input"></div></div>
+            <div class="flex h-[36px] min-w-0 flex-1"><div data-name="Input"></div></div>
+            <div class="flex h-[36px] min-w-0 flex-1"><div data-name="Select"></div></div>
+          </section>
+        </section>
+      </div>
+
+      <!-- Table -->
+      <div data-name="表格 Table" class="w-full h-auto">
+        <section data-name="TableBody" class="flex w-full flex-col p-0 m-0">
+        <div class="flex w-full flex-row items-start gap-[12px]">
+          <div data-name="TableSetting" class="w-auto shrink-0 pt-[10px]"></div>
+          <div data-name="TableHeaderRow" class="flex min-w-0 flex-1 flex-row">
+            <div class="h-[40px] w-[48px] shrink-0"></div>
+            <div class="h-[40px] w-[300px] shrink-0"></div>
+            <div class="h-[40px] min-w-[110px] flex-1"></div>
+            <div class="h-[40px] min-w-[110px] flex-1"></div>
+            <div class="h-[40px] min-w-[110px] flex-1"></div>
+            <div class="h-[40px] min-w-[110px] flex-1"></div>
+            <div class="h-[40px] min-w-[138px] flex-1"></div>
+            <div class="h-[40px] min-w-[138px] flex-1"></div>
+            <div class="h-[40px] min-w-[80px] flex-1"></div>
+          </div>
+        </div>
+
+        <!-- TableRow ×4，示例 2 行 -->
+        <div data-name="TableRow" class="flex w-full flex-row items-start">
+          <div class="w-[48px] shrink-0"></div>
+          <div class="flex h-auto w-[300px] shrink-0 flex-row items-start gap-[8px] p-0 m-0">
+            <div data-name="Image" class="h-[80px] w-[80px] shrink-0 rounded-[4px] bg-[url('IMAGE_URL')] bg-cover bg-center bg-no-repeat" role="img" aria-label="商品主图"></div>
+            <section data-name="IconEdit" class="flex w-auto shrink-0 flex-row flex-wrap items-center gap-[4px] p-0 m-0">
+              <span class="h-[12px] w-[12px] shrink-0 text-[#666666]">EditOutlined</span>
+            </section>
+            <section data-name="OtherInfo" class="flex min-w-0 flex-1 flex-row items-start gap-[8px] p-0 m-0">
+              <section data-name="Labels" class="flex w-auto shrink-0 flex-col gap-0 p-0 m-0">
+                <span class="text-[12px] font-normal leading-[20px] text-[#666666]">商品ID</span>
+                <span class="text-[12px] font-normal leading-[20px] text-[#666666]">价格</span>
+              </section>
+              <section data-name="items" class="flex min-w-0 flex-1 flex-col gap-0 p-0 m-0">
+                <div class="h-auto w-full shrink-0"></div>
+                <div class="h-auto w-full shrink-0"></div>
+              </section>
+            </section>
+          </div>
+          <div class="flex h-auto min-w-[110px] flex-1 p-0 m-0"><section data-name="Cell" class="w-full p-0 m-0"><div class="text-[#FF5500]"></div></section></div>
+          <div class="flex h-auto min-w-[110px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-0 p-0 m-0"><div data-name="Data"></div></section></div>
+          <div class="flex h-auto min-w-[110px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-0 p-0 m-0"><div data-name="Data"></div></section></div>
+          <div class="flex h-auto min-w-[110px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-0 p-0 m-0"><div data-name="Data"></div><div data-name="Trend"></div></section></div>
+          <div class="flex h-auto min-w-[110px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-[4px] p-0 m-0"><div></div><div></div></section></div>
+          <div class="flex h-auto min-w-[138px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-[4px] p-0 m-0"><div></div></section></div>
+          <div class="flex h-auto min-w-[138px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-[4px] p-0 m-0"><div></div></section></div>
+          <div class="flex h-auto min-w-[80px] flex-1 p-0 m-0">
+            <section data-name="Cell" class="flex w-full flex-row flex-wrap items-center gap-[4px] p-0 m-0">
+              <span class="mr-[8px] w-auto"><div></div></span>
+              <span class="mr-[8px] w-auto"><div></div></span>
+              <span class="mr-[8px] w-auto"><div></div></span>
+            </section>
+          </div>
+        </div>
+
+        <div data-name="TableRow" class="flex w-full flex-row items-start">
+          <div class="w-[48px] shrink-0"></div>
+          <div class="flex h-auto w-[300px] shrink-0 flex-row items-start gap-[8px] p-0 m-0">
+            <div data-name="Image" class="h-[80px] w-[80px] shrink-0 rounded-[4px] bg-[url('IMAGE_URL')] bg-cover bg-center bg-no-repeat" role="img" aria-label="商品主图"></div>
+            <section data-name="IconEdit" class="flex w-auto shrink-0 flex-row flex-wrap items-center gap-[4px] p-0 m-0">
+              <span class="h-[12px] w-[12px] shrink-0 text-[#666666]">EditOutlined</span>
+            </section>
+            <section data-name="OtherInfo" class="flex min-w-0 flex-1 flex-row items-start gap-[8px] p-0 m-0">
+              <section data-name="Labels" class="flex w-auto shrink-0 flex-col gap-0 p-0 m-0">
+                <span class="text-[12px] font-normal leading-[20px] text-[#666666]">商品ID</span>
+                <span class="text-[12px] font-normal leading-[20px] text-[#666666]">价格</span>
+              </section>
+              <section data-name="items" class="flex min-w-0 flex-1 flex-col gap-0 p-0 m-0">
+                <div class="h-auto w-full shrink-0"></div>
+                <div class="h-auto w-full shrink-0"></div>
+              </section>
+            </section>
+          </div>
+          <div class="flex h-auto min-w-[110px] flex-1 p-0 m-0"><section data-name="Cell" class="w-full p-0 m-0"><div class="text-[#FF5500]"></div></section></div>
+          <div class="flex h-auto min-w-[110px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-0 p-0 m-0"><div data-name="Data"></div></section></div>
+          <div class="flex h-auto min-w-[110px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-0 p-0 m-0"><div data-name="Data"></div></section></div>
+          <div class="flex h-auto min-w-[110px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-0 p-0 m-0"><div data-name="Data"></div><div data-name="Trend"></div></section></div>
+          <div class="flex h-auto min-w-[110px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-[4px] p-0 m-0"><div></div><div></div></section></div>
+          <div class="flex h-auto min-w-[138px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-[4px] p-0 m-0"><div></div></section></div>
+          <div class="flex h-auto min-w-[138px] flex-1 p-0 m-0"><section data-name="Cell" class="flex w-full flex-col gap-[4px] p-0 m-0"><div></div></section></div>
+          <div class="flex h-auto min-w-[80px] flex-1 p-0 m-0">
+            <section data-name="Cell" class="flex w-full flex-row flex-wrap items-center gap-[4px] p-0 m-0">
+              <span class="mr-[8px] w-auto"><div></div></span>
+              <span class="mr-[8px] w-auto"><div></div></span>
+              <span class="mr-[8px] w-auto"><div></div></span>
+            </section>
+          </div>
+        </div>
+
+        <div data-name="TableFooter" class="flex w-full flex-row items-center justify-end border-t border-[#e4e6ed] py-2">
+          <div data-name="Pagination" class="text-xs"></div>
+        </div>
+        </section>
+      </div>
+  </main>
+
+  <footer data-name="Footer" class="overflow-visible"></footer>
+</div>

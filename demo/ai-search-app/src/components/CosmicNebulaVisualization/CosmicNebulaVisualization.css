@@ -1,0 +1,39 @@
+/* 与设计稿一致：全屏星云 + 底部发光标题 */
+
+.cosmic-nebula-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background: radial-gradient(circle at center, #0b1021 0%, #020308 100%);
+}
+
+.cosmic-nebula-root canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cosmic-nebula-root .title-overlay {
+  position: absolute;
+  bottom: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  text-align: center;
+  z-index: 10;
+  user-select: none;
+}
+
+.cosmic-nebula-root .glow-text {
+  color: rgba(255, 255, 255, 0.95);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  font-size: 2.25rem;
+  letter-spacing: 0.3em;
+  text-shadow:
+    0 0 15px rgba(255, 255, 255, 0.8),
+    0 0 30px rgba(180, 210, 255, 0.6),
+    0 0 45px rgba(100, 150, 255, 0.4);
+  margin-left: 0.3em;
+}

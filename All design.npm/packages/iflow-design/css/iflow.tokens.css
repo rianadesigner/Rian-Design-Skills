@@ -1,0 +1,231 @@
+/**
+ * @iflow.cn/iflow-design
+ * 心流 B 端设计系统 · 运行时 CSS 变量
+ *
+ * 来源（以此文件为准）：
+ *   - design-specs / taobao refer/color.ai → 色彩系统
+ *   - taobao refer/button.ai               → 按钮尺寸、圆角、间距
+ *   - element-DESIGN-enriched.md           → 排版、间距、描边、投影
+ *
+ * 前缀 --iflow- 避免与宿主应用 CSS 变量冲突。
+ * 使用方式：
+ *   import '@iflow.cn/iflow-design/css';   // 见 package.json exports
+ */
+
+:root {
+
+  /* ─────────────────────────────
+     §1 基准单位
+  ───────────────────────────── */
+  --iflow-space-unit: 4px;
+  --iflow-font-family: "PingFang SC", -apple-system, system-ui, sans-serif;
+
+  /* ─────────────────────────────
+     §2 种子色 (Seed Colors)
+  ───────────────────────────── */
+  --iflow-color-white:   #ffffff;
+  --iflow-color-primary: #3d5eff;       /* 平台品牌色 */
+  --iflow-color-secondary: #1b1f26;     /* 品牌次色 */
+  --iflow-color-info:    #3d5eff;
+  --iflow-color-success: #00bd00;
+  --iflow-color-important: #bf7e0d;
+  --iflow-color-warning: #ff8000;
+  --iflow-color-error:   #f23c3c;
+  --iflow-color-taobao:  #ff5500;
+  --iflow-color-tianmao: #ff0037;
+  --iflow-color-up:      #f23c3c;       /* 数据上涨（仅涨跌语义）*/
+  --iflow-color-down:    #31978c;       /* 数据下跌（仅涨跌语义）*/
+
+  /* ─────────────────────────────
+     §3 文字与图标色 (Text & Icon)
+  ───────────────────────────── */
+  --iflow-color-text:            #111111;  /* 一级标题文本 */
+  --iflow-color-text-secondary:  #666666;  /* 二级文本 */
+  --iflow-color-text-tertiary:   #999999;  /* 辅助描述、占位符 */
+  --iflow-color-text-quaternary: #cccccc;  /* 禁用文本 */
+  --iflow-color-text-solid:      #ffffff;  /* 深色背景反色 */
+  --iflow-color-ultra:           #1b1f26;  /* 极限强调（强调线条专用）*/
+
+  /* 链接 */
+  --iflow-color-link:             #3d5eff;
+  --iflow-color-link-hover:       #94a9ff;
+  --iflow-color-link-active:      #2944d9;
+
+  /* ─────────────────────────────
+     §4 背景色 (Background)
+  ───────────────────────────── */
+  --iflow-color-bg-base:          #ffffff;  /* 页面主背景（必须） */
+  --iflow-color-fill-secondary:   #f0f0f0;
+  --iflow-color-fill-tertiary:    #e8e8e8;
+  --iflow-color-fill-quaternary:  #f8f9fa;  /* 悬停/表头背景 */
+  --iflow-color-bg-active:        #f0f3ff;  /* 激活/选中背景 */
+
+  /* ─────────────────────────────
+     §5 描边色 (Borders)
+  ───────────────────────────── */
+  --iflow-color-border:           #f1f1f1;  /* 气泡/弹窗边框 */
+  --iflow-color-border-secondary: #e8e8e8;  /* 输入框/按钮边框 */
+  --iflow-color-border-third:     #dadfe5;  /* 卡片/面板边框 */
+  --iflow-color-split:            #e4e6ed;  /* 分割线 */
+
+  /* ─────────────────────────────
+     §6 主题色阶 — Primary（蓝色）
+  ───────────────────────────── */
+  --iflow-primary-bg:             #f0f3ff;
+  --iflow-primary-bg-hover:       #ebefff;
+  --iflow-primary-border:         #bfccff;
+  --iflow-primary-border-hover:   #94a9ff;
+  --iflow-primary-hover:          #6984ff;
+  --iflow-primary-active:         #2944d9;
+  --iflow-primary-text:           #3d5eff;
+  --iflow-primary-text-hover:     #6984ff;
+  --iflow-primary-text-active:    #2944d9;
+
+  /* ─────────────────────────────
+     §7 主题色阶 — Secondary（黑色）
+  ───────────────────────────── */
+  --iflow-secondary-bg:           #606366;
+  --iflow-secondary-bg-hover:     #545659;
+  --iflow-secondary-border:       #484a4d;
+  --iflow-secondary-border-hover: #3c3d40;
+  --iflow-secondary-hover:        #2d2f33;
+  --iflow-secondary-active:       #000000;
+  --iflow-secondary-text:         #1b1f26;
+  --iflow-secondary-text-hover:   #2d2f33;
+  --iflow-secondary-text-active:  #000000;
+
+  /* ─────────────────────────────
+     §8 情绪色阶 — Success
+  ───────────────────────────── */
+  --iflow-success-bg:             #e5fce3;
+  --iflow-success-bg-hover:       #a7f0a3;
+  --iflow-success-border:         #78e374;
+  --iflow-success-border-hover:   #4dd649;
+  --iflow-success-hover:          #4dd649;
+  --iflow-success-active:         #009602;
+  --iflow-success-text:           #00bd00;
+  --iflow-success-text-hover:     #24c922;
+  --iflow-success-text-active:    #009602;
+
+  /* ─────────────────────────────
+     §9 情绪色阶 — Error
+  ───────────────────────────── */
+  --iflow-error-bg:               #fff1f0;
+  --iflow-error-bg-hover:         #ffeeed;
+  --iflow-error-bg-active:        #ffc4c2;
+  --iflow-error-border:           #ffc4c2;
+  --iflow-error-border-hover:     #ff9996;
+  --iflow-error-hover:            #f54242;
+  --iflow-error-active:           #c91b1b;
+  --iflow-error-text:             #f23c3c;
+  --iflow-error-text-hover:       #f54242;
+  --iflow-error-text-active:      #c91b1b;
+
+  /* ─────────────────────────────
+     §10 情绪色阶 — Warning
+  ───────────────────────────── */
+  --iflow-warning-bg:             #fff7e6;
+  --iflow-warning-bg-hover:       #ffe6b0;
+  --iflow-warning-border:         #ffcc66;
+  --iflow-warning-border-hover:   #ffbb33;
+  --iflow-warning-hover:          #e67300;
+  --iflow-warning-active:         #b35900;
+  --iflow-warning-text:           #ff8000;
+  --iflow-warning-text-hover:     #e67300;
+  --iflow-warning-text-active:    #b35900;
+
+  /* ─────────────────────────────
+     §11 工具色 (Tool Colors)
+  ───────────────────────────── */
+  --iflow-tool-blue:   #246cfe;
+  --iflow-tool-purple: #452ee5;
+  --iflow-tool-cyan:   #2cbecc;
+  --iflow-tool-orange: #fe6f45;
+
+  /* ─────────────────────────────
+     §12 圆角 (Radius)
+  ───────────────────────────── */
+  --iflow-radius-none: 0px;
+  --iflow-radius-xs:   1px;
+  --iflow-radius-sm:   2px;
+  --iflow-radius-base: 4px;   /* 按钮、输入框默认 */
+  --iflow-radius-md:   8px;   /* 卡片 */
+  --iflow-radius-lg:  12px;
+  --iflow-radius-xl:  16px;
+  --iflow-radius-2xl: 24px;
+  --iflow-radius-full: 999px;
+
+  /* ─────────────────────────────
+     §13 间距阶梯 (Gap / Space)
+  ───────────────────────────── */
+  --iflow-gap-none:  0px;
+  --iflow-gap-xxxs:  2px;
+  --iflow-gap-xxs:   4px;
+  --iflow-gap-xs:    8px;
+  --iflow-gap-sm:   12px;
+  --iflow-gap-md:   16px;
+  --iflow-gap-md2:  20px;
+  --iflow-gap-lg:   24px;
+  --iflow-gap-xl:   32px;
+  --iflow-gap-xxl:  48px;
+
+  /* ─────────────────────────────
+     §14 控件高度 (Control Height)
+  ───────────────────────────── */
+  --iflow-control-sm:  24px;  /* button small */
+  --iflow-control-md:  32px;  /* button middle */
+  --iflow-control-lg:  36px;  /* button large（默认）*/
+
+  /* 按钮内边距 X */
+  --iflow-btn-px-sm:  10px;
+  --iflow-btn-px-md:  12px;
+  --iflow-btn-px-lg:  14px;
+
+  /* 按钮图标与文字间距 */
+  --iflow-btn-gap-sm:  4px;
+  --iflow-btn-gap-md:  6px;
+
+  /* ─────────────────────────────
+     §15 排版 (Typography)
+  ───────────────────────────── */
+  --iflow-font-size-xs:   10px;  /* 角标 */
+  --iflow-font-size-sm:   12px;  /* 正文 / 按钮文案 */
+  --iflow-font-size-base: 14px;  /* 弹窗/气泡 */
+  --iflow-font-size-h5:   16px;
+  --iflow-font-size-h4:   18px;
+  --iflow-font-size-h3:   22px;
+  --iflow-font-size-h2:   28px;
+  --iflow-font-size-h1:   32px;
+
+  --iflow-line-height-xs:   18px;
+  --iflow-line-height-sm:   20px;
+  --iflow-line-height-base: 22px;
+  --iflow-line-height-h5:   24px;
+  --iflow-line-height-h4:   26px;
+  --iflow-line-height-h3:   30px;
+  --iflow-line-height-h2:   36px;
+  --iflow-line-height-h1:   40px;
+
+  --iflow-font-weight-normal:  400;
+  --iflow-font-weight-medium:  500;
+  --iflow-font-weight-semibold: 600;
+
+  /* ─────────────────────────────
+     §16 描边宽度 (Border Width)
+  ───────────────────────────── */
+  --iflow-line-width-light: 0.5px;
+  --iflow-line-width-base:  1px;
+  --iflow-line-width-bold:  2px;
+
+  /* ─────────────────────────────
+     §17 投影 (Shadow)
+  ───────────────────────────── */
+  --iflow-shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.03);
+  --iflow-shadow-md:  0 4px 12px rgba(0, 10, 37, 0.06);
+  --iflow-shadow-lg:  0 6px 16px rgba(0, 0, 0, 0.12);
+  --iflow-shadow-xl:  0 12px 32px rgba(0, 0, 0, 0.14);
+
+  /* focus ring */
+  --iflow-focus-ring-primary: 0 0 0 2px rgba(61, 94, 255, 0.2);
+  --iflow-focus-ring-error:   0 0 0 2px rgba(242, 60, 60, 0.15);
+}

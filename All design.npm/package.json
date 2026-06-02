@@ -1,0 +1,17 @@
+{
+  "name": "iflow-design-npm",
+  "private": true,
+  "description": "iFlow 设计系统：单包 npm + AI 搜索示例应用",
+  "workspaces": ["packages/*", "ai-search-app"],
+  "scripts": {
+    "sync": "node scripts/sync-tokens.mjs",
+    "watch": "chokidar \"design-specs/**/*.md\" -c \"node scripts/sync-tokens.mjs\" --initial",
+    "build": "npm run sync && npm run build -w @iflow.cn/iflow-design",
+    "publish:npm": "npm publish -w @iflow.cn/iflow-design --access public",
+    "dev:search": "npm run dev -w iflow-ai-search-app"
+  },
+  "devDependencies": {
+    "chokidar-cli": "^3.0.0",
+    "js-yaml": "^4.1.1"
+  }
+}

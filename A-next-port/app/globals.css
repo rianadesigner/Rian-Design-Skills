@@ -1,0 +1,183 @@
+@import "tailwindcss";
+
+/* ─── Observatory global dark base ──────────────────────────── */
+html,
+body {
+  background: #02040a;
+  margin: 0;
+  padding: 0;
+}
+
+/* ─── Observatory Cover CSS Variables ───────────────────────── */
+:root {
+  --obs-bg-deep:  #02040a;
+  --obs-bg-mid:   #0a1128;
+  --obs-line:     rgba(255, 255, 255, 0.12);
+  --obs-text:     #ffffff;
+  --obs-muted:    rgba(255, 255, 255, 0.6);
+  --font-display: var(--font-syne, "Syne", sans-serif);
+  --font-mono:    var(--font-inter, "Inter", sans-serif);
+}
+
+/* Status dot glow pulse */
+@keyframes obs-pulse {
+  0%   { opacity: 0.5; box-shadow: 0 0 4px  #88ccff; }
+  50%  { opacity: 1;   box-shadow: 0 0 12px #88ccff; }
+  100% { opacity: 0.5; box-shadow: 0 0 4px  #88ccff; }
+}
+.obs-status-dot {
+  animation: obs-pulse 2s infinite;
+}
+
+/* ─── Galaxy Cover ──────────────────────────────────────────── */
+.galaxy-cover {
+  font-family: "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.galaxy-scanlines {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0) 50%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.1)
+  );
+  background-size: 100% 4px;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+.galaxy-crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0.15;
+}
+.galaxy-crosshair::before,
+.galaxy-crosshair::after {
+  content: "";
+  position: absolute;
+  background: #fff;
+}
+.galaxy-crosshair::before {
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  transform: translateY(-50%);
+}
+.galaxy-crosshair::after {
+  left: 50%;
+  top: 0;
+  height: 100%;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+.galaxy-ui {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.galaxy-ui--tl { top: 30px; left: 40px; }
+.galaxy-ui--bl { bottom: 30px; left: 40px; }
+.galaxy-ui--br { bottom: 30px; right: 40px; text-align: right; }
+
+.galaxy-data-value {
+  color: rgba(255, 255, 255, 0.8);
+  font-family: monospace;
+  margin-left: 8px;
+}
+
+.galaxy-loader {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 12px;
+  letter-spacing: 4px;
+  transition: opacity 1.5s ease-out;
+}
+.galaxy-loader--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* 封面：细密网格（避免大图资源） */
+.site-cover-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, black 25%, transparent 75%);
+}
+
+@keyframes site-cover-float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  40% {
+    transform: translate(3%, -4%) scale(1.05);
+  }
+  68% {
+    transform: translate(-4%, 5%) scale(0.98);
+  }
+}
+
+@keyframes site-cover-scrollline {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scaleY(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
+.animate-site-cover-float {
+  animation: site-cover-float 20s ease-in-out infinite;
+}
+
+.animate-site-cover-scrollline {
+  animation: site-cover-scrollline 2.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-site-cover-float,
+  .animate-site-cover-scrollline {
+    animation: none !important;
+  }
+}

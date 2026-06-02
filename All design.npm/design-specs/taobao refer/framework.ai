@@ -1,0 +1,302 @@
+框架 FrameLayout
+定义
+B 端工作台标准框架：顶栏、左侧导航、主 Content、可选底栏 Footer。场景：列表/表单/工作台等各页面类型的统一壳层与导航占位。
+
+用法
+● 框架与内容边界：
+● 框架必选：页面必须使用 FrameLayout；禁止省略框架或非规范顶栏/侧栏拼凑。禁止修改框架，禁止简写框架，禁止框架不全。
+● 业务核心内容只放 Content；
+● Footer 按页面类型与业务配置。
+● 配置 Footer：
+● false：不渲染 Footer（默认）
+● true：渲染 Footer；按需挂载 ActionBar，或者其他定制内容
+
+结构
+FrameLayout（主容器）
+├── Header（顶部导航栏；`<header class="header top-navigation-bar">`；必填；``）
+├── Main&Sider（主布局容器）
+│ ├── Sider（侧栏根节点：`nav.sider`；总宽约 `230px`）
+│ │ ├── NavigationPrimary（一级菜单列）
+│ │ └── NavigationDetail（二级列）
+│ │ ├── DetailHeader（当前一级名称 + 设置）
+│ │ └── DetailBody（二级分组 + 三级条目；示例：选中「交易」）
+│ └── Content（主工作区；`main.main-content`；``）
+└── Footer（overflow 必须为 visible）
+Header
+├── header-logo-brand（平台 Logo；宽 160px；内 `img.header-logo-image`）
+├── header-center（中间区；`search-module`、`announcement-module`）
+│ ├── search-module（顶部搜索；`ui-icon` + `search-placeholder`）
+│ └── announcement-module（顶部公告；`gap: 8px`；`padding: 0`）
+│ ├── announcement-leading-icon（行首 `ui-icon`：`BellFilled` 16×16px）
+│ ├── announcement-title（「公告」加粗）
+│ ├── announcement-dot（3px 圆点）
+│ ├── announcement-text（正文加粗；`id="announcement-content"`）
+│ └── announcement-trailing-icon（行尾 `ui-icon`：`RightOutlined` 16×16px）
+└── header-right（右侧区；`header-right-divider` 在「反馈」与「规则」之间）
+ ├── header-icon-item（顶部操作项） × n（`ui-icon` + `icon-text`）
+ └── user-info（用户信息）
+ ├── user-avatar（用户头像；`img.user-avatar-image`）
+ └── user-details
+ ├── user-name-row（`user-name` 与 `user-dropdown` 一行；`DownOutlined` 10×10px）
+ └── user-account（`user-account`）
+Sider（`nav.sider`；`id="navigation"`）
+├── NavigationPrimary（一级菜单列；``）
+│ └── nav-l1-item（一级菜单项） × n
+│ ├── Nav 图标槽（`Nav*Outlined` / `Nav*Filled`；16×16px）
+│ └── nav-l1-text（一级文案；`#111111`；未选中细体、选中加粗）
+└── NavigationDetail（二级列；``）
+ ├── DetailHeader（标题 + 设置）
+ └── DetailBody（`nav-detail-scroll`）
+ ├── nav-l2-group（二级可折叠组）
+ │ ├── nav-l2-header（`data-nav-collapse`）
+ │ └── nav-l3-list / nav-l3-item（三级）
+ └── nav-l2-link（仅二级入口）
+
+样式
+● Header 顶部导航栏
+● PlatformLogo（平台Logo）
+● header-logo-brand：width: 160px
+● header-logo-image：高度固定为30px，宽度不作限制，保证图片原始比例不变形即可
+● 千牛（默认）：https://img.alicdn.com/imgextra/i1/O1CN01qvOYq91Wn6nIR8Tk7_!!6000000002832-2-tps-348-120.png
+● 天猫：https://img.alicdn.com/imgextra/i2/O1CN01dgcdZq1FY8NPaOqLc_!!6000000000498-2-tps-556-120.png
+● 天猫国际：https://img.alicdn.com/imgextra/i1/O1CN01f9BqXZ25NvZPUtZnQ_!!6000000007515-2-tps-369-120.png
+● HeaderSearch（顶部搜索）
+● 内容：占位符文字不超过 10 个字；禁止省略号；轮播间隔 5 秒；占位符类名 search-placeholder
+● 搜索图标类名 search-module__icon；ui-icon 的 name：SearchOutlined；16×16px；颜色 colorTextSecondary[#666666]
+● HeaderAnnouncement（顶部公告）
+● announcement-module：gap: 8px，padding: 0
+● 文案示例：2026年年货节报名进行中
+● announcement-title（「公告」加粗）+ announcement-dot（3px 圆点）+ announcement-text（正文加粗；id="announcement-content"；不超过 18 字；禁止省略号与冒号）；轮播间隔 5 秒
+● 行首 ui-icon：BellFilled，16×16px
+● 行尾 ui-icon：RightOutlined，16×16px
+● HeaderOperateItem（顶部操作项）
+● 协议：FeedBackBold，18×18px
+● 客服：CustomerServiceBold，18×18px
+● 消息：PromptBold，18×18px
+● 反馈：EditsimpleBold，18×18px
+● 规则：BookBold，18×18px
+● 下载：AppDownloadBold，18×18px
+● UserInfo（用户信息）
+● user-avatar 默认图：https://img.alicdn.com/imgextra/i2/O1CN01TBAy1Q1qYifMthiA2_!!6000000005508-2-tps-200-200.png；容器内 40×40px
+● user-name 默认「千牛运营小店企业店」；
+● user-account 默认「QN店铺测试账号001」
+● 下拉触发：DownOutlined，10×10px；与 user-name 同一行（user-name-row）
+● Sider 左侧导航菜单
+● 根节点：nav.sider（Sider）；总宽约 230px：width: 230px；padding: 0 16px；横向双列 gap: 12px；一级列 76px、二级列 110px；侧栏容器背景 #F8F9FA（colorFillQuaternary[#F8F9FA]）；双列间无竖向分割线；右缘与主内容区间极浅竖向分隔
+● 二级列：padding: 24px 12px；顶栏为当前一级名称 + 设置（SettingFilled 12×12）；分组折叠箭头 DownBold 10×10；二级可折叠组、标题加粗与 chevron、展开下列三级链接
+● 一级菜单（Sider 内）
+● NavigationItem：Icon 默认样式 / 选中样式；Nav*Outlined / Nav*Filled 为 16×16px
+● 首页: NavHomeOutlined / NavHomeFilled
+● 常用: NavGeneralOutlined / NavGeneralFilled
+● 交易: NavTradeOutlined / NavTradeFilled
+● 数据: NavDataOutlined / NavDataFilled
+● 商品: NavProductOutlined / NavProductFilled
+● 营销: NavMarketingOutlined / NavMarketingFilled
+● 推广: NavAdvertOutlined / NavAdvertFilled
+● 店铺: NavStoreOutlined / NavStoreFilled
+● 私域: NavPrivateOutlined / NavPrivateFilled
+● 客服: NavServiceOutlined / NavServiceFilled
+● 财务: NavRevenueOutlined / NavRevenueFilled
+● 服务: NavServiceOutlined / NavServiceFilled
+
+代码
+<div class="flex min-h-screen flex-col bg-white text-[#111111]" data-name="FrameLayout">
+  <!-- 顶部导航栏 -->
+  <header class="sticky top-0 z-[1000] h-16 min-h-16 border-b border-[#e4e6ed] bg-white px-6" data-name="Header">
+    <div class="flex h-full items-center justify-between gap-20">
+      <div class="inline-flex w-40 shrink-0 items-center">
+        <img
+          class="block h-[30px] w-auto"
+          src="https://img.alicdn.com/imgextra/i1/O1CN01qvOYq91Wn6nIR8Tk7_!!6000000002832-2-tps-348-120.png"
+          alt="千牛"
+        />
+      </div>
+
+      <!-- 中间区域 -->
+      <div class="flex min-w-0 flex-1 items-center gap-16">
+        <!-- 搜索模块 -->
+        <div class="flex h-9 min-w-0 flex-1 cursor-pointer items-center gap-[10px] rounded bg-[#f3f4f5] px-[14px] hover:bg-[#e8eaed]" role="button" aria-label="搜索">
+          <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#8c8c8c]" aria-hidden="true">SearchOutlined</span>
+          <span class="flex-1 truncate text-xs text-[#595959]" id="search-placeholder">搜索商品订单</span>
+        </div>
+
+        <!-- 公告横条 -->
+        <div class="flex h-9 min-w-0 flex-1 cursor-pointer items-center gap-2 rounded-md text-sm font-bold text-[#262626] hover:bg-black/5" role="button" aria-label="公告">
+          <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#595959]" aria-hidden="true">
+            <span class="h-4 w-4">BellFilled</span>
+          </span>
+          <span>公告</span>
+          <span class="h-[3px] w-[3px] rounded-full bg-[#bfbfbf]" aria-hidden="true"></span>
+          <span class="flex-1 truncate" id="announcement-content">2026年年货节报名进行中</span>
+          <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center text-[#8c8c8c]" aria-hidden="true">
+            <span class="h-4 w-4">RightOutlined</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- 右侧功能区域 -->
+      <div class="flex shrink-0 items-center gap-6">
+        <button type="button" class="group flex w-[20px] flex-col items-center text-[#111111] hover:text-[#3d5eff]" aria-label="协议">
+          <span class="h-[18px] w-[18px]" aria-hidden="true">FeedBackBold</span>
+          <span class="mt-1.5 text-[10px] leading-none text-[#666666] group-hover:text-[#3d5eff]">协议</span>
+        </button>
+
+        <button type="button" class="group flex w-[20px] flex-col items-center text-[#111111] hover:text-[#3d5eff]" aria-label="客服">
+          <span class="h-[18px] w-[18px]" aria-hidden="true">CustomerServiceBold</span>
+          <span class="mt-1.5 text-[10px] leading-none text-[#666666] group-hover:text-[#3d5eff]">客服</span>
+        </button>
+
+        <button type="button" class="group flex w-[20px] flex-col items-center text-[#111111] hover:text-[#3d5eff]" aria-label="消息">
+          <span class="h-[18px] w-[18px]" aria-hidden="true">PromptBold</span>
+          <span class="mt-1.5 text-[10px] leading-none text-[#666666] group-hover:text-[#3d5eff]">消息</span>
+        </button>
+
+        <button type="button" class="group flex w-[20px] flex-col items-center text-[#111111] hover:text-[#3d5eff]" aria-label="反馈">
+          <span class="h-[18px] w-[18px]" aria-hidden="true">EditsimpleBold</span>
+          <span class="mt-1.5 text-[10px] leading-none text-[#666666] group-hover:text-[#3d5eff]">反馈</span>
+        </button>
+
+        <span class="block h-4 w-px bg-[#e4e6ed]" aria-hidden="true"></span>
+
+        <button type="button" class="group flex w-[20px] flex-col items-center text-[#111111] hover:text-[#3d5eff]" aria-label="规则">
+          <span class="h-[18px] w-[18px]" aria-hidden="true">BookBold</span>
+          <span class="mt-1.5 text-[10px] leading-none text-[#666666] group-hover:text-[#3d5eff]">规则</span>
+        </button>
+
+        <button type="button" class="group flex w-[20px] flex-col items-center text-[#111111] hover:text-[#3d5eff]" aria-label="下载">
+          <span class="h-[18px] w-[18px]" aria-hidden="true">AppDownloadBold</span>
+          <span class="mt-1.5 text-[10px] leading-none text-[#666666] group-hover:text-[#3d5eff]">下载</span>
+        </button>
+
+        <!-- 用户信息 -->
+        <div class="flex items-center gap-2">
+          <div class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-[#e4e6ed] bg-white text-[#8c8c8c]" aria-label="用户头像">
+            <img
+              class="block h-full w-full rounded-full object-cover"
+              src="https://img.alicdn.com/imgextra/i2/O1CN01TBAy1Q1qYifMthiA2_!!6000000005508-2-tps-200-200.png"
+              alt="用户头像"
+            />
+          </div>
+          <div class="min-w-0">
+            <div class="flex items-center gap-1">
+              <span class="truncate text-xs leading-5 text-[#111111]">千牛运营小店企业店</span>
+              <button type="button" class="inline-flex h-5 w-5 items-center justify-center rounded text-[#8c8c8c] hover:bg-black/5 hover:text-[#595959]" aria-label="展开菜单">
+                <span class="h-[10px] w-[10px]" aria-hidden="true">DownOutlined</span>
+              </button>
+            </div>
+            <span class="block text-[10px] leading-[18px] text-[#666666]">QN店铺测试账号001</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主内容区域布局 -->
+  <div class="flex min-h-[calc(100vh-64px)] flex-1" data-name="Main&Sider">
+    <!-- 左侧导航 -->
+    <nav class="relative flex min-h-[calc(100vh-64px)] w-[230px] shrink-0 gap-3 overflow-hidden bg-[#f8f9fa] px-4 shadow-[1px_0_0_rgba(0,0,0,0.06)]" id="navigation" data-name="Sider" aria-label="主导航">
+      <div class="flex w-[76px] shrink-0 flex-col gap-4 overflow-y-auto py-6" id="navigation-primary" data-name="NavigationPrimary">
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="首页">
+          <span class="h-4 w-4 shrink-0">NavHomeOutlined</span>
+          <span class="truncate">首页</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="常用">
+          <span class="h-4 w-4 shrink-0">NavGeneralOutlined</span>
+          <span class="truncate">常用</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md bg-[#eceff1] px-3 text-left text-sm font-bold text-[#111111]" data-nav-key="交易" aria-current="page">
+          <span class="h-4 w-4 shrink-0 text-[#3d5eff]">NavTradeFilled</span>
+          <span class="truncate">交易</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="数据">
+          <span class="h-4 w-4 shrink-0">NavDataOutlined</span>
+          <span class="truncate">数据</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="商品">
+          <span class="h-4 w-4 shrink-0">NavProductOutlined</span>
+          <span class="truncate">商品</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="营销">
+          <span class="h-4 w-4 shrink-0">NavMarketingOutlined</span>
+          <span class="truncate">营销</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="推广">
+          <span class="h-4 w-4 shrink-0">NavAdvertOutlined</span>
+          <span class="truncate">推广</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="店铺">
+          <span class="h-4 w-4 shrink-0">NavStoreOutlined</span>
+          <span class="truncate">店铺</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="私域">
+          <span class="h-4 w-4 shrink-0">NavPrivateOutlined</span>
+          <span class="truncate">私域</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="客服">
+          <span class="h-4 w-4 shrink-0">NavServiceOutlined</span>
+          <span class="truncate">客服</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="财务">
+          <span class="h-4 w-4 shrink-0">NavRevenueOutlined</span>
+          <span class="truncate">财务</span>
+        </button>
+        <button type="button" class="flex h-10 items-center gap-2 rounded-md px-3 text-left text-sm font-light text-[#111111] hover:bg-black/[0.035]" data-nav-key="服务">
+          <span class="h-4 w-4 shrink-0">NavServiceOutlined</span>
+          <span class="truncate">服务</span>
+        </button>
+      </div>
+
+      <div class="flex min-w-[110px] flex-1 flex-col gap-5 px-3 py-6" data-name="NavigationDetail">
+        <div class="flex items-center justify-between gap-[10px]" data-name="DetailHeader">
+          <h2 class="text-sm font-normal leading-5 text-[#111111]" id="nav-detail-title">交易</h2>
+          <button type="button" class="inline-flex h-8 w-8 items-center justify-center rounded-md text-[#8c8c8c] hover:bg-black/5 hover:text-[#595959]" aria-label="设置">
+            <span class="h-3 w-3" aria-hidden="true">SettingFilled</span>
+          </button>
+        </div>
+
+        <div class="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto" id="nav-detail-scroll" data-name="DetailBody">
+          <section class="flex flex-col gap-5">
+            <button type="button" class="flex h-[22px] items-center gap-0.5 text-left text-[13px] font-semibold leading-[22px] text-[#111111]" aria-expanded="true" data-nav-collapse>
+              <span>订单管理</span>
+              <span class="inline-flex h-[10px] w-[10px] items-center justify-center text-[#111111]" aria-hidden="true">
+                <span class="h-[10px] w-[10px]">DownBold</span>
+              </span>
+            </button>
+            <div class="flex flex-col gap-5">
+              <a href="#" class="text-xs leading-5 text-[#595959] hover:text-[#262626]">已卖出的宝贝</a>
+              <a href="#" class="text-xs leading-5 text-[#595959] hover:text-[#262626]">打单工具</a>
+              <a href="#" class="text-xs leading-5 text-[#595959] hover:text-[#262626]">发货中心</a>
+              <a href="#" class="text-xs leading-5 text-[#595959] hover:text-[#262626]">包裹中心</a>
+              <a href="#" class="text-xs leading-5 text-[#595959] hover:text-[#262626]">挽单管理</a>
+            </div>
+          </section>
+
+          <section class="flex flex-col gap-5">
+            <button type="button" class="flex h-[22px] items-center gap-0.5 text-left text-[13px] font-semibold leading-[22px] text-[#111111]" aria-expanded="true" data-nav-collapse>
+              <span>物流管理</span>
+              <span class="inline-flex h-[10px] w-[10px] items-center justify-center text-[#111111]" aria-hidden="true">
+                <span class="h-[10px] w-[10px]">DownBold</span>
+              </span>
+            </button>
+            <div class="flex flex-col gap-5">
+              <a href="#" class="text-xs leading-5 text-[#595959] hover:text-[#262626]">物流工具</a>
+              <a href="#" class="text-xs leading-5 text-[#595959] hover:text-[#262626]">物流管理</a>
+            </div>
+          </section>
+
+          <a href="#" class="h-[22px] text-[13px] font-semibold leading-[22px] text-[#111111] hover:text-[#262626]">退款管理</a>
+          <a href="#" class="h-[22px] text-[13px] font-semibold leading-[22px] text-[#111111] hover:text-[#262626]">投诉与申诉</a>
+          <a href="#" class="h-[22px] text-[13px] font-semibold leading-[22px] text-[#111111] hover:text-[#262626]">小时达</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- 主内容区域 -->
+    <main class="flex min-h-[280px] min-w-0 flex-1 flex-col gap-4 overflow-y-auto bg-white px-12 pt-6" data-name="Content">
+      <div class="flex min-h-[240px] flex-1 select-none items-center justify-center text-xs text-black/25">内容区</div>
+    </main>
+  </div>
+
+  <!-- Footer（吸底；当前无 ActionBar，仅占位层） -->
+  <footer class="fixed bottom-0 left-[230px] right-0 z-[1000] bg-white" data-name="Footer" aria-label="底部栏（Footer）"></footer>
+</div>

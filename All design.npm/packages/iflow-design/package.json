@@ -1,0 +1,50 @@
+{
+  "name": "@iflow.cn/iflow-design",
+  "version": "1.0.0",
+  "private": false,
+  "description": "心流设计系统单包：运行时 Token CSS（含 design-spec 生成变量）+ React 组件，一发全有",
+  "license": "MIT",
+  "keywords": [
+    "iflow",
+    "design-system",
+    "react",
+    "design-tokens",
+    "components",
+    "css-variables"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./styles": "./styles.js",
+    "./css": "./css/iflow.tokens.css",
+    "./component-tokens": "./css/iflow.component-tokens.css",
+    "./tokens.json": "./tokens.json",
+    "./dist/index.css": "./dist/index.css"
+  },
+  "files": ["dist", "css", "tokens.json", "styles.js", "README.md"],
+  "sideEffects": ["./styles.js", "**/*.css"],
+  "scripts": {
+    "build": "tsup"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "tsup": "^8.3.5",
+    "typescript": "~5.6.3"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  }
+}

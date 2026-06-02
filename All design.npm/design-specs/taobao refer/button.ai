@@ -1,0 +1,141 @@
+按钮 Button
+定义
+用于页面/模块/表格行/弹窗抽屉中的提交、确认、导航跳转与批量处理。
+
+用法
+● 按组件形态选型：
+● 主要/常规实体操作 → 按钮 Button（type=primary / default）
+● 弱强调文字操作 → 纯文本按钮 ButtonPlainText
+● 多项低优先级文字操作收敛 → 纯文本按钮组 ButtonPlainTextGroup
+● 主次与操作区域：
+● 操作区域：同一容器/行/操作区内、服务同一任务或流程节点的强关联按钮算一组
+● 主按钮：同一操作区域仅 1 个 primary；整页 primary 不宜超过 2
+● 默认策略：首选 type=default；仅在须强调主行动点时用 type=primary
+● 卡片/模块内：二级、三级信息区首选 type=default
+● 排布与位置：
+● 默认：右主左副；主按钮最右；其余从右到左递减；主按钮禁止落在按钮组中间
+● 允许左主右副：二级区入口型（立即创建/去创建等）；三级区行内高频（编辑/查看等）；并列工具入口且无「提交/完成」收口
+● 尺寸与数量：
+● 默认尺寸：未传时 large
+● 数量：按钮 Button 建议 2～3 个内；数量 > 4 时低频操作收敛到 纯文本按钮组 ButtonPlainTextGroup
+
+属性
+按钮 Button
+● type：按钮类型/层级；默认值 'default'
+● default：用于次要操作；背景 #FFFFFF，边框 #F1F1F1，文字 #111111
+● primary：用于主要操作；背景 #3D5EFF，边框 #3D5EFF，文字 #FFFFFF
+● size：按钮尺寸；默认值 'large'
+● small：高度 24px
+● middle：高度 32px；二级信息区（卡片内）
+● large：高度 36px；一级信息区（页面、底部栏）
+● ButtonText：按钮文案；类型 string；字号 12px；字重 500
+● StartIcon：是否显示左侧图标；类型 boolean；默认值 false
+● EndIcon：是否显示右侧图标；类型 boolean；默认值 false
+● StartIconName：左侧图标名称；类型 string；图标尺寸 14px；颜色与文字同色
+● EndIconName：右侧图标名称；类型 string；图标尺寸 14px；颜色与文字同色
+● 容器样式：宽度自适应；描边 1px；圆角 4px
+纯文本按钮 ButtonPlainText
+● type：强调层级；默认值 'default'
+● default：colorText[#111111]
+● primary：colorLink[#3D5EFF]
+● ButtonText：按钮文案；类型 string；字号 12px；字重 400
+● StartIcon：是否显示左侧图标；类型 boolean；默认值 false
+● EndIcon：是否显示右侧图标；类型 boolean；默认值 false
+● StartIconName：左侧图标名称；类型 string；图标尺寸 14px；颜色与文字同色
+● EndIconName：右侧图标名称；类型 string；图标尺寸 14px；颜色与文字同色
+● 容器样式：高度 20px 行高；无背景；无描边
+
+结构
+按钮组 ButtonGroup
+按钮组 ButtonGroup（高度 24/32/36px，small/middle/large）
+└── 按钮 Button × 若干（`flex flex-row items-center`；`gap-[12px]` | `gap-[10px]` | `gap-[8px]`；主按钮 `type=primary` 最右）
+纯文本按钮组 ButtonPlainTextGroup
+纯文本按钮组 ButtonPlainTextGroup（高度 20px）
+└── 纯文本按钮 ButtonPlainText 与 分割线 Divider 交替排列（`flex flex-row items-center gap-[12px]`；`ButtonPlainText` 默认 `type=default`；`Divider` 使用 `<span>`，宽度 1px，高度 10px，线色 `#E4E6ED`）
+混合排布（左纯文本按钮组 + 右按钮组）
+混合排布容器（`flex flex-row items-center gap-[12px]`）
+├── 纯文本按钮组 ButtonPlainTextGroup（左侧）
+├── 分割线 Divider（中间；`<span>`；宽度 1px，高度 10px，线色 `#E4E6ED`）
+└── 按钮组 ButtonGroup（右侧）
+
+代码
+按钮 Button（type=default + size=large）
+<button class="w-auto h-[36px] px-[14px] py-0 m-0 rounded-[4px] border border-solid inline-flex items-center justify-center border-[#F1F1F1] bg-[#FFFFFF] gap-[6px] text-[#111111] text-[12px] font-medium leading-[20px]">
+  <span class="shrink-0 w-[14px] h-[14px]">CloseOutlined</span>
+  <span class="whitespace-nowrap">取消</span>
+</button>
+按钮 Button（type=default + size=large）
+<button class="w-auto h-[36px] px-[14px] py-0 m-0 rounded-[4px] border border-solid inline-flex items-center justify-center border-[#F1F1F1] bg-[#FFFFFF] gap-[6px] text-[#111111] text-[12px] font-medium leading-[20px]">
+  <span class="shrink-0 w-[14px] h-[14px]">CloseOutlined</span>
+  <span class="whitespace-nowrap">取消</span>
+</button>
+按钮 Button（type=primary + size=large）
+<button class="w-auto h-[36px] px-[14px] py-0 m-0 rounded-[4px] border border-solid inline-flex items-center justify-center border-[#3D5EFF] bg-[#3D5EFF] gap-[6px] text-[#FFFFFF] text-[12px] font-medium leading-[20px]">
+  <span class="shrink-0 w-[14px] h-[14px]">CheckOutlined</span>
+  <span class="whitespace-nowrap">确定</span>
+</button>
+按钮 Button（type=primary + size=large）
+<button class="w-auto h-[36px] px-[14px] py-0 m-0 rounded-[4px] border border-solid inline-flex items-center justify-center border-[#3D5EFF] bg-[#3D5EFF] gap-[6px] text-[#FFFFFF] text-[12px] font-medium leading-[20px]">
+  <span class="shrink-0 w-[14px] h-[14px]">CheckOutlined</span>
+  <span class="whitespace-nowrap">确定</span>
+</button>
+纯文本按钮 ButtonPlainText（type=default）
+<button class="w-auto h-[20px] px-0 py-0 m-0 inline-flex items-center justify-center border-0 bg-transparent rounded-none gap-[4px] text-[#111111] text-[12px] font-normal leading-[20px]">
+  <span class="shrink-0 w-[14px] h-[14px]">RubberOutlined</span>
+  <span class="whitespace-nowrap">重置筛选</span>
+</button>
+纯文本按钮 ButtonPlainText（type=primary）
+<button class="w-auto h-[20px] px-0 py-0 m-0 inline-flex items-center justify-center border-0 bg-transparent rounded-none gap-[4px] text-[#3D5EFF] text-[12px] font-normal leading-[20px]">
+  <span class="shrink-0 w-[14px] h-[14px]">EditOutlined</span>
+  <span class="whitespace-nowrap">编辑</span>
+</button>
+按钮组 ButtonGroup
+<div class="w-auto h-[36px] p-0 m-0 flex flex-row items-center gap-[12px]">
+  <button class="w-auto h-[36px] px-[14px] py-0 m-0 rounded-[4px] border border-solid inline-flex items-center justify-center border-[#F1F1F1] bg-[#FFFFFF] gap-[6px] text-[#111111] text-[12px] font-medium leading-[20px]">
+    <span class="shrink-0 w-[14px] h-[14px]">CloseOutlined</span>
+    <span class="whitespace-nowrap">取消</span>
+  </button>
+  <button class="w-auto h-[36px] px-[14px] py-0 m-0 rounded-[4px] border border-solid inline-flex items-center justify-center border-[#3D5EFF] bg-[#3D5EFF] gap-[6px] text-[#FFFFFF] text-[12px] font-medium leading-[20px]">
+    <span class="whitespace-nowrap">确定</span>
+    <span class="shrink-0 w-[14px] h-[14px]">ArrowRightOutlined</span>
+  </button>
+</div>
+纯文本按钮组 ButtonPlainTextGroup
+<div class="w-auto h-[20px] p-0 m-0 shrink-0 flex flex-row items-center gap-[12px]">
+  <button class="w-auto h-[20px] px-0 py-0 m-0 inline-flex items-center justify-center border-0 bg-transparent rounded-none gap-[4px] text-[#111111] text-[12px] font-normal leading-[20px]">
+    <span class="whitespace-nowrap">全部筛选项</span>
+    <span class="shrink-0 w-[14px] h-[14px]">DownOutlined</span>
+  </button>
+  <span class="h-[10px] w-px p-0 m-0 shrink-0 self-center inline-block bg-[#E4E6ED]"></span>
+  <button class="w-auto h-[20px] px-0 py-0 m-0 inline-flex items-center justify-center border-0 bg-transparent rounded-none gap-[4px] text-[#111111] text-[12px] font-normal leading-[20px]">
+    <span class="shrink-0 w-[14px] h-[14px]">RubberOutlined</span>
+    <span class="whitespace-nowrap">重置筛选</span>
+  </button>
+</div>
+混合排布（左纯文本按钮组 + 右按钮组）
+<section class="w-auto h-auto p-0 m-0 flex flex-row items-center gap-[12px]">
+  <div class="w-auto h-[20px] p-0 m-0 shrink-0 flex flex-row items-center gap-[12px]">
+    <button class="w-auto h-[20px] px-0 py-0 m-0 inline-flex items-center justify-center border-0 bg-transparent rounded-none gap-[4px] text-[#111111] text-[12px] font-normal leading-[20px]">
+      <span class="whitespace-nowrap">全部筛选项</span>
+      <span class="shrink-0 w-[14px] h-[14px]">DownOutlined</span>
+    </button>
+    <span class="h-[10px] w-px p-0 m-0 shrink-0 self-center inline-block bg-[#E4E6ED]"></span>
+    <button class="w-auto h-[20px] px-0 py-0 m-0 inline-flex items-center justify-center border-0 bg-transparent rounded-none gap-[4px] text-[#111111] text-[12px] font-normal leading-[20px]">
+      <span class="shrink-0 w-[14px] h-[14px]">RubberOutlined</span>
+      <span class="whitespace-nowrap">重置筛选</span>
+    </button>
+  </div>
+
+  <span class="h-[10px] w-px p-0 m-0 shrink-0 self-center inline-block bg-[#E4E6ED]"></span>
+
+  <div class="w-auto h-[36px] p-0 m-0 shrink-0 flex flex-row items-center gap-[12px]">
+    <button class="w-auto h-[36px] px-[14px] py-0 m-0 rounded-[4px] border border-solid inline-flex items-center justify-center border-[#F1F1F1] bg-[#FFFFFF] gap-[6px] text-[#111111] text-[12px] font-medium leading-[20px]">
+      <span class="shrink-0 w-[14px] h-[14px]">CloseOutlined</span>
+      <span class="whitespace-nowrap">取消</span>
+    </button>
+    <button class="w-auto h-[36px] px-[14px] py-0 m-0 rounded-[4px] border border-solid inline-flex items-center justify-center border-[#3D5EFF] bg-[#3D5EFF] gap-[6px] text-[#FFFFFF] text-[12px] font-medium leading-[20px]">
+      <span class="whitespace-nowrap">确定</span>
+      <span class="shrink-0 w-[14px] h-[14px]">ArrowRightOutlined</span>
+    </button>
+  </div>
+</section>

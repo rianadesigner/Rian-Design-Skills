@@ -1,0 +1,11 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="GeoAccent" clip-path="url(#clip0_0_2543)">
+<path id="Vector" d="M12 0L24 12L12 24L0 12L12 0Z" stroke="var(--stroke-0, white)" stroke-width="0.8"/>
+<path id="Vector_2" d="M12 -1.78814e-07L24 12L12 24V-1.78814e-07Z" fill="var(--fill-0, white)"/>
+</g>
+<defs>
+<clipPath id="clip0_0_2543">
+<rect width="24" height="24" fill="white"/>
+</clipPath>
+</defs>
+</svg>

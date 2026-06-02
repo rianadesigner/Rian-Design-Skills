@@ -1,0 +1,178 @@
+/**
+ * iflow.component-tokens.css
+ * ⚠️  自动生成 — 请勿手动编辑
+ * 来源：button-component-DESIGN-enriched.md + element-DESIGN-enriched.md
+ * 生成时间：2026-05-14T08:50:09.360Z
+ *
+ * 这些变量是从设计稿 YAML frontmatter 中提取的组件级语义 token，
+ * 可配合 iflow.tokens.css 中的基础 token 一起使用。
+ */
+
+:root {
+
+  /* ────────────────────────────────────────────────────
+     §A 颜色规范（来自 button-component-DESIGN-enriched.md）
+  ──────────────────────────────────────────────────── */
+  --iflow-spec-color-text-base:       #111111;  /* colors.colorTextBase */
+  --iflow-spec-color-text-secondary:  #5f6471;  /* colors.colorTextSecondary */
+  --iflow-spec-color-text-tertiary:   #8d93a1;  /* colors.colorTextTertiary */
+  --iflow-spec-color-bg-page:         #f2f3f5;  /* colors.colorBgPage */
+  --iflow-spec-color-bg-subtle:       #f8f8f8;  /* colors.colorBgSubtle */
+  --iflow-spec-color-bg-elevated:     #ffffff;  /* colors.colorBgElevated */
+  --iflow-spec-color-border:          #e4e6ed;  /* colors.colorBorder */
+  --iflow-spec-color-border-alt:      #dfe3ec;  /* colors.colorBorderAlt */
+  --iflow-spec-color-primary:         #5057f6;  /* colors.colorPrimary */
+  --iflow-spec-color-primary-hover:   #94a9ff;  /* colors.colorPrimaryHover */
+  --iflow-spec-color-primary-active:  #2944d9;  /* colors.colorPrimaryActive */
+  --iflow-spec-color-primary-deep:    #2944d9;  /* colors.colorPrimaryDeep */
+  --iflow-spec-color-error:           #f23c3c;  /* colors.colorError */
+  --iflow-spec-color-text-on-primary: #ffffff;  /* colors.colorTextOnPrimary */
+  --iflow-spec-color-deep-surface:    #000614;  /* colors.colorDeepSurface */
+
+  /* ────────────────────────────────────────────────────
+     §B 圆角规范
+  ──────────────────────────────────────────────────── */
+  --iflow-spec-radius-button:    8px;  /* rounded.button */
+  --iflow-spec-radius-button-lg: 12px;  /* rounded.button-lg */
+  --iflow-spec-radius-card:      8px;  /* rounded.card */
+
+  /* ────────────────────────────────────────────────────
+     §C 按钮尺寸/间距
+  ──────────────────────────────────────────────────── */
+  --iflow-spec-button-padding-lg-x: 20px;  /* spacing.button-padding-lg-x */
+  --iflow-spec-button-padding-md-x: 16px;  /* spacing.button-padding-md-x */
+  --iflow-spec-button-padding-sm-x: 12px;  /* spacing.button-padding-sm-x */
+  --iflow-spec-button-gap-lg:       12px;  /* spacing.button-gap-lg */
+  --iflow-spec-button-gap-md:       8px;  /* spacing.button-gap-md */
+  --iflow-spec-button-gap-sm:       4px;  /* spacing.button-gap-sm */
+  --iflow-spec-button-height-lg:    36px;  /* spacing.button-height-lg */
+  --iflow-spec-button-height-md:    32px;  /* spacing.button-height-md */
+  --iflow-spec-button-height-sm:    24px;  /* spacing.button-height-sm */
+
+  /* ────────────────────────────────────────────────────
+     §D 字体规范
+  ──────────────────────────────────────────────────── */
+  --iflow-typo-doc-hero-zh-font-family:        "PingFang SC", -apple-system, sans-serif;  /* typography.doc-hero-zh.fontFamily */
+  --iflow-typo-doc-hero-zh-font-size:          100px;  /* typography.doc-hero-zh.fontSize */
+  --iflow-typo-doc-hero-zh-font-weight:        500;  /* typography.doc-hero-zh.fontWeight */
+  --iflow-typo-doc-hero-zh-line-height:        1.1;  /* typography.doc-hero-zh.lineHeight */
+  --iflow-typo-doc-subtitle-en-font-family:    "SF Pro Display", -apple-system, "PingFang SC", sans-serif;  /* typography.doc-subtitle-en.fontFamily */
+  --iflow-typo-doc-subtitle-en-font-size:      48px;  /* typography.doc-subtitle-en.fontSize */
+  --iflow-typo-doc-subtitle-en-font-weight:    400;  /* typography.doc-subtitle-en.fontWeight */
+  --iflow-typo-doc-subtitle-en-line-height:    1.2;  /* typography.doc-subtitle-en.lineHeight */
+  --iflow-typo-doc-subtitle-en-letter-spacing: -0.02em;  /* typography.doc-subtitle-en.letterSpacing */
+  --iflow-typo-section-title-font-family:      "PingFang SC", -apple-system, sans-serif;  /* typography.section-title.fontFamily */
+  --iflow-typo-section-title-font-size:        32px;  /* typography.section-title.fontSize */
+  --iflow-typo-section-title-font-weight:      500;  /* typography.section-title.fontWeight */
+  --iflow-typo-section-title-line-height:      1.35;  /* typography.section-title.lineHeight */
+  --iflow-typo-body-md-font-family:            "PingFang SC", -apple-system, sans-serif;  /* typography.body-md.fontFamily */
+  --iflow-typo-body-md-font-size:              24px;  /* typography.body-md.fontSize */
+  --iflow-typo-body-md-font-weight:            400;  /* typography.body-md.fontWeight */
+  --iflow-typo-body-md-line-height:            1.5;  /* typography.body-md.lineHeight */
+  --iflow-typo-button-label-md-font-family:    "PingFang SC", -apple-system, sans-serif;  /* typography.button-label-md.fontFamily */
+  --iflow-typo-button-label-md-font-size:      12px;  /* typography.button-label-md.fontSize */
+  --iflow-typo-button-label-md-font-weight:    600;  /* typography.button-label-md.fontWeight */
+  --iflow-typo-button-label-md-line-height:    20px;  /* typography.button-label-md.lineHeight */
+  --iflow-typo-button-label-sm-font-family:    "PingFang SC", -apple-system, sans-serif;  /* typography.button-label-sm.fontFamily */
+  --iflow-typo-button-label-sm-font-size:      12px;  /* typography.button-label-sm.fontSize */
+  --iflow-typo-button-label-sm-font-weight:    400;  /* typography.button-label-sm.fontWeight */
+  --iflow-typo-button-label-sm-line-height:    20px;  /* typography.button-label-sm.lineHeight */
+
+  /* ────────────────────────────────────────────────────
+     §E Button Primary — 组件语义 token
+  ──────────────────────────────────────────────────── */
+  --iflow-button-primary-background-color:  #5057f6;  /* components.button-primary.backgroundColor */
+  --iflow-button-primary-text-color:        #ffffff;  /* components.button-primary.textColor */
+  --iflow-button-primary-border-color:      #5057f6;  /* components.button-primary.borderColor */
+  --iflow-button-primary-hover-background:  #94a9ff;  /* components.button-primary.hoverBackground */
+  --iflow-button-primary-active-background: #2944d9;  /* components.button-primary.activeBackground */
+  --iflow-button-primary-typography-md:     /* unresolved: "fontFamily":"\"PingFang SC\", -apple-system, sans-serif","fontSize":"12px","fontWeight":600,"lineHeight":"20px" */;  /* components.button-primary.typographyMd */
+  --iflow-button-primary-typography-sm:     /* unresolved: "fontFamily":"\"PingFang SC\", -apple-system, sans-serif","fontSize":"12px","fontWeight":400,"lineHeight":"20px" */;  /* components.button-primary.typographySm */
+  --iflow-button-primary-rounded-md:        8px;  /* components.button-primary.roundedMd */
+  --iflow-button-primary-rounded-lg:        12px;  /* components.button-primary.roundedLg */
+  --iflow-button-primary-height-lg:         36px;  /* components.button-primary.heightLg */
+  --iflow-button-primary-height-md:         32px;  /* components.button-primary.heightMd */
+  --iflow-button-primary-height-sm:         24px;  /* components.button-primary.heightSm */
+  --iflow-button-primary-padding-lg-x:      20px;  /* components.button-primary.paddingLgX */
+  --iflow-button-primary-padding-md-x:      16px;  /* components.button-primary.paddingMdX */
+  --iflow-button-primary-padding-sm-x:      12px;  /* components.button-primary.paddingSmX */
+  --iflow-button-primary-gap-lg:            12px;  /* components.button-primary.gapLg */
+  --iflow-button-primary-gap-md:            8px;  /* components.button-primary.gapMd */
+  --iflow-button-primary-gap-sm:            4px;  /* components.button-primary.gapSm */
+
+  /* ────────────────────────────────────────────────────
+     §F Button Default
+  ──────────────────────────────────────────────────── */
+  --iflow-button-default-background-color: #f8f8f8;  /* components.button-default.backgroundColor */
+  --iflow-button-default-text-color:       #111111;  /* components.button-default.textColor */
+  --iflow-button-default-border-color:     transparent;  /* components.button-default.borderColor */
+  --iflow-button-default-hover-text:       #94a9ff;  /* components.button-default.hoverText */
+  --iflow-button-default-hover-border:     transparent;  /* components.button-default.hoverBorder */
+  --iflow-button-default-typography-md:    /* unresolved: "fontFamily":"\"PingFang SC\", -apple-system, sans-serif","fontSize":"12px","fontWeight":600,"lineHeight":"20px" */;  /* components.button-default.typographyMd */
+  --iflow-button-default-typography-sm:    /* unresolved: "fontFamily":"\"PingFang SC\", -apple-system, sans-serif","fontSize":"12px","fontWeight":400,"lineHeight":"20px" */;  /* components.button-default.typographySm */
+  --iflow-button-default-rounded-md:       8px;  /* components.button-default.roundedMd */
+  --iflow-button-default-rounded-lg:       12px;  /* components.button-default.roundedLg */
+  --iflow-button-default-height-lg:        36px;  /* components.button-default.heightLg */
+  --iflow-button-default-height-md:        32px;  /* components.button-default.heightMd */
+  --iflow-button-default-height-sm:        24px;  /* components.button-default.heightSm */
+  --iflow-button-default-padding-lg-x:     20px;  /* components.button-default.paddingLgX */
+  --iflow-button-default-padding-md-x:     16px;  /* components.button-default.paddingMdX */
+  --iflow-button-default-padding-sm-x:     12px;  /* components.button-default.paddingSmX */
+  --iflow-button-default-gap-lg:           12px;  /* components.button-default.gapLg */
+  --iflow-button-default-gap-md:           8px;  /* components.button-default.gapMd */
+  --iflow-button-default-gap-sm:           4px;  /* components.button-default.gapSm */
+
+  /* ────────────────────────────────────────────────────
+     §G Button Text（纯文本按钮）
+  ──────────────────────────────────────────────────── */
+  --iflow-button-text-background-color: transparent;  /* components.button-text.backgroundColor */
+  --iflow-button-text-text-color:       #111111;  /* components.button-text.textColor */
+  --iflow-button-text-hover-text:       #94a9ff;  /* components.button-text.hoverText */
+  --iflow-button-text-hover-tint:       rgba(80, 87, 246, 0.06);  /* components.button-text.hoverTint */
+  --iflow-button-text-typography-md:    /* unresolved: "fontFamily":"\"PingFang SC\", -apple-system, sans-serif","fontSize":"12px","fontWeight":600,"lineHeight":"20px" */;  /* components.button-text.typographyMd */
+  --iflow-button-text-typography-sm:    /* unresolved: "fontFamily":"\"PingFang SC\", -apple-system, sans-serif","fontSize":"12px","fontWeight":400,"lineHeight":"20px" */;  /* components.button-text.typographySm */
+  --iflow-button-text-rounded-md:       8px;  /* components.button-text.roundedMd */
+  --iflow-button-text-rounded-lg:       12px;  /* components.button-text.roundedLg */
+  --iflow-button-text-height-lg:        36px;  /* components.button-text.heightLg */
+  --iflow-button-text-height-md:        32px;  /* components.button-text.heightMd */
+  --iflow-button-text-height-sm:        24px;  /* components.button-text.heightSm */
+  --iflow-button-text-padding-lg-x:     20px;  /* components.button-text.paddingLgX */
+  --iflow-button-text-padding-md-x:     16px;  /* components.button-text.paddingMdX */
+  --iflow-button-text-padding-sm-x:     12px;  /* components.button-text.paddingSmX */
+  --iflow-button-text-gap-lg:           12px;  /* components.button-text.gapLg */
+  --iflow-button-text-gap-md:           8px;  /* components.button-text.gapMd */
+  --iflow-button-text-gap-sm:           4px;  /* components.button-text.gapSm */
+
+  /* ────────────────────────────────────────────────────
+     §H Button Link
+  ──────────────────────────────────────────────────── */
+  --iflow-button-link-background-color:   transparent;  /* components.button-link.backgroundColor */
+  --iflow-button-link-text-color:         #5057f6;  /* components.button-link.textColor */
+  --iflow-button-link-hover-text:         #94a9ff;  /* components.button-link.hoverText */
+  --iflow-button-link-underline-on-hover: true;  /* components.button-link.underlineOnHover */
+  --iflow-button-link-typography-md:      /* unresolved: "fontFamily":"\"PingFang SC\", -apple-system, sans-serif","fontSize":"12px","fontWeight":600,"lineHeight":"20px" */;  /* components.button-link.typographyMd */
+  --iflow-button-link-height-md:          32px;  /* components.button-link.heightMd */
+
+  /* ────────────────────────────────────────────────────
+     §I Button Danger
+  ──────────────────────────────────────────────────── */
+  --iflow-button-danger-background-color: #ffffff;  /* components.button-danger.backgroundColor */
+  --iflow-button-danger-text-color:       #f23c3c;  /* components.button-danger.textColor */
+  --iflow-button-danger-border-color:     rgba(242, 60, 60, 0.35);  /* components.button-danger.borderColor */
+  --iflow-button-danger-typography-md:    /* unresolved: "fontFamily":"\"PingFang SC\", -apple-system, sans-serif","fontSize":"12px","fontWeight":600,"lineHeight":"20px" */;  /* components.button-danger.typographyMd */
+  --iflow-button-danger-typography-sm:    /* unresolved: "fontFamily":"\"PingFang SC\", -apple-system, sans-serif","fontSize":"12px","fontWeight":400,"lineHeight":"20px" */;  /* components.button-danger.typographySm */
+  --iflow-button-danger-rounded-md:       8px;  /* components.button-danger.roundedMd */
+  --iflow-button-danger-rounded-lg:       12px;  /* components.button-danger.roundedLg */
+  --iflow-button-danger-height-lg:        36px;  /* components.button-danger.heightLg */
+  --iflow-button-danger-height-md:        32px;  /* components.button-danger.heightMd */
+  --iflow-button-danger-height-sm:        24px;  /* components.button-danger.heightSm */
+  --iflow-button-danger-padding-lg-x:     20px;  /* components.button-danger.paddingLgX */
+  --iflow-button-danger-padding-md-x:     16px;  /* components.button-danger.paddingMdX */
+  --iflow-button-danger-padding-sm-x:     12px;  /* components.button-danger.paddingSmX */
+  --iflow-button-danger-gap-lg:           12px;  /* components.button-danger.gapLg */
+  --iflow-button-danger-gap-md:           8px;  /* components.button-danger.gapMd */
+  --iflow-button-danger-gap-sm:           4px;  /* components.button-danger.gapSm */
+
+  /* ─── 其他 token ─── */
+  --iflow-spec-base: 4px;  /* spacing.base */
+}

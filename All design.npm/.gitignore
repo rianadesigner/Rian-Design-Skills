@@ -1,0 +1,4 @@
+node_modules/
+ai-search-app/dist
+ai-search-app/.env
+.DS_Store
