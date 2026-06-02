@@ -144,7 +144,7 @@ export default function SlideContainer() {
     if (g.direction === "x" && scrollRef.current) {
       const el = scrollRef.current;
       const maxScroll = getMaxScroll();
-      el.scrollTop = Math.max(0, Math.min(maxScroll, g.startScrollTop - dx));
+      el.scrollTop = Math.max(0, Math.min(maxScroll, g.startScrollTop + dx));
       g.lastX = cx;
       g.lastTime = Date.now();
       e.preventDefault();
@@ -168,7 +168,7 @@ export default function SlideContainer() {
       if (g.direction === "x" && scrollRef.current) {
         const dx = e.changedTouches[0].clientX - g.lastX;
         const dt = Math.max(1, Date.now() - g.lastTime);
-        let velocity = -(dx / dt) * 12;
+        let velocity = (dx / dt) * 12;
         const el = scrollRef.current;
         const maxScroll = getMaxScroll();
         const decay = () => {
