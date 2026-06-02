@@ -310,8 +310,11 @@ export function mountEffect1(container: HTMLElement): () => void {
   let dsTheta = 0;
   let dsPhi = 0;
   const dom = renderer.domElement;
-  dom.style.touchAction = "none";
-  dom.style.cursor = "grab";
+  const isMobilePortrait = window.matchMedia("(max-width: 640px) and (orientation: portrait)").matches;
+  if (!isMobilePortrait) {
+    dom.style.touchAction = "none";
+    dom.style.cursor = "grab";
+  }
 
   const onPtrDown = (e: PointerEvent) => {
     dragging = true;
@@ -343,10 +346,12 @@ export function mountEffect1(container: HTMLElement): () => void {
     cam.rT = Math.max(R_MIN, Math.min(R_MAX, cam.rT * Math.exp(e.deltaY * 0.0014)));
   };
 
-  dom.addEventListener("pointerdown", onPtrDown);
-  window.addEventListener("pointermove", onPtrMove);
-  window.addEventListener("pointerup", onPtrUp);
-  dom.addEventListener("wheel", onWheel, { passive: false });
+  if (!isMobilePortrait) {
+    dom.addEventListener("pointerdown", onPtrDown);
+    window.addEventListener("pointermove", onPtrMove);
+    window.addEventListener("pointerup", onPtrUp);
+    dom.addEventListener("wheel", onWheel, { passive: false });
+  }
 
   const onResize = () => {
     camera.aspect = container.clientWidth / container.clientHeight;
@@ -418,10 +423,12 @@ export function mountEffect1(container: HTMLElement): () => void {
   return () => {
     cancelled = true;
     cancelAnimationFrame(rafId);
-    dom.removeEventListener("pointerdown", onPtrDown);
-    window.removeEventListener("pointermove", onPtrMove);
-    window.removeEventListener("pointerup", onPtrUp);
-    dom.removeEventListener("wheel", onWheel);
+    if (!isMobilePortrait) {
+      dom.removeEventListener("pointerdown", onPtrDown);
+      window.removeEventListener("pointermove", onPtrMove);
+      window.removeEventListener("pointerup", onPtrUp);
+      dom.removeEventListener("wheel", onWheel);
+    }
     window.removeEventListener("resize", onResize);
     galGeo.dispose();
     galMat.dispose();

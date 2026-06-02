@@ -52,7 +52,17 @@ const variants = {
 export default function SlideContainer() {
   const [[current, direction], setCurrent] = useState([0, 0]);
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
-  const touchRef = useRef({ x: 0, y: 0, t: 0 });
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const gestureRef = useRef({
+    startX: 0,
+    startY: 0,
+    startTime: 0,
+    direction: null as "x" | "y" | null,
+    startScrollTop: 0,
+    lastX: 0,
+    lastTime: 0,
+  });
+  const momentumRef = useRef<number>(0);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
@@ -81,22 +91,70 @@ export default function SlideContainer() {
   };
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchRef.current = {
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY,
-      t: Date.now(),
+    cancelAnimationFrame(momentumRef.current);
+    gestureRef.current = {
+      startX: e.touches[0].clientX,
+      startY: e.touches[0].clientY,
+      startTime: Date.now(),
+      direction: null,
+      startScrollTop: scrollRef.current?.scrollTop ?? 0,
+      lastX: e.touches[0].clientX,
+      lastTime: Date.now(),
     };
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    const g = gestureRef.current;
+    const cx = e.touches[0].clientX;
+    const cy = e.touches[0].clientY;
+    const dx = cx - g.startX;
+    const dy = cy - g.startY;
+
+    if (!g.direction) {
+      if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+        g.direction = Math.abs(dx) > Math.abs(dy) ? "x" : "y";
+      } else {
+        return;
+      }
+    }
+
+    if (g.direction === "x" && scrollRef.current) {
+      const el = scrollRef.current;
+      const maxScroll = el.scrollHeight - el.clientHeight;
+      el.scrollTop = Math.max(0, Math.min(maxScroll, g.startScrollTop - dx));
+      g.lastX = cx;
+      g.lastTime = Date.now();
+      e.preventDefault();
+    }
   }, []);
 
   const handleTouchEnd = useCallback(
     (e: React.TouchEvent) => {
-      const dy = e.changedTouches[0].clientY - touchRef.current.y;
-      const dt = Date.now() - touchRef.current.t;
-      const vy = (Math.abs(dy) / dt) * 1000;
+      const g = gestureRef.current;
 
-      if (Math.abs(dy) > SWIPE_THRESHOLD || vy > SWIPE_VELOCITY) {
-        if (dy < 0) paginate(1);
-        else paginate(-1);
+      if (g.direction === "y") {
+        const dy = e.changedTouches[0].clientY - g.startY;
+        const dt = Date.now() - g.startTime;
+        const vy = (Math.abs(dy) / dt) * 1000;
+        if (Math.abs(dy) > SWIPE_THRESHOLD || vy > SWIPE_VELOCITY) {
+          if (dy < 0) paginate(1);
+          else paginate(-1);
+        }
+      }
+
+      if (g.direction === "x" && scrollRef.current) {
+        const dx = e.changedTouches[0].clientX - g.lastX;
+        const dt = Math.max(1, Date.now() - g.lastTime);
+        let velocity = -(dx / dt) * 12;
+        const el = scrollRef.current;
+        const decay = () => {
+          if (Math.abs(velocity) < 0.5 || !scrollRef.current) return;
+          const maxScroll = el.scrollHeight - el.clientHeight;
+          el.scrollTop = Math.max(0, Math.min(maxScroll, el.scrollTop + velocity));
+          velocity *= 0.94;
+          momentumRef.current = requestAnimationFrame(decay);
+        };
+        momentumRef.current = requestAnimationFrame(decay);
       }
     },
     [paginate],
@@ -111,12 +169,21 @@ export default function SlideContainer() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [paginate]);
 
+  useEffect(() => {
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  }, [current]);
+
   const handleEnter = useCallback(() => {
     setCurrent([1, 1]);
   }, []);
 
+  const handleNavigate = useCallback((slideIndex: number) => {
+    const dir = slideIndex > current ? 1 : -1;
+    setCurrent([slideIndex, dir]);
+  }, [current]);
+
   const Slide = slideComponents[current];
-  const slideProps = current === 0 ? { onEnter: handleEnter } : {};
+  const slideProps = current === 0 ? { onEnter: handleEnter, onNavigate: handleNavigate } : {};
 
   return (
     <>
@@ -135,23 +202,21 @@ export default function SlideContainer() {
             width: 100vh !important;
             height: 100vw !important;
             transform: none !important;
-            touch-action: pan-x !important;
+            touch-action: none !important;
           }
           .slide-scroll {
             width: 100% !important;
             height: 100% !important;
-            overflow-y: auto !important;
-            overflow-x: hidden !important;
-            -webkit-overflow-scrolling: touch !important;
-            overscroll-behavior-y: contain !important;
+            overflow: hidden !important;
           }
           .slide-scroll > * {
             width: 100% !important;
             height: calc(100vh * 10 / 16) !important;
             min-height: calc(100vh * 10 / 16) !important;
           }
-          .slide-scroll canvas {
-            touch-action: pan-x !important;
+          .slide-scroll .three-canvas-container,
+          .slide-scroll .three-canvas-container canvas {
+            touch-action: auto !important;
             pointer-events: none !important;
           }
         }
@@ -172,9 +237,10 @@ export default function SlideContainer() {
           onDragEnd={isMobilePortrait ? undefined : handleDragEnd}
           className="slide-inner absolute inset-0 h-full w-full cursor-grab active:cursor-grabbing"
           onTouchStart={isMobilePortrait ? handleTouchStart : undefined}
+          onTouchMove={isMobilePortrait ? handleTouchMove : undefined}
           onTouchEnd={isMobilePortrait ? handleTouchEnd : undefined}
         >
-          <div className="slide-scroll h-full w-full">
+          <div ref={scrollRef} className="slide-scroll h-full w-full">
             <Slide {...slideProps} />
           </div>
         </motion.div>

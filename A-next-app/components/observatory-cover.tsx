@@ -5,6 +5,7 @@ import { mountEffect1 } from "./effect1";
 
 interface ObservatoryCoverProps {
   onEnter?: () => void;
+  onNavigate?: (slideIndex: number) => void;
 }
 
 /* ── Logo mark — Figma node 42:2087 (`资源 1@3x@3x 1`, PR file) ── */
@@ -65,7 +66,7 @@ const HERO_BODY =
   "负责 AI 产品体验与架构升级，主导生成式 AI 产品在多模态搜索、知识库wiki、Agent FRAMEWORK、App Builder、VIBE Design等场景下的产品化探索与落地。";
 
 /* ── Main Component ─────────────────────────────────────────── */
-export function ObservatoryCover({ onEnter }: ObservatoryCoverProps = {}) {
+export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps = {}) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [showUI, setShowUI] = useState(false);
 
@@ -101,7 +102,7 @@ export function ObservatoryCover({ onEnter }: ObservatoryCoverProps = {}) {
       }}
     >
       {/* Three.js canvas */}
-      <div ref={canvasRef} style={{ position: "absolute", inset: 0, zIndex: 1 }} />
+      <div ref={canvasRef} className="three-canvas-container" style={{ position: "absolute", inset: 0, zIndex: 1 }} />
 
       {/* ── UI overlay ────────────────────────────────────────── */}
       <div
@@ -150,14 +151,18 @@ export function ObservatoryCover({ onEnter }: ObservatoryCoverProps = {}) {
           {/* Nav — Inter 12px/400, gap=40 */}
           <nav style={{ display: "flex", gap: 40, pointerEvents: "auto", alignItems: "center" }}>
             {[
-              { label: "心流 AI 助手", active: true },
-              { label: "星链开发平台", active: false },
-              { label: "万相营造", active: false },
-              { label: "广告大外投", active: false },
-            ].map(({ label, active }) => (
+              { label: "心流 AI 助手", slide: 1 },
+              { label: "星链开发平台", slide: 13 },
+              { label: "万相营造", slide: 23 },
+              { label: "广告大外投", slide: 26 },
+            ].map(({ label, slide }) => (
               <a
                 key={label}
                 href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onNavigate?.(slide);
+                }}
                 style={{
                   color: "#fff",
                   textDecoration: "none",
