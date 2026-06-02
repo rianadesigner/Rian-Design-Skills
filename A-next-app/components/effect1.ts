@@ -20,7 +20,7 @@ export function mountEffect1(container: HTMLElement): () => void {
 
   const camera = new THREE.PerspectiveCamera(
     59,
-    window.innerWidth / window.innerHeight,
+    container.clientWidth / container.clientHeight,
     0.5,
     6000,
   );
@@ -29,7 +29,7 @@ export function mountEffect1(container: HTMLElement): () => void {
     antialias: true,
     powerPreference: "high-performance",
   });
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setClearColor(0x02040a, 1);
   container.appendChild(renderer.domElement);
@@ -323,8 +323,8 @@ export function mountEffect1(container: HTMLElement): () => void {
     dom.style.cursor = "grabbing";
   };
   const onPtrMove = (e: PointerEvent) => {
-    cam.pxT = (e.clientX / window.innerWidth - 0.5) * 0.35;
-    cam.pyT = (e.clientY / window.innerHeight - 0.5) * 0.35;
+    cam.pxT = (e.clientX / container.clientWidth - 0.5) * 0.35;
+    cam.pyT = (e.clientY / container.clientHeight - 0.5) * 0.35;
     if (!dragging) return;
     cam.thetaT = dsTheta - (e.clientX - dsx) * 0.004;
     cam.phiT = Math.max(PHI_MIN, Math.min(PHI_MAX, dsPhi - (e.clientY - dsy) * 0.004));
@@ -349,9 +349,9 @@ export function mountEffect1(container: HTMLElement): () => void {
   dom.addEventListener("wheel", onWheel, { passive: false });
 
   const onResize = () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = container.clientWidth / container.clientHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container.clientWidth, container.clientHeight);
     galMat.uniforms.uPx.value = renderer.getPixelRatio();
     starMat.uniforms.uPx.value = renderer.getPixelRatio();
   };

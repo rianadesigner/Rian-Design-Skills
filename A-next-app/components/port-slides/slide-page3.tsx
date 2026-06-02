@@ -3,7 +3,7 @@ const P3 = "/images/page3";
 export default function SlidePage3() {
   return (
     <div
-      className="relative min-h-screen w-screen overflow-y-auto"
+      className="relative min-h-full w-full overflow-y-auto"
       style={{ background: "#FFFFFF" }}
     >
       {/* ── 白色底层 + 装饰背景 ─────────────────────────────────── */}

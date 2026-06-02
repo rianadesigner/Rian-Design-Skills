@@ -3,7 +3,7 @@ const P1 = "/images/page1";
 export default function SlidePage1() {
   return (
     <div
-      className="relative h-screen w-screen overflow-hidden"
+      className="relative h-full w-full overflow-hidden"
       style={{
         backgroundImage: `url(${P1}/bg-outer.png)`,
         backgroundSize: "cover",

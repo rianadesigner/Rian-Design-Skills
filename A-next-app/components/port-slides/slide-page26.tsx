@@ -40,7 +40,7 @@ const captionStyle = {
 export default function SlidePage26() {
   return (
     <div
-      className="relative h-screen w-screen overflow-hidden"
+      className="relative h-full w-full overflow-hidden"
       style={{ background: "#000000" }}
     >
       {/* ── Top Section (#222222) ────────────────────────────────── */}

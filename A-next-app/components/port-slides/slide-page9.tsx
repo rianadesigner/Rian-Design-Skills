@@ -3,7 +3,7 @@ const P9 = "/images/page9";
 export default function SlidePage9() {
   return (
     <div
-      className="relative h-screen w-screen overflow-hidden"
+      className="relative h-full w-full overflow-hidden"
       style={{ background: "#FFFFFF" }}
     >
       {/* ── 装饰背景 ─────────────────────────────────── */}

@@ -90,8 +90,8 @@ export function ObservatoryCover({ onEnter }: ObservatoryCoverProps = {}) {
     <div
       style={{
         position: "relative",
-        width: "100vw",
-        height: "100svh",
+        width: "100%",
+        height: "100%",
         overflow: "hidden",
         background: "radial-gradient(circle at center, #0a1128 0%, #02040a 60%, #000 100%)",
         color: "#fff",

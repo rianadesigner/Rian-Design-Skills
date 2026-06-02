@@ -90,7 +90,40 @@ export default function SlideContainer() {
   const slideProps = current === 0 ? { onEnter: handleEnter } : {};
 
   return (
-    <div className="relative h-screen w-screen overflow-hidden">
+    <>
+      <style>{`
+        @media (max-width: 640px) and (orientation: portrait) {
+          .slide-root {
+            transform: rotate(90deg) translateY(-100%);
+            transform-origin: top left;
+            width: 100vh !important;
+            height: 100vw !important;
+            overflow: hidden !important;
+          }
+          .slide-inner {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100vh !important;
+            height: 100vw !important;
+            transform: none !important;
+            touch-action: pan-y !important;
+          }
+          .slide-scroll {
+            width: 100% !important;
+            height: 100% !important;
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            -webkit-overflow-scrolling: touch !important;
+            overscroll-behavior-y: contain !important;
+          }
+          .slide-scroll > * {
+            width: 100% !important;
+            height: calc(100vh * 10 / 16) !important;
+            min-height: calc(100vh * 10 / 16) !important;
+          }
+        }
+      `}</style>
+      <div className="slide-root relative h-screen w-screen overflow-hidden">
       <AnimatePresence initial={false} custom={direction} mode="popLayout">
         <motion.div
           key={slideIds[current]}
@@ -104,9 +137,11 @@ export default function SlideContainer() {
           dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.2}
           onDragEnd={handleDragEnd}
-          className="absolute inset-0 h-full w-full cursor-grab active:cursor-grabbing"
+          className="slide-inner absolute inset-0 h-full w-full cursor-grab active:cursor-grabbing"
         >
-          <Slide {...slideProps} />
+          <div className="slide-scroll h-full w-full">
+            <Slide {...slideProps} />
+          </div>
         </motion.div>
       </AnimatePresence>
 
@@ -114,7 +149,7 @@ export default function SlideContainer() {
       {current > 1 && (
         <button
           onClick={() => paginate(-1)}
-          className="absolute left-4 top-1/2 z-50 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-opacity hover:bg-white/40"
+          className="hidden sm:flex absolute left-4 top-1/2 z-50 h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-opacity hover:bg-white/40"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="15 18 9 12 15 6" />
@@ -124,7 +159,7 @@ export default function SlideContainer() {
       {current > 0 && current < slideComponents.length - 1 && (
         <button
           onClick={() => paginate(1)}
-          className="absolute right-4 top-1/2 z-50 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-opacity hover:bg-white/40"
+          className="hidden sm:flex absolute right-4 top-1/2 z-50 h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-opacity hover:bg-white/40"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="9 18 15 12 9 6" />
@@ -132,5 +167,6 @@ export default function SlideContainer() {
         </button>
       )}
     </div>
+    </>
   );
 }

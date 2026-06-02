@@ -317,7 +317,7 @@ export function ResumePlanner() {
 
   useEffect(() => {
     const update = () => {
-      const w = mobileRef.current?.clientWidth ?? 500
+      const w = window.innerWidth * 0.8
       setMobileScale(w / 500)
     }
     update()
@@ -388,14 +388,14 @@ export function ResumePlanner() {
   }
 
   return (
-    <main className="flex h-screen flex-col items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.94),_rgba(240,237,232,0.92)_50%,_rgba(227,222,216,0.96))] p-[50px] text-[#171717]">
+    <main className="flex h-screen flex-col items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.94),_rgba(240,237,232,0.92)_50%,_rgba(227,222,216,0.96))] p-0 sm:p-[5%] text-[#171717]">
 
       {/* ── 移动端单页轮播（< sm） ──────────────────────────────────────────── */}
       <div className="sm:hidden" ref={mobileRef}>
         {/* 滑动区域：一次只展示一页 500×700，按 mobileScale 缩放至屏宽 */}
         <div
-          className="relative w-full overflow-hidden select-none"
-          style={{ height: `${700 * mobileScale}px` }}
+          className="relative mx-auto overflow-hidden select-none"
+          style={{ width: `${500 * mobileScale}px`, height: `${700 * mobileScale}px` }}
           onTouchStart={(e) => { swipeStart.current = e.touches[0].clientX }}
           onTouchEnd={(e) => {
             const dx = e.changedTouches[0].clientX - swipeStart.current

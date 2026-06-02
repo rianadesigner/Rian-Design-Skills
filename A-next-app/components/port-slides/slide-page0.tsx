@@ -3,7 +3,7 @@ const P0 = "/images/page0";
 export default function SlidePage0() {
   return (
     <div
-      className="relative flex h-screen w-full flex-col overflow-hidden bg-[#f8f8f8]"
+      className="relative flex h-full w-full flex-col overflow-hidden bg-[#f8f8f8]"
       style={{ fontFamily: "'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif" }}
     >
       {/* ── Header: Logo + 标语 ─────────────────────────────────── */}

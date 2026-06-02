@@ -35,7 +35,7 @@ const cards = [
 export default function SlidePage14() {
   return (
     <div
-      className="relative h-screen w-screen overflow-hidden"
+      className="relative h-full w-full overflow-hidden"
       style={{ background: "#FFFFFF" }}
     >
       {/* ── 白色底层 + 装饰背景 ─────────────────────────────────── */}
