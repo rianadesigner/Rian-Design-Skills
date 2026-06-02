@@ -52,26 +52,14 @@ const variants = {
 export default function SlideContainer() {
   const [[current, direction], setCurrent] = useState([0, 0]);
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
-  const [mobileZoom, setMobileZoom] = useState(1);
   const touchRef = useRef({ x: 0, y: 0, t: 0 });
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
-    const update = () => {
-      const mobile = mq.matches;
-      setIsMobilePortrait(mobile);
-      if (mobile) {
-        setMobileZoom(window.innerHeight / window.innerWidth);
-      }
-    };
+    const update = () => setIsMobilePortrait(mq.matches);
     update();
-    const handler = () => update();
-    mq.addEventListener("change", handler);
-    window.addEventListener("resize", handler);
-    return () => {
-      mq.removeEventListener("change", handler);
-      window.removeEventListener("resize", handler);
-    };
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
   }, []);
 
   const paginate = useCallback(
@@ -157,6 +145,11 @@ export default function SlideContainer() {
             -webkit-overflow-scrolling: touch !important;
             overscroll-behavior-y: contain !important;
           }
+          .slide-scroll > * {
+            width: 100% !important;
+            height: calc(100vh * 10 / 16) !important;
+            min-height: calc(100vh * 10 / 16) !important;
+          }
           .slide-scroll canvas {
             touch-action: pan-x !important;
             pointer-events: none !important;
@@ -181,19 +174,7 @@ export default function SlideContainer() {
           onTouchStart={isMobilePortrait ? handleTouchStart : undefined}
           onTouchEnd={isMobilePortrait ? handleTouchEnd : undefined}
         >
-          <div
-            className="slide-scroll h-full w-full"
-            style={
-              isMobilePortrait
-                ? {
-                    zoom: mobileZoom,
-                    width: "100vw",
-                    height: `calc(100vw * 10 / 16)`,
-                    minHeight: `calc(100vw * 10 / 16)`,
-                  }
-                : undefined
-            }
-          >
+          <div className="slide-scroll h-full w-full">
             <Slide {...slideProps} />
           </div>
         </motion.div>
