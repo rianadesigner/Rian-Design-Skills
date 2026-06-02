@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence, type PanInfo } from "motion/react";
 import { ObservatoryCover } from "../observatory-cover";
 import SlidePage0 from "./slide-page0";
@@ -34,10 +34,10 @@ import SlidePage26 from "./slide-page26";
 const slideComponents = [ObservatoryCover, /* SlidePage0, */ SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
 const slideIds = ["cover", /* "page0", */ "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
 
-const SWIPE_THRESHOLD = 80;
-const SWIPE_VELOCITY = 400;
+const SWIPE_THRESHOLD = 60;
+const SWIPE_VELOCITY = 300;
 
-const variantsX = {
+const variants = {
   enter: (direction: number) => ({
     x: direction > 0 ? "100%" : "-100%",
     opacity: 0.5,
@@ -49,28 +49,29 @@ const variantsX = {
   }),
 };
 
-const variantsY = {
-  enter: (direction: number) => ({
-    y: direction > 0 ? "100%" : "-100%",
-    opacity: 0.5,
-  }),
-  center: { y: 0, opacity: 1 },
-  exit: (direction: number) => ({
-    y: direction > 0 ? "-100%" : "100%",
-    opacity: 0.5,
-  }),
-};
-
 export default function SlideContainer() {
   const [[current, direction], setCurrent] = useState([0, 0]);
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
+  const [mobileZoom, setMobileZoom] = useState(1);
+  const touchRef = useRef({ x: 0, y: 0, t: 0 });
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
-    setIsMobilePortrait(mq.matches);
-    const handler = (e: MediaQueryListEvent) => setIsMobilePortrait(e.matches);
+    const update = () => {
+      const mobile = mq.matches;
+      setIsMobilePortrait(mobile);
+      if (mobile) {
+        setMobileZoom(window.innerHeight / window.innerWidth);
+      }
+    };
+    update();
+    const handler = () => update();
     mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
+    window.addEventListener("resize", handler);
+    return () => {
+      mq.removeEventListener("change", handler);
+      window.removeEventListener("resize", handler);
+    };
   }, []);
 
   const paginate = useCallback(
@@ -84,20 +85,34 @@ export default function SlideContainer() {
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     const { offset, velocity } = info;
-    if (isMobilePortrait) {
-      if (offset.y > SWIPE_THRESHOLD || velocity.y > SWIPE_VELOCITY) {
-        paginate(1);
-      } else if (offset.y < -SWIPE_THRESHOLD || velocity.y < -SWIPE_VELOCITY) {
-        paginate(-1);
-      }
-    } else {
-      if (offset.x < -SWIPE_THRESHOLD || velocity.x < -SWIPE_VELOCITY) {
-        paginate(1);
-      } else if (offset.x > SWIPE_THRESHOLD || velocity.x > SWIPE_VELOCITY) {
-        paginate(-1);
-      }
+    if (offset.x < -SWIPE_THRESHOLD || velocity.x < -SWIPE_VELOCITY) {
+      paginate(1);
+    } else if (offset.x > SWIPE_THRESHOLD || velocity.x > SWIPE_VELOCITY) {
+      paginate(-1);
     }
   };
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchRef.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+      t: Date.now(),
+    };
+  }, []);
+
+  const handleTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const dy = e.changedTouches[0].clientY - touchRef.current.y;
+      const dt = Date.now() - touchRef.current.t;
+      const vy = (Math.abs(dy) / dt) * 1000;
+
+      if (Math.abs(dy) > SWIPE_THRESHOLD || vy > SWIPE_VELOCITY) {
+        if (dy < 0) paginate(1);
+        else paginate(-1);
+      }
+    },
+    [paginate],
+  );
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -142,10 +157,9 @@ export default function SlideContainer() {
             -webkit-overflow-scrolling: touch !important;
             overscroll-behavior-y: contain !important;
           }
-          .slide-scroll > * {
-            width: 100% !important;
-            height: calc(100vh * 10 / 16) !important;
-            min-height: calc(100vh * 10 / 16) !important;
+          .slide-scroll canvas {
+            touch-action: pan-x !important;
+            pointer-events: none !important;
           }
         }
       `}</style>
@@ -154,18 +168,32 @@ export default function SlideContainer() {
         <motion.div
           key={slideIds[current]}
           custom={direction}
-          variants={isMobilePortrait ? variantsY : variantsX}
+          variants={variants}
           initial="enter"
           animate="center"
           exit="exit"
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          drag={isMobilePortrait ? "y" : "x"}
-          dragConstraints={isMobilePortrait ? { top: 0, bottom: 0 } : { left: 0, right: 0 }}
+          drag={isMobilePortrait ? false : "x"}
+          dragConstraints={{ left: 0, right: 0 }}
           dragElastic={0.2}
-          onDragEnd={handleDragEnd}
+          onDragEnd={isMobilePortrait ? undefined : handleDragEnd}
           className="slide-inner absolute inset-0 h-full w-full cursor-grab active:cursor-grabbing"
+          onTouchStart={isMobilePortrait ? handleTouchStart : undefined}
+          onTouchEnd={isMobilePortrait ? handleTouchEnd : undefined}
         >
-          <div className="slide-scroll h-full w-full">
+          <div
+            className="slide-scroll h-full w-full"
+            style={
+              isMobilePortrait
+                ? {
+                    zoom: mobileZoom,
+                    width: "100vw",
+                    height: `calc(100vw * 10 / 16)`,
+                    minHeight: `calc(100vw * 10 / 16)`,
+                  }
+                : undefined
+            }
+          >
             <Slide {...slideProps} />
           </div>
         </motion.div>
