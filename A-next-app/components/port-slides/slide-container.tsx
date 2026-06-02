@@ -246,10 +246,6 @@ export default function SlideContainer() {
             touch-action: auto !important;
             pointer-events: none !important;
           }
-          .slide-scroll .cover-cta-area {
-            top: 55% !important;
-            bottom: auto !important;
-          }
         }
       `}</style>
       <div className="slide-root relative h-screen w-screen overflow-hidden">
