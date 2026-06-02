@@ -53,18 +53,11 @@ jobs:
           echo "Testing SSH connection..."
           ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "echo SSH connection OK"
 
-          echo "Starting rsync..."
+          echo "Syncing out/ to /var/www/rian-app/ ..."
           rsync -az --delete \
             -e "ssh -i ~/.ssh/deploy_key" \
-            ./A-next-app/ \
-            ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/root/rian-build-temp
+            ./A-next-app/out/ \
+            ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/var/www/rian-app/
 
-          echo "Running remote deploy script..."
-          ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} << 'EOF'
-          cd /root/rian-build-temp
-          npm install --legacy-peer-deps
-          npm install next@16.1.7 react@19.2.4 react-dom@19.2.4 --legacy-peer-deps
-          ./node_modules/.bin/next build
-          nginx -t && systemctl reload nginx
-          echo "🎉 部署完成！"
-          EOF
+          echo "Reloading nginx..."
+          ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "nginx -t && systemctl reload nginx && echo '部署完成'"
