@@ -31,11 +31,14 @@ import SlidePage24 from "./slide-page24";
 import SlidePage25 from "./slide-page25";
 import SlidePage26 from "./slide-page26";
 
-const slideComponents = [ObservatoryCover, /* SlidePage0, */ SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
-const slideIds = ["cover", /* "page0", */ "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
+const slideComponents = [ObservatoryCover, SlidePage0, SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
+const slideIds = ["cover", "page0", "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
 
 const SWIPE_THRESHOLD = 60;
 const SWIPE_VELOCITY = 300;
+/** 幻灯片设计画布：16:10（与移动端 1440×900、预览视口 1600×1000 一致） */
+const DESIGN_WIDTH = 1440;
+const DESIGN_HEIGHT = 900;
 
 const variants = {
   enter: (direction: number) => ({
@@ -52,6 +55,7 @@ const variants = {
 export default function SlideContainer() {
   const [[current, direction], setCurrent] = useState([0, 0]);
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const zoomRef = useRef(1);
   const gestureRef = useRef({
@@ -67,24 +71,40 @@ export default function SlideContainer() {
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
+    const root = rootRef.current;
+    if (!root) return;
+
     const update = () => {
       const matches = mq.matches;
       setIsMobilePortrait(matches);
       if (matches) {
-        const zoom = window.innerHeight / 1440;
+        const zoom = window.innerHeight / DESIGN_WIDTH;
         zoomRef.current = zoom;
         document.documentElement.style.setProperty("--slide-zoom", String(zoom));
+        document.documentElement.style.removeProperty("--slide-fit-scale");
       } else {
         zoomRef.current = 1;
         document.documentElement.style.removeProperty("--slide-zoom");
+        // 用 slide-root 实际占位测量，避免 Cursor 分屏 / CDP 强制视口时 window 尺寸与可见区域不一致
+        const width = root.clientWidth || window.innerWidth;
+        const height = root.clientHeight || window.innerHeight;
+        const scale = Math.min(width / DESIGN_WIDTH, height / DESIGN_HEIGHT);
+        document.documentElement.style.setProperty("--slide-fit-scale", String(scale));
       }
     };
+
     update();
+    const ro = new ResizeObserver(update);
+    ro.observe(root);
     mq.addEventListener("change", update);
     window.addEventListener("resize", update);
+
     return () => {
+      ro.disconnect();
       mq.removeEventListener("change", update);
       window.removeEventListener("resize", update);
+      document.documentElement.style.removeProperty("--slide-zoom");
+      document.documentElement.style.removeProperty("--slide-fit-scale");
     };
   }, []);
 
@@ -211,9 +231,37 @@ export default function SlideContainer() {
   return (
     <>
       <style>{`
-        .slide-root { --u: 1vw; }
+        .slide-root { --u: calc(${DESIGN_WIDTH}px / 100); }
+        @media (min-width: 641px), (orientation: landscape) {
+          .slide-root {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+          }
+          .slide-fit-stage {
+            position: relative;
+            width: ${DESIGN_WIDTH}px;
+            height: ${DESIGN_HEIGHT}px;
+            flex-shrink: 0;
+            transform: scale(var(--slide-fit-scale, 1));
+            transform-origin: center center;
+            overflow: hidden;
+          }
+          .slide-fit-stage .slide-inner {
+            cursor: grab;
+          }
+          .slide-fit-stage .slide-inner:active {
+            cursor: grabbing;
+          }
+        }
         @media (max-width: 640px) and (orientation: portrait) {
           .slide-root { --u: calc(1440px / 100); }
+          .slide-fit-stage {
+            width: 100% !important;
+            height: 100% !important;
+            transform: none !important;
+          }
           .slide-root {
             transform: rotate(90deg) translateY(-100%);
             transform-origin: top left;
@@ -248,7 +296,8 @@ export default function SlideContainer() {
           }
         }
       `}</style>
-      <div className="slide-root relative h-screen w-screen overflow-hidden">
+      <div ref={rootRef} className="slide-root relative h-screen w-screen overflow-hidden">
+      <div className="slide-fit-stage">
       <AnimatePresence initial={false} custom={direction} mode="popLayout">
         <motion.div
           key={slideIds[current]}
@@ -272,6 +321,7 @@ export default function SlideContainer() {
           </div>
         </motion.div>
       </AnimatePresence>
+      </div>
 
       {/* Arrow hints — hidden on mobile */}
       {current > 1 && (

@@ -79,7 +79,7 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
   }, []);
 
   /* ── Figma-exact layout constants ──────────────────────────
-     Root: 1440×967   Header: h=80  padH=40
+     Root: 1440×900 (16:10)   Header: h=80  padH=40
      Left: w=672  Right: w=768  → ratio 46.67% / 53.33%
      Frame6 (hero): padL=40 padT=40 itemSpacing=24
      Bottom modules: padL=40

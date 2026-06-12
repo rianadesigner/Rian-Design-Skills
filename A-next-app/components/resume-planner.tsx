@@ -110,8 +110,8 @@ type HighlightCardData = {
 
 const highlightCards: readonly HighlightCardData[] = [
   {
-    title:       "iFlow 知识库",
-    description: "项目/本地/云端知识库的全面打造",
+    title:       "IFlow LLM Wiki",
+    description: "项目知识/本地文件/云端仓库的全面接入",
     period:      "2026",
     image:       "/resume/highlights/knowledge-base.png",
     outerRadius: "rounded-[8px]",
@@ -200,10 +200,13 @@ type CareerEntry = { period: string; title: string; body: CareerBody }
 const careerEntries: CareerEntry[] = [
   {
     period: "2024.04 - now",
-    title:  "淘天集团 · 高级体验设计师",
+    title:  "淘天集团·高级体验设计师（心流产品角色）",
     body: {
-      type: "text",
-      text: "0-1打造iFlow全产品线，统筹 5 条核心产品线&体验链路，覆盖通用/学术/coding/Builder 4 个关键场景，核心指标包括DAU 10w+, 次留60%+。核心贡献包括：多 Agent 能力编排、iFlow CLI（UNIX 美学范式）、本地/云端/项目知识库一体化建设、设计并持续优化 Design Skill、显著提升 APP Builder 视觉质量与整体Vibe Design对个人及团队管理提效。",
+      type: "paragraphs",
+      paragraphs: [
+        "0-1 打造 iFlow 全产品线，统筹 5 条核心产品线与 AI 原生链路，覆盖通用问答、学术研究、Coding Cli、App Builder 4 个关键场景，核心指标达 DAU 10w+、次留 60%+。",
+        "围绕用户任务完成效率与模型输出质量，设计多 Agent 协同、任务拆解、工具调用、知识上下文注入与结果反馈机制，推动本地文件、云端资料、项目知识的统一接入、解析、检索与引用链路建设；主导 iFlow CLI 开发者体验、App Builder 生成质量优化与 Design Skill 方法沉淀，支持个人和团队规模化提效。",
+      ],
     },
   },
   {
@@ -426,11 +429,11 @@ export function ResumePlanner() {
                   <div className={cn(ballet.className, "text-[24px] leading-[32.56px] tracking-[0.02em] text-[#171717]")}>Rian</div>
                 </div>
                 <h1 className={cn(bodyFont, "w-full text-center text-[14px] font-semibold leading-[22px] text-[#5a5652]")}>AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放</h1>
-                <div className={cn(bodyFont, "w-full text-justify text-[12px] leading-[22px] tracking-[-0.04em] text-[#5a5652]")}>
-                  <p>同济&米兰理工大学双学位硕士，阿里工作四年多，0-1 负责多款AI原生产品</p>
-                  <p>视野前瞻，经验驱动：负责应用搭建/智能体/AI搜/知识库/Vibe Design 落地</p>
-                  <p>独当一面，长期支持：支持阿里妈妈创意中心/万相营造商家AI创意平台设计</p>
-                  <p>拓展视野，熟悉业务：围绕广告大外投推动需求/平台/供给侧多端平台基建</p>
+                <div className={cn(bodyFont, "w-full text-center text-[14px] font-normal leading-[22px] text-[#5a5652]")}>
+                  <p>同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验</p>
+                  <p>经验驱动，独当一面：负责AI原生产品与电商创意能力研发及应用</p>
+                  <p>视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系</p>
+                  <p>打磨能力，全栈发展：兼具产品思维/全链路设计/Vibe的全栈能力</p>
                 </div>
                 <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>
                   <div className="flex w-full items-center">
@@ -624,11 +627,11 @@ export function ResumePlanner() {
                     AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放
                   </h1>
 
-                  <div className={cn(bodyFont, "w-full text-justify text-[12px] leading-[22px] tracking-[-0.04em] text-[#5a5652]")}>
-                    <p>同济&米兰理工大学双学位硕士，阿里工作四年多，0-1 负责多款AI原生产品</p>
-                    <p>视野前瞻，经验驱动：负责应用搭建/智能体/AI搜/知识库/Vibe Design 落地</p>
-                    <p>独当一面，长期支持：支持阿里妈妈创意中心/万相营造商家AI创意平台设计</p>
-                    <p>拓展视野，熟悉业务：围绕广告大外投推动需求/平台/供给侧多端平台基建</p>
+                  <div className={cn(bodyFont, "w-full text-center text-[14px] font-normal leading-[22px] text-[#5a5652]")}>
+                    <p>同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验</p>
+                    <p>经验驱动，独当一面：负责AI原生产品与电商创意能力研发及应用</p>
+                    <p>视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系</p>
+                    <p>打磨能力，全栈发展：兼具产品思维/全链路设计/Vibe的全栈能力</p>
                   </div>
 
                   <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>

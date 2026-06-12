@@ -398,6 +398,7 @@ export function ObservatoryCover() {
                 cursor: "pointer",
                 fontFamily: "var(--font-inter, Inter, sans-serif)",
                 whiteSpace: "nowrap",
+                pointerEvents: "auto",
               }}
             >
               {/* small status dot */}
