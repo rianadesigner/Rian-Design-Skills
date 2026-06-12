@@ -111,7 +111,7 @@ type HighlightCardData = {
 const highlightCards: readonly HighlightCardData[] = [
   {
     title:       "IFlow LLM Wiki",
-    description: "项目知识/本地文件/云端仓库的全面接入",
+    description: "本地文件/项目文资料/云端仓库接入",
     period:      "2026",
     image:       "/resume/highlights/knowledge-base.png",
     outerRadius: "rounded-[8px]",
@@ -204,8 +204,8 @@ const careerEntries: CareerEntry[] = [
     body: {
       type: "paragraphs",
       paragraphs: [
-        "0-1 打造 iFlow 全产品线，统筹 5 条核心产品线与 AI 原生链路，覆盖通用问答、学术研究、Coding Cli、App Builder 4 个关键场景，核心指标达 DAU 10w+、次留 60%+。",
-        "围绕用户任务完成效率与模型输出质量，设计多 Agent 协同、任务拆解、工具调用、知识上下文注入与结果反馈机制，推动本地文件、云端资料、项目知识的统一接入、解析、检索与引用链路建设；主导 iFlow CLI 开发者体验、App Builder 生成质量优化与 Design Skill 方法沉淀，支持个人和团队规模化提效。",
+        "0-1 打造 iFlow 全产品线，统筹 5 条核心产品线与 AI 原生链路，覆盖LLM Wiki知识库、通用问答、学术研究、Coding Cli、App Builder 5个关键场景，核心指标达 DAU 10w+、次留 60%+",
+        "围绕用户任务完成效率与模型输出质量，设计多 Agent 协同、任务拆解、工具调用、知识上下文注入与结果反馈机制，推动本地文件、云端资料、项目知识的统一接入、解析、检索与引用链路建设；主导 iFlow CLI 开发者体验、App Builder 生成质量优化与 Design Skill 方法沉淀，支持个人和团队规模化提效",
       ],
     },
   },
@@ -215,8 +215,8 @@ const careerEntries: CareerEntry[] = [
     body: {
       type: "paragraphs",
       paragraphs: [
-        "主导AI应用开发平台从0到1的系统设计，打造可视化工作流编辑器与智能体编排引擎, 显著降低内部用户使用门槛, 成为淘天内部重要AI能力输出平台, 已服务N+个业务团队, AI应用研发周期平均缩短 X%。",
-        "聚焦中小商家广告创意生产痛点, 以\"降低创意门槛, 提升广告渗透率\"为核心目标, 推动万相实验室、创意中心等创意工具的产品规划与体验升级,推动大模型能力在图文/视频创作场景的深度应用。",
+        "主导AI应用开发平台从0到1的系统设计，打造可视化工作流编辑器与智能体编排引擎, 显著降低内部用户使用门槛, 成为淘天内部重要AI能力输出平台, 已服务N+个业务团队, AI应用研发周期平均缩短 X%",
+        "聚焦中小商家广告创意生产痛点, 以\"降低创意门槛, 提升广告渗透率\"为核心目标, 推动万相实验室、创意中心等创意工具的产品规划与体验升级,推动大模型能力在图文/视频创作场景的深度应用",
       ],
     },
   },
@@ -306,7 +306,7 @@ function ProfileBioLines() {
   return (
     <div
       ref={containerRef}
-      className={cn(bodyFont, "relative w-full text-[#5a5652]")}
+      className={cn(bodyFont, "relative w-full py-1 text-[#5a5652]")}
       style={{ fontSize: `${fontSize}px`, lineHeight: 1.35 }}
     >
       <span
@@ -507,7 +507,7 @@ export function ResumePlanner() {
                     <div className="flex flex-1 items-center gap-1.5"><span className="w-[30px] text-[#a39e99]">邮箱</span><span className="whitespace-nowrap text-[#ba6d73]">rianadesigner@gmail.com</span></div>
                   </div>
                   <div className="flex w-full items-center">
-                    <div className="flex flex-1 items-center"><span className="w-12 text-[#a39e99]">工作地</span><span className="whitespace-nowrap text-[#ba6d73]">杭州/上海</span></div>
+                    <div className="flex flex-1 items-center"><span className="w-12 text-[#a39e99]">工作地</span><span className="whitespace-nowrap text-[#ba6d73]">杭州/上海 (优先)</span></div>
                     <div className="flex flex-1 items-center gap-1.5"><span className="w-[30px] text-[#a39e99]">微信</span><span className="whitespace-nowrap text-[#ba6d73]">rianadesigner</span></div>
                   </div>
                 </div>
@@ -709,7 +709,7 @@ export function ResumePlanner() {
                     <div className="flex w-full items-center">
                       <div className="flex flex-1 items-center">
                         <span className="w-12 text-[#a39e99]">工作地</span>
-                        <span className="whitespace-nowrap text-[#ba6d73]">杭州/上海</span>
+                        <span className="whitespace-nowrap text-[#ba6d73]">杭州/上海 (优先)</span>
                       </div>
                       <div className="flex flex-1 items-center gap-1.5">
                         <span className="w-[30px] text-[#a39e99]">微信</span>
