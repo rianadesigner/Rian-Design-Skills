@@ -429,11 +429,11 @@ export function ResumePlanner() {
                   <div className={cn(ballet.className, "text-[24px] leading-[32.56px] tracking-[0.02em] text-[#171717]")}>Rian</div>
                 </div>
                 <h1 className={cn(bodyFont, "w-full text-center text-[14px] font-semibold leading-[22px] text-[#5a5652]")}>AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放</h1>
-                <div className={cn(bodyFont, "w-full text-center text-[14px] font-normal leading-[22px] text-[#5a5652]")}>
-                  <p>同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验</p>
-                  <p>经验驱动，独当一面：负责AI原生产品与电商创意能力研发及应用</p>
-                  <p>视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系</p>
-                  <p>打磨能力，全栈发展：兼具产品思维/全链路设计/Vibe的全栈能力</p>
+                <div className={cn(bodyFont, "w-full text-[10px] leading-[16px] text-[#5a5652]")}>
+                  <p className="w-full text-justify [text-justify:inter-ideograph]">同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验</p>
+                  <p className="w-full text-justify [text-justify:inter-ideograph]">经验驱动，独当一面：负责AI原生产品与电商创意能力研发及应用</p>
+                  <p className="w-full text-justify [text-justify:inter-ideograph]">视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系</p>
+                  <p className="w-full text-justify [text-justify:inter-ideograph]">打磨能力，全栈发展：兼具产品思维/全链路设计/Vibe的全栈能力</p>
                 </div>
                 <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>
                   <div className="flex w-full items-center">
@@ -627,11 +627,11 @@ export function ResumePlanner() {
                     AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放
                   </h1>
 
-                  <div className={cn(bodyFont, "w-full text-center text-[14px] font-normal leading-[22px] text-[#5a5652]")}>
-                    <p>同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验</p>
-                    <p>经验驱动，独当一面：负责AI原生产品与电商创意能力研发及应用</p>
-                    <p>视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系</p>
-                    <p>打磨能力，全栈发展：兼具产品思维/全链路设计/Vibe的全栈能力</p>
+                  <div className={cn(bodyFont, "w-full text-[10px] leading-[16px] text-[#5a5652]")}>
+                    <p className="w-full text-justify [text-justify:inter-ideograph]">同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验</p>
+                    <p className="w-full text-justify [text-justify:inter-ideograph]">经验驱动，独当一面：负责AI原生产品与电商创意能力研发及应用</p>
+                    <p className="w-full text-justify [text-justify:inter-ideograph]">视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系</p>
+                    <p className="w-full text-justify [text-justify:inter-ideograph]">打磨能力，全栈发展：兼具产品思维/全链路设计/Vibe的全栈能力</p>
                   </div>
 
                   <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>
