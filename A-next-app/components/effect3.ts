@@ -325,8 +325,8 @@ export function mountEffect3(container: HTMLElement): () => void {
     });
     return new THREE.Mesh(new THREE.PlaneGeometry(size, size), m);
   };
-  const coreInner = makeHalo(120, 0xfff5dc, 0.82);
-  const coreMid = makeHalo(300, 0xdfeaff, 0.22);
+  const coreInner = makeHalo(120, 0xfff5dc, 0.59);
+  const coreMid = makeHalo(150, 0xdfeaff, 0.22);
   const coreOuter = makeHalo(640, 0x78a9ee, 0.07);
   scene.add(coreOuter, coreMid, coreInner);
 
