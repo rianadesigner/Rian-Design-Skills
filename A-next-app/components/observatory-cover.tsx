@@ -151,7 +151,6 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
           {/* Nav — Inter 12px/400, gap=40 */}
           <nav style={{ display: "flex", gap: 40, pointerEvents: "auto", alignItems: "center" }}>
             {[
-              { label: "心流 AI 助手", slide: 1 },
               { label: "星链开发平台", slide: 13 },
               { label: "万相营造", slide: 23 },
               { label: "广告大外投", slide: 26 },

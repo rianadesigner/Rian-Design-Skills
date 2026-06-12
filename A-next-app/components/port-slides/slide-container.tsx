@@ -31,8 +31,23 @@ import SlidePage24 from "./slide-page24";
 import SlidePage25 from "./slide-page25";
 import SlidePage26 from "./slide-page26";
 
-const slideComponents = [ObservatoryCover, SlidePage0, SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
-const slideIds = ["cover", "page0", "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
+/** 暂时隐藏的幻灯片（保留源码，取消 id 即可恢复） */
+const HIDDEN_SLIDE_IDS = new Set(["page0"]);
+
+const allSlideComponents = [ObservatoryCover, SlidePage0, SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
+const allSlideIds = ["cover", "page0", "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
+
+const visibleSlideEntries = allSlideIds
+  .map((id, index) => ({ id, index, Component: allSlideComponents[index] }))
+  .filter((entry) => !HIDDEN_SLIDE_IDS.has(entry.id));
+
+const slideComponents = visibleSlideEntries.map((entry) => entry.Component);
+const slideIds = visibleSlideEntries.map((entry) => entry.id);
+
+/** 封面导航等使用的逻辑页码 → 实际渲染索引 */
+function toVisibleSlideIndex(logicalIndex: number) {
+  return visibleSlideEntries.findIndex((entry) => entry.index === logicalIndex);
+}
 
 const SWIPE_THRESHOLD = 60;
 const SWIPE_VELOCITY = 300;
@@ -217,12 +232,15 @@ export default function SlideContainer() {
   }, [current]);
 
   const handleEnter = useCallback(() => {
-    setCurrent([1, 1]);
+    const next = toVisibleSlideIndex(2);
+    if (next >= 0) setCurrent([next, 1]);
   }, []);
 
-  const handleNavigate = useCallback((slideIndex: number) => {
-    const dir = slideIndex > current ? 1 : -1;
-    setCurrent([slideIndex, dir]);
+  const handleNavigate = useCallback((logicalIndex: number) => {
+    const visibleIndex = toVisibleSlideIndex(logicalIndex);
+    if (visibleIndex < 0) return;
+    const dir = visibleIndex > current ? 1 : -1;
+    setCurrent([visibleIndex, dir]);
   }, [current]);
 
   const Slide = slideComponents[current];
