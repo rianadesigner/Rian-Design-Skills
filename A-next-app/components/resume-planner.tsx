@@ -2,7 +2,7 @@
 
 import { animate, motion, useMotionValue, useTransform } from "motion/react"
 import type { MotionValue } from "motion/react"
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Ballet } from "next/font/google"
 
 import { cn } from "@/lib/utils"
@@ -252,6 +252,77 @@ const eduEntries  = careerEntries.slice(4)
 
 const bodyFont = "font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif]"
 
+const PROFILE_BIO_LINES = [
+  "同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验",
+  "经验驱动，独当一面：负责AI原生产品与电商创意能力研发及应用",
+  "视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系",
+  "打磨能力，全栈发展：兼具产品思维/全链路设计/Vibe的全栈能力",
+] as const
+
+const PROFILE_BIO_MAX_FONT_PX = 13
+const PROFILE_BIO_MIN_FONT_PX = 8
+
+function ProfileBioLines() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const probeRef = useRef<HTMLSpanElement>(null)
+  const [fontSize, setFontSize] = useState(PROFILE_BIO_MAX_FONT_PX)
+
+  const fitFontSize = useCallback(() => {
+    const container = containerRef.current
+    const probe = probeRef.current
+    if (!container || !probe) return
+
+    const maxWidth = container.clientWidth
+    if (maxWidth <= 0) return
+
+    let size = PROFILE_BIO_MAX_FONT_PX
+    while (size >= PROFILE_BIO_MIN_FONT_PX) {
+      probe.style.fontSize = `${size}px`
+      const allFit = PROFILE_BIO_LINES.every((line) => {
+        probe.textContent = line
+        return probe.offsetWidth <= maxWidth
+      })
+      if (allFit) {
+        setFontSize(size)
+        return
+      }
+      size -= 0.25
+    }
+    setFontSize(PROFILE_BIO_MIN_FONT_PX)
+  }, [])
+
+  useLayoutEffect(() => {
+    fitFontSize()
+  }, [fitFontSize])
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+    const ro = new ResizeObserver(fitFontSize)
+    ro.observe(container)
+    return () => ro.disconnect()
+  }, [fitFontSize])
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn(bodyFont, "relative w-full text-[#5a5652]")}
+      style={{ fontSize: `${fontSize}px`, lineHeight: 1.35 }}
+    >
+      <span
+        ref={probeRef}
+        className={cn(bodyFont, "pointer-events-none invisible absolute left-0 top-0 whitespace-nowrap")}
+        aria-hidden
+      />
+      {PROFILE_BIO_LINES.map((line) => (
+        <p key={line} className="w-full text-justify [text-justify:inter-ideograph]">
+          {line}
+        </p>
+      ))}
+    </div>
+  )
+}
+
 // 页面渐变背景
 const GRAD_L = "linear-gradient(90deg,  #fdfbf9 0%, #fdfbf9 85%, #f4f1ed 95%, #ebe7e1 100%)"
 const GRAD_R = "linear-gradient(270deg, #fdfbf9 0%, #fdfbf9 85%, #f4f1ed 95%, #ebe7e1 100%)"
@@ -429,12 +500,7 @@ export function ResumePlanner() {
                   <div className={cn(ballet.className, "text-[24px] leading-[32.56px] tracking-[0.02em] text-[#171717]")}>Rian</div>
                 </div>
                 <h1 className={cn(bodyFont, "w-full text-center text-[14px] font-semibold leading-[22px] text-[#5a5652]")}>AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放</h1>
-                <div className={cn(bodyFont, "w-full text-[10px] leading-[16px] text-[#5a5652]")}>
-                  <p className="w-full text-justify [text-justify:inter-ideograph]">同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验</p>
-                  <p className="w-full text-justify [text-justify:inter-ideograph]">经验驱动，独当一面：负责AI原生产品与电商创意能力研发及应用</p>
-                  <p className="w-full text-justify [text-justify:inter-ideograph]">视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系</p>
-                  <p className="w-full text-justify [text-justify:inter-ideograph]">打磨能力，全栈发展：兼具产品思维/全链路设计/Vibe的全栈能力</p>
-                </div>
+                <ProfileBioLines />
                 <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>
                   <div className="flex w-full items-center">
                     <div className="flex flex-1 items-center"><span className="w-12 text-[#a39e99]">电话</span><span className="whitespace-nowrap text-[#ba6d73]">18578323924</span></div>
@@ -627,12 +693,7 @@ export function ResumePlanner() {
                     AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放
                   </h1>
 
-                  <div className={cn(bodyFont, "w-full text-[10px] leading-[16px] text-[#5a5652]")}>
-                    <p className="w-full text-justify [text-justify:inter-ideograph]">同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验</p>
-                    <p className="w-full text-justify [text-justify:inter-ideograph]">经验驱动，独当一面：负责AI原生产品与电商创意能力研发及应用</p>
-                    <p className="w-full text-justify [text-justify:inter-ideograph]">视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系</p>
-                    <p className="w-full text-justify [text-justify:inter-ideograph]">打磨能力，全栈发展：兼具产品思维/全链路设计/Vibe的全栈能力</p>
-                  </div>
+                  <ProfileBioLines />
 
                   <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>
                     <div className="flex w-full items-center">
