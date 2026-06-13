@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence, type PanInfo } from "motion/react";
 import { ObservatoryCover } from "../observatory-cover";
+import SlideContent0 from "./slide-content0";
 import SlidePage0a from "./slide-page0a";
 import SlidePage0 from "./slide-page0";
 import SlidePage1 from "./slide-page1";
@@ -35,8 +36,8 @@ import SlidePage26 from "./slide-page26";
 /** 暂时隐藏的幻灯片（保留源码，取消 id 即可恢复） */
 const HIDDEN_SLIDE_IDS = new Set<string>([]);
 
-const allSlideComponents = [ObservatoryCover, SlidePage0a, SlidePage0, SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
-const allSlideIds = ["cover", "page0a", "page0", "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
+const allSlideComponents = [ObservatoryCover, SlideContent0, SlidePage0a, SlidePage0, SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
+const allSlideIds = ["cover", "content0", "page0a", "page0", "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
 
 const visibleSlideEntries = allSlideIds
   .map((id, index) => ({ id, index, Component: allSlideComponents[index] }))
