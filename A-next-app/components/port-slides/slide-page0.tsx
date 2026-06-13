@@ -1536,6 +1536,18 @@ export default function SlidePage0() {
       style={{ fontFamily: "'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif" }}
     >
       <style>{`@keyframes card-shine{0%{background-position:200% 0}100%{background-position:-100% 0}}`}</style>
+      {/* Chapter badge */}
+      <div
+        style={{
+          position: "absolute", top: 14, right: 20, zIndex: 100,
+          fontSize: 10, letterSpacing: "0.18em",
+          color: "rgba(0,0,0,0.22)",
+          fontFamily: "'PingFang SC', sans-serif",
+          pointerEvents: "none",
+        }}
+      >
+        知识库 02
+      </div>
       {view !== "agent" && <Navigation view={view} onSwitch={setView} />}
       {view === "agent" ? <AgentView onBack={() => setView("graph")} onHome={() => setView("library")} /> : view === "graph" ? <GraphView onSwitchView={(v) => setView(v)} /> : view === "library" ? <LibraryView onSwitchView={(v) => setView(v)} /> : (
         <div className="absolute left-[80px] right-0 top-0 bottom-0">
