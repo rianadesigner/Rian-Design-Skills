@@ -1,3 +1,7 @@
+/* ─── Port page height chain ────────────────────────────────── */
+/* Make the full-height chain work for both browser and Cursor preview panel */
+html, body { height: 100%; margin: 0; }
+
 /* ─── Observatory Cover CSS Variables ───────────────────────── */
 :root {
   --obs-bg-deep:  #02040a;

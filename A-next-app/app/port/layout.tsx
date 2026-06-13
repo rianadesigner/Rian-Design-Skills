@@ -21,7 +21,7 @@ export default function PortLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={`${inter.variable} ${syne.variable}`}>
+    <div className={`${inter.variable} ${syne.variable} h-full w-full`}>
       {children}
     </div>
   );

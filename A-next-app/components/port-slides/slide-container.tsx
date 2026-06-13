@@ -316,7 +316,7 @@ export default function SlideContainer() {
           }
         }
       `}</style>
-      <div ref={rootRef} className="slide-root relative h-screen w-screen overflow-hidden">
+      <div ref={rootRef} className="slide-root relative h-full w-full overflow-hidden">
       <div className="slide-fit-stage">
       <AnimatePresence initial={false} custom={direction} mode="popLayout">
         <motion.div
