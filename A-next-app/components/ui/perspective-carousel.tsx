@@ -46,12 +46,13 @@ export function PerspectiveCarousel({ images, interval = 3000 }: PerspectiveCaro
                   rotateY(${offset * -18}deg)
                   scale(${1 - absOffset * 0.08})
                 `,
-                opacity: 1 - absOffset * 0.18,
                 zIndex: 10 - absOffset,
               }}
               onClick={() => setActiveIndex(index)}
             >
-              <img src={src} alt="" />
+              <div className="carousel-card-media">
+                <img src={src} alt="" />
+              </div>
             </div>
           );
         })}

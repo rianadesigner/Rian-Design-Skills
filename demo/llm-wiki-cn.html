@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM 知识库 - Karpathy 知识编译模式</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #16162a;
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 60px 40px;
+        }
+
+        .canvas {
+            width: 1100px;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 52px;
+            color: #fff;
+            font-weight: 800;
+            letter-spacing: 6px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #6a6a8a;
+            letter-spacing: 5px;
+            margin-bottom: 56px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 12px;
+            color: #555570;
+            letter-spacing: 6px;
+            margin-bottom: 22px;
+        }
+
+        /* ---- Architecture ---- */
+        .arch-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 64px;
+        }
+
+        .arch-box {
+            border-radius: 14px;
+            padding: 22px 32px;
+            text-align: center;
+            min-width: 200px;
+        }
+
+        .arch-box.src { border: 2px solid #4488ff; background: rgba(30,50,80,0.5); }
+        .arch-box.wiki { border: 2px solid #33cc77; background: rgba(25,60,50,0.5); }
+        .arch-box.schema { border: 2px solid #7755cc; background: rgba(40,30,70,0.5); }
+
+        .arch-box .icon { font-size: 14px; margin-right: 6px; }
+        .arch-box .name { font-size: 18px; font-weight: 600; }
+        .arch-box.src .name { color: #88bbff; }
+        .arch-box.wiki .name { color: #55eebb; }
+        .arch-box.schema .name { color: #aa88ff; }
+        .arch-box .meta { font-size: 12px; color: #666680; margin-top: 5px; }
+
+        .arch-arrow {
+            color: #555570;
+            font-size: 13px;
+            padding: 0 18px;
+            white-space: nowrap;
+        }
+
+        /* ---- Operations ---- */
+        .ops-row {
+            display: flex;
+            justify-content: center;
+            gap: 36px;
+            margin-bottom: 14px;
+        }
+
+        .op-box {
+            border: 2px solid #cc3377;
+            border-radius: 14px;
+            padding: 20px 28px;
+            text-align: center;
+            background: rgba(60,20,50,0.4);
+            min-width: 220px;
+        }
+
+        .op-box .name { font-size: 18px; font-weight: 600; }
+        .op-box.ingest .name { color: #ff88bb; }
+        .op-box.query .name { color: #ffcc55; }
+        .op-box.lint .name { color: #cc88ff; }
+        .op-box .meta { font-size: 12px; color: #666680; margin-top: 5px; }
+
+        /* ---- Steps ---- */
+        .steps-row {
+            display: flex;
+            justify-content: center;
+            gap: 36px;
+            margin-bottom: 64px;
+            margin-top: 14px;
+        }
+
+        .step-group {
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .step-line {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            background: #22223a;
+            border: 1px solid #3a3a55;
+            border-radius: 7px;
+            padding: 5px 13px;
+            font-size: 12px;
+            color: #9999bb;
+        }
+
+        /* ---- Actors ---- */
+        .actors-row {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+        }
+
+        .actor-box {
+            border-radius: 14px;
+            padding: 22px 40px;
+            text-align: center;
+            min-width: 250px;
+        }
+
+        .actor-box.human { border: 2px solid #4488ff; background: rgba(30,50,80,0.4); }
+        .actor-box.agent { border: 2px solid #33cc77; background: rgba(25,60,50,0.4); }
+
+        .actor-box .name { font-size: 18px; font-weight: 600; }
+        .actor-box.human .name { color: #ffcc55; }
+        .actor-box.agent .name { color: #55eebb; }
+        .actor-box .meta { font-size: 12px; color: #666680; margin-top: 5px; }
+
+        /* ---- Dashed connections (SVG overlay) ---- */
+        svg.lines {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .section-content { position: relative; z-index: 1; }
+
+        /* Arrows between steps and operations */
+        .step-arrows {
+            display: flex;
+            justify-content: center;
+            gap: 36px;
+            margin-bottom: 4px;
+        }
+
+        .step-arrows .arrow-col {
+            min-width: 220px;
+            text-align: center;
+            color: #444460;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas" id="canvas">
+        <div class="section-content">
+            <h1>LLM 知识库</h1>
+            <div class="subtitle">KARPATHY 知识编译模式</div>
+
+            <!-- Architecture -->
+            <div class="section-title">架 构</div>
+            <div class="arch-row">
+                <div class="arch-box src">
+                    <div class="name"><span class="icon">&#x1F4C1;</span>原始资料</div>
+                    <div class="meta">不可变 · 只读</div>
+                </div>
+                <div class="arch-arrow">— 读取 —&gt;</div>
+                <div class="arch-box wiki">
+                    <div class="name"><span class="icon">&#x1F4D2;</span>知识库</div>
+                    <div class="meta">LLM 管理的 Markdown</div>
+                </div>
+                <div class="arch-arrow">&lt;— 指导 —</div>
+                <div class="arch-box schema">
+                    <div class="name"><span class="icon">&#x2699;&#xFE0F;</span>模式规范</div>
+                    <div class="meta">CLAUDE.md / AGENTS.md</div>
+                </div>
+            </div>
+
+            <!-- Operations -->
+            <div class="section-title">操 作</div>
+            <div class="ops-row">
+                <div class="op-box ingest">
+                    <div class="name">&#x1F4E5; 摄入</div>
+                    <div class="meta">源文件 → 知识库更新</div>
+                </div>
+                <div class="op-box query">
+                    <div class="name">&#x1F50D; 查询</div>
+                    <div class="meta">问题 → 综合回答</div>
+                </div>
+                <div class="op-box lint">
+                    <div class="name">&#x1F527; 检查</div>
+                    <div class="meta">健康检查 · 一致性</div>
+                </div>
+            </div>
+
+            <!-- Steps under operations -->
+            <div class="step-arrows">
+                <div class="arrow-col">&#x2193;</div>
+                <div class="arrow-col">&#x2193;</div>
+                <div class="arrow-col">&#x2193;</div>
+            </div>
+            <div class="steps-row">
+                <div class="step-group">
+                    <div class="step-line">
+                        <span class="tag">读取源文件</span>
+                        <span class="tag">写入摘要</span>
+                    </div>
+                    <div class="step-line">
+                        <span class="tag">更新索引</span>
+                        <span class="tag">交叉链接</span>
+                    </div>
+                </div>
+                <div class="step-group">
+                    <div class="step-line">
+                        <span class="tag">搜索索引</span>
+                        <span class="tag">综合信息</span>
+                    </div>
+                    <div class="step-line">
+                        <span class="tag">归档回知识库</span>
+                    </div>
+                </div>
+                <div class="step-group">
+                    <div class="step-line">
+                        <span class="tag">发现问题</span>
+                        <span class="tag">修复补丁</span>
+                    </div>
+                    <div class="step-line">
+                        <span class="tag">建议来源</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actors -->
+            <div class="section-title">参 与 者</div>
+            <div class="actors-row">
+                <div class="actor-box human">
+                    <div class="name">&#x1F9D1; 人类</div>
+                    <div class="meta">策划 · 提问 · 思考</div>
+                </div>
+                <div class="actor-box agent">
+                    <div class="name">&#x1F916; LLM 代理</div>
+                    <div class="meta">总结 · 交叉引用 · 维护</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashed connection lines -->
+        <svg class="lines" id="svgLines"></svg>
+    </div>
+
+    <script>
+        function drawLines() {
+            const canvas = document.getElementById('canvas');
+            const svg = document.getElementById('svgLines');
+            const rect = canvas.getBoundingClientRect();
+
+            svg.setAttribute('viewBox', `0 0 ${rect.width} ${rect.height}`);
+            svg.innerHTML = '';
+
+            const ops = document.querySelectorAll('.op-box');
+            const actors = document.querySelectorAll('.actor-box');
+
+            if (ops.length < 3 || actors.length < 2) return;
+
+            const getCenter = (el) => {
+                const r = el.getBoundingClientRect();
+                return {
+                    x: r.left + r.width / 2 - rect.left,
+                    y: r.top + r.height / 2 - rect.top
+                };
+            };
+
+            const getBottom = (el) => {
+                const r = el.getBoundingClientRect();
+                return {
+                    x: r.left + r.width / 2 - rect.left,
+                    y: r.bottom - rect.top
+                };
+            };
+
+            const getTop = (el) => {
+                const r = el.getBoundingClientRect();
+                return {
+                    x: r.left + r.width / 2 - rect.left,
+                    y: r.top - rect.top
+                };
+            };
+
+            const connections = [
+                [ops[0], actors[0]],
+                [ops[0], actors[1]],
+                [ops[1], actors[0]],
+                [ops[1], actors[1]],
+                [ops[2], actors[1]],
+            ];
+
+            const stepGroups = document.querySelectorAll('.step-group');
+
+            connections.forEach(([from, to]) => {
+                const start = getCenter(from);
+                const end = getTop(to);
+
+                // Find midpoint through steps area
+                const midY = start.y + (end.y - start.y) * 0.6;
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', start.x);
+                line.setAttribute('y1', start.y + 30);
+                line.setAttribute('x2', end.x);
+                line.setAttribute('y2', end.y - 5);
+                line.setAttribute('stroke', '#444466');
+                line.setAttribute('stroke-width', '1.5');
+                line.setAttribute('stroke-dasharray', '8,5');
+                line.setAttribute('opacity', '0.5');
+                svg.appendChild(line);
+            });
+        }
+
+        window.addEventListener('load', drawLines);
+        window.addEventListener('resize', drawLines);
+    </script>
+</body>
+</html>

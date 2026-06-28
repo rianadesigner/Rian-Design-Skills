@@ -1,183 +1,30 @@
 "use client";
 
 import { motion } from "motion/react";
+import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design";
+import { EdgeCurlCanvasCarousel } from "./edge-curl-canvas-carousel";
 
-/* ─────────────────────────────────────────────
-   Layout constants  (1440 × 900 design canvas)
-───────────────────────────────────────────── */
-const CW = 370;    // card width
-const CGAP = 50;   // gap between the 3 columns
-const COL = CW + CGAP; // 420
-// 3 columns → total = 3×370 + 2×50 = 1210 → side margin = (1440-1210)/2 = 115
-const SIDE_PAD = (1440 - 3 * CW - 2 * CGAP) / 2; // 115
-const cx = (i: number) => SIDE_PAD + i * COL;
-// cx(0)=115  cx(1)=535  cx(2)=955
+const FONT    = "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif";
+const FONT_EN = "var(--font-syne, 'Impact', 'Arial Black', sans-serif)";
 
-// Participant cards: 2 cards centered
-const PW = 370;
-const PGAP = 60;
-const PX0 = (1440 - 2 * PW - PGAP) / 2; // 320
-const px = (i: number) => PX0 + i * (PW + PGAP);
-// px(0)=320  px(1)=750
+const DESIGN_W = SLIDE_DESIGN_WIDTH;   // 1440
+const DESIGN_H = SLIDE_DESIGN_HEIGHT;  // 900
 
-// Y positions
-const ARCH_Y = 228;
-const ARCH_H = 130;
-const OP_Y   = 412;
-const OP_H   = 196;
-const PART_Y = 665;
-const PART_H = 138;
+/* Canvas-relative layout tokens (follow 1440×900 design space) */
+const pctW = (px: number) => `${(px / DESIGN_W) * 100}%`;
+const pctH = (px: number) => `${(px / DESIGN_H) * 100}%`;
 
-// SVG connection-line end-points
-const OP_BOT_Y   = OP_Y + OP_H;   // 608
-const PART_TOP_Y = PART_Y;         // 665
-const OP_CX   = [cx(0) + CW / 2, cx(1) + CW / 2, cx(2) + CW / 2]; // 300 720 1140
-const PART_CX = [px(0) + PW / 2,  px(1) + PW / 2];                  // 505 935
+/* ── Wall geometry ── */
+const WALL_Y = 178;
 
-/* ─────────────────────────────────────────────
-   Data
-───────────────────────────────────────────── */
-const ARCH_DATA = [
-  {
-    emoji: "📁", title: "原始资料", subtitle: "不可变·只读",
-    border: "rgba(96,165,250,0.70)", glow: "rgba(59,130,246,0.14)", bg: "rgba(59,130,246,0.07)",
-  },
-  {
-    emoji: "📒", title: "知识库", subtitle: "LLM 管理的 Markdown",
-    border: "rgba(74,222,128,0.70)", glow: "rgba(34,197,94,0.14)",  bg: "rgba(34,197,94,0.07)",
-  },
-  {
-    emoji: "⚙️", title: "模式规范", subtitle: "CLAUDE.md / AGENTS.md",
-    border: "rgba(192,132,252,0.70)", glow: "rgba(168,85,247,0.14)", bg: "rgba(168,85,247,0.07)",
-  },
-] as const;
-
-const OP_DATA = [
-  {
-    emoji: "🫙", title: "摄入", subtitle: "源文件→知识库更新",
-    border: "rgba(244,114,182,0.70)", glow: "rgba(236,72,153,0.14)", bg: "rgba(236,72,153,0.07)",
-    tags: ["读取源文件", "写入摘要", "更新索引", "交叉链接"],
-  },
-  {
-    emoji: "🔎", title: "查询", subtitle: "问题→综合回答",
-    border: "rgba(248,113,113,0.70)", glow: "rgba(239,68,68,0.14)",  bg: "rgba(239,68,68,0.07)",
-    tags: ["搜索索引", "综合信息", "归档回知识库"],
-  },
-  {
-    emoji: "🔧", title: "检查", subtitle: "健康检查·一致性",
-    border: "rgba(251,146,60,0.70)",  glow: "rgba(249,115,22,0.14)", bg: "rgba(249,115,22,0.07)",
-    tags: ["发现问题", "修复补丁", "建议来源"],
-  },
-] as const;
-
-const PART_DATA = [
-  {
-    emoji: "🧑", title: "人类", subtitle: "策划·提问·思考",
-    border: "rgba(96,165,250,0.70)", glow: "rgba(59,130,246,0.14)", bg: "rgba(59,130,246,0.07)",
-  },
-  {
-    emoji: "🤖", title: "LLM 代理", subtitle: "总结·交叉引用·维护",
-    border: "rgba(74,222,128,0.70)", glow: "rgba(34,197,94,0.14)", bg: "rgba(34,197,94,0.07)",
-  },
-] as const;
-
-/* ─────────────────────────────────────────────
-   Sub-components
-───────────────────────────────────────────── */
-const FONT = "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif";
-
-type CardBase = {
-  emoji: string; title: string; subtitle: string;
-  border: string; glow: string; bg: string;
-};
-
-function BaseCard({
-  emoji, title, subtitle, border, glow, bg, delay, tags,
-}: CardBase & { delay: number; tags?: readonly string[] }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      style={{
-        position: "relative",
-        width: "100%",
-        height: "100%",
-        borderRadius: 14,
-        border: `1.5px solid ${border}`,
-        background: bg,
-        boxShadow: `0 0 36px ${glow}, inset 0 1px 0 rgba(255,255,255,0.05)`,
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: tags ? "flex-start" : "center",
-        padding: tags ? "20px 14px 14px" : undefined,
-        gap: 5,
-        fontFamily: FONT,
-      }}
-    >
-      <span style={{ fontSize: 28, lineHeight: 1 }}>{emoji}</span>
-      <p style={{ margin: 0, fontSize: 17, fontWeight: 700, color: "rgba(255,255,255,0.9)" }}>
-        {title}
-      </p>
-      <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,0.4)", textAlign: "center" }}>
-        {subtitle}
-      </p>
-      {tags && (
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            gap: 6,
-            marginTop: 10,
-            justifyContent: "center",
-          }}
-        >
-          {tags.map((tag) => (
-            <span
-              key={tag}
-              style={{
-                fontSize: 10,
-                color: "rgba(255,255,255,0.45)",
-                background: "rgba(255,255,255,0.06)",
-                border: "1px solid rgba(255,255,255,0.1)",
-                borderRadius: 5,
-                padding: "3px 9px",
-                fontFamily: FONT,
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-    </motion.div>
-  );
-}
-
-function SectionLabel({ y, text, delay }: { y: number; text: string; delay: number }) {
-  return (
-    <motion.p
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay, duration: 0.4 }}
-      style={{
-        position: "absolute",
-        top: y,
-        left: 0,
-        right: 0,
-        margin: 0,
-        textAlign: "center",
-        fontSize: 11,
-        letterSpacing: "0.35em",
-        color: "rgba(255,255,255,0.28)",
-        fontFamily: FONT,
-      }}
-    >
-      {text}
-    </motion.p>
-  );
-}
+/* ── SYSTEM silhouette contour cap ──────────────────────────────────
+   The cap is intentionally inset from the horizontal edges. It protects
+   the title/intro area in the middle while leaving the left/right curl
+   windows open, so WebGL media can climb into the top arc like the
+   reference site.
+───────────────────────────────────────────────────────────────────── */
+const CONTOUR_H = Math.round(WALL_Y * 260 / 216); // ≈ 214
+const EDGE_W = DESIGN_W * 0.10;
 
 /* ─────────────────────────────────────────────
    Main slide
@@ -185,184 +32,238 @@ function SectionLabel({ y, text, delay }: { y: number; text: string; delay: numb
 export default function SlidePage0a() {
   return (
     <div
+      className="h-full w-full"
       style={{
         position: "relative",
-        width: 1440,
-        height: 900,
-        background: "linear-gradient(175deg, #060c1a 0%, #07101e 60%, #080f1c 100%)",
-        overflow: "hidden",
+        width: "100%",
+        height: "100%",
+        background: "#070707",
+        /* overflow:visible so edge curl windows (-OUTER_OVERSCAN offset)
+           can paint slightly beyond the 0..1440 horizontal range.
+           The parent slide-canvas / slide-fit-box clips at the design boundary. */
+        overflow: "visible",
         fontFamily: FONT,
+        ["--slide-w" as string]: `${DESIGN_W}px`,
+        ["--slide-h" as string]: `${DESIGN_H}px`,
       }}
     >
-      {/* ── Dot grid ── */}
-      <div
+      {/* ── Film grain ── */}
+      <svg
         style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "radial-gradient(rgba(255,255,255,0.035) 1px, transparent 1px)",
-          backgroundSize: "36px 36px",
-          pointerEvents: "none",
+          position: "absolute", inset: 0, width: "100%", height: "100%",
+          pointerEvents: "none", opacity: 0.12, mixBlendMode: "overlay", zIndex: 1,
         }}
-      />
-
-      {/* ── Ambient glow blobs ── */}
-      <div
-        style={{
-          position: "absolute", top: -300, left: "10%",
-          width: 700, height: 700, borderRadius: "50%",
-          background: "rgba(59,130,246,0.04)", filter: "blur(100px)",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute", top: -300, right: "10%",
-          width: 700, height: 700, borderRadius: "50%",
-          background: "rgba(168,85,247,0.04)", filter: "blur(100px)",
-          pointerEvents: "none",
-        }}
-      />
-
-      {/* ── Chapter badge ── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.1 }}
-        style={{
-          position: "absolute", top: 26, right: 36,
-          fontSize: 11, letterSpacing: "0.2em",
-          color: "rgba(255,255,255,0.28)", fontFamily: FONT,
-        }}
+        aria-hidden
       >
-        知识库 01
-      </motion.div>
+        <filter id="grain0a">
+          <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="3" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#grain0a)" />
+      </svg>
 
-      {/* ── Title ── */}
-      <motion.h1
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          position: "absolute", top: 58, left: 0, right: 0,
-          margin: 0, textAlign: "center",
-          fontSize: 60, fontWeight: 700,
-          color: "rgba(255,255,255,0.92)",
-          letterSpacing: "0.04em", fontFamily: FONT,
-        }}
-      >
-        LLM 知识库
-      </motion.h1>
+      {/* ── Left red glow ── */}
+      <div aria-hidden style={{
+        position: "absolute", top: 0, left: 0, width: "18%", height: "100%",
+        background: "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)",
+        pointerEvents: "none", zIndex: 2,
+      }} />
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.18, duration: 0.4 }}
-        style={{
-          position: "absolute", top: 130, left: 0, right: 0,
-          margin: 0, textAlign: "center",
-          fontSize: 11, letterSpacing: "0.28em",
-          color: "rgba(255,255,255,0.28)",
-          textTransform: "uppercase", fontFamily: FONT,
-        }}
-      >
-        Karpathy 知识编译模式
-      </motion.p>
+      {/* ── Right red glow ── */}
+      <div aria-hidden style={{
+        position: "absolute", top: 0, right: 0, width: "18%", height: "100%",
+        background: "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)",
+        pointerEvents: "none", zIndex: 2,
+      }} />
 
-      {/* ════════════════ 架构 ════════════════ */}
-      <SectionLabel y={200} text="架 构" delay={0.25} />
-
-      {ARCH_DATA.map((card, i) => (
+      {/* ── Four corner marks ── */}
+      {(
+        [
+          { top: 18, left: 18,  borderTopWidth: 1, borderLeftWidth: 1   },
+          { top: 18, right: 18, borderTopWidth: 1, borderRightWidth: 1  },
+          { bottom: 18, left: 18,  borderBottomWidth: 1, borderLeftWidth: 1  },
+          { bottom: 18, right: 18, borderBottomWidth: 1, borderRightWidth: 1 },
+        ] as React.CSSProperties[]
+      ).map((pos, i) => (
         <div
-          key={card.title}
-          style={{ position: "absolute", left: cx(i), top: ARCH_Y, width: CW, height: ARCH_H }}
-        >
-          <BaseCard {...card} delay={0.32 + i * 0.08} />
-        </div>
+          key={i}
+          style={{
+            position: "absolute", width: 38, height: 38,
+            pointerEvents: "none", zIndex: 20,
+            borderStyle: "solid", borderColor: "rgba(255,255,255,0.22)", borderWidth: 0,
+            ...pos,
+          }}
+        />
       ))}
 
-      {/* Arrow labels between arch cards */}
-      {[
-        { x: cx(1) - CGAP / 2, text: "— 读取 →" },
-        { x: cx(2) - CGAP / 2, text: "← 指导 —" },
-      ].map(({ x, text }) => (
-        <motion.span
-          key={text}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.62, duration: 0.4 }}
+      {/* ══════════════════════════════════════════
+          TOP — centred header text
+          ══════════════════════════════════════════ */}
+      <div style={{
+        position: "absolute",
+        top: 34, left: 0, right: 0, zIndex: 17,
+        display: "flex", flexDirection: "column",
+        alignItems: "center", textAlign: "center",
+        padding: "0 80px",
+      }}>
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}
+        >
+          <span style={{
+            fontSize: 11, fontFamily: FONT_EN, fontWeight: 600,
+            letterSpacing: "0.18em", color: "rgba(200,8,8,0.85)",
+          }}>01</span>
+          <span style={{ width: 28, height: 1, background: "rgba(255,255,255,0.2)" }} />
+          <span style={{
+            fontSize: 10.5, letterSpacing: "0.26em",
+            color: "rgba(255,255,255,0.4)", fontFamily: FONT,
+          }}>LLM WIKI 产品方法论</span>
+        </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.06, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            position: "absolute",
-            left: x,
-            top: ARCH_Y + ARCH_H / 2,
-            transform: "translate(-50%, -50%)",
-            fontSize: 10, letterSpacing: "0.1em",
-            color: "rgba(255,255,255,0.24)", fontFamily: FONT,
-            whiteSpace: "nowrap",
+            margin: 0, fontSize: 46, lineHeight: 1.08, fontWeight: 700,
+            letterSpacing: "0.01em", color: "#fff", fontFamily: FONT,
+            textWrap: "balance" as never,
           }}
         >
-          {text}
-        </motion.span>
-      ))}
+          LLM Wiki_你的AI知识库承载全部知识生产
+        </motion.h1>
 
-      {/* ════════════════ 操作 ════════════════ */}
-      <SectionLabel y={388} text="操 作" delay={0.45} />
-
-      {OP_DATA.map((card, i) => (
-        <div
-          key={card.title}
-          style={{ position: "absolute", left: cx(i), top: OP_Y, width: CW, height: OP_H }}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.18, duration: 0.6 }}
+          style={{
+            margin: "14px 0 0", maxWidth: 640,
+            fontSize: 13, lineHeight: 1.75,
+            color: "rgba(255,255,255,0.5)", fontFamily: FONT,
+            textWrap: "pretty" as never,
+          }}
         >
-          <BaseCard {...card} delay={0.52 + i * 0.08} tags={card.tags} />
-        </div>
-      ))}
+          本项目完整承接了从「海量原始资料」到「结构化 Wiki 节点」的全链路：采集、入库、编译到再生成。<br />
+          让散落、孤立的资料沉淀为可检索、可互链、可溯源的团队知识资产。
+        </motion.p>
 
-      {/* ════════════════ 参与者 ════════════════ */}
-      <SectionLabel y={645} text="参 与 者" delay={0.72} />
-
-      {PART_DATA.map((card, i) => (
-        <div
-          key={card.title}
-          style={{ position: "absolute", left: px(i), top: PART_Y, width: PW, height: PART_H }}
+        {/* ── Flow pipeline ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.30, duration: 0.5 }}
+          style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 20, flexWrap: "wrap", justifyContent: "center" }}
         >
-          <BaseCard {...card} delay={0.78 + i * 0.08} />
-        </div>
-      ))}
+          {(["海量原始资料", "多格式入库", "Wiki 图谱编译", "多模态输出"] as const).map((label, i, arr) => (
+            <span key={label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <span style={{
+                padding: "5px 14px",
+                border: i === 2
+                  ? "1px solid rgba(200,8,8,0.70)"
+                  : "1px solid rgba(255,255,255,0.15)",
+                background: i === 2 ? "rgba(200,8,8,0.18)" : "transparent",
+                fontSize: 13,
+                color: i === 2 ? "#fff" : "rgba(255,255,255,0.75)",
+                fontFamily: FONT,
+                letterSpacing: "0.02em",
+              }}>{label}</span>
+              {i < arr.length - 1 && (
+                <span style={{
+                  fontFamily: FONT_EN, fontSize: 18,
+                  color: i === 1 ? "rgba(200,8,8,0.9)" : "rgba(255,255,255,0.9)",
+                  letterSpacing: "0.12em",
+                }}>{">>>"}</span>
+              )}
+            </span>
+          ))}
+        </motion.div>
+      </div>
 
-      {/* ════════════════ 连接线 SVG ════════════════ */}
-      <motion.svg
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.0, duration: 0.6 }}
-        style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-        width={1440}
-        height={900}
+      {/* ── SYSTEM silhouette contour cap ─────────────────────────────
+          Middle-only mask: it carves title whitespace without covering
+          the left/right edge windows where the WebGL curl should rise.
+      ─────────────────────────────────────────────────────────────── */}
+      <div aria-hidden style={{
+        position: "absolute",
+        top: 0, left: pctW(EDGE_W), right: pctW(EDGE_W), height: pctH(CONTOUR_H),
+        zIndex: 15, pointerEvents: "none",
+      }}>
+        <svg
+          viewBox="0 0 1000 260"
+          preserveAspectRatio="none"
+          style={{ width: "100%", height: "100%", display: "block" }}
+        >
+          <path
+            fill="#070707"
+            d="M0,0 H1000 V150 C1000,190 962,216 902,216 H98 C38,216 0,190 0,150 Z"
+          />
+        </svg>
+      </div>
+
+      {/* ══════════════════════════════════════════
+          BOTTOM — single-source WebGL carousel
+          ══════════════════════════════════════════ */}
+      <EdgeCurlCanvasCarousel />
+
+      {/* ── Scroll-down hint ── */}
+      <div
+        aria-hidden
+        style={{
+          position: "absolute",
+          bottom: 14,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 30,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: 4,
+          pointerEvents: "none",
+        }}
       >
-        {/* 摄入 → 人类 */}
-        <line
-          x1={OP_CX[0]} y1={OP_BOT_Y}
-          x2={PART_CX[0]} y2={PART_TOP_Y}
-          stroke="rgba(255,255,255,0.11)" strokeWidth={1} strokeDasharray="5 5"
-        />
-        {/* 查询 → 人类 */}
-        <line
-          x1={OP_CX[1]} y1={OP_BOT_Y}
-          x2={PART_CX[0]} y2={PART_TOP_Y}
-          stroke="rgba(255,255,255,0.11)" strokeWidth={1} strokeDasharray="5 5"
-        />
-        {/* 查询 → LLM代理 */}
-        <line
-          x1={OP_CX[1]} y1={OP_BOT_Y}
-          x2={PART_CX[1]} y2={PART_TOP_Y}
-          stroke="rgba(255,255,255,0.11)" strokeWidth={1} strokeDasharray="5 5"
-        />
-        {/* 检查 → LLM代理 */}
-        <line
-          x1={OP_CX[2]} y1={OP_BOT_Y}
-          x2={PART_CX[1]} y2={PART_TOP_Y}
-          stroke="rgba(255,255,255,0.11)" strokeWidth={1} strokeDasharray="5 5"
-        />
-      </motion.svg>
+        <span style={{
+          fontSize: 9,
+          letterSpacing: "0.22em",
+          color: "rgba(255,255,255,0.28)",
+          fontFamily: FONT_EN,
+          textTransform: "uppercase",
+        }}>
+          知识库 02
+        </span>
+        {/* Animated chevron */}
+        <div style={{ overflow: "hidden", height: 18, display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <svg
+            viewBox="0 0 20 10"
+            width={20}
+            height={10}
+            style={{
+              display: "block",
+              animation: "slideHintBounce 1.6s ease-in-out infinite",
+              opacity: 0.45,
+            }}
+            aria-hidden
+          >
+            <polyline
+              points="2,2 10,8 18,2"
+              fill="none"
+              stroke="rgba(255,255,255,0.8)"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
+        <style>{`
+          @keyframes slideHintBounce {
+            0%, 100% { transform: translateY(0px); opacity: 0.45; }
+            50% { transform: translateY(4px); opacity: 0.7; }
+          }
+        `}</style>
+      </div>
     </div>
   );
 }

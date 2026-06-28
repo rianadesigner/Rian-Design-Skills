@@ -1,43 +1,59 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
-import { motion, AnimatePresence, type PanInfo } from "motion/react";
+import { useState, useCallback, useEffect, useLayoutEffect, useRef, lazy, Suspense } from "react";
+import { motion, AnimatePresence, useReducedMotion, type PanInfo } from "motion/react";
 import { ObservatoryCover } from "../observatory-cover";
 import SlideContent0 from "./slide-content0";
-import SlidePage0a from "./slide-page0a";
-import SlidePage0 from "./slide-page0";
-import SlidePage1 from "./slide-page1";
-import SlidePage2 from "./slide-page2";
-import SlidePage3 from "./slide-page3";
-import SlidePage4 from "./slide-page4";
-import SlidePage5 from "./slide-page5";
-import SlidePage6 from "./slide-page6";
-import SlidePage7 from "./slide-page7";
-import SlidePage8 from "./slide-page8";
-import SlidePage9 from "./slide-page9";
-import SlidePage10 from "./slide-page10";
-import SlidePage11 from "./slide-page11";
-import SlidePage12 from "./slide-page12";
-import SlidePage13 from "./slide-page13";
-import SlidePage14 from "./slide-page14";
-import SlidePage15 from "./slide-page15";
-import SlidePage16 from "./slide-page16";
-import SlidePage17 from "./slide-page17";
-import SlidePage18 from "./slide-page18";
-import SlidePage19 from "./slide-page19";
-import SlidePage20 from "./slide-page20";
-import SlidePage21 from "./slide-page21";
-import SlidePage22 from "./slide-page22";
-import SlidePage23 from "./slide-page23";
-import SlidePage24 from "./slide-page24";
-import SlidePage25 from "./slide-page25";
-import SlidePage26 from "./slide-page26";
+import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design";
+import { measureFitStage } from "./slide-fit";
+import { useSlideFitScale } from "./use-slide-fit-scale";
+
+// 首屏只加载 cover + content0，其余全部懒加载以缩减初始 bundle
+const SlidePage0a  = lazy(() => import("./slide-page0a"));
+const SlidePage0b  = lazy(() => import("./slide-page0b"));
+const SlidePage0c  = lazy(() => import("./slide-page0c"));
+const SlidePage0d  = lazy(() => import("./slide-page0d"));
+const SlidePage0e  = lazy(() => import("./slide-page0e"));
+const SlidePage0f  = lazy(() => import("./slide-page0f"));
+const SlidePage0g  = lazy(() => import("./slide-page0g"));
+const SlidePage0   = lazy(() => import("./slide-page0"));
+const SlidePage1   = lazy(() => import("./slide-page1"));
+const SlidePage2   = lazy(() => import("./slide-page2"));
+const SlidePage3   = lazy(() => import("./slide-page3"));
+const SlidePage4   = lazy(() => import("./slide-page4"));
+const SlidePage5   = lazy(() => import("./slide-page5"));
+const SlidePage6   = lazy(() => import("./slide-page6"));
+const SlidePage7   = lazy(() => import("./slide-page7"));
+const SlidePage8   = lazy(() => import("./slide-page8"));
+const SlidePage9   = lazy(() => import("./slide-page9"));
+const SlidePage10  = lazy(() => import("./slide-page10"));
+const SlidePage11  = lazy(() => import("./slide-page11"));
+const SlidePage12  = lazy(() => import("./slide-page12"));
+const SlidePage13  = lazy(() => import("./slide-page13"));
+const SlidePage14  = lazy(() => import("./slide-page14"));
+const SlidePage15  = lazy(() => import("./slide-page15"));
+const SlidePage16  = lazy(() => import("./slide-page16"));
+const SlidePage17  = lazy(() => import("./slide-page17"));
+const SlidePage18  = lazy(() => import("./slide-page18"));
+const SlidePage19  = lazy(() => import("./slide-page19"));
+const SlidePage20  = lazy(() => import("./slide-page20"));
+const SlidePage21  = lazy(() => import("./slide-page21"));
+const SlidePage22  = lazy(() => import("./slide-page22"));
+const SlidePage23  = lazy(() => import("./slide-page23"));
+const SlidePage24  = lazy(() => import("./slide-page24"));
+const SlidePage25  = lazy(() => import("./slide-page25"));
+const SlidePage26  = lazy(() => import("./slide-page26"));
 
 /** 暂时隐藏的幻灯片（保留源码，取消 id 即可恢复） */
-const HIDDEN_SLIDE_IDS = new Set<string>([]);
+const HIDDEN_SLIDE_IDS = new Set<string>(["page0"]);
 
-const allSlideComponents = [ObservatoryCover, SlideContent0, SlidePage0a, SlidePage0, SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
-const allSlideIds = ["cover", "content0", "page0a", "page0", "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
+const allSlideComponents = [ObservatoryCover, SlideContent0, SlidePage0a, SlidePage0b, SlidePage0c, SlidePage0d, SlidePage0e, SlidePage0f, SlidePage0g, SlidePage0, SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
+const allSlideIds = ["cover", "content0", "page0a", "page0b", "page0c", "page0d", "page0e", "page0f", "page0g", "page0", "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
+
+/** 懒加载 fallback：与幻灯片背景色一致的纯黑占位，避免白闪 */
+function SlideFallback() {
+  return <div style={{ width: "100%", height: "100%", background: "#070707" }} />;
+}
 
 const visibleSlideEntries = allSlideIds
   .map((id, index) => ({ id, index, Component: allSlideComponents[index] }))
@@ -53,25 +69,91 @@ function toVisibleSlideIndex(logicalIndex: number) {
 
 const SWIPE_THRESHOLD = 60;
 const SWIPE_VELOCITY = 300;
-/** 幻灯片设计画布：16:10（与移动端 1440×900、预览视口 1600×1000 一致） */
-const DESIGN_WIDTH = 1440;
-const DESIGN_HEIGHT = 900;
+const DESIGN_WIDTH = SLIDE_DESIGN_WIDTH;
+const DESIGN_HEIGHT = SLIDE_DESIGN_HEIGHT;
 
+// All non-cinema slides use vertical (up/down) transition
 const variants = {
   enter: (direction: number) => ({
-    x: direction > 0 ? "100%" : "-100%",
-    opacity: 0.5,
+    y: direction > 0 ? "100%" : "-100%",
+    x: 0,
+    opacity: 0.6,
   }),
-  center: { x: 0, opacity: 1 },
+  center: { y: 0, x: 0, opacity: 1 },
   exit: (direction: number) => ({
-    x: direction > 0 ? "-100%" : "100%",
-    opacity: 0.5,
+    y: direction > 0 ? "-100%" : "100%",
+    x: 0,
+    opacity: 0.6,
   }),
 };
 
+// 先慢后快：ease-in cubic-bezier，初速为 0，逐渐加速冲入
+const EASE_IN_ACCEL: [number, number, number, number] = [0.4, 0, 0.7, 1];
+
+// Cinema "punch-in": cover ↔ content0 (index 0 ↔ 1)
+// 封面像被镜头急速推近后穿入，content0 从放大模糊态向内收缩归位——
+// 配合 CinemaFrameReveal 的快门/边框收拢，营造「首页是一帧胶片开场画面」的观感。
+const cinemaVariants = {
+  enter: (_direction: number) => ({ x: 0, opacity: 0, scale: 1.5, filter: "blur(16px)" }),
+  center: { x: 0, opacity: 1, scale: 1, filter: "blur(0px)" },
+  exit: (_direction: number) => ({ x: 0, opacity: 0, scale: 1.5, filter: "blur(16px)" }),
+};
+
+const CINEMA_EASE: [number, number, number, number] = [0.85, 0, 0.15, 1];
+
+/** 转场覆盖层：电影快门向内收拢 + 胶片边框急速飞入定格，全程 pointer-events:none，不影响任何幻灯片内部布局 */
+function CinemaFrameReveal() {
+  return (
+    <motion.div
+      aria-hidden
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 1 }}
+      style={{ position: "absolute", inset: 0, zIndex: 60, pointerEvents: "none", overflow: "hidden" }}
+    >
+      {/* 上快门：从完全闭合（中线即那条线）直接拉开 */}
+      <motion.div
+        initial={{ height: "50%" }}
+        animate={{ height: "0%" }}
+        transition={{ duration: 0.6, ease: CINEMA_EASE }}
+        style={{ position: "absolute", top: 0, left: 0, right: 0, background: "#000" }}
+      />
+      {/* 下快门 */}
+      <motion.div
+        initial={{ height: "50%" }}
+        animate={{ height: "0%" }}
+        transition={{ duration: 0.6, ease: CINEMA_EASE }}
+        style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "#000" }}
+      />
+      {/* 胶片边框：快门拉开后飞入定格，闪一下淡出，交棒给 content0 自带的四角框 */}
+      <motion.div
+        initial={{ scale: 1.16, opacity: 0 }}
+        animate={{ scale: 1, opacity: [0, 0.9, 0] }}
+        transition={{ duration: 0.8, ease: CINEMA_EASE, delay: 0.34, times: [0, 0.5, 1] }}
+        style={{
+          position: "absolute",
+          inset: 26,
+          border: "1px solid rgba(255,255,255,0.8)",
+          boxShadow: "0 0 36px rgba(255,255,255,0.18), inset 0 0 60px rgba(0,0,0,0.4)",
+        }}
+      />
+    </motion.div>
+  );
+}
+
 export default function SlideContainer() {
-  const [[current, direction], setCurrent] = useState([0, 0]);
+  const getInitialSlide = () => {
+    if (typeof window === "undefined") return 0;
+    const hash = window.location.hash.replace("#", "");
+    const idx = slideIds.indexOf(hash);
+    return idx >= 0 ? idx : 0;
+  };
+  const [[current, direction], setCurrent] = useState(() => [getInitialSlide(), 0]);
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
+  const { stageRef, fitScale } = useSlideFitScale(!isMobilePortrait);
+  const reduceMotion = useReducedMotion();
+  // 仅在「封面 → content0」时播放电影边框收拢转场（key 自增触发重挂载重播）
+  const [cinemaRevealKey, setCinemaRevealKey] = useState(0);
+  const prevCurrentRef = useRef(current);
   const rootRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const zoomRef = useRef(1);
@@ -85,8 +167,9 @@ export default function SlideContainer() {
     lastTime: 0,
   });
   const momentumRef = useRef<number>(0);
+  const wheelCooldownRef = useRef(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
     const root = rootRef.current;
     if (!root) return;
@@ -94,34 +177,39 @@ export default function SlideContainer() {
     const update = () => {
       const matches = mq.matches;
       setIsMobilePortrait(matches);
+
+      document.documentElement.style.setProperty("--slide-design-w", `${DESIGN_WIDTH}px`);
+      document.documentElement.style.setProperty("--slide-design-h", `${DESIGN_HEIGHT}px`);
+
       if (matches) {
-        const zoom = window.innerHeight / DESIGN_WIDTH;
-        zoomRef.current = zoom;
-        document.documentElement.style.setProperty("--slide-zoom", String(zoom));
-        document.documentElement.style.removeProperty("--slide-fit-scale");
+        const { height } = measureFitStage(root);
+        zoomRef.current = height / DESIGN_WIDTH;
+        document.documentElement.style.setProperty("--slide-zoom", String(zoomRef.current));
       } else {
         zoomRef.current = 1;
         document.documentElement.style.removeProperty("--slide-zoom");
-        // 用 slide-root 实际占位测量，避免 Cursor 分屏 / CDP 强制视口时 window 尺寸与可见区域不一致
-        const width = root.clientWidth || window.innerWidth;
-        const height = root.clientHeight || window.innerHeight;
-        const scale = Math.min(width / DESIGN_WIDTH, height / DESIGN_HEIGHT);
-        document.documentElement.style.setProperty("--slide-fit-scale", String(scale));
       }
     };
 
     update();
+    requestAnimationFrame(update);
     const ro = new ResizeObserver(update);
     ro.observe(root);
+    if (root.parentElement) ro.observe(root.parentElement);
     mq.addEventListener("change", update);
     window.addEventListener("resize", update);
+    window.visualViewport?.addEventListener("resize", update);
+    window.visualViewport?.addEventListener("scroll", update);
 
     return () => {
       ro.disconnect();
       mq.removeEventListener("change", update);
       window.removeEventListener("resize", update);
+      window.visualViewport?.removeEventListener("resize", update);
+      window.visualViewport?.removeEventListener("scroll", update);
       document.documentElement.style.removeProperty("--slide-zoom");
-      document.documentElement.style.removeProperty("--slide-fit-scale");
+      document.documentElement.style.removeProperty("--slide-design-w");
+      document.documentElement.style.removeProperty("--slide-design-h");
     };
   }, []);
 
@@ -136,9 +224,9 @@ export default function SlideContainer() {
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     const { offset, velocity } = info;
-    if (offset.x < -SWIPE_THRESHOLD || velocity.x < -SWIPE_VELOCITY) {
+    if (offset.y < -SWIPE_THRESHOLD || velocity.y < -SWIPE_VELOCITY) {
       paginate(1);
-    } else if (offset.x > SWIPE_THRESHOLD || velocity.x > SWIPE_VELOCITY) {
+    } else if (offset.y > SWIPE_THRESHOLD || velocity.y > SWIPE_VELOCITY) {
       paginate(-1);
     }
   };
@@ -229,12 +317,66 @@ export default function SlideContainer() {
     return () => window.removeEventListener("keydown", handleKey);
   }, [paginate]);
 
+  // Wheel event: 所有幻灯片（除 cover）均通过滚轮上下翻页
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (wheelCooldownRef.current) return;
+      const curId = slideIds[current];
+      // cover 页面保留原有行为，不拦截
+      if (curId === "cover") return;
+
+      // 优先让内部可滚动区域（如截图区）消费滚轮
+      let node = e.target as HTMLElement | null;
+      while (node && node !== document.body) {
+        const { overflowY } = getComputedStyle(node);
+        const scrollable =
+          (overflowY === "auto" || overflowY === "scroll") &&
+          node.scrollHeight > node.clientHeight + 1;
+        if (scrollable) {
+          const atTop = node.scrollTop <= 0;
+          const atBottom =
+            node.scrollTop + node.clientHeight >= node.scrollHeight - 1;
+          if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) {
+            return;
+          }
+        }
+        node = node.parentElement;
+      }
+
+      if (Math.abs(e.deltaY) < 30) return;
+
+      e.preventDefault();
+      if (e.deltaY > 0) {
+        paginate(1);
+      } else {
+        paginate(-1);
+      }
+      wheelCooldownRef.current = true;
+      setTimeout(() => { wheelCooldownRef.current = false; }, 800);
+    };
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, [current, paginate]);
+
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
+    // 同步 URL hash
+    const id = slideIds[current];
+    if (id) window.history.replaceState(null, "", `#${id}`);
   }, [current]);
 
+  // 进入 content0 且来自封面时，触发电影边框收拢转场
+  useEffect(() => {
+    const prev = prevCurrentRef.current;
+    prevCurrentRef.current = current;
+    if (reduceMotion) return;
+    if (slideIds[current] === "content0" && slideIds[prev] === "cover") {
+      setCinemaRevealKey((k) => k + 1);
+    }
+  }, [current, reduceMotion]);
+
   const handleEnter = useCallback(() => {
-    const next = toVisibleSlideIndex(2);
+    const next = toVisibleSlideIndex(1);
     if (next >= 0) setCurrent([next, 1]);
   }, []);
 
@@ -245,8 +387,51 @@ export default function SlideContainer() {
     setCurrent([visibleIndex, dir]);
   }, [current]);
 
-  const Slide = slideComponents[current];
-  const slideProps = current === 0 ? { onEnter: handleEnter, onNavigate: handleNavigate } : {};
+  // ——— 进入页面后立即预加载所有懒加载 chunk ———
+  useEffect(() => {
+    // requestIdleCallback 在浏览器空闲时按顺序 prefetch，不阻塞渲染
+    const tasks = [
+      () => import("./slide-page0a"),  () => import("./slide-page0b"),
+      () => import("./slide-page0c"),  () => import("./slide-page0d"),
+      () => import("./slide-page0e"),  () => import("./slide-page0f"),
+      () => import("./slide-page0g"),  () => import("./slide-page0"),
+      () => import("./slide-page1"),   () => import("./slide-page2"),
+      () => import("./slide-page3"),   () => import("./slide-page4"),
+      () => import("./slide-page5"),   () => import("./slide-page6"),
+      () => import("./slide-page7"),   () => import("./slide-page8"),
+      () => import("./slide-page9"),   () => import("./slide-page10"),
+      () => import("./slide-page11"),  () => import("./slide-page12"),
+      () => import("./slide-page13"),  () => import("./slide-page14"),
+      () => import("./slide-page15"),  () => import("./slide-page16"),
+      () => import("./slide-page17"),  () => import("./slide-page18"),
+      () => import("./slide-page19"),  () => import("./slide-page20"),
+      () => import("./slide-page21"),  () => import("./slide-page22"),
+      () => import("./slide-page23"),  () => import("./slide-page24"),
+      () => import("./slide-page25"),  () => import("./slide-page26"),
+    ];
+    let i = 0;
+    const run = () => {
+      if (i >= tasks.length) return;
+      tasks[i++]().finally(() => {
+        if (typeof requestIdleCallback !== "undefined") {
+          requestIdleCallback(run, { timeout: 2000 });
+        } else {
+          setTimeout(run, 100);
+        }
+      });
+    };
+    if (typeof requestIdleCallback !== "undefined") {
+      requestIdleCallback(run, { timeout: 500 });
+    } else {
+      setTimeout(run, 200);
+    }
+  }, []);
+
+      const Slide = slideComponents[current];
+  const slideProps = current <= 1 ? { onEnter: handleEnter, onNavigate: handleNavigate } : {};
+  /** 有内部点击交互的幻灯片，禁用 drag 以防 framer-motion 拦截 click 事件 */
+  const NO_DRAG_SLIDES = new Set(["page0e", "page0f"]);
+  const noDrag = NO_DRAG_SLIDES.has(slideIds[current]);
 
   return (
     <>
@@ -254,24 +439,49 @@ export default function SlideContainer() {
         .slide-root { --u: calc(${DESIGN_WIDTH}px / 100); }
         @media (min-width: 641px), (orientation: landscape) {
           .slide-root {
+            position: fixed;
+            inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #000;
+            overflow: hidden;
           }
           .slide-fit-stage {
             position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            container-type: size;
+            --slide-design-w: ${DESIGN_WIDTH}px;
+            --slide-design-h: ${DESIGN_HEIGHT}px;
+          }
+          .slide-fit-box {
+            position: relative;
+            flex-shrink: 0;
+            overflow: hidden;
             width: ${DESIGN_WIDTH}px;
             height: ${DESIGN_HEIGHT}px;
-            flex-shrink: 0;
-            transform: scale(var(--slide-fit-scale, 1));
             transform-origin: center center;
+          }
+          .slide-canvas {
+            position: relative;
+            width: ${DESIGN_WIDTH}px;
+            height: ${DESIGN_HEIGHT}px;
             overflow: hidden;
           }
-          .slide-fit-stage .slide-inner {
+          .slide-canvas .slide-scroll > * {
+            width: 100% !important;
+            height: 100% !important;
+            min-height: 100% !important;
+          }
+          .slide-canvas .slide-inner {
             cursor: grab;
           }
-          .slide-fit-stage .slide-inner:active {
+          .slide-canvas .slide-inner:active {
             cursor: grabbing;
           }
         }
@@ -280,9 +490,18 @@ export default function SlideContainer() {
           .slide-fit-stage {
             width: 100% !important;
             height: 100% !important;
+          }
+          .slide-canvas {
+            position: absolute !important;
+            inset: 0 !important;
+            width: auto !important;
+            height: auto !important;
             transform: none !important;
+            overflow: visible !important;
           }
           .slide-root {
+            position: fixed !important;
+            inset: 0 !important;
             transform: rotate(90deg) translateY(-100%);
             transform-origin: top left;
             width: 100vh !important;
@@ -316,54 +535,67 @@ export default function SlideContainer() {
           }
         }
       `}</style>
-      <div ref={rootRef} className="slide-root relative h-full w-full overflow-hidden">
-      <div className="slide-fit-stage">
-      <AnimatePresence initial={false} custom={direction} mode="popLayout">
-        <motion.div
-          key={slideIds[current]}
-          custom={direction}
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          drag={isMobilePortrait ? false : "x"}
-          dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
-          onDragEnd={isMobilePortrait ? undefined : handleDragEnd}
-          className="slide-inner absolute inset-0 h-full w-full cursor-grab active:cursor-grabbing"
-          onTouchStart={isMobilePortrait ? handleTouchStart : undefined}
-          onTouchMove={isMobilePortrait ? handleTouchMove : undefined}
-          onTouchEnd={isMobilePortrait ? handleTouchEnd : undefined}
-        >
-          <div ref={scrollRef} className="slide-scroll h-full w-full">
-            <Slide {...slideProps} />
-          </div>
-        </motion.div>
-      </AnimatePresence>
-      </div>
+      <div ref={rootRef} className="slide-root">
+      <div
+        ref={stageRef}
+        className="slide-fit-stage"
+        style={
+          isMobilePortrait
+            ? undefined
+            : { width: "100%", height: "100%" }
+        }
+      >
+      <div
+        className={isMobilePortrait ? "slide-canvas" : "slide-fit-box"}
+        style={
+          isMobilePortrait
+            ? { position: "relative", width: "100%", height: "100%", transform: "none" }
+            : { transform: `scale(${fitScale})` }
+        }
+      >
+      <div className="slide-canvas">
+      {/* cover(0) ↔ content0(1) 用电影快门；其余所有页面统一用上下滑动 + 先慢后快曲线 */}
+      {(() => {
+        const prevSlide = current - direction;
+        const isCinema = !reduceMotion && direction !== 0 && Math.min(current, prevSlide) === 0 && Math.max(current, prevSlide) === 1;
+        const activeVariants = isCinema ? cinemaVariants : variants;
+        const activeTransition = isCinema
+          ? { duration: 0.9, ease: CINEMA_EASE }
+          : { duration: 0.48, ease: EASE_IN_ACCEL };
+        return (
+          <AnimatePresence initial={false} custom={direction} mode="popLayout">
+            <motion.div
+              key={slideIds[current]}
+              custom={direction}
+              variants={activeVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              transition={activeTransition}
+              drag={isMobilePortrait || noDrag ? false : "y"}
+              dragConstraints={{ top: 0, bottom: 0 }}
+              dragElastic={0.15}
+              onDragEnd={isMobilePortrait || noDrag ? undefined : handleDragEnd}
+              className="slide-inner absolute inset-0 h-full w-full cursor-grab active:cursor-grabbing"
+              onTouchStart={isMobilePortrait ? handleTouchStart : undefined}
+              onTouchMove={isMobilePortrait ? handleTouchMove : undefined}
+              onTouchEnd={isMobilePortrait ? handleTouchEnd : undefined}
+            >
+              <div ref={scrollRef} className="slide-scroll h-full w-full">
+                <Suspense fallback={<SlideFallback />}>
+                  <Slide {...slideProps} />
+                </Suspense>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        );
+      })()}
 
-      {/* Arrow hints — hidden on mobile */}
-      {current > 1 && (
-        <button
-          onClick={() => paginate(-1)}
-          className="hidden sm:flex absolute left-4 top-1/2 z-50 h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-opacity hover:bg-white/40"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-        </button>
-      )}
-      {current > 0 && current < slideComponents.length - 1 && (
-        <button
-          onClick={() => paginate(1)}
-          className="hidden sm:flex absolute right-4 top-1/2 z-50 h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-opacity hover:bg-white/40"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="9 18 15 12 9 6" />
-          </svg>
-        </button>
-      )}
+      {/* 电影边框收拢转场覆盖层（仅封面 → content0 触发，叠在幻灯片之上、不参与布局） */}
+      {cinemaRevealKey > 0 && <CinemaFrameReveal key={cinemaRevealKey} />}
+      </div>
+      </div>
+      </div>
     </div>
     </>
   );

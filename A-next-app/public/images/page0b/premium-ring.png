@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 55.2721 55.0576" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Premium-Ring-Large" d="M27.6357 0.416992C42.6701 0.416992 54.8555 12.5572 54.8555 27.5293C54.8552 42.5012 42.67 54.6406 27.6357 54.6406C12.6017 54.6405 0.41725 42.5011 0.416992 27.5293C0.416992 12.5573 12.6015 0.417166 27.6357 0.416992Z" stroke="url(#paint0_linear_0_314)" stroke-width="0.833333"/>
+<defs>
+<linearGradient id="paint0_linear_0_314" x1="9.70202" y1="5.8572" x2="34.7905" y2="53.2111" gradientUnits="userSpaceOnUse">
+<stop stop-color="#9966FF" stop-opacity="0.8"/>
+<stop offset="0.444036" stop-color="#6699FF" stop-opacity="0.5"/>
+<stop offset="1" stop-color="#9966FF" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>

@@ -10,46 +10,32 @@ export default function SlidePage20() {
   return (
     <div
       className="relative h-full w-full overflow-hidden"
-      style={{ background: "#FFFFFF" }}
+      style={{ background: "#070707" }}
     >
-      {/* ── 白色底层 + 装饰背景 ─────────────────────────────────── */}
-      <div className="absolute inset-0 overflow-hidden bg-white">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
-              <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
-              <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
-              <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
-              <ellipse cx="816" cy="-973.5" rx="2085.5" ry="2085.5" fill="#EF5D43" filter="blur(160px)" />
-              <ellipse cx="816" cy="-973.5" rx="2085.5" ry="2085.5" fill="#FFB624" filter="blur(160px)" />
-              <ellipse cx="803.5" cy="-1243.5" rx="2085.5" ry="2085.5" fill="#FEFB86" filter="blur(160px)" />
-              <ellipse cx="803.5" cy="-1243.5" rx="2085.5" ry="2085.5" fill="#FFFFFF" filter="blur(160px)" />
-            </svg>
-          </div>
-        </div>
-        <div className="absolute inset-0">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-full w-full" viewBox="0 0 1443 1081.5" preserveAspectRatio="none">
-            <path d="M62,1081.5L61,1081.5L61,61.5L62,61.5L62,1081.5ZM461,61.5L462,61.5L462,1081.5L461,1081.5L461,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.5" />
-            <path d="M522,1081.5L521,1081.5L521,61.5L522,61.5L522,1081.5ZM921,61.5L922,61.5L922,1081.5L921,1081.5L921,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.5" />
-            <path d="M982,1081.5L981,1081.5L981,61.5L982,61.5L982,1081.5ZM1381,61.5L1382,61.5L1382,1081.5L1381,1081.5L1381,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.5" />
-            <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.5" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
-          </svg>
-        </div>
-        <img src={`${P20}/bg-outer.png`} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      {/* ── 深色底 + 红光晕 ──────────────────────────────────────── */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute" style={{ top: 0, left: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
+        <div className="absolute" style={{ top: 0, right: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
+        {/* 网格线装饰 */}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="absolute inset-0 h-full w-full" viewBox="0 0 1443 1081.5" preserveAspectRatio="none">
+          <path d="M62,1081.5L61,1081.5L61,61.5L62,61.5L62,1081.5ZM461,61.5L462,61.5L462,1081.5L461,1081.5L461,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
+          <path d="M522,1081.5L521,1081.5L521,61.5L522,61.5L522,1081.5ZM921,61.5L922,61.5L922,1081.5L921,1081.5L921,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
+          <path d="M982,1081.5L981,1081.5L981,61.5L982,61.5L982,1081.5ZM1381,61.5L1382,61.5L1382,1081.5L1381,1081.5L1381,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
+          <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.08" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
+        </svg>
       </div>
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P20}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <img src={`${P20}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             LanguageGUI Design / 20
           </p>
         </div>
         <div className="absolute" style={{ left: "9.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid rgba(255,255,255,0.22)", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ color: "rgba(255,255,255,0.55)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
               2022 / 2024
             </p>
           </div>
@@ -60,7 +46,7 @@ export default function SlidePage20() {
       <span className="absolute z-10" style={{ left: "4.17%", top: "9.26%" }}>
         <span
           style={{
-            color: "#1F1F1F",
+            color: "#FFFFFF",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
@@ -108,7 +94,7 @@ export default function SlidePage20() {
         style={{
           right: "4.17%",
           top: "11.11%",
-          color: "#434343",
+          color: "rgba(255,255,255,0.72)",
           fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
@@ -131,9 +117,12 @@ export default function SlidePage20() {
             top: badge.top,
             gap: "clamp(4px, calc(0.56 * var(--u)), 8px)",
             padding: "clamp(4px, calc(0.56 * var(--u)), 8px)",
-            background: "#FFFFFF",
+            background: "rgba(255,255,255,0.15)",
             borderRadius: "60px",
-            boxShadow: "0px 0px 6px rgba(0,0,0,0.06)",
+            border: "1px solid rgba(255,255,255,0.28)",
+            boxShadow: "0px 0px 6px rgba(0,0,0,0.4)",
+            backdropFilter: "blur(12px)",
+            WebkitBackdropFilter: "blur(12px)",
           }}
         >
           <div
@@ -149,7 +138,7 @@ export default function SlidePage20() {
               {badge.num}
             </p>
           </div>
-          <span style={{ color: "#1F1F1F", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#0A0A0A", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
             {badge.label}
           </span>
         </div>
@@ -163,10 +152,10 @@ export default function SlidePage20() {
           top: "16.67%",
           width: "91.67%",
           height: "83.33%",
-          background: "#FFFFFF",
+          background: "rgba(255,255,255,0.06)",
           borderTopLeftRadius: "12px",
           borderTopRightRadius: "12px",
-          boxShadow: "0px 0px 12px rgba(0,0,0,0.12)",
+          boxShadow: "0px 0px 12px rgba(0,0,0,0.4)",
         }}
       >
         {/* Left panel (colors/fonts/radius) */}
@@ -196,7 +185,7 @@ export default function SlidePage20() {
             objectFit: "cover",
             objectPosition: "center top",
             borderTopRightRadius: "6px",
-            border: "2px solid #F0F3FF",
+            border: "2px solid rgba(255,255,255,0.12)",
           }}
         />
         {/* Right bottom (parent components) */}
@@ -211,7 +200,7 @@ export default function SlidePage20() {
             height: "53.44%",
             objectFit: "cover",
             objectPosition: "center top",
-            border: "2px solid #F0F3FF",
+            border: "2px solid rgba(255,255,255,0.12)",
           }}
         />
       </div>

@@ -340,7 +340,6 @@ export default function SlidePage24() {
       <div className="absolute z-20" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img src={`${P24}/logo.png`} alt="" className="absolute top-0 h-full object-contain" style={{ left: "-2.5%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <img src={`${P24}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
           <p style={{ color: "#FFFFFF", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             混剪-淘系内容化裂变桶 / 24
           </p>

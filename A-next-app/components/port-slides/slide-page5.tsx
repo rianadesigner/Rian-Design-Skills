@@ -25,46 +25,32 @@ export default function SlidePage5() {
   return (
     <div
       className="relative h-full w-full overflow-hidden"
-      style={{ background: "#FFFFFF" }}
+      style={{ background: "#070707" }}
     >
-      {/* ── 白色底层 + 装饰背景 ─────────────────────────────────── */}
-      <div className="absolute inset-0 overflow-hidden bg-white">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
-              <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
-              <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
-              <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
-              <ellipse cx="816" cy="-973.5" rx="2085.5" ry="2085.5" fill="#EF5D43" filter="blur(160px)" />
-              <ellipse cx="816" cy="-973.5" rx="2085.5" ry="2085.5" fill="#FFB624" filter="blur(160px)" />
-              <ellipse cx="803.5" cy="-1243.5" rx="2085.5" ry="2085.5" fill="#FEFB86" filter="blur(160px)" />
-              <ellipse cx="803.5" cy="-1243.5" rx="2085.5" ry="2085.5" fill="#FFFFFF" filter="blur(160px)" />
-            </svg>
-          </div>
-        </div>
-        <div className="absolute inset-0">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-full w-full" viewBox="0 0 1443 1081.5" preserveAspectRatio="none">
-            <path d="M62,1081.5L61,1081.5L61,61.5L62,61.5L62,1081.5ZM461,61.5L462,61.5L462,1081.5L461,1081.5L461,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.5" />
-            <path d="M522,1081.5L521,1081.5L521,61.5L522,61.5L522,1081.5ZM921,61.5L922,61.5L922,1081.5L921,1081.5L921,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.5" />
-            <path d="M982,1081.5L981,1081.5L981,61.5L982,61.5L982,1081.5ZM1381,61.5L1382,61.5L1382,1081.5L1381,1081.5L1381,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.5" />
-            <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.5" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
-          </svg>
-        </div>
-        <img src={`${P5}/bg-outer.png`} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      {/* ── 深色底 + 红光晕 ──────────────────────────────────────────── */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute" style={{ top: 0, left: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
+        <div className="absolute" style={{ top: 0, right: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
+        {/* 网格线装饰 */}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="absolute inset-0 h-full w-full" viewBox="0 0 1443 1081.5" preserveAspectRatio="none">
+          <path d="M62,1081.5L61,1081.5L61,61.5L62,61.5L62,1081.5ZM461,61.5L462,61.5L462,1081.5L461,1081.5L461,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
+          <path d="M522,1081.5L521,1081.5L521,61.5L522,61.5L522,1081.5ZM921,61.5L922,61.5L922,1081.5L921,1081.5L921,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
+          <path d="M982,1081.5L981,1081.5L981,61.5L982,61.5L982,1081.5ZM1381,61.5L1382,61.5L1382,1081.5L1381,1081.5L1381,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
+          <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.08" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
+        </svg>
       </div>
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img src={`${P5}/logo.svg`} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
+        <img src={"/images/logo-new.png"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <img src={`${P5}/avatar.png`} alt="" className="h-full aspect-square object-cover" />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             复盘：&nbsp;&nbsp;如何构建AI搜索多模式 / 05
           </p>
         </div>
         <div className="absolute" style={{ left: "7.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
+          <div style={{ border: "1px solid rgba(255,255,255,0.22)", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
+            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0, color: "rgba(255,255,255,0.55)" }}>
               2024 / 2025
             </p>
           </div>
@@ -75,7 +61,7 @@ export default function SlidePage5() {
       <span className="absolute z-10" style={{ left: "4.17%", top: "9.26%" }}>
         <span
           style={{
-            color: "#1F1F1F",
+            color: "#FFFFFF",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
@@ -106,7 +92,7 @@ export default function SlidePage5() {
         style={{
           right: "4.17%",
           top: "11.11%",
-          color: "#434343",
+          color: "rgba(255,255,255,0.72)",
           fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
@@ -119,7 +105,7 @@ export default function SlidePage5() {
         心流目前打造AI搜索/深度搜索/高级研究多模式搜索
       </p>
 
-      {/* ── 顶部左侧线框卡片 (wireframe) ─────────────────────────── */}
+      {/* ── 顶部左侧：搜索模式选择卡片 ─────────────────────────── */}
       <div
         className="absolute z-10"
         style={{
@@ -127,27 +113,14 @@ export default function SlidePage5() {
           top: "16.67%",
           width: "22.22%",
           height: "19.63%",
-          background: "#FFFFFF",
-          border: "1px solid #F2F8FF",
+          background: "rgba(14,14,20,0.92)",
+          border: "1px solid rgba(255,255,255,0.08)",
           borderRadius: "calc(0.83 * var(--u))",
-          boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
+          boxShadow: "0px 0px 24px 0px rgba(0,0,0,0.6)",
           overflow: "hidden",
         }}
       >
-        <img
-          src={`${P5}/mode-selection.png`}
-          alt=""
-          className="absolute"
-          style={{
-            left: 0,
-            top: 0,
-            width: "100%",
-            height: "100%",
-            objectFit: "contain",
-            objectPosition: "center center",
-            borderRadius: "calc(0.83 * var(--u))",
-          }}
-        />
+        <ModeSelectionCard />
         {/* Speech bubble */}
         <img
           src={`${P5}/speech-bubble.png`}
@@ -197,6 +170,138 @@ export default function SlidePage5() {
           style={{ objectPosition: "center top", borderTopLeftRadius: "calc(0.83 * var(--u))", borderTopRightRadius: "calc(0.83 * var(--u))", borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}
         />
       </div>
+    </div>
+  );
+}
+
+// ── 搜索模式选择卡片 ──────────────────────────────────────────────────────
+const searchModes = [
+  {
+    title: "通用搜索",
+    time: "约半分钟",
+    desc: "搜索全网信息并总结，适合简单问题",
+    highlighted: false,
+    icon: (
+      <svg width="1em" height="1em" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="5.8" cy="5.8" r="3.5" stroke="rgba(255,255,255,0.65)" strokeWidth="1.3" />
+        <path d="M8.6 8.6L11.2 11.2" stroke="rgba(255,255,255,0.65)" strokeWidth="1.3" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    title: "深度搜索",
+    time: "约2分钟",
+    desc: "先思考框架再分步搜索，适合复杂问题",
+    highlighted: false,
+    icon: (
+      <svg width="1em" height="1em" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 1.5C5.067 1.5 3.5 3.067 3.5 5C3.5 6.38 4.27 7.58 5.5 8.25V9.5H8.5V8.25C9.73 7.58 10.5 6.38 10.5 5C10.5 3.067 8.933 1.5 7 1.5Z" stroke="rgba(255,255,255,0.65)" strokeWidth="1.2" fill="none" />
+        <path d="M5.5 10H8.5" stroke="rgba(255,255,255,0.65)" strokeWidth="1.2" strokeLinecap="round" />
+        <path d="M5.8 11.2H8.2" stroke="rgba(255,255,255,0.65)" strokeWidth="1.2" strokeLinecap="round" />
+      </svg>
+    ),
+  },
+  {
+    title: "高级研究",
+    time: "约20分钟",
+    desc: "像人类专家一样，自动完成研究级报告/高级网页",
+    highlighted: true,
+    icon: (
+      <svg width="1em" height="1em" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="7" cy="7" r="5" stroke="rgba(140,130,255,0.9)" strokeWidth="1.1" />
+        <circle cx="7" cy="3.5" r="1" fill="rgba(140,130,255,0.9)" />
+        <circle cx="10" cy="8.8" r="1" fill="rgba(140,130,255,0.9)" />
+        <circle cx="4" cy="8.8" r="1" fill="rgba(140,130,255,0.9)" />
+        <path d="M7 4.5L9.5 8M7 4.5L4.5 8M9.5 8H4.5" stroke="rgba(140,130,255,0.6)" strokeWidth="0.9" />
+      </svg>
+    ),
+  },
+];
+
+function ModeSelectionCard() {
+  return (
+    <div
+      style={{
+        padding: "clamp(5px, calc(0.55 * var(--u)), 9px)",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        gap: "clamp(2px, calc(0.2 * var(--u)), 4px)",
+        boxSizing: "border-box",
+      }}
+    >
+      {searchModes.map((mode) => (
+        <div
+          key={mode.title}
+          style={{
+            flex: 1,
+            background: mode.highlighted
+              ? "linear-gradient(135deg, rgba(79,70,229,0.28) 0%, rgba(139,92,246,0.18) 100%)"
+              : "transparent",
+            border: mode.highlighted
+              ? "1px solid rgba(99,89,255,0.25)"
+              : "none",
+            borderRadius: "clamp(4px, calc(0.42 * var(--u)), 7px)",
+            padding: "clamp(4px, calc(0.42 * var(--u)), 7px) clamp(5px, calc(0.55 * var(--u)), 9px)",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "clamp(1px, calc(0.15 * var(--u)), 3px)",
+          }}
+        >
+          {/* Title row */}
+          <div style={{ display: "flex", alignItems: "center", gap: "clamp(3px, calc(0.3 * var(--u)), 5px)" }}>
+            <span
+              style={{
+                fontSize: "clamp(9px, calc(0.97 * var(--u)), 14px)",
+                lineHeight: 1,
+                flexShrink: 0,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              {mode.icon}
+            </span>
+            <span
+              style={{
+                color: "#FFFFFF",
+                fontSize: "clamp(8px, calc(0.9 * var(--u)), 13px)",
+                fontFamily: "'PingFang SC', sans-serif",
+                fontWeight: 600,
+                lineHeight: 1.2,
+                whiteSpace: "nowrap",
+              }}
+            >
+              {mode.title}
+            </span>
+            <span
+              style={{
+                border: `1px solid ${mode.highlighted ? "rgba(140,130,255,0.4)" : "rgba(255,255,255,0.2)"}`,
+                borderRadius: "100px",
+                padding: "0px clamp(3px, calc(0.3 * var(--u)), 5px)",
+                color: mode.highlighted ? "rgba(180,170,255,0.9)" : "rgba(255,255,255,0.42)",
+                fontSize: "clamp(6px, calc(0.6 * var(--u)), 9px)",
+                lineHeight: "1.7",
+                whiteSpace: "nowrap",
+                flexShrink: 0,
+              }}
+            >
+              {mode.time}
+            </span>
+          </div>
+          {/* Description */}
+          <span
+            style={{
+              color: mode.highlighted ? "rgba(200,195,255,0.72)" : "rgba(255,255,255,0.38)",
+              fontSize: "clamp(6px, calc(0.62 * var(--u)), 9px)",
+              fontFamily: "'PingFang SC', sans-serif",
+              lineHeight: 1.55,
+            }}
+          >
+            {mode.desc}
+          </span>
+        </div>
+      ))}
     </div>
   );
 }
@@ -282,16 +387,16 @@ function TextCard({
         ...style,
         width: "22.32%",
         height: "19.63%",
-        background: "#FFFFFF",
+        background: "rgba(255,255,255,0.06)",
         borderRadius: "calc(0.83 * var(--u))",
-        boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.12)",
+        boxShadow: "0px 0px 12px 0px rgba(0,0,0,0.4)",
         overflow: "hidden",
       }}
     >
       <div className="flex flex-col items-center justify-center" style={{ padding: "clamp(12px, calc(1.67 * var(--u)), 24px)", height: "100%", textAlign: "center" }}>
         <span
           style={{
-            color: "#1F1F1F",
+            color: "#FFFFFF",
             fontSize: "clamp(12px, calc(1.39 * var(--u)), 20px)",
             fontFamily: "'Alimama ShuHeiTi', sans-serif",
             fontWeight: 700,
@@ -311,7 +416,7 @@ function TextCard({
         </svg>
         <span
           style={{
-            color: "#434343",
+            color: "rgba(255,255,255,0.72)",
             fontSize: "clamp(10px, calc(1.25 * var(--u)), 18px)",
             fontFamily: "'PingFang SC', sans-serif",
             lineHeight: 1.7,
@@ -319,12 +424,12 @@ function TextCard({
         >
           {subtitle}
         </span>
-        <div className="flex flex-col items-center" style={{ background: "#F8F9FD", borderRadius: "8px", padding: "clamp(4px, calc(0.5 * var(--u)), 8px) clamp(8px, calc(1 * var(--u)), 14px)", marginTop: "4px", width: "100%" }}>
+        <div className="flex flex-col items-center" style={{ background: "rgba(255,255,255,0.08)", borderRadius: "8px", padding: "clamp(4px, calc(0.5 * var(--u)), 8px) clamp(8px, calc(1 * var(--u)), 14px)", marginTop: "4px", width: "100%" }}>
           {bullets.map((b) => (
             <span
               key={b}
               style={{
-                color: "#434343",
+                color: "rgba(255,255,255,0.72)",
                 fontSize: "clamp(9px, calc(1.11 * var(--u)), 16px)",
                 fontFamily: "'PingFang SC', sans-serif",
                 lineHeight: 1.7,

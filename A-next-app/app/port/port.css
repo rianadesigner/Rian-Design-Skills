@@ -1,6 +1,17 @@
 /* ─── Port page height chain ────────────────────────────────── */
-/* Make the full-height chain work for both browser and Cursor preview panel */
-html, body { height: 100%; margin: 0; }
+/* 全链路占满视口：浏览器全屏、Cursor 分屏预览、移动端地址栏伸缩 */
+html,
+body {
+  height: 100%;
+  min-height: 100dvh;
+  margin: 0;
+}
+
+/* 幻灯片页 letterbox 区域与画布背景一致，避免出现白边 */
+html:has(.slide-root),
+html:has(.slide-root) body {
+  background: #000;
+}
 
 /* ─── Observatory Cover CSS Variables ───────────────────────── */
 :root {

@@ -1,0 +1,12 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 143.333 134.167" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="CTA Glow" filter="url(#filter0_f_0_300)">
+<ellipse cx="71.6667" cy="67.0833" rx="35" ry="30.4167" fill="var(--fill-0, #FF994D)" fill-opacity="0.1"/>
+</g>
+<defs>
+<filter id="filter0_f_0_300" x="0" y="0" width="143.333" height="134.167" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="18.3333" result="effect1_foregroundBlur_0_300"/>
+</filter>
+</defs>
+</svg>

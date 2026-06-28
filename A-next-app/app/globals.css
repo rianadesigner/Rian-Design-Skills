@@ -139,6 +139,48 @@
     }
 }
 
+/* ── Slide fit guard ──────────────────────────────────────────────────────
+ * Global, self-contained fallback for every 1440×900 slide canvas.
+ *
+ * Keep this in globals.css instead of only inside React components: during
+ * HMR / page edits / Cursor side-panel resizing, component state or inline
+ * styles can momentarily reset. These rules make the fit behavior survive
+ * those transitions, so the canvas keeps fitting its actual container.
+ */
+@layer components {
+  .slide-fit-stage {
+    --slide-design-w: 1440px;
+    --slide-design-h: 900px;
+    --slide-fit-scale: min(
+      calc(100cqw / var(--slide-design-w)),
+      calc(100cqh / var(--slide-design-h))
+    );
+
+    container-type: size;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .slide-fit-stage > .slide-fit-box {
+    position: relative;
+    width: var(--slide-design-w);
+    height: var(--slide-design-h);
+    flex-shrink: 0;
+    overflow: hidden;
+    transform: scale(var(--slide-fit-scale, 1));
+    transform-origin: center center;
+  }
+
+  .slide-fit-stage > .slide-fit-box > .slide-canvas {
+    position: relative;
+    width: var(--slide-design-w);
+    height: var(--slide-design-h);
+    overflow: hidden;
+  }
+}
+
 /* ── Book flip · 纸张柔软翻页 ───────────────────────────────────────────────
  * 缓动用 iOS 风格 (0.32, 0.72, 0.34, 1) -> 起步柔、中段加速、末尾缓停
  * 在 keyframes 里同时控制 rotateY 和 rotateZ，制造纸张轻微 Z 摆动

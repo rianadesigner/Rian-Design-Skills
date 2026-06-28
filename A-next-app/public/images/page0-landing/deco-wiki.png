@@ -1,0 +1,21 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 18">
+<foreignObject x="-8" y="-8" width="64" height="64"><div xmlns="http://www.w3.org/1999/xhtml" style="backdrop-filter:blur(4px);clip-path:url(#bgblur_0_0_345_clip_path);height:100%;width:100%"></div></foreignObject><circle id="Ellipse" data-figma-bg-blur-radius="8" cx="24" cy="24" r="24" fill="var(--fill-0, white)" fill-opacity="0.2"/>
+<g id="Polygon" filter="url(#filter1_d_0_345)">
+<path d="M30 22.268C31.3333 23.0378 31.3333 24.9623 30 25.7321L22.5 30.0622C21.1667 30.832 19.5 29.8697 19.5 28.3301V19.6699C19.5 18.1303 21.1667 17.168 22.5 17.9378L30 22.268Z" fill="var(--fill-0, white)"/>
+</g>
+</g>
+<defs>
+<clipPath id="bgblur_0_0_345_clip_path" transform="translate(8 8)"><circle cx="24" cy="24" r="24"/>
+</clipPath><filter id="filter1_d_0_345" x="15.5" y="17.6669" width="19.5" height="20.6662" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="4"/>
+<feGaussianBlur stdDeviation="2"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_0_345"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_0_345" result="shape"/>
+</filter>
+</defs>
+</svg>

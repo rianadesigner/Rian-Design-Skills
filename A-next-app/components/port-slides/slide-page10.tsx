@@ -12,32 +12,19 @@ export default function SlidePage10() {
   return (
     <div
       className="relative h-full w-full overflow-hidden"
-      style={{ background: "#FFFFFF" }}
+      style={{ background: "#070707" }}
     >
-      {/* ── 白色底层 + 装饰背景 ─────────────────────────────────── */}
-      <div className="absolute inset-0 overflow-hidden bg-white">
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute" style={{ left: "-1%", top: "3.4%" }}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-[116vh] w-[calc(112 * var(--u))] opacity-50" viewBox="0 0 1620 1259">
-              <rect x="0" y="0" width="1620" height="1259" fill="#DEE1E6" />
-              <ellipse cx="816" cy="857.5" rx="1020.5" ry="1020.5" fill="#2A5BFE" />
-              <ellipse cx="816" cy="-769.5" rx="2085.5" ry="2085.5" fill="#F600A7" filter="blur(300px)" />
-              <ellipse cx="816" cy="-973.5" rx="2085.5" ry="2085.5" fill="#EF5D43" filter="blur(160px)" />
-              <ellipse cx="816" cy="-973.5" rx="2085.5" ry="2085.5" fill="#FFB624" filter="blur(160px)" />
-              <ellipse cx="803.5" cy="-1243.5" rx="2085.5" ry="2085.5" fill="#FEFB86" filter="blur(160px)" />
-              <ellipse cx="803.5" cy="-1243.5" rx="2085.5" ry="2085.5" fill="#FFFFFF" filter="blur(160px)" />
-            </svg>
-          </div>
-        </div>
-        <div className="absolute inset-0">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="h-full w-full" viewBox="0 0 1443 1081.5" preserveAspectRatio="none">
-            <path d="M62,1081.5L61,1081.5L61,61.5L62,61.5L62,1081.5ZM461,61.5L462,61.5L462,1081.5L461,1081.5L461,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.5" />
-            <path d="M522,1081.5L521,1081.5L521,61.5L522,61.5L522,1081.5ZM921,61.5L922,61.5L922,1081.5L921,1081.5L921,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.5" />
-            <path d="M982,1081.5L981,1081.5L981,61.5L982,61.5L982,1081.5ZM1381,61.5L1382,61.5L1382,1081.5L1381,1081.5L1381,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.5" />
-            <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.5" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
-          </svg>
-        </div>
-        <img src={`${P10}/bg-outer.png`} alt="" className="absolute inset-0 h-full w-full object-cover" />
+      {/* ── 深色底 + 红光晕 ──────────────────────────────────────── */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute" style={{ top: 0, left: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
+        <div className="absolute" style={{ top: 0, right: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
+        {/* 网格线装饰 */}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="absolute inset-0 h-full w-full" viewBox="0 0 1443 1081.5" preserveAspectRatio="none">
+          <path d="M62,1081.5L61,1081.5L61,61.5L62,61.5L62,1081.5ZM461,61.5L462,61.5L462,1081.5L461,1081.5L461,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
+          <path d="M522,1081.5L521,1081.5L521,61.5L522,61.5L522,1081.5ZM921,61.5L922,61.5L922,1081.5L921,1081.5L921,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
+          <path d="M982,1081.5L981,1081.5L981,61.5L982,61.5L982,1081.5ZM1381,61.5L1382,61.5L1382,1081.5L1381,1081.5L1381,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
+          <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.08" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
+        </svg>
       </div>
 
       {/* ── Header ───────────────────────────────────────────────── */}
@@ -45,18 +32,17 @@ export default function SlidePage10() {
         className="absolute z-10 flex items-center"
         style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}
       >
-        <img src={`${P10}/logo.svg`} alt="" className="h-full object-contain" />
+        <img src={"/images/logo-new.png"} alt="" className="h-full object-contain" />
         <div
           className="ml-[calc(1 * var(--u))]"
-          style={{ border: "1px solid #8C8C8C", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}
+          style={{ border: "1px solid rgba(255,255,255,0.22)", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}
         >
-          <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0, color: "#1F1F1F" }}>
+          <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0, color: "rgba(255,255,255,0.55)" }}>
             2024 / 2025
           </p>
         </div>
         <div className="ml-auto flex items-center gap-[calc(0.7 * var(--u))]">
-          <img src={`${P10}/avatar.png`} alt="" className="rounded object-cover" style={{ width: "33.3px", height: "33.3px" }} />
-          <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             日常消费场景3:&nbsp;&nbsp;让优质内容形成社区生态 / 10
           </p>
         </div>
@@ -80,7 +66,7 @@ export default function SlidePage10() {
         </span>
         <span
           style={{
-            color: "#1F1F1F",
+            color: "#FFFFFF",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
@@ -129,7 +115,7 @@ export default function SlidePage10() {
         style={{
           right: "4.17%",
           top: "11.11%",
-          color: "#434343",
+          color: "rgba(255,255,255,0.72)",
           fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
           fontFamily: "'PingFang SC', sans-serif",
           fontWeight: 500,
@@ -154,9 +140,9 @@ export default function SlidePage10() {
           borderTopRightRadius: "clamp(40px, calc(5.13 * var(--u)), 74px)",
           borderBottomLeftRadius: 0,
           borderBottomRightRadius: 0,
-          background: "rgba(255,255,255,0.2)",
-          border: "2px solid #FFFFFF",
-          boxShadow: "0px 0px 12px rgba(0,0,0,0.12)",
+          background: "rgba(255,255,255,0.06)",
+          border: "2px solid rgba(255,255,255,0.12)",
+          boxShadow: "0px 0px 12px rgba(0,0,0,0.4)",
           overflow: "hidden",
         }}
       >
@@ -180,10 +166,10 @@ export default function SlidePage10() {
         <div
           className="absolute inset-0"
           style={{
-            background: "rgba(255,255,255,0.2)",
-            border: "1px solid #FFFFFF",
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "12px",
-            boxShadow: "0px 0px 12px rgba(0,0,0,0.12)",
+            boxShadow: "0px 0px 12px rgba(0,0,0,0.4)",
             overflow: "hidden",
           }}
         >
@@ -201,16 +187,16 @@ export default function SlidePage10() {
             left: 0,
             top: 0,
             padding: "8px 12px",
-            background: "#FFFFFF",
-            border: "1px solid #F0F3FF",
+            background: "rgba(255,255,255,0.15)",
+            border: "1px solid rgba(255,255,255,0.28)",
             borderRadius: "48px",
-            boxShadow: "0px 2px 4px rgba(25,33,61,0.08)",
+            boxShadow: "0px 2px 4px rgba(25,33,61,0.3)",
           }}
         >
-          <p style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+          <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
             01
           </p>
-          <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             体验"不掉线"的内容冷启动
           </span>
         </div>
@@ -229,10 +215,10 @@ export default function SlidePage10() {
         <div
           className="absolute inset-0"
           style={{
-            background: "rgba(255,255,255,0.2)",
-            border: "1px solid #FFFFFF",
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "12px",
-            boxShadow: "0px 0px 12px rgba(0,0,0,0.12)",
+            boxShadow: "0px 0px 12px rgba(0,0,0,0.4)",
             overflow: "hidden",
           }}
         >
@@ -250,16 +236,16 @@ export default function SlidePage10() {
             right: 0,
             top: 0,
             padding: "8px 12px",
-            background: "#FFFFFF",
-            border: "1px solid #F0F3FF",
+            background: "rgba(255,255,255,0.15)",
+            border: "1px solid rgba(255,255,255,0.28)",
             borderRadius: "48px",
-            boxShadow: "0px 2px 4px rgba(25,33,61,0.08)",
+            boxShadow: "0px 2px 4px rgba(25,33,61,0.3)",
           }}
         >
-          <p style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+          <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
             02
           </p>
-          <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             用户"看得懂"的内容解释
           </span>
         </div>
@@ -278,10 +264,10 @@ export default function SlidePage10() {
         <div
           className="absolute inset-0"
           style={{
-            background: "rgba(255,255,255,0.2)",
-            border: "1px solid #FFFFFF",
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "12px",
-            boxShadow: "0px 0px 12px rgba(0,0,0,0.12)",
+            boxShadow: "0px 0px 12px rgba(0,0,0,0.4)",
             overflow: "hidden",
           }}
         >
@@ -299,16 +285,16 @@ export default function SlidePage10() {
             left: 0,
             top: 0,
             padding: "8px 12px",
-            background: "#FFFFFF",
-            border: "1px solid #F0F3FF",
+            background: "rgba(255,255,255,0.15)",
+            border: "1px solid rgba(255,255,255,0.28)",
             borderRadius: "48px",
-            boxShadow: "0px 2px 4px rgba(25,33,61,0.08)",
+            boxShadow: "0px 2px 4px rgba(25,33,61,0.3)",
           }}
         >
-          <p style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+          <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
             03
           </p>
-          <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             内容"有价值"持续提升质量
           </span>
         </div>
@@ -327,10 +313,10 @@ export default function SlidePage10() {
         <div
           className="absolute inset-0"
           style={{
-            background: "rgba(255,255,255,0.2)",
-            border: "1px solid #FFFFFF",
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "12px",
-            boxShadow: "0px 0px 12px rgba(0,0,0,0.12)",
+            boxShadow: "0px 0px 12px rgba(0,0,0,0.4)",
             overflow: "hidden",
           }}
         >
@@ -348,16 +334,16 @@ export default function SlidePage10() {
             left: 0,
             top: 0,
             padding: "8px 12px",
-            background: "#FFFFFF",
-            border: "1px solid #F0F3FF",
+            background: "rgba(255,255,255,0.15)",
+            border: "1px solid rgba(255,255,255,0.28)",
             borderRadius: "48px",
-            boxShadow: "0px 2px 4px rgba(25,33,61,0.08)",
+            boxShadow: "0px 2px 4px rgba(25,33,61,0.3)",
           }}
         >
-          <p style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+          <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
             04
           </p>
-          <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             内容"持续变好"形成闭环
           </span>
         </div>
@@ -376,10 +362,10 @@ export default function SlidePage10() {
         <div
           className="absolute inset-0"
           style={{
-            background: "rgba(255,255,255,0.2)",
-            border: "1px solid #FFFFFF",
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "12px",
-            boxShadow: "0px 0px 12px rgba(0,0,0,0.12)",
+            boxShadow: "0px 0px 12px rgba(0,0,0,0.4)",
             overflow: "hidden",
           }}
         >
@@ -397,16 +383,16 @@ export default function SlidePage10() {
             right: 0,
             top: 0,
             padding: "8px 12px",
-            background: "#FFFFFF",
-            border: "1px solid #F0F3FF",
+            background: "rgba(255,255,255,0.15)",
+            border: "1px solid rgba(255,255,255,0.28)",
             borderRadius: "48px",
-            boxShadow: "0px 2px 4px rgba(25,33,61,0.08)",
+            boxShadow: "0px 2px 4px rgba(25,33,61,0.3)",
           }}
         >
-          <p style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+          <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
             05
           </p>
-          <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             用户"敢信赖"的信任建设
           </span>
         </div>
@@ -425,10 +411,10 @@ export default function SlidePage10() {
         <div
           className="absolute inset-0"
           style={{
-            background: "rgba(255,255,255,0.2)",
-            border: "1px solid #FFFFFF",
+            background: "rgba(255,255,255,0.06)",
+            border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: "12px",
-            boxShadow: "0px 0px 12px rgba(0,0,0,0.12)",
+            boxShadow: "0px 0px 12px rgba(0,0,0,0.4)",
             overflow: "hidden",
           }}
         >
@@ -448,15 +434,15 @@ export default function SlidePage10() {
                 transform: "translate(-50%, -50%)",
                 width: "clamp(40px, calc(4.17 * var(--u)), 60px)",
                 height: "clamp(40px, calc(4.17 * var(--u)), 60px)",
-                background: "rgba(255,255,255,0.5)",
-                border: "1px solid #FFFFFF",
+                background: "rgba(255,255,255,0.15)",
+                border: "1px solid rgba(255,255,255,0.28)",
                 borderRadius: "48px",
                 backdropFilter: "blur(10px)",
               }}
             >
               <span
                 style={{
-                  color: "#434343",
+                  color: "rgba(255,255,255,0.72)",
                   fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)",
                   fontFamily: "'Alimama ShuHeiTi', sans-serif",
                   fontWeight: 700,
@@ -477,16 +463,16 @@ export default function SlidePage10() {
             left: 0,
             top: 0,
             padding: "8px 12px",
-            background: "#FFFFFF",
-            border: "1px solid #F0F3FF",
+            background: "rgba(255,255,255,0.15)",
+            border: "1px solid rgba(255,255,255,0.28)",
             borderRadius: "48px",
-            boxShadow: "0px 2px 4px rgba(25,33,61,0.08)",
+            boxShadow: "0px 2px 4px rgba(25,33,61,0.3)",
           }}
         >
-          <p style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+          <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
             💡
           </p>
-          <span style={{ color: "#434343", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             AI搜索社区模块增长公式
           </span>
         </div>

@@ -327,6 +327,11 @@ function ProfileBioLines() {
 const GRAD_L = "linear-gradient(90deg,  #fdfbf9 0%, #fdfbf9 85%, #f4f1ed 95%, #ebe7e1 100%)"
 const GRAD_R = "linear-gradient(270deg, #fdfbf9 0%, #fdfbf9 85%, #f4f1ed 95%, #ebe7e1 100%)"
 
+const RESUME_DESIGN_W = 1000
+const RESUME_DESIGN_H = 700
+const RESUME_MOBILE_PAGE_W = 500
+const RESUME_MOBILE_PAGE_H = 700
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function ResumePlanner() {
@@ -370,33 +375,44 @@ export function ResumePlanner() {
       : `polygon(0% 0%, 100% 0%, 100% 100%, ${s}px 100%, 0% calc(100% - ${s}px))`,
   ) as MotionValue<string>
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const el = wrapperRef.current
+    if (!el) return
+
     const update = () => {
-      const el = wrapperRef.current
-      const w = el ? el.clientWidth : window.innerWidth - 40
-      const h = el ? el.clientHeight : window.innerHeight - 40
-      const s = Math.min(w / 1000, h / 700)
-      setScale(s > 0 ? s : 1)
+      const width = el.clientWidth
+      const height = el.clientHeight
+      if (width <= 0 || height <= 0) return
+      setScale(Math.min(width / RESUME_DESIGN_W, height / RESUME_DESIGN_H))
     }
+
     update()
-    window.addEventListener("resize", update)
-    return () => window.removeEventListener("resize", update)
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
   }, [])
 
   // ── 移动端单页轮播 ────────────────────────────────────────────────────────────
   const [mobilePage, setMobilePage]   = useState(0)
-  const mobileRef                     = useRef<HTMLDivElement>(null)
+  const mobileStageRef                = useRef<HTMLDivElement>(null)
   const [mobileScale, setMobileScale] = useState(1)
   const swipeStart                    = useRef(0)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const el = mobileStageRef.current
+    if (!el) return
+
     const update = () => {
-      const w = window.innerWidth * 0.8
-      setMobileScale(w / 500)
+      const width = el.clientWidth
+      const height = el.clientHeight
+      if (width <= 0 || height <= 0) return
+      setMobileScale(Math.min(width / RESUME_MOBILE_PAGE_W, height / RESUME_MOBILE_PAGE_H))
     }
+
     update()
-    window.addEventListener("resize", update)
-    return () => window.removeEventListener("resize", update)
+    const ro = new ResizeObserver(update)
+    ro.observe(el)
+    return () => ro.disconnect()
   }, [])
 
   /**
@@ -462,14 +478,18 @@ export function ResumePlanner() {
   }
 
   return (
-    <main className="flex h-screen flex-col items-center justify-center bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.94),_rgba(240,237,232,0.92)_50%,_rgba(227,222,216,0.96))] p-0 sm:p-[5%] text-[#171717]">
+    <main className="flex h-screen w-screen min-h-0 flex-col items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.94),_rgba(240,237,232,0.92)_50%,_rgba(227,222,216,0.96))] p-0 sm:p-[5%] text-[#171717]">
 
       {/* ── 移动端单页轮播（< sm） ──────────────────────────────────────────── */}
-      <div className="sm:hidden" ref={mobileRef}>
-        {/* 滑动区域：一次只展示一页 500×700，按 mobileScale 缩放至屏宽 */}
+      <div className="flex min-h-0 w-full flex-1 flex-col sm:hidden">
         <div
-          className="relative mx-auto overflow-hidden select-none"
-          style={{ width: `${500 * mobileScale}px`, height: `${700 * mobileScale}px` }}
+          ref={mobileStageRef}
+          className="flex min-h-0 w-full flex-1 items-center justify-center"
+        >
+        {/* 滑动区域：一次只展示一页 500×700，按 mobileScale 缩放至可见区域 */}
+        <div
+          className="relative mx-auto shrink-0 overflow-hidden select-none"
+          style={{ width: `${RESUME_MOBILE_PAGE_W * mobileScale}px`, height: `${RESUME_MOBILE_PAGE_H * mobileScale}px` }}
           onTouchStart={(e) => { swipeStart.current = e.touches[0].clientX }}
           onTouchEnd={(e) => {
             const dx = e.changedTouches[0].clientX - swipeStart.current
@@ -615,9 +635,10 @@ export function ResumePlanner() {
             </div>
           </div>
         </div>
+        </div>
 
         {/* 页码导航 */}
-        <div className="flex items-center justify-center gap-2 pt-5">
+        <div className="flex shrink-0 items-center justify-center gap-2 pt-5 pb-3">
           <button
             onClick={() => setMobilePage((p) => Math.max(0, p - 1))}
             disabled={mobilePage === 0}
@@ -643,8 +664,8 @@ export function ResumePlanner() {
       </div>
 
       {/* ── 桌面端双页展开（≥ sm） ────────────────────────────────────────────── */}
-      <div ref={wrapperRef} className="hidden sm:flex flex-1 w-full min-h-0 items-center justify-center">
-        <div className="relative mx-auto" style={{ width: `${1000 * scale}px`, height: `${700 * scale}px` }}>
+      <div ref={wrapperRef} className="hidden sm:flex flex-1 w-full min-h-0 items-center justify-center overflow-hidden">
+        <div className="relative mx-auto shrink-0" style={{ width: `${RESUME_DESIGN_W * scale}px`, height: `${RESUME_DESIGN_H * scale}px` }}>
           <div
             className="absolute left-0 top-0 h-[700px] w-[1000px] origin-top-left"
             style={{ transform: `scale(${scale})` }}

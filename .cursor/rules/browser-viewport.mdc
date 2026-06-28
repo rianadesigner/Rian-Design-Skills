@@ -1,0 +1,28 @@
+---
+description: Cursor Browser 固定视口 1600×1000
+globs:
+alwaysApply: true
+---
+
+# Browser 视口
+
+在本工作区使用 Cursor Browser（`cursor-ide-browser`）预览或截图时：
+
+1. **固定视口为 1600 × 1000**（宽 × 高，`deviceScaleFactor: 1`，`mobile: false`）。
+2. 在 `browser_navigate` 或首次与页面交互后，立即调用 `browser_cdp`：
+
+```json
+{
+  "method": "Emulation.setDeviceMetricsOverride",
+  "params": {
+    "width": 1600,
+    "height": 1000,
+    "deviceScaleFactor": 1,
+    "mobile": false
+  }
+}
+```
+
+3. 新开标签页或刷新后，若视口不是 1600×1000，再次执行上述 CDP 命令。
+4. 截图、布局检查、设计对齐均以此视口为准。
+5. **分屏预览**：若 Cursor 预览面板物理尺寸小于 1600×1000，CDP 强制视口会导致只能看到局部。此时应调用 `Emulation.clearDeviceMetricsOverride` 使用自然视口，或依赖 `/port` 幻灯片的自动 fit 缩放（`slide-container` 会按可见窗口缩小到 **1440×900（16:10）** 设计画布）。

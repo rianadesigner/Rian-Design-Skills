@@ -13,7 +13,16 @@ import * as THREE from "three";
  *  • Multi-layer overexposed core (3 stacked additive halos).
  *  • Cinematic NASA-style colour grading: warm core → pale silver → cool blue.
  */
-export function mountEffect1(container: HTMLElement): () => void {
+export interface MountEffect1Options {
+  /** 轻点 canvas（非拖拽）时回调，用于封面点击进入下一页 */
+  onTap?: () => void;
+}
+
+export function mountEffect1(
+  container: HTMLElement,
+  options: MountEffect1Options = {},
+): () => void {
+  const { onTap } = options;
   /* ── Scene & renderer ────────────────────────────────────── */
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x02040a, 0.00068);
@@ -333,6 +342,7 @@ export function mountEffect1(container: HTMLElement): () => void {
     cam.phiT = Math.max(PHI_MIN, Math.min(PHI_MAX, dsPhi - (e.clientY - dsy) * 0.004));
   };
   const onPtrUp = (e: PointerEvent) => {
+    const moved = Math.hypot(e.clientX - dsx, e.clientY - dsy);
     dragging = false;
     try {
       dom.releasePointerCapture(e.pointerId);
@@ -340,6 +350,7 @@ export function mountEffect1(container: HTMLElement): () => void {
       /* noop */
     }
     dom.style.cursor = "grab";
+    if (moved < 8) onTap?.();
   };
   const onWheel = (e: WheelEvent) => {
     e.preventDefault();
@@ -361,6 +372,8 @@ export function mountEffect1(container: HTMLElement): () => void {
     starMat.uniforms.uPx.value = renderer.getPixelRatio();
   };
   window.addEventListener("resize", onResize);
+  const containerRo = new ResizeObserver(onResize);
+  containerRo.observe(container);
 
   /* ═══ Animation loop ══════════════════════════════════════ */
   const clock = new THREE.Clock();
@@ -430,6 +443,7 @@ export function mountEffect1(container: HTMLElement): () => void {
       dom.removeEventListener("wheel", onWheel);
     }
     window.removeEventListener("resize", onResize);
+    containerRo.disconnect();
     galGeo.dispose();
     galMat.dispose();
     starGeo.dispose();

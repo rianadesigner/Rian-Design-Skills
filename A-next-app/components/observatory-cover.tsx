@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { mountEffect1 } from "./effect1";
 
 interface ObservatoryCoverProps {
@@ -63,20 +63,42 @@ function GeoAccent() {
 const HERO_MICRO =
   "2021.06 — Now · Senior AI-Driven UX Designer";
 const HERO_BODY =
-  "负责 AI 产品体验与架构升级，主导生成式 AI 产品在多模态搜索、知识库wiki、Agent FRAMEWORK、App Builder、VIBE Design等场景下的产品化探索与落地。";
+  "围绕 AI 原生产品范式，负责多模态搜索、知识库 Wiki、Agent Framework、App Builder 与 Vibe Design 等核心场景的产品体验、能力编排与系统化落地";
 
 /* ── Main Component ─────────────────────────────────────────── */
 export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps = {}) {
   const canvasRef = useRef<HTMLDivElement>(null);
   const [showUI, setShowUI] = useState(false);
+  // 退场序列：'idle' → 'exiting'（文字消失 → 星系远离 → 压成一条线 → 交棒影院开幕）
+  const [phase, setPhase] = useState<"idle" | "exiting">("idle");
+  const exitTimer = useRef<number | null>(null);
+  const startExitRef = useRef<() => void>(() => {});
+
+  /** 进入正片：先在封面播放星系退场，结束后再回调 onEnter（由容器接力影院开幕） */
+  const startExit = useCallback(() => {
+    if (phase === "exiting") return;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      onEnter?.();
+      return;
+    }
+    setPhase("exiting");
+    exitTimer.current = window.setTimeout(() => onEnter?.(), 560);
+  }, [phase, onEnter]);
+
+  startExitRef.current = startExit;
 
   useEffect(() => {
     const container = canvasRef.current;
     if (!container) return;
-    const cleanup = mountEffect1(container);
+    const cleanup = mountEffect1(container, {
+      onTap: () => startExitRef.current(),
+    });
     const timer = setTimeout(() => setShowUI(true), 2800);
     return () => { cleanup(); clearTimeout(timer); };
   }, []);
+
+  useEffect(() => () => { if (exitTimer.current) clearTimeout(exitTimer.current); }, []);
 
   /* ── Figma-exact layout constants ──────────────────────────
      Root: 1440×900 (16:10)   Header: h=80  padH=40
@@ -101,8 +123,98 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
         userSelect: "none",
       }}
     >
+      {/* 退场序列关键帧：远离（缩小）与压成一条线同时发生，一气呵成后甩出留黑 */}
+      <style>{`
+        @keyframes coverGalaxyCollapse {
+          0%   { transform: scaleX(1) scaleY(1); opacity: 1; }
+          70%  { transform: scaleX(0.55) scaleY(0.02); opacity: 1; }
+          100% { transform: scaleX(0.80) scaleY(0.003); opacity: 0; }
+        }
+        @keyframes coverLineFlash {
+          0%   { opacity: 0; transform: translateY(-50%) scaleX(0.2); }
+          45%  { opacity: 1; transform: translateY(-50%) scaleX(0.8); }
+          100% { opacity: 0; transform: translateY(-50%) scaleX(1.2); }
+        }
+      `}</style>
+
       {/* Three.js canvas */}
-      <div ref={canvasRef} className="three-canvas-container" style={{ position: "absolute", inset: 0, zIndex: 1 }} />
+      <div
+        ref={canvasRef}
+        className="three-canvas-container"
+        style={{
+          position: "absolute",
+          inset: 0,
+          zIndex: 1,
+          transformOrigin: "center center",
+          animation: phase === "exiting"
+            ? "coverGalaxyCollapse 0.55s cubic-bezier(0.7,0,0.84,0) forwards"
+            : undefined,
+        }}
+      />
+
+      {/* 星系压成的一条亮线：在塌缩末段成形并甩出 */}
+      {phase === "exiting" && (
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: 0,
+            right: 0,
+            height: 2,
+            zIndex: 5,
+            pointerEvents: "none",
+            transform: "translateY(-50%)",
+            transformOrigin: "center",
+            background:
+              "linear-gradient(90deg, transparent, rgba(210,228,255,0.98) 50%, transparent)",
+            boxShadow: "0 0 26px rgba(170,205,255,0.85), 0 0 60px rgba(120,160,255,0.45)",
+            animation: "coverLineFlash 0.55s cubic-bezier(0.7,0,0.84,0) forwards",
+          }}
+        />
+      )}
+
+      {/* ── Cinematic atmosphere layers (above canvas, below UI) ── */}
+
+      {/* Film grain */}
+      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 2, pointerEvents: "none", opacity: 0.065 }} aria-hidden>
+        <filter id="cov-grain">
+          <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#cov-grain)" />
+      </svg>
+
+      {/* Scanlines */}
+      <div aria-hidden style={{
+        position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none",
+        backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.06) 3px, rgba(0,0,0,0.06) 4px)",
+      }} />
+
+      {/* Top vignette (darker for cinema letterbox feel) */}
+      <div aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 160, zIndex: 2, pointerEvents: "none",
+        background: "linear-gradient(to bottom, rgba(0,0,0,0.72) 0%, transparent 100%)" }} />
+
+      {/* Bottom vignette */}
+      <div aria-hidden style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 180, zIndex: 2, pointerEvents: "none",
+        background: "linear-gradient(to top, rgba(0,0,0,0.78) 0%, transparent 100%)" }} />
+
+      {/* Left red curtain glow — fades in with UI, above UI overlay */}
+      <div aria-hidden style={{
+        position: "absolute", top: 0, left: 0, width: "22%", height: "100%", zIndex: 11, pointerEvents: "none",
+        background: "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.30) 0%, rgba(150,0,0,0.12) 38%, transparent 68%)",
+        opacity: phase === "exiting" ? 0 : showUI ? 1 : 0,
+        transition: phase === "exiting" ? "opacity 0.3s ease-in" : "opacity 1.4s ease-out",
+      }} />
+
+      {/* Right red curtain glow — fades in with UI, above UI overlay */}
+      <div aria-hidden style={{
+        position: "absolute", top: 0, right: 0, width: "22%", height: "100%", zIndex: 11, pointerEvents: "none",
+        background: "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.30) 0%, rgba(150,0,0,0.12) 38%, transparent 68%)",
+        opacity: phase === "exiting" ? 0 : showUI ? 1 : 0,
+        transition: phase === "exiting" ? "opacity 0.3s ease-in" : "opacity 1.4s ease-out",
+      }} />
+
 
       {/* ── UI overlay ────────────────────────────────────────── */}
       <div
@@ -114,8 +226,8 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
           display: "grid",
           gridTemplateColumns: "calc(672 / 1440 * 100%) 1fr",
           gridTemplateRows: "80px 1fr",
-          opacity: showUI ? 1 : 0,
-          transition: "opacity 1s ease-out",
+          opacity: phase === "exiting" ? 0 : showUI ? 1 : 0,
+          transition: phase === "exiting" ? "opacity 0.3s ease-in" : "opacity 1s ease-out",
         }}
       >
         {/* ═══ Header ═══════════════════════════════════════════ */}
@@ -132,47 +244,44 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
             borderBottom: LINE,
           }}
         >
-          {/* Brand — Syne 19.2px/700, ls≈0.96 */}
-          <div style={{ display: "flex", alignItems: "center", gap: 15 }}>
+          {/* Brand */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <LogoMark />
-            <span
-              style={{
-                fontFamily: "var(--font-syne, Syne, sans-serif)",
-                fontWeight: 700,
-                fontSize: 19.2,
-                lineHeight: "28.8px",
-                letterSpacing: 0.96,
-              }}
-            >
-              RIANADESIGNer
+            <span style={{
+              fontSize: 13,
+              fontWeight: 600,
+              letterSpacing: "0.08em",
+              color: "rgba(255,255,255,0.85)",
+              fontFamily: "var(--font-syne, system-ui), sans-serif",
+              textTransform: "uppercase",
+            }}>
+              Rian Designer
             </span>
           </div>
 
-          {/* Nav — Inter 12px/400, gap=40 */}
-          <nav style={{ display: "flex", gap: 40, pointerEvents: "auto", alignItems: "center" }}>
+          {/* Nav tabs */}
+          <nav style={{ display: "flex", gap: 46, pointerEvents: "auto", alignItems: "center" }}>
             {[
-              { label: "星链开发平台", slide: 13 },
-              { label: "万相营造", slide: 23 },
-              { label: "广告大外投", slide: 26 },
+              { label: "LLM Wiki",  slide: 2  },
+              { label: "IFlow心流", slide: 13 },
+              { label: "万相·星链", slide: 23 },
+              { label: "万相·营造", slide: 26 },
             ].map(({ label, slide }) => (
               <a
                 key={label}
                 href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onNavigate?.(slide);
-                }}
+                onClick={(e) => { e.preventDefault(); onNavigate?.(slide); }}
                 style={{
-                  color: "#fff",
+                  color: "rgba(255,255,255,0.42)",
                   textDecoration: "none",
-                  fontSize: 12,
+                  fontSize: 11,
                   fontWeight: 400,
-                  lineHeight: "14.52px",
-                  letterSpacing: 0,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 8,
+                  letterSpacing: "0.16em",
+                  fontFamily: '"PingFang SC", system-ui, sans-serif',
+                  transition: "color 0.18s",
                 }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.9)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.42)"; }}
               >
                 {label}
               </a>
@@ -257,7 +366,7 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
               </h1>
             </div>
 
-            {/* Body — Inter 15px/400, lh=23px, 60% white, maxW=466 */}
+            {/* Body — Inter 15px/400, lh=23px, 60% white, fixed 440px */}
             <p
               style={{
                 fontSize: 15,
@@ -265,7 +374,9 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
                 lineHeight: "23px",
                 letterSpacing: 0,
                 color: "rgba(255,255,255,0.6)",
-                maxWidth: 466,
+                width: 440,
+                maxWidth: 440,
+                flexShrink: 0,
                 margin: 0,
               }}
             >
@@ -301,7 +412,7 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
                 AI 产品
               </div>
               <div style={{ fontSize: 12, fontWeight: 400, lineHeight: "18px", color: "rgba(255,255,255,0.6)" }}>
-                心流/星链 等 AI 原生产品的 0→1 设计与功能构建。
+                心流/星链等 AI 原生产品的 0-1 产品能力构建
               </div>
             </div>
 
@@ -324,7 +435,7 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
                 广告创意
               </div>
               <div style={{ fontSize: 12, fontWeight: 400, lineHeight: "18px", color: "rgba(255,255,255,0.6)" }}>
-                商家创意多模态生产与智能投放大外投系统搭建。
+                商家创意多模态生产与智能投放大外投系统搭建
               </div>
             </div>
           </div>
@@ -370,8 +481,8 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
               </span>
               <span aria-hidden style={{ opacity: 0.5 }}>·</span>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-                <span aria-hidden>⇡</span>
-                SCROLL TO ENTER GALAXY
+                <span aria-hidden>◎</span>
+                CLICK TO ENTER
               </span>
             </div>
 
@@ -379,7 +490,8 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
 
             {/* CTA — 112×41, bg=#D1FB39, border 1px white 24%, r=40 */}
             <button
-              onClick={onEnter}
+              onClick={startExit}
+              disabled={phase === "exiting"}
               style={{
                 appearance: "none",
                 display: "inline-flex",

@@ -482,7 +482,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       </div>
 
       {/* Subtitle */}
-      <div className="absolute left-1/2 top-[328px] -translate-x-1/2 whitespace-nowrap text-center text-[16px] leading-[24px] text-[#737380]">
+      <div className="absolute left-[calc(50%-40px)] top-[328px] -translate-x-1/2 whitespace-nowrap text-center text-[16px] leading-[24px] text-[#737380]">
         <p className="mb-0">上传文件、编译结构化知识、连接第三方应用，</p>
         <p>并生成视频、报告与脑图。</p>
       </div>
@@ -490,7 +490,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       {/* Video card large (left, -15°) */}
       <div className="absolute left-[7.72%] top-[32.8%] flex h-[192.52px] w-[266.76px] items-center justify-center">
         <div className="-rotate-[15deg]">
-          <div className="relative h-[135px] w-[240px] overflow-clip rounded-2xl" style={{ boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.06)" }}>
+          <div className="relative h-[135px] w-[240px] overflow-hidden rounded-2xl" style={{ boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.06)" }}>
             <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
               <img src={`${PL}/video-bg-large.png`} alt="" className="absolute" style={{ height: "153.68%", left: "-26.5%", top: "-20.24%", width: "161.35%", maxWidth: "none" }} draggable={false} />
             </div>
@@ -543,7 +543,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       </div>
 
       {/* Premium ring/star decoration (standalone) */}
-      <div className="absolute left-[calc(50%-8px)] top-[223px] flex h-[66px] w-[64px] items-center justify-center pointer-events-none">
+      <div className="absolute left-[calc(50%-48px)] top-[223px] flex h-[66px] w-[64px] items-center justify-center pointer-events-none">
         <div className="rotate-[15deg]">
           <img src={`${PL}/premium-ring.svg`} alt="" className="block h-[55px] w-[52px]" style={{ maxWidth: "none" }} draggable={false} />
         </div>
@@ -551,7 +551,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
 
       {/* Hero title */}
       <p
-        className="absolute left-1/2 top-[232px] -translate-x-1/2 w-[560px] text-center text-[60px] tracking-[1.8px]"
+        className="absolute left-[calc(50%-40px)] top-[232px] -translate-x-1/2 w-[560px] text-center text-[60px] tracking-[1.8px]"
         style={{
           fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif",
           fontWeight: 700,
@@ -566,7 +566,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       </p>
 
       {/* CTA dashes (flipped) */}
-      <div className="absolute left-1/2 top-[447px] flex h-[46px] w-[812px] items-center justify-center pointer-events-none" style={{ transform: "translateX(-50%) scaleY(-1)" }}>
+      <div className="absolute left-[calc(50%-40px)] top-[447px] flex h-[46px] w-[812px] items-center justify-center pointer-events-none" style={{ transform: "translateX(-50%) scaleY(-1)" }}>
         <div className="relative h-[46px] w-[812px]">
           <div className="absolute" style={{ inset: "8.7% 0 0 66.69%" }}>
             <img src={`${PL}/cta-dash-right.svg`} alt="" className="absolute block" style={{ inset: "-4.17% -0.74% -8.93% -0.74%", maxWidth: "none", width: "101.48%", height: "113.1%" }} draggable={false} />
@@ -584,7 +584,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       {/* CTA Button */}
       <button
         onClick={(e) => { e.stopPropagation(); onNavigate?.(); }}
-        className="absolute left-[calc(50%-8px)] top-[418px] flex -translate-x-1/2 items-center gap-2.5 rounded-full border-2 border-white px-[42px] py-[18px]"
+        className="absolute left-[calc(50%-48px)] top-[418px] flex -translate-x-1/2 items-center gap-2.5 rounded-full border-2 border-white px-[42px] py-[18px]"
         style={{
           background: "linear-gradient(129deg, rgba(255,255,255,0.05) 7%, rgba(255,255,255,0) 98%)",
           boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
@@ -1245,23 +1245,6 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
                   </div>
                 </div>
 
-                {/* Dropdown menu */}
-                <div className="absolute flex flex-col items-start gap-3 rounded-lg bg-white p-3" style={{ left: 24, top: 430, border: '0.5px solid #e4e6ed', filter: 'drop-shadow(0px 6px 8px rgba(0,0,0,0.12))' }}>
-                  {[
-                    { label: "Happyhorse视频", icon: `${P0}/agent-chip-happyhorse.png`, rounded: true },
-                    { label: "生成报告", icon: `${P0}/agent-chip-report.svg`, rounded: false },
-                    { label: "演示文稿", icon: `${P0}/agent-chip-ppt.svg`, rounded: false },
-                    { label: "思维导图", icon: `${P0}/agent-chip-mindmap.svg`, rounded: false },
-                    { label: "播客", icon: `${P0}/agent-chip-podcast.svg`, rounded: false },
-                    { label: "信息图", icon: `${P0}/agent-chip-infograph.svg`, rounded: false },
-                    { label: "视频", icon: `${P0}/agent-chip-infograph.svg`, rounded: false },
-                  ].map((item) => (
-                    <div key={item.label} className="flex cursor-pointer items-center gap-1">
-                      <img src={item.icon} alt="" className={`size-4 shrink-0${item.rounded ? " rounded-sm object-cover" : ""}`} draggable={false} />
-                      <span className="whitespace-nowrap text-[12px] font-semibold leading-[20px] text-[#111]">{item.label}</span>
-                    </div>
-                  ))}
-                </div>
               </>
             ) : (
               <>
@@ -1526,8 +1509,8 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
    Main Component
    ═══════════════════════════════════════════════════════════════ */
 
-export default function SlidePage0() {
-  const [view, setView] = useState<ViewType>("landing");
+export default function SlidePage0({ initialView = "landing" }: { initialView?: ViewType } = {}) {
+  const [view, setView] = useState<ViewType>(initialView);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   return (
@@ -1536,18 +1519,6 @@ export default function SlidePage0() {
       style={{ fontFamily: "'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif" }}
     >
       <style>{`@keyframes card-shine{0%{background-position:200% 0}100%{background-position:-100% 0}}`}</style>
-      {/* Chapter badge */}
-      <div
-        style={{
-          position: "absolute", top: 14, right: 20, zIndex: 100,
-          fontSize: 10, letterSpacing: "0.18em",
-          color: "rgba(0,0,0,0.22)",
-          fontFamily: "'PingFang SC', sans-serif",
-          pointerEvents: "none",
-        }}
-      >
-        知识库 02
-      </div>
       {view !== "agent" && <Navigation view={view} onSwitch={setView} />}
       {view === "agent" ? <AgentView onBack={() => setView("graph")} onHome={() => setView("library")} /> : view === "graph" ? <GraphView onSwitchView={(v) => setView(v)} /> : view === "library" ? <LibraryView onSwitchView={(v) => setView(v)} /> : (
         <div className="absolute left-[80px] right-0 top-0 bottom-0">
@@ -1564,7 +1535,7 @@ export default function SlidePage0() {
           {/* Video card right (rotated 10°) */}
           <div className="absolute left-[83.09%] top-[5.9%] flex h-[224.75px] w-[192.3px] items-center justify-center">
             <div className="rotate-[10deg]">
-              <div className="relative h-[200px] w-[160px] overflow-clip rounded-2xl">
+              <div className="relative h-[200px] w-[160px] overflow-hidden rounded-2xl">
                 <div className="absolute inset-0 pointer-events-none rounded-2xl">
                   <div className="absolute inset-0 overflow-hidden rounded-2xl">
                     <img src={`${PL}/video-card-right-bg.png`} alt="" className="absolute" style={{ height: "164%", left: "-12.35%", top: "-0.2%", width: "153.75%", maxWidth: "none" }} draggable={false} />
