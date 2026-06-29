@@ -20,6 +20,7 @@
     "gsap": "^3.14.2",
     "html-to-image": "^1.11.13",
     "lucide-react": "^1.0.1",
+    "markmap-common": "^0.18.9",
     "markmap-lib": "^0.18.12",
     "markmap-view": "^0.18.12",
     "motion": "^12.38.0",
