@@ -466,6 +466,18 @@ export default function SlideContainer() {
             width: ${DESIGN_WIDTH}px;
             height: ${DESIGN_HEIGHT}px;
             transform-origin: center center;
+            /* CSS-native cover scaling:
+               JS writes --slide-fit-scale on the parent .slide-fit-stage via applyScale().
+               This var() picks it up (inherited from stage) and applies it immediately—
+               no React re-render required.
+               Fallback: compute from container-query units when JS hasn't run yet
+               (SSR, first paint, or Cursor-preview panel-resize before JS fires). */
+            transform: scale(var(--slide-fit-scale,
+              max(
+                calc(100cqw / var(--slide-design-w)),
+                calc(100cqh / var(--slide-design-h))
+              )
+            ));
           }
           .slide-canvas {
             position: relative;
@@ -550,7 +562,7 @@ export default function SlideContainer() {
         style={
           isMobilePortrait
             ? { position: "relative", width: "100%", height: "100%", transform: "none" }
-            : { transform: `scale(${fitScale})` }
+            : undefined
         }
       >
       <div className="slide-canvas">

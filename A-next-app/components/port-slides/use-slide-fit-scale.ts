@@ -89,6 +89,13 @@ export function useSlideFitScale(enabled = true) {
     const t3 = setTimeout(measure, 900);
     const t4 = setTimeout(measure, 1800);
 
+    // — Polling fallback for Cursor IDE preview-panel resize —
+    // Cursor's split-pane resize does not always fire window.resize or
+    // ResizeObserver on document.documentElement inside the embedded webview.
+    // A 200 ms interval catches any remaining drift without perceptible flicker
+    // because applyScale() is a no-op when the scale hasn't changed.
+    const poll = setInterval(measure, 200);
+
     // — ResizeObserver: observe the stage and up to 2 ancestor containers,
     //   plus document.documentElement / body so Cursor IDE panel resize is caught
     //   even when the standard window.resize event is not fired.
@@ -119,6 +126,7 @@ export function useSlideFitScale(enabled = true) {
       clearTimeout(t2);
       clearTimeout(t3);
       clearTimeout(t4);
+      clearInterval(poll);
       ro.disconnect();
       window.removeEventListener("resize", measure);
       window.removeEventListener("orientationchange", measure);
