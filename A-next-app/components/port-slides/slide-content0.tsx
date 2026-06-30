@@ -55,8 +55,8 @@ const PROJECTS = [
     cover: "/images/page0/content0-card-xingliu.png",
     aspect: COVER_ASPECT,
     accent: "#22d3ee",
-    pages: "24 – 26",
-    slideIndex: 33, // page24
+    pages: "23 – 26",
+    slideIndex: 32, // page23
   },
 ];
 
@@ -66,7 +66,8 @@ const SEGMENT_CARD_W =
   PROJECTS.length * CARD_W + (PROJECTS.length - 1) * STRIP_GAP;
 const SEGMENT_WIDTH = SEGMENT_CARD_W + STRIP_PAD * 2;
 const STRIP_ARC_MAX_TY = Math.pow((PROJECTS.length - 1) / 2, 2) * 13;
-const STRIP_CONTAINER_H = CARD_H + STRIP_ARC_MAX_TY + 48;
+// 高度需容纳：卡片本体 + 弧线下沉 + 阴影扩散（30px shadow blur offset）+ 余量
+const STRIP_CONTAINER_H = CARD_H + STRIP_ARC_MAX_TY + 96;
 
 const STRIP_ITEMS = Array.from({ length: STRIP_LOOPS }, (_, loop) =>
   PROJECTS.map((project) => ({
@@ -589,7 +590,7 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
           alignItems: "center",
           justifyContent: "space-between",
           zIndex: 11,
-          pointerEvents: "none",
+          pointerEvents: "auto",
         }}
       >
         {/* bracket logo */}
@@ -622,8 +623,19 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
             fontFamily: "'PingFang SC', system-ui, sans-serif",
           }}
         >
-          {NAV.map((n) => (
-            <span key={n}>{n}</span>
+          {NAV.map((n, i) => (
+            <span
+              key={n}
+              onClick={() => onNavigate?.(PROJECTS[i].slideIndex)}
+              style={{
+                cursor: onNavigate ? "pointer" : "default",
+                transition: "color 0.18s",
+              }}
+              onMouseEnter={(e) => { if (onNavigate) (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.78)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.42)"; }}
+            >
+              {n}
+            </span>
           ))}
         </div>
 
@@ -708,7 +720,7 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
         }}
         style={{
           position: "absolute",
-          top: "54%",
+          top: "53%",
           transform: "translateY(-50%)",
           left: 0,
           right: 0,
