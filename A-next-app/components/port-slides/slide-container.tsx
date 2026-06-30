@@ -430,7 +430,7 @@ export default function SlideContainer() {
       const Slide = slideComponents[current];
   const slideProps = current <= 1 ? { onEnter: handleEnter, onNavigate: handleNavigate } : {};
   /** 有内部点击交互的幻灯片，禁用 drag 以防 framer-motion 拦截 click 事件 */
-  const NO_DRAG_SLIDES = new Set(["page0e", "page0f"]);
+  const NO_DRAG_SLIDES = new Set(["content0", "page0e", "page0f"]);
   const noDrag = NO_DRAG_SLIDES.has(slideIds[current]);
 
   return (

@@ -220,12 +220,13 @@ function PanelTopBar({ activeTab }: { activeTab: "agent" | "editor" }) {
       </div>
 
       {/* center: mode tabs */}
-      <div style={{ display: "flex", alignItems: "center", gap: 2, background: "#f4f4f4", borderRadius: 9, padding: "2px 2px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 1, background: "#f4f4f4", borderRadius: 9, padding: "2px 2px" }}>
         {/* Agent tab */}
         <div
           style={{
             display: "flex", alignItems: "center", gap: 4, padding: "3px 12px", borderRadius: 7,
-            background: activeTab === "agent" ? "#111" : "transparent",
+            background: activeTab === "agent" ? "#111" : "#fff",
+            boxShadow: activeTab === "agent" ? "none" : "0 1px 3px rgba(0,0,0,0.06)",
           }}
         >
           <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -240,14 +241,14 @@ function PanelTopBar({ activeTab }: { activeTab: "agent" | "editor" }) {
         <div
           style={{
             display: "flex", alignItems: "center", gap: 4, padding: "3px 12px", borderRadius: 7,
-            background: activeTab === "editor" ? "#fff" : "transparent",
-            boxShadow: activeTab === "editor" ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
+            background: activeTab === "editor" ? "#111" : "#fff",
+            boxShadow: activeTab === "editor" ? "none" : "0 1px 3px rgba(0,0,0,0.06)",
           }}
         >
           <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
-            <path d="M9.5 1.5L10.5 2.5L5 8L3 8.5L3.5 6.5L9.5 1.5Z" stroke={activeTab === "editor" ? "#5b4dff" : "#888"} strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M9.5 1.5L10.5 2.5L5 8L3 8.5L3.5 6.5L9.5 1.5Z" stroke={activeTab === "editor" ? "#fff" : "#5b4dff"} strokeWidth="0.7" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
-          <span style={{ fontSize: 10, color: activeTab === "editor" ? "#5b4dff" : "#666", fontWeight: 500, whiteSpace: "nowrap" }}>
+          <span style={{ fontSize: 10, color: activeTab === "editor" ? "#fff" : "#5b4dff", fontWeight: 600, whiteSpace: "nowrap" }}>
             编辑器
           </span>
         </div>
@@ -396,32 +397,35 @@ function EditorCenterContent() {
         style={{
           flex: 1, display: "flex", flexDirection: "column",
           alignItems: "center", justifyContent: "center",
-          gap: 14, padding: 16, background: "#fafafa",
+          gap: 12, padding: "16px 12px", background: "#fafafa",
         }}
       >
         <div style={{ textAlign: "center" }}>
           <p style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 3 }}>上传文件</p>
-          <p style={{ fontSize: 10, color: "#999", lineHeight: "16px" }}>添加文件、路径、仓库，或询问 AI 帮忙</p>
+          <p style={{ fontSize: 10, color: "#666", lineHeight: "16px" }}>
+            添加文件，路径，仓库，或和{" "}
+            <span style={{ color: "#2927a8" }}>AI聊天</span>
+          </p>
         </div>
-        {/* 2 × 2 grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 92px)", gridTemplateRows: "repeat(2, 82px)", gap: 8 }}>
+        {/* 4 cards in a single horizontal row */}
+        <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
           {SOURCES.map((s) => (
             <div
               key={s.title}
               style={{
-                position: "relative", width: 92, height: 82,
-                borderRadius: 10, background: "#fff",
-                boxShadow: "0 1px 4px rgba(0,0,0,0.07)",
-                overflow: "hidden",
+                position: "relative", width: 68, height: 90,
+                borderRadius: 8, background: "#fff",
+                boxShadow: "0 0.5px 2px rgba(0,0,0,0.08)",
+                overflow: "hidden", flexShrink: 0,
               }}
             >
-              <p style={{ position: "absolute", top: 7, left: "50%", transform: "translateX(-50%)", fontSize: 9.5, fontWeight: 600, color: "#111", whiteSpace: "nowrap" }}>
+              <p style={{ position: "absolute", top: 7, left: "50%", transform: "translateX(-50%)", fontSize: 8.5, fontWeight: 600, color: "#111", whiteSpace: "nowrap" }}>
                 {s.title}
               </p>
-              <p style={{ position: "absolute", top: 20, left: "50%", transform: "translateX(-50%)", fontSize: 8, color: "#999", whiteSpace: "nowrap" }}>
+              <p style={{ position: "absolute", top: 19, left: "50%", transform: "translateX(-50%)", fontSize: 7, color: "#999", whiteSpace: "nowrap" }}>
                 {s.desc}
               </p>
-              <div style={{ position: "absolute", left: -1, top: 34, width: 93, height: 50, overflow: "hidden", pointerEvents: "none" }}>
+              <div style={{ position: "absolute", left: -1, top: 33, width: 69, height: 58, overflow: "hidden", pointerEvents: "none" }}>
                 <img src={s.img} alt="" style={{ position: "absolute", maxWidth: "none", ...s.imgStyle }} draggable={false} />
               </div>
             </div>
@@ -728,8 +732,42 @@ function PanelPanStrip() {
           willChange: "transform",
         }}
       >
-        <EditorPanel />
-        <AgentPanel />
+        {/* Editor panel screenshot — 1600×1076 high-res */}
+        <img
+          src="/images/page0f/editor-panel.png"
+          alt="编辑器面板"
+          draggable={false}
+          style={{
+            position: "absolute",
+            left: EDITOR_PANEL.left,
+            top: 0,
+            width: EDITOR_PANEL.width,
+            height: panelHeight,
+            objectFit: "cover",
+            objectPosition: "top left",
+            borderRadius: 16,
+            boxShadow: "0 4px 32px rgba(0,0,0,0.45)",
+            pointerEvents: "none",
+          }}
+        />
+        {/* Agent panel screenshot — 1128×1076 high-res */}
+        <img
+          src="/images/page0f/agent-panel.png"
+          alt="Agent面板"
+          draggable={false}
+          style={{
+            position: "absolute",
+            left: AGENT_PANEL.left,
+            top: 0,
+            width: AGENT_PANEL.width,
+            height: panelHeight,
+            objectFit: "cover",
+            objectPosition: "top left",
+            borderRadius: 16,
+            boxShadow: "0 4px 32px rgba(0,0,0,0.45)",
+            pointerEvents: "none",
+          }}
+        />
       </div>
 
       {/* Scroll hint */}
