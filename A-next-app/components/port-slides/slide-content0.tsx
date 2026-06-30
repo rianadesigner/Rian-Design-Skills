@@ -720,7 +720,7 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
         }}
         style={{
           position: "absolute",
-          top: "53%",
+          top: "calc(53% + 78px)",
           transform: "translateY(-50%)",
           left: 0,
           right: 0,
