@@ -1,28 +1,48 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { motion, type PanInfo } from "motion/react";
 import SlidePage0 from "./slide-page0";
 import { SLIDE_DESIGN_WIDTH } from "./slide-design";
 
-// ── Outer slide assets ──────────────────────────────────────
+// ── Assets ──────────────────────────────────────────────────
 const P = "/images/page0b";
 const imgAi1 = `${P}/ai1-bg.png`;
 
-// Design dimensions (from slide-design)
+// Design canvas dimensions
 const DESIGN_W = SLIDE_DESIGN_WIDTH; // 1440
-// SlidePage0's internal design: 1440 × 900
+const SLIDE_H = 900;
+
+// V2 inner component (SlidePage0) native size
 const INNER_W = 1440;
 const INNER_H = 900;
 
-// V2.0 panel frame inside the outer slide
+// Carousel panel geometry
 const PANEL_L = 120;
-const PANEL_T = 321.83;
+const PANEL_T = 267;       // carousel top (below header)
 const PANEL_W = 1200;
-const PANEL_H = 833.33;
+const PANEL_H = SLIDE_H - PANEL_T; // 633 — remaining height
 
-// Scale SlidePage0 (1440×900) → fit in panel (1200×PANEL_H)
-const SCALE = PANEL_W / INNER_W; // 0.8333...
+// Scale SlidePage0 (1440×900) → fit panel width (1200px)
+const SCALE = PANEL_W / INNER_W; // ≈ 0.8333
+
+// Snap threshold for manual drag (px)
+const SNAP_THRESHOLD = 60;
 
 export default function SlidePage0b() {
+  const [active, setActive] = useState(0); // 0 = V1.0, 1 = V2.0
+
+  // Auto-advance to V2.0 after 1 second
+  useEffect(() => {
+    const t = setTimeout(() => setActive(1), 1000);
+    return () => clearTimeout(t);
+  }, []);
+
+  const handleDragEnd = (_: unknown, info: PanInfo) => {
+    if (info.offset.y < -SNAP_THRESHOLD && active < 1) setActive(1);
+    else if (info.offset.y > SNAP_THRESHOLD && active > 0) setActive(0);
+  };
+
   return (
     <div
       style={{
@@ -33,7 +53,7 @@ export default function SlidePage0b() {
         overflow: "hidden",
         fontFamily: "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif",
         ["--slide-w" as string]: `${DESIGN_W}px`,
-        ["--slide-h" as string]: "900px",
+        ["--slide-h" as string]: `${SLIDE_H}px`,
       }}
     >
       {/* ── Left red glow ── */}
@@ -75,7 +95,6 @@ export default function SlidePage0b() {
         display: "flex", flexDirection: "column", alignItems: "center", gap: 12,
         padding: "0 76px", zIndex: 17,
       }}>
-        {/* "02 — LLM WIKI 不得不做的理由" */}
         <div style={{ display: "flex", alignItems: "center", gap: 11.4 }}>
           <span style={{
             fontFamily: "Impact, 'Arial Black', sans-serif",
@@ -90,7 +109,6 @@ export default function SlidePage0b() {
           }}>LLM WIKI 不得不做的理由</span>
         </div>
 
-        {/* Main title */}
         <p style={{
           margin: 0,
           fontFamily: "'PingFang SC', sans-serif", fontWeight: 600,
@@ -98,7 +116,6 @@ export default function SlidePage0b() {
           letterSpacing: "1px", whiteSpace: "nowrap",
         }}>心流2.0升级：LLM Wiki</p>
 
-        {/* Bullet points */}
         <div style={{
           fontFamily: "'PingFang SC', sans-serif", fontWeight: 400,
           fontSize: 12.36, color: "rgba(255,255,255,0.5)",
@@ -111,88 +128,146 @@ export default function SlidePage0b() {
       </div>
 
       {/* ══════════════════════════════════════════
-          V1.0 BACKGROUND SCREENSHOT
+          VERTICAL CAROUSEL — V1.0 ↔ V2.0
       ══════════════════════════════════════════ */}
       <div style={{
         position: "absolute",
-        left: PANEL_L, top: 267,
-        width: PANEL_W, height: 833,
+        left: PANEL_L,
+        top: PANEL_T,
+        width: PANEL_W,
+        height: PANEL_H,
         overflow: "hidden",
-        zIndex: 3,
-      }}>
-        <img alt="" src={imgAi1} style={{
-          position: "absolute", inset: 0,
-          width: "100%", height: "100%",
-          objectFit: "cover", opacity: 0.5, pointerEvents: "none",
-        }} />
-      </div>
-
-      {/* BEFORE label */}
-      <div style={{
-        position: "absolute", left: PANEL_L + 4, top: 276, zIndex: 10,
-        background: "rgba(20,20,20,0.72)",
-        borderRadius: 6, padding: "4px 12px",
-        display: "flex", alignItems: "center", gap: 8,
-      }}>
-        <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 4, padding: "2px 4px" }}>
-          <span style={{ fontFamily: "Impact", fontSize: 8, color: "#fff", lineHeight: "10px", display: "block" }}>BEFORE</span>
-        </div>
-        <span style={{ fontFamily: "Impact", fontSize: 20, color: "rgba(255,255,255,0.35)" }}>V 1.0</span>
-        <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "rgba(255,255,255,0.5)", whiteSpace: "nowrap" }}>
-          旧版界面 · 心流 AI 搜索
-        </span>
-      </div>
-
-      {/* ══════════════════════════════════════════
-          V2.0 PANEL — SlidePage0 嵌入（带完整交互）
-      ══════════════════════════════════════════ */}
-      <div style={{
-        position: "absolute",
-        left: PANEL_L, top: PANEL_T,
-        width: PANEL_W, height: PANEL_H,
-        background: "#f8f8f8",
-        boxShadow: "0 4px 4px rgba(0,0,0,0.25)",
-        overflow: "hidden",
-        zIndex: 4,
         borderRadius: 2,
+        boxShadow: "0 4px 24px rgba(0,0,0,0.45)",
+        zIndex: 4,
       }}>
-        {/*
-          SlidePage0 设计尺寸 1440×900，缩放至面板宽度 1200px。
-          Scale = 1200/1440 = 0.8333
-          缩放后高度 = 900×0.8333 = 750px，面板高 833px，底部剩余由 #f8f8f8 填充。
-        */}
-        <div style={{
-          position: "absolute",
-          left: 0, top: 0,
-          width: INNER_W,
-          height: INNER_H,
-          transformOrigin: "top left",
-          transform: `scale(${SCALE})`,
-        }}>
-          <SlidePage0 initialView="landing" />
-        </div>
+        <motion.div
+          drag="y"
+          dragConstraints={{ top: 0, bottom: 0 }}
+          dragElastic={0.08}
+          onDragEnd={handleDragEnd}
+          animate={{ y: -active * PANEL_H }}
+          transition={{ duration: 0.65, ease: [0.25, 0.1, 0.25, 1] }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "100%",
+            cursor: "grab",
+            userSelect: "none",
+          }}
+        >
+          {/* ── Panel 0: V1.0 旧版截图 ── */}
+          <div style={{ width: PANEL_W, height: PANEL_H, flexShrink: 0, position: "relative", overflow: "hidden" }}>
+            <img
+              alt=""
+              src={imgAi1}
+              draggable={false}
+              style={{
+                position: "absolute", inset: 0,
+                width: "100%", height: "100%",
+                objectFit: "cover",
+                pointerEvents: "none",
+              }}
+            />
+            {/* BEFORE / V1.0 label */}
+            <div style={{
+              position: "absolute", left: 8, top: 10, zIndex: 10,
+              background: "rgba(20,20,20,0.72)",
+              borderRadius: 6, padding: "4px 12px",
+              display: "flex", alignItems: "center", gap: 8,
+            }}>
+              <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 4, padding: "2px 4px" }}>
+                <span style={{ fontFamily: "Impact", fontSize: 8, color: "#fff", lineHeight: "10px", display: "block" }}>BEFORE</span>
+              </div>
+              <span style={{ fontFamily: "Impact", fontSize: 20, color: "rgba(255,255,255,0.35)" }}>V 1.0</span>
+              <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "rgba(255,255,255,0.5)", whiteSpace: "nowrap" }}>
+                旧版界面 · 心流 AI 搜索
+              </span>
+            </div>
+            {/* 向下箭头提示 */}
+            <div style={{
+              position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)",
+              display: "flex", flexDirection: "column", alignItems: "center", gap: 4, zIndex: 10,
+            }}>
+              <span style={{ fontFamily: "'PingFang SC'", fontSize: 9, color: "rgba(255,255,255,0.35)", letterSpacing: "1px" }}>上滑查看 V 2.0</span>
+              <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+                <path d="M1 1L8 8L15 1" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </div>
+          </div>
+
+          {/* ── Panel 1: V2.0 新版 LandingView ── */}
+          <div style={{ width: PANEL_W, height: PANEL_H, flexShrink: 0, position: "relative", overflow: "hidden", background: "#f8f8f8" }}>
+            {/*
+              SlidePage0 内部设计尺寸 1440×900，缩放至面板宽度 1200px (scale=0.8333)。
+              缩放后高度 750px，在 633px 容器中显示顶部内容，底部由背景填充。
+            */}
+            <div style={{
+              position: "absolute",
+              left: 0, top: 0,
+              width: INNER_W,
+              height: INNER_H,
+              transformOrigin: "top left",
+              transform: `scale(${SCALE})`,
+              pointerEvents: "none",
+            }}>
+              <SlidePage0 initialView="landing" />
+            </div>
+            {/* NEW / V2.0 label */}
+            <div style={{
+              position: "absolute", left: 8, top: 10, zIndex: 10,
+              backgroundImage: "linear-gradient(170.7deg, rgb(37,99,235) 0%, rgb(124,58,237) 100%)",
+              borderRadius: 6, padding: "4px 12px",
+              display: "flex", alignItems: "center", gap: 7.17,
+              filter: "drop-shadow(0 0 6px rgba(124,58,237,0.55))",
+            }}>
+              <div style={{ background: "rgba(255,255,255,0.22)", borderRadius: 4, padding: "2px 4px", flexShrink: 0 }}>
+                <span style={{ fontFamily: "Impact", fontSize: 8, color: "#fff", lineHeight: "10px", display: "block" }}>NEW</span>
+              </div>
+              <span style={{
+                fontFamily: "Impact", fontSize: 20,
+                backgroundImage: "linear-gradient(148.39deg, rgb(224,231,255) 0%, rgb(196,181,253) 100%)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}>V 2.0</span>
+              <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "rgba(255,255,255,0.5)", whiteSpace: "nowrap" }}>
+                全新界面 · AI 工作台
+              </span>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
-      {/* ── V2.0 label (NEW V 2.0) ── */}
+      {/* ── 轮播指示点 ── */}
       <div style={{
-        position: "absolute", left: PANEL_L + 4, top: PANEL_T + 12, zIndex: 10,
-        backgroundImage: "linear-gradient(170.7deg, rgb(37,99,235) 0%, rgb(124,58,237) 100%)",
-        borderRadius: 6, padding: "4px 12px",
-        display: "flex", alignItems: "center", gap: 7.17,
-        filter: "drop-shadow(0 0 6px rgba(124,58,237,0.55))",
+        position: "absolute",
+        left: PANEL_L,
+        top: PANEL_T + PANEL_H - 30,
+        width: PANEL_W,
+        display: "flex",
+        justifyContent: "center",
+        gap: 7,
+        zIndex: 22,
+        pointerEvents: "auto",
       }}>
-        <div style={{ background: "rgba(255,255,255,0.22)", borderRadius: 4, padding: "2px 4px", flexShrink: 0 }}>
-          <span style={{ fontFamily: "Impact", fontSize: 8, color: "#fff", lineHeight: "10px", display: "block" }}>NEW</span>
-        </div>
-        <span style={{
-          fontFamily: "Impact", fontSize: 20,
-          backgroundImage: "linear-gradient(148.39deg, rgb(224,231,255) 0%, rgb(196,181,253) 100%)",
-          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-        }}>V 2.0</span>
-        <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "rgba(255,255,255,0.5)", whiteSpace: "nowrap" }}>
-          全新界面 · AI 工作台
-        </span>
+        {[0, 1].map(i => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            aria-label={i === 0 ? "显示 V1.0" : "显示 V2.0"}
+            style={{
+              width: i === active ? 18 : 6,
+              height: 6,
+              borderRadius: 3,
+              background: i === active ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.28)",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              transition: "width 0.3s ease, background 0.3s ease",
+              flexShrink: 0,
+            }}
+          />
+        ))}
       </div>
 
       {/* ── Bottom gradient fade ── */}

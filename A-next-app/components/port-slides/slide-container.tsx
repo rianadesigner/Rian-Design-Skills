@@ -72,15 +72,16 @@ const DESIGN_WIDTH = SLIDE_DESIGN_WIDTH;
 const DESIGN_HEIGHT = SLIDE_DESIGN_HEIGHT;
 
 // All non-cinema slides use vertical (up/down) transition
+// Use pixel values (not percentages) to stay consistent with Framer Motion's drag coordinate system.
 const variants = {
   enter: (direction: number) => ({
-    y: direction > 0 ? "100%" : "-100%",
+    y: direction > 0 ? DESIGN_HEIGHT : -DESIGN_HEIGHT,
     x: 0,
     opacity: 0.6,
   }),
   center: { y: 0, x: 0, opacity: 1 },
   exit: (direction: number) => ({
-    y: direction > 0 ? "-100%" : "100%",
+    y: direction > 0 ? -DESIGN_HEIGHT : DESIGN_HEIGHT,
     x: 0,
     opacity: 0.6,
   }),
