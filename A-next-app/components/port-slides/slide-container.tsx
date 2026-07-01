@@ -6,7 +6,6 @@ import { ObservatoryCover } from "../observatory-cover";
 import SlideContent0 from "./slide-content0";
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design";
 import { measureFitStage } from "./slide-fit";
-import { useSlideFitScale } from "./use-slide-fit-scale";
 
 // 首屏只加载 cover + content0，其余全部懒加载以缩减初始 bundle
 const SlidePage0a  = lazy(() => import("./slide-page0a"));
@@ -149,7 +148,8 @@ export default function SlideContainer() {
   };
   const [[current, direction], setCurrent] = useState(() => [getInitialSlide(), 0]);
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
-  const { stageRef, fitScale } = useSlideFitScale(!isMobilePortrait);
+  // fitScale only needed by slide-fit-shell; slide-container uses pure-CSS CQ scaling.
+  const stageRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   // 仅在「封面 → content0」时播放电影边框收拢转场（key 自增触发重挂载重播）
   const [cinemaRevealKey, setCinemaRevealKey] = useState(0);
@@ -466,17 +466,16 @@ export default function SlideContainer() {
             width: ${DESIGN_WIDTH}px;
             height: ${DESIGN_HEIGHT}px;
             transform-origin: center center;
-            /* CSS-native cover scaling:
-               JS writes --slide-fit-scale on the parent .slide-fit-stage via applyScale().
-               This var() picks it up (inherited from stage) and applies it immediately—
-               no React re-render required.
-               Fallback: compute from container-query units when JS hasn't run yet
-               (SSR, first paint, or Cursor-preview panel-resize before JS fires). */
-            transform: scale(var(--slide-fit-scale,
-              max(
-                calc(100cqw / var(--slide-design-w)),
-                calc(100cqh / var(--slide-design-h))
-              )
+            /* Pure CSS cover scaling via container-query units.
+               100cqw / --slide-design-w  = scale to fit width
+               100cqh / --slide-design-h  = scale to fit height
+               max() picks the larger → "cover" mode (fills stage, clips excess).
+               This reacts to container resize with zero JS latency.
+               No --slide-fit-scale JS variable involved — avoids stale-value bugs
+               in Cursor IDE preview where getBoundingClientRect() can be wrong. */
+            transform: scale(max(
+              calc(100cqw / var(--slide-design-w, ${DESIGN_WIDTH}px)),
+              calc(100cqh / var(--slide-design-h, ${DESIGN_HEIGHT}px))
             ));
           }
           .slide-canvas {
