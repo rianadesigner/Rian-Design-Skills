@@ -34,7 +34,7 @@ export default function SlidePage0b() {
 
   // Auto-advance to V2.0 after 1 second
   useEffect(() => {
-    const t = setTimeout(() => setActive(1), 1000);
+    const t = setTimeout(() => setActive(1), 2500);
     return () => clearTimeout(t);
   }, []);
 
@@ -166,6 +166,7 @@ export default function SlidePage0b() {
                 position: "absolute", inset: 0,
                 width: "100%", height: "100%",
                 objectFit: "cover",
+                objectPosition: "top center",
                 pointerEvents: "none",
               }}
             />
