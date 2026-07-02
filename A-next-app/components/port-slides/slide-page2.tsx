@@ -14,7 +14,7 @@ const ALL_CARDS = [
     num: "基础",
     title: "基础框架",
     desc: "基于通用AI搜索链路的基础框架搭建&新能力透传",
-    img: `${P2}/screenshot-main.png`,
+    img: `${P2}/screenshot-main.webp`,
     tags: ["首页支持模式&格式选择", "首页宫格场景引导"],
     markmap: false, podcast: false, ppt: false, imgFit: true,
   },
@@ -116,6 +116,8 @@ export default function SlidePage2() {
           max-height: none;
           flex-shrink: 0;
           transition: opacity 0.25s ease;
+          image-rendering: -webkit-optimize-contrast;
+          image-rendering: high-quality;
         }
         .p2-img-scroll {
           min-height: 0;
