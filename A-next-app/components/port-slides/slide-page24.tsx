@@ -5,7 +5,7 @@ const bands = [
     num: "01",
     label: "AI剧本可行性分析",
     desc: "充分调研铺垫：海量市面AI竞品、模型横向测试(GPT/通义/文心/内部)、Prompt逆向工程",
-    images: ["band2-1.png", "band2-2.png", "band2-3.png"],
+    images: ["band2-1.webp", "band2-2.webp", "band2-3.webp"],
     badgeTop: "33.33%",
     imgTop: "36.67%",
     fit: "cover" as const,
@@ -14,7 +14,7 @@ const bands = [
     num: "02",
     label: "自研优化LLM模型",
     desc: "调试优化：长文案风格研究、LLM多模型对比、直通车/黑盒外投短文案测试",
-    images: ["band3-1.png", "band3-2.png", "band3-3.png"],
+    images: ["band3-1.webp", "band3-2.webp", "band3-3.webp"],
     badgeTop: "56.20%",
     imgTop: "59.26%",
     fit: "cover" as const,
@@ -23,7 +23,7 @@ const bands = [
     num: "03",
     label: "万相贯通文生视频立项",
     desc: "项目KO充分论证：画面填充率及匹配度测试、热门音色调试与克隆、产品功能模块梳理推进",
-    images: ["band4-1.png", "band4-2.png", "band4-1.png"],
+    images: ["band4-1.webp", "band4-2.webp", "band4-1.webp"],
     badgeTop: "78.98%",
     imgTop: "82.04%",
     fit: "contain" as const,
@@ -93,7 +93,7 @@ export default function SlidePage24() {
             <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.5" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
           </svg>
         </div>
-        <img src={`${P24}/bg-outer.png`} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img loading="lazy" decoding="async" src={`${P24}/bg-outer.png`} alt="" className="absolute inset-0 h-full w-full object-cover" />
       </div>
 
       {/* ── Right Dark Area ──────────────────────────────────────── */}
@@ -107,7 +107,7 @@ export default function SlidePage24() {
         className="absolute z-10 overflow-hidden"
         style={{ left: "25.63%", top: "0.93%", width: "36.94%", height: "31.30%" }}
       >
-        <img src={`${P24}/research.png`} alt="" className="h-full w-full object-contain" />
+        <img loading="lazy" decoding="async" src={`${P24}/research.png`} alt="" className="h-full w-full object-contain" />
         <div
           className="absolute"
           style={{
@@ -151,8 +151,8 @@ export default function SlidePage24() {
           商品讲解 | 知识普及<br />功能测评 | 场景展示
         </span>
         <div className="flex" style={{ paddingTop: "clamp(4px, calc(0.69 * var(--u)), 10px)" }}>
-          <img src={`${P24}/phone1.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
-          <img src={`${P24}/phone2.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
+          <img loading="lazy" decoding="async" src={`${P24}/phone1.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
+          <img loading="lazy" decoding="async" src={`${P24}/phone2.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
         </div>
       </div>
 
@@ -175,8 +175,8 @@ export default function SlidePage24() {
           搭配组合 | 探店分享<br />攻略经验 | 生活记录
         </span>
         <div className="flex" style={{ paddingTop: "clamp(4px, calc(0.69 * var(--u)), 10px)" }}>
-          <img src={`${P24}/phone3.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
-          <img src={`${P24}/phone4.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
+          <img loading="lazy" decoding="async" src={`${P24}/phone3.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
+          <img loading="lazy" decoding="async" src={`${P24}/phone4.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
         </div>
       </div>
 
@@ -248,7 +248,7 @@ export default function SlidePage24() {
 
         {/* User 1 */}
         <div className="flex items-start" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P24}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P24}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>
               🐸 市面上涌现很多文生/图生视频工具<br />我们该怎么办?
@@ -264,12 +264,12 @@ export default function SlidePage24() {
             </div>
             <span style={{ ...botText, lineHeight: 1.75, whiteSpace: "nowrap" as const }}>先打爆剧情类内容化创意</span>
           </div>
-          <img src={`${P24}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P24}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* User 2 */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P24}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P24}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={{ ...userText, whiteSpace: "nowrap" as const }}>🫡 什么是内容化创意？</span>
           </div>
@@ -282,12 +282,12 @@ export default function SlidePage24() {
               区别于传统展示类视频创意，这种创意不是在推销产品或服务，而是为潜在客户和客户提供真正相关且有用的内容，以帮助他们解决问题。
             </p>
           </div>
-          <img src={`${P24}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P24}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* User 3 */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P24}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P24}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={{ ...userText, whiteSpace: "nowrap" as const }}>阐述你的研究策略?</span>
           </div>
@@ -304,12 +304,12 @@ export default function SlidePage24() {
               4.论证工程链路推进项目KO
             </span>
           </div>
-          <img src={`${P24}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P24}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* User 4 */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P24}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P24}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={{ ...userText, whiteSpace: "nowrap" as const }}>项目的最终目标是?</span>
           </div>
@@ -322,12 +322,12 @@ export default function SlidePage24() {
               通过内容化创意调研, 论证AI剧本生成、热门音色、风格化文案、画面填充等效果, 为文生视频项目生产链路进行基础能力建设
             </p>
           </div>
-          <img src={`${P24}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P24}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* Final dark */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P24}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P24}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={{ padding: "clamp(3px, calc(0.42 * var(--u)), 6px) clamp(6px, calc(0.83 * var(--u)), 12px)", background: "#222222", borderRadius: "clamp(6px, calc(0.83 * var(--u)), 12px)", overflow: "hidden" }}>
             <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.75, whiteSpace: "nowrap" }}>
               ✅ 来看看你的研究成果吧！
@@ -338,7 +338,7 @@ export default function SlidePage24() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-20" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img src={`${P24}/logo.png`} alt="" className="absolute top-0 h-full object-contain" style={{ left: "-2.5%" }} />
+        <img loading="lazy" decoding="async" src={`${P24}/logo.png`} alt="" className="absolute top-0 h-full object-contain" style={{ left: "-2.5%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <p style={{ color: "#FFFFFF", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             混剪-淘系内容化裂变桶 / 24

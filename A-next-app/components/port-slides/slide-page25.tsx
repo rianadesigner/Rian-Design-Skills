@@ -59,16 +59,16 @@ const badgeStyle = {
 };
 
 const topCards = [
-  { num: "01", label: "自由构图, 支持快速组合及元素库编辑", img: "card1.png", left: "24.72%", badgeTop: "7.41%", imgTop: "10.09%" },
-  { num: "02", label: "灵感推荐：简化用户配置操作并做快捷创意采纳", img: "card2.png", left: "62.78%", badgeTop: "7.41%", imgTop: "10.09%" },
-  { num: "03", label: "智能文案: 基于商品档案的多商品文案生成", img: "card3.png", left: "24.72%", badgeTop: "calc(43.24% - 1px - 1%)", imgTop: "calc(45.93% - 1px - 2%)" },
-  { num: "04", label: "共创aigc创作界面, 让创意生成更自由", img: "card4.png", left: "62.78%", badgeTop: "calc(43.24% - 1px - 1%)", imgTop: "calc(45.93% - 1px - 2%)" },
+  { num: "01", label: "自由构图, 支持快速组合及元素库编辑", img: "card1.webp", left: "24.72%", badgeTop: "7.41%", imgTop: "10.09%" },
+  { num: "02", label: "灵感推荐：简化用户配置操作并做快捷创意采纳", img: "card2.webp", left: "62.78%", badgeTop: "7.41%", imgTop: "10.09%" },
+  { num: "03", label: "智能文案: 基于商品档案的多商品文案生成", img: "card3.webp", left: "24.72%", badgeTop: "calc(43.24% - 1px - 1%)", imgTop: "calc(45.93% - 1px - 2%)" },
+  { num: "04", label: "共创aigc创作界面, 让创意生成更自由", img: "card4.webp", left: "62.78%", badgeTop: "calc(43.24% - 1px - 1%)", imgTop: "calc(45.93% - 1px - 2%)" },
 ];
 
 const bottomCards = [
-  { num: "05", label: "浮层承载二级交互, 支持预览效果", img: "card5.png", left: "24.72%" },
-  { num: "06", label: "提升结果的可点击/可拓展/可适配性", img: "card6.png", left: "49.86%" },
-  { num: "07", label: "快捷操作: 帮助用户对比效果及快速操作", img: "card7.png", left: "75.14%" },
+  { num: "05", label: "浮层承载二级交互, 支持预览效果", img: "card5.webp", left: "24.72%" },
+  { num: "06", label: "提升结果的可点击/可拓展/可适配性", img: "card6.webp", left: "49.86%" },
+  { num: "07", label: "快捷操作: 帮助用户对比效果及快速操作", img: "card7.webp", left: "75.14%" },
 ];
 
 const cardBorder = {
@@ -106,7 +106,7 @@ export default function SlidePage25() {
             <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.5" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
           </svg>
         </div>
-        <img src={`${P25}/bg-outer.png`} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img loading="lazy" decoding="async" src={`${P25}/bg-outer.png`} alt="" className="absolute inset-0 h-full w-full object-cover" />
       </div>
 
       {/* ── Right White Area ─────────────────────────────────────── */}
@@ -199,7 +199,7 @@ export default function SlidePage25() {
 
         {/* User 1 */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>万相营造是什么?</span>
           </div>
@@ -212,12 +212,12 @@ export default function SlidePage25() {
               万相营造是阿里妈妈旗下，面向淘天生态(广告/内容/消费者)的AI创意工具平台。围绕广告创意生产的核心链路，涵盖了商品图、服饰图、视频和文案等创意类型的智能生成。
             </p>
           </div>
-          <img src={`${P25}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P25}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* User 2 */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>平台核心功能有哪些？</span>
           </div>
@@ -234,12 +234,12 @@ export default function SlidePage25() {
               4.AI即刻成片-视频生成
             </span>
           </div>
-          <img src={`${P25}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P25}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* User 3 */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>设计应该发挥什么角色？</span>
           </div>
@@ -254,12 +254,12 @@ export default function SlidePage25() {
               体验驱动产品创新
             </p>
           </div>
-          <img src={`${P25}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P25}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* Final dark */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P25}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={{ padding: "clamp(3px, calc(0.42 * var(--u)), 6px) clamp(6px, calc(0.83 * var(--u)), 12px)", background: "#222222", borderRadius: "clamp(6px, calc(0.83 * var(--u)), 12px)", overflow: "hidden" }}>
             <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.75, whiteSpace: "nowrap" }}>
               ✅ 来看看你的设计成果吧！
@@ -270,7 +270,7 @@ export default function SlidePage25() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-20" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img src={`${P25}/logo.png`} alt="" className="absolute top-0 h-full object-contain" style={{ left: "-2.5%" }} />
+        <img loading="lazy" decoding="async" src={`${P25}/logo.png`} alt="" className="absolute top-0 h-full object-contain" style={{ left: "-2.5%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             用AI创造-让效果说话 / 25

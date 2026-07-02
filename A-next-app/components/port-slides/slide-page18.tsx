@@ -4,7 +4,7 @@ const sections = [
   {
     num: "01",
     label: "搭建单数据集",
-    img: "section1.png",
+    img: "section1.webp",
     badgeTop: "14.81%",
     imgTop: "16.67%",
     imgHeight: "24%",
@@ -14,7 +14,7 @@ const sections = [
   {
     num: "02",
     label: "搭建多数据集",
-    img: "section2.png",
+    img: "section2.webp",
     badgeTop: "42%",
     imgTop: "43.89%",
     imgHeight: "26%",
@@ -24,7 +24,7 @@ const sections = [
   {
     num: "03",
     label: "数据集运行消费",
-    img: "section3.png",
+    img: "section3.webp",
     badgeTop: "71.5%",
     imgTop: "73.33%",
     imgHeight: "24%",
@@ -54,7 +54,7 @@ export default function SlidePage18() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img src={`${P18}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
+        <img loading="lazy" decoding="async" src={`${P18}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             工作空间新建批次数据集 / 18

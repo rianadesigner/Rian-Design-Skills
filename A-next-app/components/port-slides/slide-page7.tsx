@@ -23,7 +23,7 @@ export default function SlidePage7() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img src={"/images/logo-new.png"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
+        <img loading="lazy" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             移动端：&nbsp;&nbsp;面向碎片化日常消费场景 / 07
@@ -51,7 +51,7 @@ export default function SlidePage7() {
           boxShadow: "0px 18px 16.8px 0px rgba(123,140,255,0.25)",
         }}
       >
-        <img src={`${P7}/app-icon.svg`} alt="" className="absolute inset-[10%] w-[80%] h-[80%] object-contain" />
+        <img loading="lazy" decoding="async" src={`${P7}/app-icon.svg`} alt="" className="absolute inset-[10%] w-[80%] h-[80%] object-contain" />
       </div>
 
       {/* ── 左侧：文字内容 ──────────────────────────────────────── */}
@@ -148,15 +148,15 @@ export default function SlidePage7() {
           <span style={{ color: "#FFFFFF", fontSize: "clamp(12px, calc(1.25 * var(--u)), 18px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.7 }}>
             · IP设计（主题衍生应用不同场景）
           </span>
-          <img src={`${P7}/ip-themes.png`} alt="" style={{ width: "100%", objectFit: "cover", objectPosition: "center top" }} />
-          <img src={`${P7}/ip-scenes.png`} alt="" style={{ width: "100%", objectFit: "cover", objectPosition: "center top", filter: "invert(1)" }} />
+          <img loading="lazy" decoding="async" src={`${P7}/ip-themes.png`} alt="" style={{ width: "100%", objectFit: "cover", objectPosition: "center top" }} />
+          <img loading="lazy" decoding="async" src={`${P7}/ip-scenes.png`} alt="" style={{ width: "100%", objectFit: "cover", objectPosition: "center top", filter: "invert(1)" }} />
         </div>
         {/* 趣味icon */}
         <div className="flex flex-col" style={{ gap: "clamp(4px, calc(0.56 * var(--u)), 8px)" }}>
           <span style={{ color: "#FFFFFF", fontSize: "clamp(12px, calc(1.25 * var(--u)), 18px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.7 }}>
             · 趣味icon设计（打磨设计细节）
           </span>
-          <img src={`${P7}/icons-strip.png`} alt="" style={{ width: "100%", objectFit: "contain", filter: "invert(1)" }} />
+          <img loading="lazy" decoding="async" src={`${P7}/icons-strip.png`} alt="" style={{ width: "100%", objectFit: "contain", filter: "invert(1)" }} />
         </div>
       </div>
 

@@ -4,7 +4,7 @@ const cards = [
   {
     title: "1.系统自动化操作知识库",
     desc: "新建并命名知识库, 支持召回配置排序模型/召回阈值及召回个数",
-    screenshot: "card1-screenshot.png",
+    screenshot: "card1-screenshot.webp",
     imgHeight: "76.33%",
     cardHeight: "clamp(210px, 41.85vh, 452px)",
     radius: "12px",
@@ -12,7 +12,7 @@ const cards = [
   {
     title: "2.支持用户轻松整合各类文档",
     desc: "多来源文档上传：支持本地/钉钉/语雀文档等",
-    screenshot: "card2-screenshot.png",
+    screenshot: "card2-screenshot.webp",
     imgHeight: "76.33%",
     cardHeight: "clamp(210px, 41.85vh, 452px)",
     radius: "12px",
@@ -20,7 +20,7 @@ const cards = [
   {
     title: "3.支持用户灵活拆分文档片段",
     desc: "智能模式 vs 静态模式实现文档分割便于管理和调用",
-    screenshot: "card3-screenshot.png",
+    screenshot: "card3-screenshot.webp",
     imgHeight: "74.76%",
     cardHeight: "clamp(200px, 39.26vh, 424px)",
     radius: "12px 12px 0 0",
@@ -28,7 +28,7 @@ const cards = [
   {
     title: "4.灵活知识召回&API调用",
     desc: "在工作流/智能体里进行快捷业务调用",
-    screenshot: "card4-screenshot.png",
+    screenshot: "card4-screenshot.webp",
     imgHeight: "74.76%",
     cardHeight: "clamp(200px, 39.26vh, 424px)",
     radius: "12px 12px 0 0",
@@ -56,7 +56,7 @@ export default function SlidePage16() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img src={`${P16}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
+        <img loading="lazy" decoding="async" src={`${P16}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             工作空间新建知识库 / 16

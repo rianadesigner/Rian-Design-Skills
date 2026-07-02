@@ -1,21 +1,21 @@
 const P23 = "/images/page23";
 
 const col2Items = [
-  { num: "01", label: "快捷发布链路, 一键审核发布", badgeTop: "1.5%", imgTop: "4.5%", img: "01.png" },
-  { num: "02", label: "清晰结果表达, 统一排序逻辑", badgeTop: "22%", imgTop: "25%", img: "02.png" },
-  { num: "03", label: "明确工具配置,传达产品心智", badgeTop: "42.5%", imgTop: "45.5%", img: "03.png" },
-  { num: "04", label: "统一的工具接入流程, 根据平台做定制化", badgeTop: "63%", imgTop: "66%", img: "04.png" },
+  { num: "01", label: "快捷发布链路, 一键审核发布", badgeTop: "1.5%", imgTop: "4.5%", img: "01.webp" },
+  { num: "02", label: "清晰结果表达, 统一排序逻辑", badgeTop: "22%", imgTop: "25%", img: "02.webp" },
+  { num: "03", label: "明确工具配置,传达产品心智", badgeTop: "42.5%", imgTop: "45.5%", img: "03.webp" },
+  { num: "04", label: "统一的工具接入流程, 根据平台做定制化", badgeTop: "63%", imgTop: "66%", img: "04.webp" },
 ];
 
 const col3Items = [
-  { num: "05", label: "生态下单规则优化/定制模版精选规则", badgeTop: "1.5%", imgTop: "4.5%", img: "05.png" },
-  { num: "06", label: "灰盒推荐&widget&黑盒实验内投测验", badgeTop: "34%", imgTop: "37%", img: "06.png", img2: "06-2.png" },
+  { num: "05", label: "生态下单规则优化/定制模版精选规则", badgeTop: "1.5%", imgTop: "4.5%", img: "05.webp" },
+  { num: "06", label: "灰盒推荐&widget&黑盒实验内投测验", badgeTop: "34%", imgTop: "37%", img: "06.webp", img2: "06-2.webp" },
 ];
 
 const col4Items = [
-  { num: "07", label: "商家舆情多轮调研优化产品方向", badgeTop: "1.5%", imgTop: "4.5%", img: "07.png" },
-  { num: "08", label: "平台升级&探索", badgeTop: "34%", imgTop: "37%", img: "08.png" },
-  { num: "09", label: "AI智能解说等能力接入", badgeTop: "67%", imgTop: "70%", img: "09.png" },
+  { num: "07", label: "商家舆情多轮调研优化产品方向", badgeTop: "1.5%", imgTop: "4.5%", img: "07.webp" },
+  { num: "08", label: "平台升级&探索", badgeTop: "34%", imgTop: "37%", img: "08.webp" },
+  { num: "09", label: "AI智能解说等能力接入", badgeTop: "67%", imgTop: "70%", img: "09.webp" },
 ];
 
 const badgeStyle = {
@@ -116,7 +116,7 @@ export default function SlidePage23() {
             <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.5" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
           </svg>
         </div>
-        <img src={`${P23}/bg-outer.png`} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img loading="lazy" decoding="async" src={`${P23}/bg-outer.png`} alt="" className="absolute inset-0 h-full w-full object-cover" />
       </div>
 
       {/* ── Left Panel: Chat Conversation ────────────────────────── */}
@@ -153,7 +153,7 @@ export default function SlidePage23() {
 
         {/* User 1: 😎今年工具我们定个什么O？ */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>😎 今年工具我们定个什么O？</span>
           </div>
@@ -169,12 +169,12 @@ export default function SlidePage23() {
               视频精品率&覆盖广告消耗提升
             </span>
           </div>
-          <img src={`${P23}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P23}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* User 2: 🫡请告诉我该怎么做KR！ */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>🫡 请告诉我该怎么做KR！</span>
           </div>
@@ -190,12 +190,12 @@ export default function SlidePage23() {
               3.优化工具能力及用户舆情；
             </span>
           </div>
-          <img src={`${P23}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P23}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* User 3: 🤔KR该如何完成？ */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>🤔 KR该如何完成？</span>
           </div>
@@ -211,12 +211,12 @@ export default function SlidePage23() {
               3.系统调研支持白盒能力基建, 并通过AI能力接入深化产品能力;
             </p>
           </div>
-          <img src={`${P23}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P23}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* User 4: 阐述你的设计策略? */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={userBubble}>
             <span style={userText}>阐述你的设计策略?</span>
           </div>
@@ -232,12 +232,12 @@ export default function SlidePage23() {
               3.强调商家访谈, 解决用户跳失与产品能力快速迭代;
             </p>
           </div>
-          <img src={`${P23}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P23}/bot-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
         </div>
 
         {/* User 5 (dark): ✅已完成OKR */}
         <div className="flex items-center" style={{ gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-          <img src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
+          <img loading="lazy" decoding="async" src={`${P23}/user-avatar.png`} alt="" style={{ width: avatarSize, height: avatarSize, borderRadius: "50%", flexShrink: 0 }} />
           <div style={{ padding: "clamp(3px, calc(0.42 * var(--u)), 6px) clamp(6px, calc(0.83 * var(--u)), 12px)", background: "#222222", borderRadius: "clamp(6px, calc(0.83 * var(--u)), 12px)", overflow: "hidden" }}>
             <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.75, whiteSpace: "nowrap" }}>
               ✅ 已完成OKR，查看你的成果吧！
@@ -259,7 +259,7 @@ export default function SlidePage23() {
               </div>
               <span style={badgeStyle.label}>{item.label}</span>
             </div>
-            <img src={`${P23}/${item.img}`} alt="" style={{ width: "100%", height: i === 0 ? "auto" : "100%", objectFit: i === 0 ? "contain" : "cover", objectPosition: "left top", flex: i === 0 ? undefined : "1 1 0", minHeight: i === 0 ? undefined : 0, ...imgBorder }} />
+            <img loading="lazy" decoding="async" src={`${P23}/${item.img}`} alt="" style={{ width: "100%", height: i === 0 ? "auto" : "100%", objectFit: i === 0 ? "contain" : "cover", objectPosition: "left top", flex: i === 0 ? undefined : "1 1 0", minHeight: i === 0 ? undefined : 0, ...imgBorder }} />
           </div>
         ))}
       </div>
@@ -277,8 +277,8 @@ export default function SlidePage23() {
               </div>
               <span style={badgeStyle.label}>{item.label}</span>
             </div>
-            <img src={`${P23}/${item.img}`} alt="" style={{ width: "100%", height: i === 0 ? "auto" : "100%", objectFit: i === 0 ? "contain" : "cover", objectPosition: "left top", flex: i === 0 ? undefined : "1 1 0", minHeight: i === 0 ? undefined : 0, ...imgBorder }} />
-            {item.img2 && <img src={`${P23}/${item.img2}`} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "left top", flex: "1 1 0", minHeight: 0, ...imgBorder }} />}
+            <img loading="lazy" decoding="async" src={`${P23}/${item.img}`} alt="" style={{ width: "100%", height: i === 0 ? "auto" : "100%", objectFit: i === 0 ? "contain" : "cover", objectPosition: "left top", flex: i === 0 ? undefined : "1 1 0", minHeight: i === 0 ? undefined : 0, ...imgBorder }} />
+            {item.img2 && <img loading="lazy" decoding="async" src={`${P23}/${item.img2}`} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "left top", flex: "1 1 0", minHeight: 0, ...imgBorder }} />}
           </div>
         ))}
       </div>
@@ -296,14 +296,14 @@ export default function SlidePage23() {
               </div>
               <span style={badgeStyle.label}>{item.label}</span>
             </div>
-            <img src={`${P23}/${item.img}`} alt="" style={{ width: "100%", height: i === 0 ? "auto" : "100%", objectFit: i === 0 ? "contain" : "cover", objectPosition: "left top", flex: i === 0 ? undefined : "1 1 0", minHeight: i === 0 ? undefined : 0, ...imgBorder }} />
+            <img loading="lazy" decoding="async" src={`${P23}/${item.img}`} alt="" style={{ width: "100%", height: i === 0 ? "auto" : "100%", objectFit: i === 0 ? "contain" : "cover", objectPosition: "left top", flex: i === 0 ? undefined : "1 1 0", minHeight: i === 0 ? undefined : 0, ...imgBorder }} />
           </div>
         ))}
       </div>
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-20" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img src={`${P23}/logo.png`} alt="" className="absolute top-0 h-full object-contain" style={{ left: "-2.5%" }} />
+        <img loading="lazy" decoding="async" src={`${P23}/logo.png`} alt="" className="absolute top-0 h-full object-contain" style={{ left: "-2.5%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <p style={{ color: "#8C8C8C", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             绘剪-淘系短视频播种机 / 23

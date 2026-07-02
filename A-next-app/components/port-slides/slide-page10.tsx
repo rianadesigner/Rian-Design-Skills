@@ -32,7 +32,7 @@ export default function SlidePage10() {
         className="absolute z-10 flex items-center"
         style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}
       >
-        <img src={"/images/logo-new.png"} alt="" className="h-full object-contain" />
+        <img loading="lazy" decoding="async" src={"/images/logo-new.webp"} alt="" className="h-full object-contain" />
         <div
           className="ml-[calc(1 * var(--u))]"
           style={{ border: "1px solid rgba(255,255,255,0.22)", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}

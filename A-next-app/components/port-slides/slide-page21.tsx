@@ -1,12 +1,12 @@
 const P21 = "/images/page21";
 
 const steps = [
-  { num: "01", label: "默认页面", img: "step1.png" },
-  { num: "02", label: "用户意图识别", img: "step2.png" },
-  { num: "03", label: "大纲规划生成", img: "step3.png" },
-  { num: "04", label: "工作流搭建", img: "step4.png" },
-  { num: "05", label: "工作流运行", img: "step5.png" },
-  { num: "06", label: "完成运行后输出", img: "step6.png" },
+  { num: "01", label: "默认页面", img: "step1.webp" },
+  { num: "02", label: "用户意图识别", img: "step2.webp" },
+  { num: "03", label: "大纲规划生成", img: "step3.webp" },
+  { num: "04", label: "工作流搭建", img: "step4.webp" },
+  { num: "05", label: "工作流运行", img: "step5.webp" },
+  { num: "06", label: "完成运行后输出", img: "step6.webp" },
 ];
 
 export default function SlidePage21() {
@@ -30,7 +30,7 @@ export default function SlidePage21() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img src={`${P21}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
+        <img loading="lazy" decoding="async" src={`${P21}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             P2F搭建助手 / 21

@@ -2,17 +2,17 @@ const P17 = "/images/page17";
 
 const steps = [
   {
-    bg: "card1-bg.png",
+    bg: "card1-bg.webp",
     title: "步骤1: 批量输入",
     desc: "预定义结构化数据集作为工作流输入源\n支持上传文件或ODPS表导入或输入JSON",
   },
   {
-    bg: "card2-bg.png",
+    bg: "card2-bg.webp",
     title: "步骤2: 调用工作流",
     desc: "自动化调度大规模AI工作流执行 通过AI模型完成数据清洗/分析/转换",
   },
   {
-    bg: "card3-bg.png",
+    bg: "card3-bg.webp",
     title: "步骤3: 生成运行结果",
     desc: "下游工作流（跨流程衔接）\n异构业务系统（如观人镜、iTag等平台）",
   },
@@ -39,7 +39,7 @@ export default function SlidePage17() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img src={`${P17}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
+        <img loading="lazy" decoding="async" src={`${P17}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             工作空间新建批次 / 17

@@ -22,7 +22,7 @@ export default function SlidePage3() {
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img
-          src={"/images/logo-new.png"}
+          src={"/images/logo-new.webp"}
           alt=""
           className="absolute left-0 top-0 h-full object-contain"
           style={{ width: "5.97%" }}

@@ -7,7 +7,7 @@ import {
   type TranscriptSegment,
 } from "./podcast-kaoyan-transcript";
 
-const SRC = "/audio/podcast-kaoyan.wav";
+const SRC = "/audio/podcast-kaoyan.mp3";
 const SPEEDS = [1, 1.25, 1.5, 2] as const;
 
 const C = {

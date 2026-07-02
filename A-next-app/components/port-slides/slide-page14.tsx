@@ -4,30 +4,30 @@ const cards = [
   {
     title: "1.匹配业务的创建能力",
     desc: "长耗时数据流转和数据编排",
-    screenshot: "card1-screenshot.png",
-    detail: "card1-icons.png",
+    screenshot: "card1-screenshot.webp",
+    detail: "card1-icons.webp",
     detailStyle: { width: "70.62%", height: "auto", objectFit: "cover" as const, borderRadius: "6px" },
   },
   {
     title: "2.如何引入外部能力",
     desc: "支持查看并拖入相关星/MCP",
-    screenshot: "card2-screenshot.png",
+    screenshot: "card2-screenshot.webp",
     screenshotFit: "contain" as const,
-    detail: "card2-detail.png",
+    detail: "card2-detail.webp",
     detailStyle: { width: "63.47%", height: "auto", objectFit: "contain" as const },
   },
   {
     title: "3.快捷搭建工作流框架",
     desc: "节点流转/运行状态显示说明",
-    screenshot: "card3-screenshot.png",
-    detail: "card3-detail.png",
+    screenshot: "card3-screenshot.webp",
+    detail: "card3-detail.webp",
     detailStyle: { width: "64.61%", height: "auto", objectFit: "contain" as const },
   },
   {
     title: "4.多种执行态展示",
     desc: "实时流程及单卡片状态",
-    screenshot: "card4-screenshot.png",
-    detail: "card4-detail.png",
+    screenshot: "card4-screenshot.webp",
+    detail: "card4-detail.webp",
     detailStyle: { width: "70.45%", height: "auto", objectFit: "contain" as const },
   },
 ];
@@ -53,7 +53,7 @@ export default function SlidePage14() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img src={`${P14}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
+        <img loading="lazy" decoding="async" src={`${P14}/title.svg`} alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
           <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             工作空间新建工作流 / 14

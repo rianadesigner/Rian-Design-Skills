@@ -190,7 +190,7 @@ export default function SlidePage2() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left:"4.17%", top:"1.48%", width:"91.67%", height:"3.33%" }}>
-        <img src={"/images/logo-new.png"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width:"5.97%" }} />
+        <img loading="lazy" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width:"5.97%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7*var(--u))]">
           <p style={{ color:"rgba(255,255,255,0.38)", fontSize:"clamp(12px,calc(1.67*var(--u)),24px)", fontFamily:"'LogoSC Unbounded Sans', sans-serif", textAlign:"right", lineHeight:1.4, margin:0, whiteSpace:"nowrap" }}>
             专业研究场景1: AI搜 / 02

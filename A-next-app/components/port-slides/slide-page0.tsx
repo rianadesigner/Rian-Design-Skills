@@ -91,15 +91,15 @@ type ViewType = "library" | "landing" | "graph" | "agent";
 type CardData = { title: string; desc: string; img: string; gradient: string };
 
 const cards: CardData[] = [
-  { title: "双一流大学介绍", desc: "本文档系统介绍中国各高校的基本概况、学科建设、师资力量及校园风貌。", img: "card-img-1.png", gradient: "linear-gradient(137deg, #fff8f4 0%, #ffbeb3 100%)" },
-  { title: "985工程高校", desc: "985工程是中国政府在1998年启动的高水平大学建设工程，旨在培育世界一流大学，提升国家的综合实力及国际竞争力。", img: "card-img-2.png", gradient: "linear-gradient(137deg, #f7faff 0%, #b7d0ff 100%)" },
-  { title: "211工程高校", desc: "211工程是中国政府于1995年实施的重点支持高等院校建设的项目，旨在提高大约100所高校的教学质量和研究水平。", img: "card-img-3.png", gradient: "linear-gradient(137deg, #ffffff 0%, #adf4df 100%)" },
-  { title: "备考攻略演示", desc: "高考备考全流程攻略，包含时间规划、复习策略和心态调节建议。", img: "card-img-4.png", gradient: "linear-gradient(137deg, #fffdf7 0%, #ffd189 100%)" },
-  { title: "教育部公告", desc: "教育部发布的最新高考政策改革方案及各地实施细则通知。", img: "card-img-5.png", gradient: "linear-gradient(137deg, #fff8f4 0%, #ffa879 100%)" },
-  { title: "省份分数线", desc: "2025年全国各省高考录取分数线汇总，含一本二本分数线对比。", img: "card-img-6.png", gradient: "linear-gradient(137deg, #ffffff 0%, #c6c6c6 100%)" },
-  { title: "学科评估笔记", desc: "个人整理的各高校学科评估结果对比笔记，含A+学科分析。", img: "card-img-7.png", gradient: "linear-gradient(137deg, #fff9ff 0%, #cfb6ff 100%)" },
-  { title: "志愿报考指南", desc: "详细记录了2000-2025年各省份学生志愿报告指南及技巧", img: "card-img-8.png", gradient: "linear-gradient(137deg, #ffffff 0%, #b7f6c3 100%)" },
-  { title: "各省录取分数线汇总", desc: "2020-2025年全国31省市一本/二本录取分数线，按年份和批次分类整理", img: "card-img-9.png", gradient: "linear-gradient(137deg, #ffffff 0%, #ffe78f 100%)" },
+  { title: "双一流大学介绍", desc: "本文档系统介绍中国各高校的基本概况、学科建设、师资力量及校园风貌。", img: "card-img-1.webp", gradient: "linear-gradient(137deg, #fff8f4 0%, #ffbeb3 100%)" },
+  { title: "985工程高校", desc: "985工程是中国政府在1998年启动的高水平大学建设工程，旨在培育世界一流大学，提升国家的综合实力及国际竞争力。", img: "card-img-2.webp", gradient: "linear-gradient(137deg, #f7faff 0%, #b7d0ff 100%)" },
+  { title: "211工程高校", desc: "211工程是中国政府于1995年实施的重点支持高等院校建设的项目，旨在提高大约100所高校的教学质量和研究水平。", img: "card-img-3.webp", gradient: "linear-gradient(137deg, #ffffff 0%, #adf4df 100%)" },
+  { title: "备考攻略演示", desc: "高考备考全流程攻略，包含时间规划、复习策略和心态调节建议。", img: "card-img-4.webp", gradient: "linear-gradient(137deg, #fffdf7 0%, #ffd189 100%)" },
+  { title: "教育部公告", desc: "教育部发布的最新高考政策改革方案及各地实施细则通知。", img: "card-img-5.webp", gradient: "linear-gradient(137deg, #fff8f4 0%, #ffa879 100%)" },
+  { title: "省份分数线", desc: "2025年全国各省高考录取分数线汇总，含一本二本分数线对比。", img: "card-img-6.webp", gradient: "linear-gradient(137deg, #ffffff 0%, #c6c6c6 100%)" },
+  { title: "学科评估笔记", desc: "个人整理的各高校学科评估结果对比笔记，含A+学科分析。", img: "card-img-7.webp", gradient: "linear-gradient(137deg, #fff9ff 0%, #cfb6ff 100%)" },
+  { title: "志愿报考指南", desc: "详细记录了2000-2025年各省份学生志愿报告指南及技巧", img: "card-img-8.webp", gradient: "linear-gradient(137deg, #ffffff 0%, #b7f6c3 100%)" },
+  { title: "各省录取分数线汇总", desc: "2020-2025年全国31省市一本/二本录取分数线，按年份和批次分类整理", img: "card-img-9.webp", gradient: "linear-gradient(137deg, #ffffff 0%, #ffe78f 100%)" },
 ];
 
 function KnowledgeCard({ title, desc, img, gradient, onClick }: CardData & { onClick?: () => void }) {
@@ -147,7 +147,7 @@ function KnowledgeCard({ title, desc, img, gradient, onClick }: CardData & { onC
           }}
         >
           <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ background: gradient }} />
-          <img src={`${P0}/${img}`} alt="" className="absolute left-[3.5px] top-[3.5px] size-[48px] object-cover" draggable={false} />
+          <img loading="lazy" decoding="async" src={`${P0}/${img}`} alt="" className="absolute left-[3.5px] top-[3.5px] size-[48px] object-cover" draggable={false} />
           <div className="absolute bottom-0 left-0 right-0 flex flex-col gap-2 overflow-hidden px-4 pb-5 pt-3">
             <p className="truncate text-[14px] font-semibold leading-[22px] text-[#111]">{title}</p>
             <p className="line-clamp-2 text-[12px] font-light leading-[20px] text-[#666]">{desc}</p>
@@ -193,7 +193,7 @@ type FeatureCardData = {
 const featureCards: FeatureCardData[] = [
   {
     title: "海量的学术资料", desc: "3000w+公开论文与自有知识库数据",
-    screenshot: "card-academic.png", decoSrc: "deco-academic.svg",
+    screenshot: "card-academic.webp", decoSrc: "deco-academic.svg",
     gradient: "linear-gradient(152deg, #f9b552 0%, #ffd777 50%, #f9b552 100%)",
     rotation: -10, left: "12%", top: "632px", zIndex: 1,
     decoStyle: { position: "absolute", top: "2%", right: "3.47%", bottom: "57.15%", left: "30.63%" },
@@ -201,7 +201,7 @@ const featureCards: FeatureCardData[] = [
   },
   {
     title: "多格式文件上传", desc: "文档/图片/视频/表格/git仓库等格式导入",
-    screenshot: "card-upload.png", decoSrc: "deco-upload.svg",
+    screenshot: "card-upload.webp", decoSrc: "deco-upload.svg",
     gradient: "linear-gradient(152deg, #408c33 0%, #66b226 50%, #26664d 100%)",
     rotation: -5, left: "31%", top: "582px", zIndex: 2,
     decoStyle: { position: "absolute", top: "-19%", right: "-36%", bottom: "67%", left: "57.6%", transform: "rotate(-15.47deg)" },
@@ -209,7 +209,7 @@ const featureCards: FeatureCardData[] = [
   },
   {
     title: "Wiki图谱知识编译", desc: "基于LLM Wiki架构构建结构化知识",
-    screenshot: "card-wiki.png", decoSrc: "deco-wiki-shape.svg",
+    screenshot: "card-wiki.webp", decoSrc: "deco-wiki-shape.svg",
     gradient: "linear-gradient(152deg, #2699e5 0%, #33e5d9 47%, #2699e5 100%)",
     rotation: 0, left: "50%", top: "562px", zIndex: 3,
     decoStyle: { position: "absolute", left: 196.5, top: 1.5, width: 160, height: 149 },
@@ -217,14 +217,14 @@ const featureCards: FeatureCardData[] = [
   },
   {
     title: "第三方应用集成", desc: "已支持网盘、飞书、钉钉、语雀文档",
-    screenshot: "card-apps.png", decoSrc: "deco-apps.svg",
+    screenshot: "card-apps.webp", decoSrc: "deco-apps.svg",
     gradient: "linear-gradient(152deg, #8c59bf 0%, #b273d9 50%, #59338c 100%)",
     rotation: 5, left: "69%", top: "582px", zIndex: 2,
     decoStyle: { position: "absolute", left: 189.5, top: -0.5, width: 156, height: 186 },
   },
   {
     title: "多模态结果输出", desc: "视频、图像、报告、脑图等结果生成",
-    screenshot: "card-multimodal.png", decoSrc: "deco-multimodal.svg",
+    screenshot: "card-multimodal.webp", decoSrc: "deco-multimodal.svg",
     gradient: "linear-gradient(90deg, #0f1117 0%, #0f1117 100%)",
     rotation: 10, left: "88%", top: "632px", zIndex: 1,
     decoStyle: { position: "absolute", top: "-8.25%", right: "-21.56%", bottom: "59%", left: "55.63%" },
@@ -247,7 +247,7 @@ function FeatureCard({ title, desc, screenshot, gradient, decoSrc, decoStyle, sc
         <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ mixBlendMode: "color-dodge", background: "linear-gradient(152deg, #59338c 0%, #b273d9 50%, #59338c 100%)" }} />
       )}
       <div style={decoStyle} className="pointer-events-none">
-        <img src={`${PL}/${decoSrc}`} alt="" className="absolute inset-0 block size-full" style={{ maxWidth: "none" }} draggable={false} />
+        <img loading="lazy" decoding="async" src={`${PL}/${decoSrc}`} alt="" className="absolute inset-0 block size-full" style={{ maxWidth: "none" }} draggable={false} />
       </div>
       <p className="absolute left-[23.5px] top-[23.5px] whitespace-nowrap text-[22px] font-bold leading-[24px] text-white" style={{ fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif" }}>{title}</p>
       <p className="absolute left-[23.5px] top-[65.5px] w-[272px] text-[12px] leading-[20px] text-[rgba(255,255,255,0.78)]">{desc}</p>
@@ -325,24 +325,24 @@ function Navigation({ view, onSwitch }: { view: ViewType; onSwitch: (v: ViewType
           <div className="flex w-full flex-col items-center gap-4" style={{ height: 320 }}>
             {/* Avatar */}
             <div className="relative h-[40px] w-full shrink-0 overflow-hidden rounded-2xl">
-              <img src={`${PL}/nav-avatar-landing.png`} alt="" className="absolute left-[8px] top-[6px] size-[24px] object-cover" draggable={false} />
+              <img loading="lazy" decoding="async" src={`${PL}/nav-avatar-landing.png`} alt="" className="absolute left-[8px] top-[6px] size-[24px] object-cover" draggable={false} />
             </div>
             {/* Folder 1 → library */}
             <NavBtn onClick={() => onSwitch("library")}>
               <div className="flex size-[40px] items-center justify-center rounded-lg p-2">
-                <img src={`${PL}/nav-folder-icon.svg`} alt="" className="size-[20px] object-contain" draggable={false} />
+                <img loading="lazy" decoding="async" src={`${PL}/nav-folder-icon.svg`} alt="" className="size-[20px] object-contain" draggable={false} />
               </div>
             </NavBtn>
             {/* Folder 2 → library */}
             <NavBtn onClick={() => onSwitch("library")}>
               <div className="flex size-[40px] items-center justify-center rounded-lg p-2">
-                <img src={`${PL}/nav-folder-icon.svg`} alt="" className="size-[20px] object-contain" draggable={false} />
+                <img loading="lazy" decoding="async" src={`${PL}/nav-folder-icon.svg`} alt="" className="size-[20px] object-contain" draggable={false} />
               </div>
             </NavBtn>
             {/* Folder 3 → library */}
             <NavBtn onClick={() => onSwitch("library")}>
               <div className="flex size-[40px] items-center justify-center rounded-lg p-2">
-                <img src={`${PL}/nav-folder-icon.svg`} alt="" className="size-[20px] object-contain" draggable={false} />
+                <img loading="lazy" decoding="async" src={`${PL}/nav-folder-icon.svg`} alt="" className="size-[20px] object-contain" draggable={false} />
               </div>
             </NavBtn>
             {/* Plus */}
@@ -469,16 +469,16 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="absolute inset-0 overflow-clip rounded-[34px]">
       {/* Grid background */}
-      <img src={`${PL}/bg-grid.svg`} alt="" className="absolute left-0 top-0 h-[770px] w-[1344px] pointer-events-none" draggable={false} />
+      <img loading="lazy" decoding="async" src={`${PL}/bg-grid.svg`} alt="" className="absolute left-0 top-0 h-[770px] w-[1344px] pointer-events-none" draggable={false} />
 
       {/* Side glow right */}
       <div className="absolute left-[calc(75%+60px)] top-[214px] h-[148px] w-[174px] pointer-events-none">
-        <img src={`${PL}/side-glow-right.svg`} alt="" className="absolute block" style={{ inset: "-50% -42.53%", maxWidth: "none", width: "185%", height: "200%" }} draggable={false} />
+        <img loading="lazy" decoding="async" src={`${PL}/side-glow-right.svg`} alt="" className="absolute block" style={{ inset: "-50% -42.53%", maxWidth: "none", width: "185%", height: "200%" }} draggable={false} />
       </div>
 
       {/* Glow pink left */}
       <div className="absolute left-[calc(16.67%+11.36px)] top-[80.05px] h-[88px] w-[112px] pointer-events-none">
-        <img src={`${PL}/glow-pink.svg`} alt="" className="absolute block" style={{ inset: "-136.36% -107.14%", maxWidth: "none", width: "314%", height: "373%" }} draggable={false} />
+        <img loading="lazy" decoding="async" src={`${PL}/glow-pink.svg`} alt="" className="absolute block" style={{ inset: "-136.36% -107.14%", maxWidth: "none", width: "314%", height: "373%" }} draggable={false} />
       </div>
 
       {/* Subtitle */}
@@ -492,14 +492,14 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
         <div className="-rotate-[15deg]">
           <div className="relative h-[135px] w-[240px] overflow-hidden rounded-2xl" style={{ boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.06)" }}>
             <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
-              <img src={`${PL}/video-bg-large.png`} alt="" className="absolute" style={{ height: "153.68%", left: "-26.5%", top: "-20.24%", width: "161.35%", maxWidth: "none" }} draggable={false} />
+              <img loading="lazy" decoding="async" src={`${PL}/video-bg-large.png`} alt="" className="absolute" style={{ height: "153.68%", left: "-26.5%", top: "-20.24%", width: "161.35%", maxWidth: "none" }} draggable={false} />
             </div>
             <div className="absolute inset-0 rounded-2xl" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.1), rgba(0,0,0,0.02) 55%, rgba(0,0,0,0))" }} />
             <div className="absolute left-[16.38px] top-[12.02px] flex items-center overflow-clip rounded bg-[rgba(0,0,0,0.06)] px-1 py-0.5">
               <span className="whitespace-nowrap text-[9px] font-medium text-[#999]">03:02</span>
             </div>
             <div className="absolute left-[96px] top-[44px] size-[48px]">
-              <img src={`${PL}/play-btn.svg`} alt="" className="absolute inset-0 block size-full" style={{ maxWidth: "none" }} draggable={false} />
+              <img loading="lazy" decoding="async" src={`${PL}/play-btn.svg`} alt="" className="absolute inset-0 block size-full" style={{ maxWidth: "none" }} draggable={false} />
             </div>
           </div>
         </div>
@@ -519,7 +519,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
         <div className="-rotate-10">
           <div className="relative flex w-[200px] flex-col items-start justify-between overflow-clip rounded-[13.19px] bg-white px-4 py-3" style={{ height: 120 }}>
             <div className="flex w-full items-start gap-1.5">
-              <img src={`${PL}/article-avatar.png`} alt="" className="size-[24px] shrink-0 rounded-sm object-cover" draggable={false} />
+              <img loading="lazy" decoding="async" src={`${PL}/article-avatar.png`} alt="" className="size-[24px] shrink-0 rounded-sm object-cover" draggable={false} />
               <div className="flex-1">
                 <p className="text-[14px] leading-[22px] text-[#222]">
                   <span>首个Al知识学习平台接入&quot;</span>
@@ -538,14 +538,14 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       {/* CTA glow */}
       <div className="absolute left-[calc(16.67%+9.33px)] top-[412px] h-[73px] w-[84px] pointer-events-none">
         <div className="absolute" style={{ inset: "-60.27% -52.38%" }}>
-          <img src={`${PL}/cta-glow.svg`} alt="" className="block size-full" style={{ maxWidth: "none" }} draggable={false} />
+          <img loading="lazy" decoding="async" src={`${PL}/cta-glow.svg`} alt="" className="block size-full" style={{ maxWidth: "none" }} draggable={false} />
         </div>
       </div>
 
       {/* Premium ring/star decoration (standalone) */}
       <div className="absolute left-[calc(50%-48px)] top-[223px] flex h-[66px] w-[64px] items-center justify-center pointer-events-none">
         <div className="rotate-[15deg]">
-          <img src={`${PL}/premium-ring.svg`} alt="" className="block h-[55px] w-[52px]" style={{ maxWidth: "none" }} draggable={false} />
+          <img loading="lazy" decoding="async" src={`${PL}/premium-ring.svg`} alt="" className="block h-[55px] w-[52px]" style={{ maxWidth: "none" }} draggable={false} />
         </div>
       </div>
 
@@ -569,11 +569,11 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       <div className="absolute left-[calc(50%-40px)] top-[447px] flex h-[46px] w-[812px] items-center justify-center pointer-events-none" style={{ transform: "translateX(-50%) scaleY(-1)" }}>
         <div className="relative h-[46px] w-[812px]">
           <div className="absolute" style={{ inset: "8.7% 0 0 66.69%" }}>
-            <img src={`${PL}/cta-dash-right.svg`} alt="" className="absolute block" style={{ inset: "-4.17% -0.74% -8.93% -0.74%", maxWidth: "none", width: "101.48%", height: "113.1%" }} draggable={false} />
+            <img loading="lazy" decoding="async" src={`${PL}/cta-dash-right.svg`} alt="" className="absolute block" style={{ inset: "-4.17% -0.74% -8.93% -0.74%", maxWidth: "none", width: "101.48%", height: "113.1%" }} draggable={false} />
           </div>
           <div className="absolute flex items-center justify-center" style={{ inset: "8.7% 66.56% 0 0" }}>
             <div className="size-full" style={{ transform: "scaleX(-1)" }}>
-              <img src={`${PL}/cta-dash-left.svg`} alt="" className="absolute block" style={{ inset: "-4.17% -0.74% -8.93% -0.74%", maxWidth: "none", width: "101.48%", height: "113.1%" }} draggable={false} />
+              <img loading="lazy" decoding="async" src={`${PL}/cta-dash-left.svg`} alt="" className="absolute block" style={{ inset: "-4.17% -0.74% -8.93% -0.74%", maxWidth: "none", width: "101.48%", height: "113.1%" }} draggable={false} />
             </div>
           </div>
           <div className="absolute rounded-[23px] bg-[#e0e0e0]" style={{ inset: "0 85.1% 82.61% 13.92%", boxShadow: "0px 2px 2px 0px rgba(189,189,189,0.14)" }} />
@@ -1143,7 +1143,7 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
               </button>
             </div>
             {/* Guide badge */}
-            <img src={`${P0}/agent-guide-badge.png`} alt="" className="absolute" style={{ left: 18, top: 52, width: 80, height: 30 }} draggable={false} />
+            <img loading="lazy" decoding="async" src={`${P0}/agent-guide-badge.png`} alt="" className="absolute" style={{ left: 18, top: 52, width: 80, height: 30 }} draggable={false} />
             {/* Orange info banner */}
             <div className="absolute left-4 top-[68px] rounded border-b border-[#ffe8cc] bg-[#fff8f0] p-3">
               <p className="text-[10px] leading-[18px] text-[#885500]" style={{ width: 642 }}>
@@ -1163,7 +1163,7 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
                 <p>我在追《太平年》这部剧，五代十国那段历史太乱了，钱镠是谁，李克用是谁，后周和宋朝什么关系，我完全搞不清楚。</p>
                 <p>昨天我发现清华团队做的一个 AI 教学系统，叫 OpenMAIC。这个系统和我们熟悉的慕课完全不一样。</p>
               </div>
-              <img src={`${P0}/agent-article-img.png`} alt="OpenMAIC" className="w-full rounded" draggable={false} />
+              <img loading="lazy" decoding="async" src={`${P0}/agent-article-img.png`} alt="OpenMAIC" className="w-full rounded" draggable={false} />
               <p className="text-center text-[10px] font-semibold leading-[18px] text-[#333]">图例：OpenMAIC</p>
               <div className="text-[12px] leading-[20px] text-black">
                 <p>慕课是什么？录好的视频，我自己看，看不懂也没人理我。但 OpenMAIC 不是这样。</p>
@@ -1219,7 +1219,7 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
                     <div className="flex items-center gap-1">
                       <div className="relative size-[14px] overflow-hidden rounded-full">
                         <div className="absolute inset-0 rounded-full bg-[rgba(240,242,245,0.5)]" />
-                        <img src={`${P0}/agent-avatar.png`} alt="" className="pointer-events-none absolute size-[20px] object-cover" style={{ bottom: -3, left: -3 }} draggable={false} />
+                        <img loading="lazy" decoding="async" src={`${P0}/agent-avatar.png`} alt="" className="pointer-events-none absolute size-[20px] object-cover" style={{ bottom: -3, left: -3 }} draggable={false} />
                       </div>
                       <span className="whitespace-nowrap text-[14px] font-semibold leading-[22px] text-[#1f1f1f]">心流</span>
                     </div>
@@ -1251,7 +1251,7 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
                 {/* Greeting */}
                 <div className="absolute flex flex-col items-center gap-4" style={{ left: "50%", top: 219, transform: "translateX(-50%)" }}>
                   <div className="relative size-[44px] shrink-0 overflow-hidden rounded-full bg-[#6969fd]">
-                    <img src={`${P0}/agent-avatar.png`} alt="" className="pointer-events-none absolute size-[62px] object-cover" style={{ bottom: -10, left: -10 }} draggable={false} />
+                    <img loading="lazy" decoding="async" src={`${P0}/agent-avatar.png`} alt="" className="pointer-events-none absolute size-[62px] object-cover" style={{ bottom: -10, left: -10 }} draggable={false} />
                   </div>
                   <div className="flex flex-col items-center gap-2">
                     <p className="whitespace-nowrap text-[#111]" style={{ fontSize: 0, lineHeight: 0, fontWeight: 600 }}>
@@ -1283,9 +1283,9 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
                   <div key={c.label} className="flex shrink-0 items-center gap-1 overflow-hidden rounded-xl px-3 py-2" style={{ background: c.bg }}>
                     <div className="relative size-4 shrink-0 overflow-hidden rounded-sm">
                       {c.iconType === "img" ? (
-                        <img src={c.icon} alt="" className="pointer-events-none absolute inset-0 size-full rounded-sm object-cover" draggable={false} />
+                        <img loading="lazy" decoding="async" src={c.icon} alt="" className="pointer-events-none absolute inset-0 size-full rounded-sm object-cover" draggable={false} />
                       ) : (
-                        <img src={c.icon} alt="" className="pointer-events-none absolute inset-0 size-full" draggable={false} />
+                        <img loading="lazy" decoding="async" src={c.icon} alt="" className="pointer-events-none absolute inset-0 size-full" draggable={false} />
                       )}
                     </div>
                     <span className="whitespace-nowrap text-[12px] font-semibold leading-[20px]" style={{ color: c.color }}>{c.label}</span>
@@ -1388,7 +1388,7 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
                         {"expanded" in g && g.expanded && g.items && g.items.map((item) => (
                           <div key={item.name} className="flex cursor-pointer items-center gap-1.5 rounded-lg py-1 pl-10 pr-2 hover:bg-[#f8f8f8]" onClick={() => setSelectedFile(item.name)}>
                             {"icon" in item && item.icon ? (
-                              <img src={item.icon} alt="" className="size-4 shrink-0 object-contain" draggable={false} />
+                              <img loading="lazy" decoding="async" src={item.icon} alt="" className="size-4 shrink-0 object-contain" draggable={false} />
                             ) : (
                               <div className="size-1 shrink-0 rounded-full bg-[#ccc]" />
                             )}
@@ -1422,11 +1422,11 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
               </button>
             )}
             <div className="pointer-events-none absolute" style={{ width: 500, height: 280, left: "50%", top: 159, transform: "translateX(-50%)" }}>
-              <img src={`${P0}/agent-glow.svg`} alt="" className="absolute" style={{ inset: "-39.29% -22%", width: "144%", height: "178.58%", maxWidth: "none" }} draggable={false} />
+              <img loading="lazy" decoding="async" src={`${P0}/agent-glow.svg`} alt="" className="absolute" style={{ inset: "-39.29% -22%", width: "144%", height: "178.58%", maxWidth: "none" }} draggable={false} />
             </div>
             <div className="absolute flex flex-col items-center gap-4" style={{ left: "50%", top: 180, transform: "translateX(-50%)" }}>
               <div className="relative size-[44px] shrink-0 overflow-hidden rounded-full bg-[#6969fd]">
-                <img src={`${P0}/agent-avatar.png`} alt="" className="pointer-events-none absolute size-[62px] object-cover" style={{ bottom: -10, left: -10 }} draggable={false} />
+                <img loading="lazy" decoding="async" src={`${P0}/agent-avatar.png`} alt="" className="pointer-events-none absolute size-[62px] object-cover" style={{ bottom: -10, left: -10 }} draggable={false} />
               </div>
               <div className="flex flex-col items-center gap-2">
                 <p className="whitespace-nowrap text-[#111]" style={{ fontSize: 0, lineHeight: 0, fontWeight: 600 }}>
@@ -1444,7 +1444,7 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
                   <p className="absolute left-1/2 top-9 -translate-x-1/2 whitespace-nowrap text-center text-[10px] leading-[18px] text-[#999]">{s.desc}</p>
                   <div className="pointer-events-none absolute" style={{ left: -1, top: 56, width: 121, height: 104 }}>
                     <div className="absolute inset-0 overflow-hidden">
-                      <img src={s.img} alt="" className="pointer-events-none absolute max-w-none" style={s.imgStyle} draggable={false} />
+                      <img loading="lazy" decoding="async" src={s.img} alt="" className="pointer-events-none absolute max-w-none" style={s.imgStyle} draggable={false} />
                     </div>
                   </div>
                 </div>
@@ -1456,9 +1456,9 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
                   <div key={c.label} className="flex shrink-0 items-center gap-1 overflow-hidden rounded-xl px-3 py-2" style={{ background: c.bg }}>
                     <div className="relative size-4 shrink-0 overflow-hidden rounded-sm">
                       {c.iconType === "img" ? (
-                        <img src={c.icon} alt="" className="pointer-events-none absolute inset-0 size-full rounded-sm object-cover" draggable={false} />
+                        <img loading="lazy" decoding="async" src={c.icon} alt="" className="pointer-events-none absolute inset-0 size-full rounded-sm object-cover" draggable={false} />
                       ) : (
-                        <img src={c.icon} alt="" className="pointer-events-none absolute inset-0 size-full" draggable={false} />
+                        <img loading="lazy" decoding="async" src={c.icon} alt="" className="pointer-events-none absolute inset-0 size-full" draggable={false} />
                       )}
                     </div>
                     <span className="whitespace-nowrap text-[12px] font-semibold leading-[20px]" style={{ color: c.color }}>{c.label}</span>
@@ -1528,7 +1528,7 @@ export default function SlidePage0({ initialView = "landing" }: { initialView?: 
           <div className="absolute left-[80.29%] top-[18.9%] flex h-[114px] w-[131px] items-center justify-center pointer-events-none">
             <div className="rotate-[15deg]">
               <div className="relative h-[88px] w-[112px]">
-                <img src={`${PL}/glow-pink-right.svg`} alt="" className="absolute block" style={{ inset: "-56.82% -44.64%", maxWidth: "none", width: "189%", height: "214%" }} draggable={false} />
+                <img loading="lazy" decoding="async" src={`${PL}/glow-pink-right.svg`} alt="" className="absolute block" style={{ inset: "-56.82% -44.64%", maxWidth: "none", width: "189%", height: "214%" }} draggable={false} />
               </div>
             </div>
           </div>
@@ -1538,7 +1538,7 @@ export default function SlidePage0({ initialView = "landing" }: { initialView?: 
               <div className="relative h-[200px] w-[160px] overflow-hidden rounded-2xl">
                 <div className="absolute inset-0 pointer-events-none rounded-2xl">
                   <div className="absolute inset-0 overflow-hidden rounded-2xl">
-                    <img src={`${PL}/video-card-right-bg.png`} alt="" className="absolute" style={{ height: "164%", left: "-12.35%", top: "-0.2%", width: "153.75%", maxWidth: "none" }} draggable={false} />
+                    <img loading="lazy" decoding="async" src={`${PL}/video-card-right-bg.png`} alt="" className="absolute" style={{ height: "164%", left: "-12.35%", top: "-0.2%", width: "153.75%", maxWidth: "none" }} draggable={false} />
                   </div>
                   <div className="absolute inset-0 rounded-2xl" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.1), rgba(0,0,0,0.02) 55%, rgba(0,0,0,0))" }} />
                 </div>
@@ -1558,7 +1558,7 @@ export default function SlidePage0({ initialView = "landing" }: { initialView?: 
           <div className="absolute left-[calc(75%-25px)] top-[43.7%] flex h-[103.32px] w-[297.94px] items-center justify-center">
             <div style={{ transform: "rotate(3.82deg)" }}>
               <div className="relative flex items-center gap-2 rounded-2xl bg-white p-3" style={{ width: 274 }}>
-                <img src={`${PL}/news-card-img.png`} alt="" className="size-[60px] shrink-0 rounded object-cover" draggable={false} />
+                <img loading="lazy" decoding="async" src={`${PL}/news-card-img.png`} alt="" className="size-[60px] shrink-0 rounded object-cover" draggable={false} />
                 <div className="flex w-[201px] shrink-0 flex-col gap-2">
                   <div className="flex items-center gap-1">
                     <span className="shrink-0 rounded-[5px] bg-[rgba(255,115,89,0.12)] px-2 py-1 text-[10px] font-medium text-[#ff7359]">热点</span>
@@ -1577,7 +1577,7 @@ export default function SlidePage0({ initialView = "landing" }: { initialView?: 
           <div className="absolute left-[87.65%] top-[46.2%] flex h-[114px] w-[131px] items-center justify-center pointer-events-none">
             <div className="rotate-[15deg]">
               <div className="relative h-[88px] w-[112px]">
-                <img src={`${PL}/glow-pink-right.svg`} alt="" className="absolute block" style={{ inset: "-56.82% -44.64%", maxWidth: "none", width: "189%", height: "214%" }} draggable={false} />
+                <img loading="lazy" decoding="async" src={`${PL}/glow-pink-right.svg`} alt="" className="absolute block" style={{ inset: "-56.82% -44.64%", maxWidth: "none", width: "189%", height: "214%" }} draggable={false} />
             </div>
           </div>
           </div>

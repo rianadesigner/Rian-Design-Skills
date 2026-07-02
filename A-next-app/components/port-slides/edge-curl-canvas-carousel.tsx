@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toCanvas } from "html-to-image";
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design";
 import SlidePage0 from "./slide-page0";
@@ -492,6 +492,12 @@ export function EdgeCurlCanvasCarousel() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRefs = useRef<Array<HTMLDivElement | null>>([]);
   const domWrapRef = useRef<HTMLDivElement>(null);
+  // Only mount center panel immediately; mount remaining panels after 800ms
+  const [allPanelsMounted, setAllPanelsMounted] = useState(false);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setAllPanelsMounted(true), 800);
+    return () => window.clearTimeout(timer);
+  }, []);
   const domTrackRef = useRef<HTMLDivElement>(null);
   const domCardRefs = useRef<Array<HTMLDivElement | null>>([]);
   const domScalerRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -875,7 +881,10 @@ export function EdgeCurlCanvasCarousel() {
                   }
                   style={{ position: "absolute", inset: 0, width: DESIGN_W, height: DESIGN_H }}
                 >
-                  <SlidePage0 initialView={panel.view} />
+                  {/* Center panel (index 0) mounts immediately; others wait 800ms */}
+                  {(index === 0 || allPanelsMounted) && (
+                    <SlidePage0 initialView={panel.view} />
+                  )}
                 </div>
               </div>
             </div>

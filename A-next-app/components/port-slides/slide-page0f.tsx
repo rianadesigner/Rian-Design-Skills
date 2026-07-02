@@ -175,7 +175,7 @@ function PanelSidebar() {
                   (g as { items?: { name: string; icon: string | null }[] }).items?.map((item) => (
                     <div key={item.name} style={{ display: "flex", alignItems: "center", gap: 4, padding: "2px 6px 2px 28px" }}>
                       {item.icon ? (
-                        <img src={item.icon} alt="" style={{ width: 11, height: 11, objectFit: "contain", flexShrink: 0 }} draggable={false} />
+                        <img loading="lazy" decoding="async" src={item.icon} alt="" style={{ width: 11, height: 11, objectFit: "contain", flexShrink: 0 }} draggable={false} />
                       ) : (
                         <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#d0d0d0", flexShrink: 0 }} />
                       )}
@@ -426,7 +426,7 @@ function EditorCenterContent() {
                 {s.desc}
               </p>
               <div style={{ position: "absolute", left: -1, top: 33, width: 69, height: 58, overflow: "hidden", pointerEvents: "none" }}>
-                <img src={s.img} alt="" style={{ position: "absolute", maxWidth: "none", ...s.imgStyle }} draggable={false} />
+                <img loading="lazy" decoding="async" src={s.img} alt="" style={{ position: "absolute", maxWidth: "none", ...s.imgStyle }} draggable={false} />
               </div>
             </div>
           ))}
@@ -464,7 +464,7 @@ function EditorRightAI() {
         </div>
         {/* avatar */}
         <div style={{ position: "relative", width: 32, height: 32, borderRadius: "50%", background: "#6969fd", overflow: "hidden", flexShrink: 0, zIndex: 1 }}>
-          <img src={`${P0}/agent-avatar.png`} alt="" style={{ position: "absolute", width: 46, height: 46, objectFit: "cover", bottom: -7, left: -7, pointerEvents: "none" }} draggable={false} />
+          <img loading="lazy" decoding="async" src={`${P0}/agent-avatar.png`} alt="" style={{ position: "absolute", width: 46, height: 46, objectFit: "cover", bottom: -7, left: -7, pointerEvents: "none" }} draggable={false} />
         </div>
         {/* greeting text */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, zIndex: 1 }}>
@@ -538,7 +538,7 @@ function AgentMainArea() {
         {/* avatar + greeting */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
           <div style={{ position: "relative", width: 44, height: 44, borderRadius: "50%", background: "#6969fd", overflow: "hidden" }}>
-            <img src={`${P0}/agent-avatar.png`} alt="" style={{ position: "absolute", width: 62, height: 62, objectFit: "cover", bottom: -10, left: -10, pointerEvents: "none" }} draggable={false} />
+            <img loading="lazy" decoding="async" src={`${P0}/agent-avatar.png`} alt="" style={{ position: "absolute", width: 62, height: 62, objectFit: "cover", bottom: -10, left: -10, pointerEvents: "none" }} draggable={false} />
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
             <p style={{ fontSize: 0, lineHeight: 0, whiteSpace: "nowrap" }}>
@@ -571,7 +571,7 @@ function AgentMainArea() {
                 {s.desc}
               </p>
               <div style={{ position: "absolute", left: -1, top: 52, width: 121, height: 104, overflow: "hidden", pointerEvents: "none" }}>
-                <img src={s.img} alt="" style={{ position: "absolute", maxWidth: "none", ...s.imgStyle }} draggable={false} />
+                <img loading="lazy" decoding="async" src={s.img} alt="" style={{ position: "absolute", maxWidth: "none", ...s.imgStyle }} draggable={false} />
               </div>
             </div>
           ))}
@@ -734,7 +734,7 @@ function PanelPanStrip() {
       >
         {/* Editor panel screenshot — 1600×1076 high-res */}
         <img
-          src="/images/page0f/editor-panel.png"
+          src="/images/page0f/editor-panel.webp"
           alt="编辑器面板"
           draggable={false}
           style={{
@@ -752,7 +752,7 @@ function PanelPanStrip() {
         />
         {/* Agent panel screenshot — 1128×1076 high-res */}
         <img
-          src="/images/page0f/agent-panel.png"
+          src="/images/page0f/agent-panel.webp"
           alt="Agent面板"
           draggable={false}
           style={{
