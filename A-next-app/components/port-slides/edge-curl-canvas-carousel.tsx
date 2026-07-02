@@ -147,34 +147,26 @@ function tag(ctx: CanvasRenderingContext2D, x: number, y: number, text: string, 
   ctx.fillText(text, x + 16, y + 29);
 }
 
-function createPanelCanvas() {
+// Panel background colors matched to each SlidePage0 view background
+const PANEL_BG: Record<string, string> = {
+  landing: "#f8f8f8",
+  library: "#f7fbf4",
+  graph:   "#f5fdff",
+  agent:   "#fbf7ff",
+};
+
+function createPanelCanvas(panel: PanelDef): HTMLCanvasElement {
   const canvas = document.createElement("canvas");
   canvas.width = DESIGN_W;
   canvas.height = DESIGN_H;
   const ctx = canvas.getContext("2d");
   if (!ctx) return canvas;
-
-  ctx.fillStyle = "#f8f8f8";
+  // Match each view's actual background — no white flash, no fake gradients
+  ctx.fillStyle = PANEL_BG[panel.view] ?? "#f8f8f8";
   ctx.fillRect(0, 0, DESIGN_W, DESIGN_H);
-
   return canvas;
 }
 
-function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
-  return new Promise((resolve, reject) => {
-    const timeout = window.setTimeout(() => reject(new Error("DOM frame capture timed out")), ms);
-    promise.then(
-      (value) => {
-        window.clearTimeout(timeout);
-        resolve(value);
-      },
-      (error) => {
-        window.clearTimeout(timeout);
-        reject(error);
-      },
-    );
-  });
-}
 
 function drawFrameDecoration(ctx: CanvasRenderingContext2D, panel: PanelDef, w: number, h: number) {
   ctx.save();
@@ -542,35 +534,33 @@ export function EdgeCurlCanvasCarousel() {
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, createPanelCanvas());
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, createPanelCanvas(panel));
       return texture;
     });
 
+    // Capture real SlidePage0 frames into WebGL textures in parallel (no artificial delay)
     const updateTexturesFromSlideFrames = async () => {
       await document.fonts?.ready;
-      await new Promise((resolve) => window.setTimeout(resolve, 900));
       if (disposed) return;
-
-      for (const [index, frame] of frameRefs.current.entries()) {
-        if (!frame || !textures[index]) continue;
-        try {
-          /* The live overlay card is the real frame; html-to-image clones it
-             into an offscreen sandbox, so the slide-fit scale / mask on its
-             ancestors does not affect the captured 1440×900 texture. */
-          const sourceCanvas = await withTimeout(toCanvas(frame, {
-            width: DESIGN_W,
-            height: DESIGN_H,
-            pixelRatio: 1,
-            cacheBust: true,
-            backgroundColor: "#f8f8f8",
-          }), 6000);
-          if (disposed) return;
-          gl.bindTexture(gl.TEXTURE_2D, textures[index]);
-          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, sourceCanvas);
-        } catch (error) {
-          console.warn("Failed to capture SlidePage0 frame for WebGL carousel", error);
-        }
-      }
+      await Promise.all(
+        frameRefs.current.map(async (frame, index) => {
+          if (!frame || !textures[index]) return;
+          try {
+            const sourceCanvas = await toCanvas(frame, {
+              width: DESIGN_W,
+              height: DESIGN_H,
+              pixelRatio: 1,
+              cacheBust: false,
+              backgroundColor: PANEL_BG[PANELS[index].view] ?? "#f8f8f8",
+            });
+            if (disposed) return;
+            gl.bindTexture(gl.TEXTURE_2D, textures[index]);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, sourceCanvas);
+          } catch {
+            // Silently ignore capture failures — initial bg color stays
+          }
+        }),
+      );
     };
 
     const state: RuntimeState = {
@@ -880,9 +870,7 @@ export function EdgeCurlCanvasCarousel() {
                 <div
                   ref={
                     index < PANELS.length
-                      ? (node) => {
-                          frameRefs.current[index] = node;
-                        }
+                      ? (node) => { frameRefs.current[index] = node; }
                       : undefined
                   }
                   style={{ position: "absolute", inset: 0, width: DESIGN_W, height: DESIGN_H }}
