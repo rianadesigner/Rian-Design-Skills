@@ -31,8 +31,8 @@ export function computeSlideFitScale(
   designHeight = SLIDE_DESIGN_HEIGHT,
 ): number {
   if (width <= 0 || height <= 0) return 1;
-  // cover 模式：取较大缩放比，确保幻灯片铺满视口（超出部分由 overflow:hidden 裁剪）
-  return Math.max(width / designWidth, height / designHeight);
+  // contain 模式：取较小缩放比，确保幻灯片全部内容可见（不裁剪任何内容）
+  return Math.min(width / designWidth, height / designHeight);
 }
 
 export function initialSlideFitScale(): number {

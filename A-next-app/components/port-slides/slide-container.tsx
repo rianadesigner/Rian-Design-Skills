@@ -501,14 +501,14 @@ export default function SlideContainer() {
             height: ${DESIGN_HEIGHT}px;
             transform-origin: center center;
             will-change: transform;
-            /* Pure CSS cover scaling via container-query units.
+            /* Pure CSS contain scaling via container-query units.
                100cqw / --slide-design-w  = scale to fit width
                100cqh / --slide-design-h  = scale to fit height
-               max() picks the larger → "cover" mode (fills stage, clips excess).
-               This reacts to container resize with zero JS latency.
-               No --slide-fit-scale JS variable involved — avoids stale-value bugs
-               in Cursor IDE preview where getBoundingClientRect() can be wrong. */
-            transform: scale(max(
+               min() picks the smaller → "contain" mode (no clipping, letterbox if needed).
+               On 16:9 screens the 16:10 design canvas would previously have its
+               top/bottom clipped with max() (cover mode). Using min() ensures all
+               content is always fully visible. */
+            transform: scale(min(
               calc(100cqw / var(--slide-design-w, ${DESIGN_WIDTH}px)),
               calc(100cqh / var(--slide-design-h, ${DESIGN_HEIGHT}px))
             ));
