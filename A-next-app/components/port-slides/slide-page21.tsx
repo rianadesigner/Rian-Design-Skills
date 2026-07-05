@@ -112,7 +112,7 @@ export default function SlidePage21() {
 
       {/* ── Top screenshots (before / after) ─────────────────────── */}
       <img
-        src={`${P21}/top-left.png`}
+        src={`${P21}/top-left.webp`}
         alt=""
         className="absolute z-10"
         style={{
@@ -128,7 +128,7 @@ export default function SlidePage21() {
         }}
       />
       <img
-        src={`${P21}/top-right.png`}
+        src={`${P21}/top-right.webp`}
         alt=""
         className="absolute z-10"
         style={{

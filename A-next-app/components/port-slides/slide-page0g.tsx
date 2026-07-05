@@ -21,7 +21,7 @@ const CARDS: OutputCard[] = [
     desc: "增加首尾页/支持输入演讲稿/提升信息丰富度",
     icon: `${G}/ppt-icon.svg`,
     previewStyle: "cover",
-    preview: `${G}/ppt-preview.png`,
+    preview: `${G}/ppt-preview.webp`,
   },
   {
     title: "视频",
@@ -35,7 +35,7 @@ const CARDS: OutputCard[] = [
     desc: "支持极简/卡通/科技更多风格和尺寸选择",
     icon: `${G}/infographic-icon.svg`,
     previewStyle: "tall",
-    preview: `${G}/infographic-preview.png`,
+    preview: `${G}/infographic-preview.webp`,
     previewCss: { height: "124.64%", left: "-0.12%", top: "-0.14%", width: "100%" },
   },
   {
@@ -51,7 +51,7 @@ const CARDS: OutputCard[] = [
     desc: "优化输出信息密度，更具信息概括性",
     icon: `${G}/mindmap-icon.svg`,
     previewStyle: "tall",
-    preview: `${G}/mindmap-preview.png`,
+    preview: `${G}/mindmap-preview.webp`,
     previewCss: { height: "164.35%", left: "-15.92%", top: "-32.17%", width: "131.84%" },
   },
   {
@@ -59,7 +59,7 @@ const CARDS: OutputCard[] = [
     desc: "支持自动出题 / 检验理解程度 / 巩固学习效果",
     icon: `${G}/quiz-icon.svg`,
     previewStyle: "cover",
-    preview: `${G}/ppt-preview.png`,
+    preview: `${G}/ppt-preview.webp`,
     overlay: {
       src: `${G}/quiz-preview.png`,
       css: { height: "284.17%", left: "0", top: "-0.03%", width: "100%" },

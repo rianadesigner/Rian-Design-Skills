@@ -165,7 +165,7 @@ export default function SlidePage15() {
             </p>
           </div>
           <img
-            src={`${P15}/card2-screenshot.png`}
+            src={`${P15}/card2-screenshot.webp`}
             alt=""
             className="absolute"
             style={{

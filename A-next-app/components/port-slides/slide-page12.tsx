@@ -207,7 +207,7 @@ export default function SlidePage12() {
         }}
       >
         <img
-          src={`${P12}/card-cd-left.png`}
+          src={`${P12}/card-cd-left.webp`}
           alt=""
           className="absolute"
           style={{
@@ -292,7 +292,7 @@ export default function SlidePage12() {
         }}
       >
         <img
-          src={`${P12}/card-cd-left.png`}
+          src={`${P12}/card-cd-left.webp`}
           alt=""
           className="absolute"
           style={{

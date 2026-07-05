@@ -175,7 +175,7 @@ export default function SlidePage17() {
         }}
       >
         <img
-          src={`${P17}/panel-bg.png`}
+          src={`${P17}/panel-bg.webp`}
           alt=""
           className="w-full object-cover"
           style={{ objectPosition: "center top" }}

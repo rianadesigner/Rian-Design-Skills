@@ -86,7 +86,7 @@ export default function SlidePage6() {
 
       {/* ── 全屏截图 (学术搜索) ──────────────────────────────────── */}
       <img
-        src={`${P6}/screenshot-main.png`}
+        src={`${P6}/screenshot-main.webp`}
         alt=""
         className="absolute z-0"
         style={{

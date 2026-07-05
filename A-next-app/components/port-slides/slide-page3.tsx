@@ -159,7 +159,7 @@ export default function SlidePage3() {
         }}
       >
         <img
-          src={`${P3}/screenshot-main.png`}
+          src={`${P3}/screenshot-main.webp`}
           alt=""
           style={{
             width: "100%",

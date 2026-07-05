@@ -130,7 +130,7 @@ export default function SlidePage11() {
           }}
         >
           <img
-            src={`${P11}/terminal.png`}
+            src={`${P11}/terminal.webp`}
             alt=""
             className="absolute inset-0 w-full h-full object-cover object-top"
           />
@@ -181,7 +181,7 @@ export default function SlidePage11() {
             访问所有资源的超级入口
           </p>
           <img
-            src={`${P11}/card-files.png`}
+            src={`${P11}/card-files.webp`}
             alt=""
             className="flex-1 w-full object-contain"
             style={{ borderRadius: "9px", minHeight: 0 }}

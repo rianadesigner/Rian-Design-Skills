@@ -99,7 +99,7 @@ export default function SlidePage9() {
               <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.7 }}>常规搜索&多模态上传</span>
             </div>
           </div>
-          <img loading="lazy" decoding="async" src={`${P9}/phone-mockup.png`} alt="" style={{ position: "absolute", left: "0", top: "0", width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
+          <img loading="lazy" decoding="async" src={`${P9}/phone-mockup.webp`} alt="" style={{ position: "absolute", left: "0", top: "0", width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
           <div className="absolute z-20" style={{ left: "66%", bottom: "4.5%", transform: "translateX(-50%)" }}>
             <div style={{ background: "#0a0a0a", border: "1px solid rgba(255,255,255,0.20)", borderRadius: "48px", padding: "4px 14px", boxShadow: "0px 4px 12px 0px rgba(0,0,0,0.4)", whiteSpace: "nowrap" }}>
               <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.7 }}>【AI聊】入口</span>
@@ -177,7 +177,7 @@ export default function SlidePage9() {
                 更清晰的数据展示和管理：可视化查看所有库&文件信息
               </p>
             </div>
-            <img loading="lazy" decoding="async" src={`${P9}/card-05.png`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)" }} />
+            <img loading="lazy" decoding="async" src={`${P9}/card-05.webp`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)" }} />
           </div>
         </div>
       </div>

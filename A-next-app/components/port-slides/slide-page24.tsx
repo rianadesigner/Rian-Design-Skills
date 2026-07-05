@@ -93,7 +93,7 @@ export default function SlidePage24() {
             <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.5" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
           </svg>
         </div>
-        <img loading="lazy" decoding="async" src={`${P24}/bg-outer.png`} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img loading="lazy" decoding="async" src={`${P24}/bg-outer.webp`} alt="" className="absolute inset-0 h-full w-full object-cover" />
       </div>
 
       {/* ── Right Dark Area ──────────────────────────────────────── */}

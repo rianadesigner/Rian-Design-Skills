@@ -172,7 +172,7 @@ export default function SlidePage7() {
         }}
       >
         <img
-          src={`${P7}/phone-screenshot.png`}
+          src={`${P7}/phone-screenshot.webp`}
           alt=""
           className="w-full"
           style={{ objectPosition: "center top" }}

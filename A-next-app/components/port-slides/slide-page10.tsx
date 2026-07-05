@@ -147,7 +147,7 @@ export default function SlidePage10() {
         }}
       >
         <img
-          src={`${P10}/phone-mockup.png`}
+          src={`${P10}/phone-mockup.webp`}
           alt=""
           className="absolute inset-0 w-full h-full object-cover object-top"
         />
@@ -197,12 +197,12 @@ export default function SlidePage10() {
             01
           </p>
           <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
-            体验"不掉线"的内容冷启动
+            体验&quot;不掉线&quot;的内容冷启动
           </span>
         </div>
       </div>
 
-      {/* ── Card 02: 用户"看得懂"的内容解释 ──────────────────────── */}
+      {/* ── Card 02: 用户「看得懂」的内容解释 ──────────────────────── */}
       <div
         className="absolute z-10"
         style={{
@@ -223,7 +223,7 @@ export default function SlidePage10() {
           }}
         >
           <img
-            src={`${P10}/card-02.png`}
+            src={`${P10}/card-02.webp`}
             alt=""
             className="absolute"
             style={{ left: "0", top: "0", width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "9px" }}
@@ -246,12 +246,12 @@ export default function SlidePage10() {
             02
           </p>
           <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
-            用户"看得懂"的内容解释
+            用户&quot;看得懂&quot;的内容解释
           </span>
         </div>
       </div>
 
-      {/* ── Card 03: 内容"有价值"持续提升质量 ─────────────────────── */}
+      {/* ── Card 03: 内容「有价值」持续提升质量 ─────────────────────── */}
       <div
         className="absolute z-10"
         style={{
@@ -295,12 +295,12 @@ export default function SlidePage10() {
             03
           </p>
           <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
-            内容"有价值"持续提升质量
+            内容&quot;有价值&quot;持续提升质量
           </span>
         </div>
       </div>
 
-      {/* ── Card 04: 内容"持续变好"形成闭环 ──────────────────────── */}
+      {/* ── Card 04: 内容「持续变好」形成闭环 ──────────────────────── */}
       <div
         className="absolute z-10"
         style={{
@@ -344,12 +344,12 @@ export default function SlidePage10() {
             04
           </p>
           <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
-            内容"持续变好"形成闭环
+            内容&quot;持续变好&quot;形成闭环
           </span>
         </div>
       </div>
 
-      {/* ── Card 05: 用户"敢信赖"的信任建设 ──────────────────────── */}
+      {/* ── Card 05: 用户「敢信赖」的信任建设 ──────────────────────── */}
       <div
         className="absolute z-10"
         style={{
@@ -393,7 +393,7 @@ export default function SlidePage10() {
             05
           </p>
           <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
-            用户"敢信赖"的信任建设
+            用户&quot;敢信赖&quot;的信任建设
           </span>
         </div>
       </div>

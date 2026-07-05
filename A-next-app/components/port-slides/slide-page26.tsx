@@ -160,7 +160,7 @@ export default function SlidePage26() {
 
         {/* Right top image (negative top, clipped) */}
         <img
-          src={`${P26}/right-top.png`}
+          src={`${P26}/right-top.webp`}
           alt=""
           className="absolute"
           style={{
@@ -219,7 +219,7 @@ export default function SlidePage26() {
 
         {/* Right bottom image (overflows, clipped) */}
         <img
-          src={`${P26}/right-bottom.png`}
+          src={`${P26}/right-bottom.webp`}
           alt=""
           className="absolute"
           style={{

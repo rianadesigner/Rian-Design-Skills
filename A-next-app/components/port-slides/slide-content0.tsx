@@ -44,8 +44,8 @@ const PROJECTS = [
     cover: "/images/page0/content0-card-wanxiang.webp",
     aspect: COVER_ASPECT,
     accent: "#c084fc",
-    pages: "15 – 22",
-    slideIndex: 24, // page15
+    pages: "13 – 22",
+    slideIndex: 22, // page13
   },
   {
     id: "xingliu",
@@ -66,8 +66,9 @@ const SEGMENT_CARD_W =
   PROJECTS.length * CARD_W + (PROJECTS.length - 1) * STRIP_GAP;
 const SEGMENT_WIDTH = SEGMENT_CARD_W + STRIP_PAD * 2;
 const STRIP_ARC_MAX_TY = Math.pow((PROJECTS.length - 1) / 2, 2) * 13;
-// 高度需容纳：卡片本体 + 弧线下沉 + 阴影扩散（30px shadow blur offset）+ 余量
-const STRIP_CONTAINER_H = CARD_H + STRIP_ARC_MAX_TY + 96;
+// 高度需容纳：卡片本体 + hover 上浮/缩放 + 弧线下沉 + 阴影扩散（30px shadow blur offset）+ 余量
+const STRIP_HOVER_SAFE_TOP = 36;
+const STRIP_CONTAINER_H = CARD_H + STRIP_HOVER_SAFE_TOP + STRIP_ARC_MAX_TY + 112;
 
 const STRIP_ITEMS = Array.from({ length: STRIP_LOOPS }, (_, loop) =>
   PROJECTS.map((project) => ({
@@ -720,7 +721,7 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
         }}
         style={{
           position: "absolute",
-          top: "calc(53% + 78px)",
+          top: "calc(53% + 92px)",
           transform: "translateY(-50%)",
           left: 0,
           right: 0,
@@ -738,9 +739,9 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
             display: "flex",
             flexDirection: "row",
             gap: STRIP_GAP,
-            padding: `0 ${STRIP_PAD}px`,
+          padding: `${STRIP_HOVER_SAFE_TOP}px ${STRIP_PAD}px 28px`,
             width: "max-content",
-            alignItems: "center",
+          alignItems: "flex-start",
             userSelect: "none",
           }}
         >

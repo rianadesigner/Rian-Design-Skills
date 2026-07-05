@@ -210,7 +210,7 @@ export default function SlidePage4() {
 
         {/* 右侧截图 */}
         <img
-          src={`${P4}/card-formatting-right.png`}
+          src={`${P4}/card-formatting-right.webp`}
           alt=""
           className="absolute"
           style={{

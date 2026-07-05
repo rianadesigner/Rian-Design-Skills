@@ -164,7 +164,7 @@ export default function SlidePage5() {
         }}
       >
         <img
-          src={`${P5}/bottom-card.png`}
+          src={`${P5}/bottom-card.webp`}
           alt=""
           className="absolute inset-0 h-full w-full object-cover"
           style={{ objectPosition: "center top", borderTopLeftRadius: "calc(0.83 * var(--u))", borderTopRightRadius: "calc(0.83 * var(--u))", borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }}

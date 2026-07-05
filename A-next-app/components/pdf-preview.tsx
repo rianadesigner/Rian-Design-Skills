@@ -55,17 +55,16 @@ export function PdfPreview({ forcedFile }: PdfPreviewProps = {}) {
 
   const embedInPage = useMemo(() => prefersEmbedInPage(searchParams), [searchParams]);
 
-  const [iframeSrc, setIframeSrc] = useState<string | null>(null);
+  const [deferredIframeSrc, setDeferredIframeSrc] = useState<string | null>(null);
 
   useEffect(() => {
     if (!embedInPage) {
-      setIframeSrc(null);
       return undefined;
     }
     let cancelled = false;
 
     const apply = () => {
-      if (!cancelled) setIframeSrc(pdfViewerUrl);
+      if (!cancelled) setDeferredIframeSrc(pdfViewerUrl);
     };
 
     const tid = window.setTimeout(apply, 0);
@@ -73,9 +72,10 @@ export function PdfPreview({ forcedFile }: PdfPreviewProps = {}) {
     return () => {
       cancelled = true;
       window.clearTimeout(tid);
-      setIframeSrc(null);
     };
   }, [embedInPage, pdfViewerUrl]);
+
+  const iframeSrc = embedInPage ? deferredIframeSrc : null;
 
   const hrefBrowserOnly = useMemo(
     () => buildPreviewHref(previewBasePath, searchParams, { embedded: "0" }),

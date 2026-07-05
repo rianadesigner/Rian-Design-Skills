@@ -36,10 +36,10 @@ const SIDEBAR_TREE = [
         label: "文件上传",
         expanded: true,
         items: [
-          { name: "双一流大学介绍.pdf",            icon: `${P0}/agent-ficon-pdf.png` },
-          { name: "985工程高检.docx",              icon: `${P0}/agent-ficon-docx.png` },
-          { name: "211工程高校.md",                icon: `${P0}/agent-ficon-md.png` },
-          { name: "31省市2025年高考分数线汇总.pdf", icon: `${P0}/agent-ficon-pdf.png` },
+          { name: "双一流大学介绍.pdf",            icon: `${P0}/agent-ficon-pdf.webp` },
+          { name: "985工程高检.docx",              icon: `${P0}/agent-ficon-docx.webp` },
+          { name: "211工程高校.md",                icon: `${P0}/agent-ficon-md.webp` },
+          { name: "31省市2025年高考分数线汇总.pdf", icon: `${P0}/agent-ficon-pdf.webp` },
           { name: "清华大学AI开源项目.html",        icon: null },
         ],
       },
@@ -88,9 +88,9 @@ const CHIPS = [
 ];
 
 const SOURCES = [
-  { title: "文件上传",   desc: "PDF/Word/PPT...",   img: `${P0}/agent-3d-upload.png`,  imgStyle: { height: "117.31%", left: "0",    top: "-9.13%",  width: "100.83%" } },
-  { title: "网页/长文本", desc: "网页抓取/文本粘贴", img: `${P0}/agent-3d-webpage.png`, imgStyle: { height: "99.55%",  left: "6.81%", top: "0.45%",   width: "85.56%"  } },
-  { title: "第三方应用", desc: "Notion/钉钉/飞书",  img: `${P0}/agent-3d-app.png`,    imgStyle: { height: "120.87%", left: "0.3%",  top: "-5.17%",  width: "103.89%" } },
+  { title: "文件上传",   desc: "PDF/Word/PPT...",   img: `${P0}/agent-3d-upload.webp`,  imgStyle: { height: "117.31%", left: "0",    top: "-9.13%",  width: "100.83%" } },
+  { title: "网页/长文本", desc: "网页抓取/文本粘贴", img: `${P0}/agent-3d-webpage.webp`, imgStyle: { height: "99.55%",  left: "6.81%", top: "0.45%",   width: "85.56%"  } },
+  { title: "第三方应用", desc: "Notion/钉钉/飞书",  img: `${P0}/agent-3d-app.webp`,    imgStyle: { height: "120.87%", left: "0.3%",  top: "-5.17%",  width: "103.89%" } },
   { title: "Git仓库",    desc: "同步GitHub管理",    img: `${P0}/agent-3d-git.png`,    imgStyle: { inset: "0", width: "100%", height: "100%", objectFit: "cover" as const, objectPosition: "bottom" } },
 ];
 

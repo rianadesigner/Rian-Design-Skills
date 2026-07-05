@@ -174,7 +174,7 @@ export default function SlidePage20() {
         />
         {/* Right top (components) */}
         <img
-          src={`${P20}/right-top.png`}
+          src={`${P20}/right-top.webp`}
           alt=""
           className="absolute"
           style={{
@@ -190,7 +190,7 @@ export default function SlidePage20() {
         />
         {/* Right bottom (parent components) */}
         <img
-          src={`${P20}/right-bottom.png`}
+          src={`${P20}/right-bottom.webp`}
           alt=""
           className="absolute"
           style={{

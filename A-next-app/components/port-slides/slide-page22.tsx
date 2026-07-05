@@ -105,7 +105,7 @@ export default function SlidePage22() {
         }}
       >
         <img
-          src={`${P22}/dark-card-bg.png`}
+          src={`${P22}/dark-card-bg.webp`}
           alt=""
           className="absolute"
           style={{
@@ -295,7 +295,7 @@ export default function SlidePage22() {
             }}
           >
             <img
-              src={`${P22}/card3-left.png`}
+              src={`${P22}/card3-left.webp`}
               alt=""
               className="absolute inset-0 h-full w-full"
               style={{ objectFit: "cover", objectPosition: "center top" }}
@@ -310,7 +310,7 @@ export default function SlidePage22() {
             }}
           >
             <img
-              src={`${P22}/card3-right.png`}
+              src={`${P22}/card3-right.webp`}
               alt=""
               className="absolute inset-0 h-full w-full"
               style={{ objectFit: "cover", objectPosition: "center top" }}

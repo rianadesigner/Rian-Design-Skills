@@ -472,17 +472,17 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       <img  src={`${PL}/bg-grid.svg`} alt="" className="absolute left-0 top-0 h-[770px] w-[1344px] pointer-events-none" draggable={false} />
 
       {/* Side glow right */}
-      <div className="absolute left-[calc(75%+60px)] top-[214px] h-[148px] w-[174px] pointer-events-none">
+      <div className="absolute left-[calc(75%+60px)] top-[264px] h-[148px] w-[174px] pointer-events-none">
         <img  src={`${PL}/side-glow-right.svg`} alt="" className="absolute block" style={{ inset: "-50% -42.53%", maxWidth: "none", width: "185%", height: "200%" }} draggable={false} />
       </div>
 
       {/* Glow pink left */}
-      <div className="absolute left-[calc(16.67%+11.36px)] top-[80.05px] h-[88px] w-[112px] pointer-events-none">
+      <div className="absolute left-[calc(16.67%+11.36px)] top-[130px] h-[88px] w-[112px] pointer-events-none">
         <img  src={`${PL}/glow-pink.svg`} alt="" className="absolute block" style={{ inset: "-136.36% -107.14%", maxWidth: "none", width: "314%", height: "373%" }} draggable={false} />
       </div>
 
       {/* Subtitle */}
-      <div className="absolute left-[calc(50%-40px)] top-[328px] -translate-x-1/2 whitespace-nowrap text-center text-[16px] leading-[24px] text-[#737380]">
+      <div className="absolute left-[calc(50%-40px)] top-[378px] -translate-x-1/2 whitespace-nowrap text-center text-[16px] leading-[24px] text-[#737380]">
         <p className="mb-0">上传文件、编译结构化知识、连接第三方应用，</p>
         <p>并生成视频、报告与脑图。</p>
       </div>
@@ -492,7 +492,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
         <div className="-rotate-[15deg]">
           <div className="relative h-[135px] w-[240px] overflow-hidden rounded-2xl" style={{ boxShadow: "0px 1px 2px 0px rgba(0,0,0,0.06)" }}>
             <div className="absolute inset-0 pointer-events-none overflow-hidden rounded-2xl">
-              <img  src={`${PL}/video-bg-large.png`} alt="" className="absolute" style={{ height: "153.68%", left: "-26.5%", top: "-20.24%", width: "161.35%", maxWidth: "none" }} draggable={false} />
+              <img  src={`${PL}/video-bg-large.webp`} alt="" className="absolute" style={{ height: "153.68%", left: "-26.5%", top: "-20.24%", width: "161.35%", maxWidth: "none" }} draggable={false} />
             </div>
             <div className="absolute inset-0 rounded-2xl" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.1), rgba(0,0,0,0.02) 55%, rgba(0,0,0,0))" }} />
             <div className="absolute left-[16.38px] top-[12.02px] flex items-center overflow-clip rounded bg-[rgba(0,0,0,0.06)] px-1 py-0.5">
@@ -536,14 +536,14 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       </div>
 
       {/* CTA glow */}
-      <div className="absolute left-[calc(16.67%+9.33px)] top-[412px] h-[73px] w-[84px] pointer-events-none">
+      <div className="absolute left-[calc(16.67%+9.33px)] top-[462px] h-[73px] w-[84px] pointer-events-none">
         <div className="absolute" style={{ inset: "-60.27% -52.38%" }}>
           <img  src={`${PL}/cta-glow.svg`} alt="" className="block size-full" style={{ maxWidth: "none" }} draggable={false} />
         </div>
       </div>
 
       {/* Premium ring/star decoration (standalone) */}
-      <div className="absolute left-[calc(50%-48px)] top-[223px] flex h-[66px] w-[64px] items-center justify-center pointer-events-none">
+      <div className="absolute left-[calc(50%-48px)] top-[273px] flex h-[66px] w-[64px] items-center justify-center pointer-events-none">
         <div className="rotate-[15deg]">
           <img  src={`${PL}/premium-ring.svg`} alt="" className="block h-[55px] w-[52px]" style={{ maxWidth: "none" }} draggable={false} />
         </div>
@@ -551,7 +551,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
 
       {/* Hero title */}
       <p
-        className="absolute left-[calc(50%-40px)] top-[232px] -translate-x-1/2 w-[560px] text-center text-[60px] tracking-[1.8px]"
+        className="absolute left-[calc(50%-40px)] top-[282px] -translate-x-1/2 w-[560px] text-center text-[60px] tracking-[1.8px]"
         style={{
           fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif",
           fontWeight: 700,
@@ -566,7 +566,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       </p>
 
       {/* CTA dashes (flipped) */}
-      <div className="absolute left-[calc(50%-40px)] top-[447px] flex h-[46px] w-[812px] items-center justify-center pointer-events-none" style={{ transform: "translateX(-50%) scaleY(-1)" }}>
+      <div className="absolute left-[calc(50%-40px)] top-[497px] flex h-[46px] w-[812px] items-center justify-center pointer-events-none" style={{ transform: "translateX(-50%) scaleY(-1)" }}>
         <div className="relative h-[46px] w-[812px]">
           <div className="absolute" style={{ inset: "8.7% 0 0 66.69%" }}>
             <img  src={`${PL}/cta-dash-right.svg`} alt="" className="absolute block" style={{ inset: "-4.17% -0.74% -8.93% -0.74%", maxWidth: "none", width: "101.48%", height: "113.1%" }} draggable={false} />
@@ -584,7 +584,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       {/* CTA Button */}
       <button
         onClick={(e) => { e.stopPropagation(); onNavigate?.(); }}
-        className="absolute left-[calc(50%-48px)] top-[418px] flex -translate-x-1/2 items-center gap-2.5 rounded-full border-2 border-white px-[42px] py-[18px]"
+        className="absolute left-[calc(50%-48px)] top-[468px] flex -translate-x-1/2 items-center gap-2.5 rounded-full border-2 border-white px-[42px] py-[18px]"
         style={{
           background: "linear-gradient(129deg, rgba(255,255,255,0.05) 7%, rgba(255,255,255,0) 98%)",
           boxShadow: "0px 2px 4px rgba(0,0,0,0.1)",
@@ -643,6 +643,20 @@ const graphLabels = [
   { text: "匹配判断", from: 7, to: 8 },
 ];
 
+function seededUnit(index: number, salt: number) {
+  const x = Math.sin((index + 1) * 999 + salt * 37) * 10000;
+  return x - Math.floor(x);
+}
+
+const graphDrift = graphNodes.map((_, index) => ({
+  px: seededUnit(index, 1) * Math.PI * 2,
+  py: seededUnit(index, 2) * Math.PI * 2,
+  fx: 0.3 + seededUnit(index, 3) * 0.4,
+  fy: 0.25 + seededUnit(index, 4) * 0.35,
+  ax: 6 + seededUnit(index, 5) * 10,
+  ay: 5 + seededUnit(index, 6) * 8,
+}));
+
 const GW = 1311;
 const GH = 800;
 
@@ -662,12 +676,21 @@ function GraphView({ onSwitchView }: { onSwitchView: (v: "library" | "graph" | "
   const [positions, setPositions] = useState(() => graphNodes.map(n => ({ x: n.x, y: n.y })));
   const [cam, setCam] = useState({ x: 0, y: 0, scale: 1 });
   const switchRef = useRef(onSwitchView);
-  switchRef.current = onSwitchView;
 
   const posRef = useRef(positions);
-  posRef.current = positions;
   const camRef = useRef(cam);
-  camRef.current = cam;
+
+  useEffect(() => {
+    switchRef.current = onSwitchView;
+  }, [onSwitchView]);
+
+  useEffect(() => {
+    posRef.current = positions;
+  }, [positions]);
+
+  useEffect(() => {
+    camRef.current = cam;
+  }, [cam]);
 
   const dragRef = useRef<{
     type: "node" | "pan";
@@ -681,14 +704,7 @@ function GraphView({ onSwitchView }: { onSwitchView: (v: "library" | "graph" | "
   const graphAreaRef = useRef<HTMLDivElement>(null);
   const animRef = useRef(0);
   const anchorsRef = useRef(graphNodes.map(n => ({ x: n.x, y: n.y })));
-  const driftRef = useRef(graphNodes.map(() => ({
-    px: Math.random() * Math.PI * 2,
-    py: Math.random() * Math.PI * 2,
-    fx: 0.3 + Math.random() * 0.4,
-    fy: 0.25 + Math.random() * 0.35,
-    ax: 6 + Math.random() * 10,
-    ay: 5 + Math.random() * 8,
-  })));
+  const driftRef = useRef(graphDrift);
 
   useEffect(() => {
     const tick = (now: number) => {
@@ -1003,9 +1019,9 @@ const agentChips = [
 ];
 
 const agentSources = [
-  { title: "文件上传", desc: "PDF/Word/PPT...", img: `${P0}/agent-3d-upload.png`, imgStyle: { height: "117.31%", left: "0", top: "-9.13%", width: "100.83%" } },
-  { title: "网页/长文本", desc: "网页抓取/文本粘贴", img: `${P0}/agent-3d-webpage.png`, imgStyle: { height: "99.55%", left: "6.81%", top: "0.45%", width: "85.56%" } },
-  { title: "第三方应用", desc: "Notion/钉钉/飞书", img: `${P0}/agent-3d-app.png`, imgStyle: { height: "120.87%", left: "0.3%", top: "-5.17%", width: "103.89%" } },
+  { title: "文件上传", desc: "PDF/Word/PPT...", img: `${P0}/agent-3d-upload.webp`, imgStyle: { height: "117.31%", left: "0", top: "-9.13%", width: "100.83%" } },
+  { title: "网页/长文本", desc: "网页抓取/文本粘贴", img: `${P0}/agent-3d-webpage.webp`, imgStyle: { height: "99.55%", left: "6.81%", top: "0.45%", width: "85.56%" } },
+  { title: "第三方应用", desc: "Notion/钉钉/飞书", img: `${P0}/agent-3d-app.webp`, imgStyle: { height: "120.87%", left: "0.3%", top: "-5.17%", width: "103.89%" } },
   { title: "Git仓库", desc: "同步GitHub管理", img: `${P0}/agent-3d-git.png`, imgStyle: { inset: "0", width: "100%", height: "100%", objectFit: "cover" as const, objectPosition: "bottom" } },
 ];
 
@@ -1017,11 +1033,11 @@ const sidebarTree = [
         label: "文件上传",
         expanded: true,
         items: [
-          { name: "双一流大学介绍.pdf", icon: `${P0}/agent-ficon-pdf.png` },
-          { name: "985工程高校.docx", icon: `${P0}/agent-ficon-docx.png` },
-          { name: "211工程高校.md", icon: `${P0}/agent-ficon-md.png` },
-          { name: "省份分数线.xlsx", icon: `${P0}/agent-ficon-xlsx.png` },
-          { name: "21省市2025年高考分数线汇总.ppt", icon: `${P0}/agent-ficon-ppt.png` },
+          { name: "双一流大学介绍.pdf", icon: `${P0}/agent-ficon-pdf.webp` },
+          { name: "985工程高校.docx", icon: `${P0}/agent-ficon-docx.webp` },
+          { name: "211工程高校.md", icon: `${P0}/agent-ficon-md.webp` },
+          { name: "省份分数线.xlsx", icon: `${P0}/agent-ficon-xlsx.webp` },
+          { name: "21省市2025年高考分数线汇总.ppt", icon: `${P0}/agent-ficon-ppt.webp` },
         ],
       },
       { label: "网页/长文本" },
@@ -1538,7 +1554,7 @@ export default function SlidePage0({ initialView = "landing" }: { initialView?: 
               <div className="relative h-[200px] w-[160px] overflow-hidden rounded-2xl">
                 <div className="absolute inset-0 pointer-events-none rounded-2xl">
                   <div className="absolute inset-0 overflow-hidden rounded-2xl">
-                    <img  src={`${PL}/video-card-right-bg.png`} alt="" className="absolute" style={{ height: "164%", left: "-12.35%", top: "-0.2%", width: "153.75%", maxWidth: "none" }} draggable={false} />
+                    <img  src={`${PL}/video-card-right-bg.webp`} alt="" className="absolute" style={{ height: "164%", left: "-12.35%", top: "-0.2%", width: "153.75%", maxWidth: "none" }} draggable={false} />
                   </div>
                   <div className="absolute inset-0 rounded-2xl" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.1), rgba(0,0,0,0.02) 55%, rgba(0,0,0,0))" }} />
                 </div>
@@ -1558,7 +1574,7 @@ export default function SlidePage0({ initialView = "landing" }: { initialView?: 
           <div className="absolute left-[calc(75%-25px)] top-[43.7%] flex h-[103.32px] w-[297.94px] items-center justify-center">
             <div style={{ transform: "rotate(3.82deg)" }}>
               <div className="relative flex items-center gap-2 rounded-2xl bg-white p-3" style={{ width: 274 }}>
-                <img  src={`${PL}/news-card-img.png`} alt="" className="size-[60px] shrink-0 rounded object-cover" draggable={false} />
+                <img  src={`${PL}/news-card-img.webp`} alt="" className="size-[60px] shrink-0 rounded object-cover" draggable={false} />
                 <div className="flex w-[201px] shrink-0 flex-col gap-2">
                   <div className="flex items-center gap-1">
                     <span className="shrink-0 rounded-[5px] bg-[rgba(255,115,89,0.12)] px-2 py-1 text-[10px] font-medium text-[#ff7359]">热点</span>

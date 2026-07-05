@@ -158,6 +158,7 @@ export default function SlideContainer() {
   const rootRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const zoomRef = useRef(1);
+  const prefetchedImportsRef = useRef<Set<number>>(new Set());
   const gestureRef = useRef({
     startX: 0,
     startY: 0,
@@ -388,7 +389,7 @@ export default function SlideContainer() {
     setCurrent([visibleIndex, dir]);
   }, [current]);
 
-  // ——— 分阶段预取策略，兼顾初始渲染速度与导航流畅度 ———
+  // ——— 轻量预取策略：只预热当前附近页面，避免外部冷启动时解析完整作品集 ———
   useEffect(() => {
     // allImports[i] 对应 allSlideIds[i+2]（跳过 cover 和 content0）
     const allImports: Array<() => Promise<unknown>> = [
@@ -412,9 +413,9 @@ export default function SlideContainer() {
     ];
 
     // content0 中点击可跳转的幻灯片 slideIndex（相对 allSlideIds），转换到 allImports 下标
-    const JUMP_TARGETS = [2, 10, 24, 32].map((idx) => idx - 2).filter((i) => i >= 0 && i < allImports.length);
+    const JUMP_TARGETS = [2, 10, 22, 32].map((idx) => idx - 2).filter((i) => i >= 0 && i < allImports.length);
 
-    const loaded = new Set<number>();
+    const loaded = prefetchedImportsRef.current;
     const runSequential = (indices: number[], delay: number, interval: number) => {
       let i = 0;
       const run = () => {
@@ -441,25 +442,21 @@ export default function SlideContainer() {
       }
     };
 
-    // 阶段1：立即预取当前 ±2 和 content0 可跳转目标（体验最关键）
+    // 只预取当前前后 1 页；用户确实进入封面/content0 后，再延后预热可点击跳转目标。
     const offset = current - 2;
     const near = Array.from(
       new Set([
-        ...Array.from({ length: 5 }, (_, i) => offset - 1 + i).filter((i) => i >= 0 && i < allImports.length),
-        ...JUMP_TARGETS,
+        offset - 1,
+        offset,
+        offset + 1,
       ])
-    );
-    runSequential(near, 0, 800);
+    ).filter((i) => i >= 0 && i < allImports.length);
+    runSequential(near, 0, 900);
 
-    // 阶段2：2s 后预取前 12 个 slide（顺序浏览场景）
-    const first12 = Array.from({ length: Math.min(12, allImports.length) }, (_, i) => i);
-    runSequential(first12, 2000, 600);
-
-    // 阶段3：6s 后预取剩余全部（覆盖完整集）
-    const rest = Array.from({ length: allImports.length }, (_, i) => i);
-    runSequential(rest, 6000, 400);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (current <= 1) {
+      runSequential(JUMP_TARGETS, 1600, 1000);
+    }
+  }, [current]);
 
       const Slide = slideComponents[current];
   const slideProps = current <= 1 ? { onEnter: handleEnter, onNavigate: handleNavigate } : {};

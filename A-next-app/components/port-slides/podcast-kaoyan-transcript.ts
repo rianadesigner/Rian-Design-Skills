@@ -5,7 +5,7 @@ export type TranscriptSegment = {
   text: string;
 };
 
-/** 与 podcast-kaoyan.wav（约 6:41）对齐的演示文稿 */
+/** 与 podcast-kaoyan.mp3（约 6:41）对齐的演示文稿 */
 export const KAOYAN_TRANSCRIPT: TranscriptSegment[] = [
   {
     start: 0,

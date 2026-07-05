@@ -7,7 +7,7 @@ import { SLIDE_DESIGN_WIDTH } from "./slide-design";
 
 // ── Assets ──────────────────────────────────────────────────
 const P = "/images/page0b";
-const imgAi1 = `${P}/ai1-bg.png`;
+const imgAi1 = `${P}/ai1-bg.webp`;
 
 // Design canvas dimensions
 const DESIGN_W = SLIDE_DESIGN_WIDTH; // 1440
@@ -121,9 +121,9 @@ export default function SlidePage0b() {
           fontSize: 12.36, color: "rgba(255,255,255,0.5)",
           textAlign: "center", lineHeight: "21.64px", width: 346,
         }}>
-          <p style={{ margin: 0 }}>1. 用户需求升级：从"问答"变成"完成复杂任务"</p>
-          <p style={{ margin: 0 }}>2. 产品定位升级：从"AI 搜索助手"变成"AI IDE / AI 工作台"</p>
-          <p style={{ margin: 0 }}>3. 技术能力升级：从"全网搜索"到"Agent 原生创作平台"</p>
+          <p style={{ margin: 0 }}>1. 用户需求升级：从&quot;问答&quot;变成&quot;完成复杂任务&quot;</p>
+          <p style={{ margin: 0 }}>2. 产品定位升级：从&quot;AI 搜索助手&quot;变成&quot;AI IDE / AI 工作台&quot;</p>
+          <p style={{ margin: 0 }}>3. 技术能力升级：从&quot;全网搜索&quot;到&quot;Agent 原生创作平台&quot;</p>
         </div>
       </div>
 
