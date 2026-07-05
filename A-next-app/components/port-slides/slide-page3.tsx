@@ -28,7 +28,7 @@ export default function SlidePage3() {
           style={{ width: "5.97%" }}
         />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             专业研究场景2:&nbsp;&nbsp;高级研究模式 / 03
           </p>
         </div>
@@ -96,7 +96,7 @@ export default function SlidePage3() {
 
       {/* ── 顶部三张截图卡片 ─────────────────────────────────────── */}
       <img
-        src={`${P3}/card-1.png`}
+        src={`${P3}/card-1.webp`}
         alt=""
         className="absolute z-10"
         style={{
@@ -127,7 +127,7 @@ export default function SlidePage3() {
       />
       {/* 第三张：移动端多视图 */}
       <img
-        src={`${P3}/card-3.png`}
+        src={`${P3}/card-3.webp`}
         alt=""
         className="absolute z-10"
         style={{

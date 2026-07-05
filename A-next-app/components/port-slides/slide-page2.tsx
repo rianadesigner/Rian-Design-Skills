@@ -22,7 +22,7 @@ const ALL_CARDS = [
     num: "00",
     title: "深度搜索_多轮",
     desc: "通过多轮推理深化问题认知并进行规划纠偏, 打造完整deep research能力",
-    img: `${P2}/screenshot-deep-search.png`,
+    img: `${P2}/screenshot-deep-search.jpg`,
     tags: ["思考过程展示", "二次编辑", "详情展示"],
     markmap: false, podcast: false, ppt: false, imgFit: true,
   },
@@ -46,7 +46,7 @@ const ALL_CARDS = [
     num: "03",
     title: "AI.PPT",
     desc: "自动化大纲生成及模板选择, 支持生成导出",
-    img: `${P2}/card-ppt-ui.png`,
+    img: `${P2}/card-ppt-ui.webp`,
     tags: [],
     markmap: false, podcast: false, ppt: true, imgFit: false,
   },
@@ -192,9 +192,9 @@ export default function SlidePage2() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left:"4.17%", top:"1.48%", width:"91.67%", height:"3.33%" }}>
-        <img loading="lazy" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width:"5.97%" }} />
+        <img loading="eager" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width:"5.97%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7*var(--u))]">
-          <p style={{ color:"rgba(255,255,255,0.38)", fontSize:"clamp(12px,calc(1.67*var(--u)),24px)", fontFamily:"'LogoSC Unbounded Sans', sans-serif", textAlign:"right", lineHeight:1.4, margin:0, whiteSpace:"nowrap" }}>
+          <p style={{ color:"rgba(255,255,255,0.38)", fontSize:"16px", fontFamily:"'LogoSC Unbounded Sans', sans-serif", textAlign:"right", lineHeight:1.4, margin:0, whiteSpace:"nowrap" }}>
             专业研究场景1: AI搜 / 02
           </p>
         </div>

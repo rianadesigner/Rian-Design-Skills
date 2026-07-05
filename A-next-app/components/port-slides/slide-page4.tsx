@@ -6,28 +6,28 @@ const topCards = [
     title: "Plan Agent(规划员)",
     desc: "识别用户意图、角色判断、转化为可执行的步骤列表",
     tags: ["复杂任务拆解", "允许用户修正"],
-    img: `${P4}/card-plan.png`,
+    img: `${P4}/card-plan.webp`,
   },
   {
     num: "02",
     title: "React Agent(主管)",
     desc: "每一个子任务agent会选择对应的子agent来执行",
     tags: ["结构化表达", "可视化呈现"],
-    img: `${P4}/card-react.png`,
+    img: `${P4}/card-react.webp`,
   },
   {
     num: "03",
     title: "Search/Draw Agent(员工)",
     desc: "执行RAG 检索、Python 代码执行、浏览器自动化",
     tags: ["聚焦执行结果", "关注动作完成"],
-    img: `${P4}/card-search.png`,
+    img: `${P4}/card-search.webp`,
   },
   {
     num: "04",
     title: "User Agent(专员)",
     desc: "中途输入, 判断整个流程下一步应该重新plan或继续执行",
     tags: ["让用户掌控一切", "提出潜在异常情况"],
-    img: `${P4}/card-user.png`,
+    img: `${P4}/card-user.webp`,
   },
 ];
 
@@ -52,9 +52,9 @@ export default function SlidePage4() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img loading="lazy" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
+        <img loading="eager" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             专业研究场景2:&nbsp;&nbsp;高级研究模式 / 04
           </p>
         </div>
@@ -193,7 +193,7 @@ export default function SlidePage4() {
 
         {/* 左侧截图 — 撑满至卡片底部 */}
         <img
-          src={`${P4}/card-formatting-left.png`}
+          src={`${P4}/card-formatting-left.webp`}
           alt=""
           className="absolute"
           style={{

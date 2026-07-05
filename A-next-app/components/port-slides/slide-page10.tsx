@@ -32,7 +32,7 @@ export default function SlidePage10() {
         className="absolute z-10 flex items-center"
         style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}
       >
-        <img loading="lazy" decoding="async" src={"/images/logo-new.webp"} alt="" className="h-full object-contain" />
+        <img loading="eager" decoding="async" src={"/images/logo-new.webp"} alt="" className="h-full object-contain" />
         <div
           className="ml-[calc(1 * var(--u))]"
           style={{ border: "1px solid rgba(255,255,255,0.22)", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}
@@ -42,7 +42,7 @@ export default function SlidePage10() {
           </p>
         </div>
         <div className="ml-auto flex items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             日常消费场景3:&nbsp;&nbsp;让优质内容形成社区生态 / 10
           </p>
         </div>
@@ -174,7 +174,7 @@ export default function SlidePage10() {
           }}
         >
           <img
-            src={`${P10}/card-01.png`}
+            src={`${P10}/card-01.webp`}
             alt=""
             className="absolute"
             style={{ left: "5%", top: "30.83%", width: "90%", objectFit: "cover", borderRadius: "6px" }}
@@ -272,7 +272,7 @@ export default function SlidePage10() {
           }}
         >
           <img
-            src={`${P10}/card-03.png`}
+            src={`${P10}/card-03.webp`}
             alt=""
             className="absolute"
             style={{ left: "0", top: "0", width: "100%", height: "100%", objectFit: "cover", borderRadius: "6px" }}
@@ -321,7 +321,7 @@ export default function SlidePage10() {
           }}
         >
           <img
-            src={`${P10}/card-04.png`}
+            src={`${P10}/card-04.webp`}
             alt=""
             className="absolute"
             style={{ left: "5%", top: "13.11%", width: "90%", height: "79.47%", objectFit: "cover", borderRadius: "6px" }}

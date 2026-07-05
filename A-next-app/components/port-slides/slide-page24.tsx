@@ -107,7 +107,7 @@ export default function SlidePage24() {
         className="absolute z-10 overflow-hidden"
         style={{ left: "25.63%", top: "0.93%", width: "36.94%", height: "31.30%" }}
       >
-        <img loading="lazy" decoding="async" src={`${P24}/research.png`} alt="" className="h-full w-full object-contain" />
+        <img loading="lazy" decoding="async" src={`${P24}/research.jpg`} alt="" className="h-full w-full object-contain" />
         <div
           className="absolute"
           style={{
@@ -151,8 +151,8 @@ export default function SlidePage24() {
           商品讲解 | 知识普及<br />功能测评 | 场景展示
         </span>
         <div className="flex" style={{ paddingTop: "clamp(4px, calc(0.69 * var(--u)), 10px)" }}>
-          <img loading="lazy" decoding="async" src={`${P24}/phone1.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
-          <img loading="lazy" decoding="async" src={`${P24}/phone2.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
+          <img loading="lazy" decoding="async" src={`${P24}/phone1.webp`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
+          <img loading="lazy" decoding="async" src={`${P24}/phone2.webp`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
         </div>
       </div>
 
@@ -175,8 +175,8 @@ export default function SlidePage24() {
           搭配组合 | 探店分享<br />攻略经验 | 生活记录
         </span>
         <div className="flex" style={{ paddingTop: "clamp(4px, calc(0.69 * var(--u)), 10px)" }}>
-          <img loading="lazy" decoding="async" src={`${P24}/phone3.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
-          <img loading="lazy" decoding="async" src={`${P24}/phone4.png`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
+          <img loading="lazy" decoding="async" src={`${P24}/phone3.webp`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
+          <img loading="lazy" decoding="async" src={`${P24}/phone4.webp`} alt="" style={{ width: "50%", height: "auto", objectFit: "cover" }} />
         </div>
       </div>
 
@@ -340,7 +340,7 @@ export default function SlidePage24() {
       <div className="absolute z-20" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img loading="lazy" decoding="async" src={`${P24}/logo.png`} alt="" className="absolute top-0 h-full object-contain" style={{ left: "-2.5%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "#FFFFFF", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "#FFFFFF", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             混剪-淘系内容化裂变桶 / 24
           </p>
         </div>

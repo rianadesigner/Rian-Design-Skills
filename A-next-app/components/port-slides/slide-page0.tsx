@@ -1179,7 +1179,7 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
                 <p>我在追《太平年》这部剧，五代十国那段历史太乱了，钱镠是谁，李克用是谁，后周和宋朝什么关系，我完全搞不清楚。</p>
                 <p>昨天我发现清华团队做的一个 AI 教学系统，叫 OpenMAIC。这个系统和我们熟悉的慕课完全不一样。</p>
               </div>
-              <img  src={`${P0}/agent-article-img.png`} alt="OpenMAIC" className="w-full rounded" draggable={false} />
+              <img  src={`${P0}/agent-article-img.webp`} alt="OpenMAIC" className="w-full rounded" draggable={false} />
               <p className="text-center text-[10px] font-semibold leading-[18px] text-[#333]">图例：OpenMAIC</p>
               <div className="text-[12px] leading-[20px] text-black">
                 <p>慕课是什么？录好的视频，我自己看，看不懂也没人理我。但 OpenMAIC 不是这样。</p>

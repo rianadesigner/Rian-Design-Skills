@@ -21,9 +21,9 @@ export default function SlidePage11() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img loading="lazy" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
+        <img loading="eager" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             终端CLI：&nbsp;&nbsp;面向技术开发者的免费开源终端AI助手 / 11
           </p>
         </div>
@@ -151,7 +151,7 @@ export default function SlidePage11() {
           }}
         >
           <img
-            src={`${P11}/banner.png`}
+            src={`${P11}/banner.webp`}
             alt=""
             className="absolute"
             style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)", height: "60%", objectFit: "contain" }}
@@ -211,7 +211,7 @@ export default function SlidePage11() {
             无缝集成到你熟悉的开发环境中，提升开发效率
           </p>
           <img
-            src={`${P11}/card-integrate.png`}
+            src={`${P11}/card-integrate.webp`}
             alt=""
             className="w-full"
             style={{ borderRadius: "9px", objectFit: "cover", height: "clamp(80px, calc(10.56 * var(--u)), 152px)" }}
@@ -241,7 +241,7 @@ export default function SlidePage11() {
             不同应用支持创建小巧、专一、可组合的工具
           </p>
           <img
-            src={`${P11}/card-compose.png`}
+            src={`${P11}/card-compose.webp`}
             alt=""
             className="flex-1 w-full"
             style={{ borderRadius: "9px", objectFit: "cover", minHeight: 0 }}
@@ -271,7 +271,7 @@ export default function SlidePage11() {
             iFlow开放平台拓展海量生态能力
           </p>
           <img
-            src={`${P11}/card-beyond.png`}
+            src={`${P11}/card-beyond.webp`}
             alt=""
             className="flex-1 w-full"
             style={{ borderRadius: "9px", objectFit: "cover", objectPosition: "center top", minHeight: 0 }}

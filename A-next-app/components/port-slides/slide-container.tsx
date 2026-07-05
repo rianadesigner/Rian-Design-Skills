@@ -6,6 +6,7 @@ import { ObservatoryCover } from "../observatory-cover";
 import SlideContent0 from "./slide-content0";
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design";
 import { measureFitStage } from "./slide-fit";
+import { preloadPage0dImages } from "./slide-page0d-assets";
 
 // 首屏只加载 cover + content0，其余全部懒加载以缩减初始 bundle
 const SlidePage0a  = lazy(() => import("./slide-page0a"));
@@ -223,6 +224,22 @@ export default function SlideContainer() {
       document.documentElement.style.removeProperty("--slide-design-w");
       document.documentElement.style.removeProperty("--slide-design-h");
     };
+  }, []);
+
+  useEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+
+    const handleImageError = (event: Event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLImageElement)) return;
+      target.dataset.assetError = "true";
+      target.style.opacity = "0";
+      target.style.background = "rgba(255,255,255,0.06)";
+    };
+
+    root.addEventListener("error", handleImageError, true);
+    return () => root.removeEventListener("error", handleImageError, true);
   }, []);
 
   const paginate = useCallback(
@@ -469,6 +486,14 @@ export default function SlideContainer() {
 
     if (current <= 1) {
       runSequential(JUMP_TARGETS, 1600, 1000);
+    }
+  }, [current]);
+
+  // page0d 图标较多：在用户翻到 page0c 时提前预热本地资源
+  useEffect(() => {
+    const id = slideIds[current];
+    if (id === "page0c" || id === "page0d") {
+      preloadPage0dImages();
     }
   }, [current]);
 

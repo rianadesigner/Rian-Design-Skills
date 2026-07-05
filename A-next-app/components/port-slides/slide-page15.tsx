@@ -21,9 +21,9 @@ export default function SlidePage15() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img loading="lazy" decoding="async" src="/images/brand/wanxiang-xinglian-title.png" alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
+        <img loading="eager" decoding="async" src="/images/brand/wanxiang-xinglian-title.png" alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             工作空间新建智能体 / 15
           </p>
         </div>
@@ -131,7 +131,7 @@ export default function SlidePage15() {
             </p>
           </div>
           <img
-            src={`${P15}/card1-screenshot.png`}
+            src={`${P15}/card1-screenshot.webp`}
             alt=""
             className="absolute"
             style={{
@@ -200,7 +200,7 @@ export default function SlidePage15() {
             </p>
           </div>
           <img
-            src={`${P15}/card3-screenshot.png`}
+            src={`${P15}/card3-screenshot.webp`}
             alt=""
             className="absolute"
             style={{
@@ -234,7 +234,7 @@ export default function SlidePage15() {
             </p>
           </div>
           <img
-            src={`${P15}/card4-screenshot.png`}
+            src={`${P15}/card4-screenshot.webp`}
             alt=""
             className="absolute"
             style={{

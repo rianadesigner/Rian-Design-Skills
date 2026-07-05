@@ -1,33 +1,24 @@
 "use client";
 
-// Figma asset URLs (valid 7 days from generation)
-const IMG_DAXUE =
-  "https://www.figma.com/api/mcp/asset/d9508111-acce-470f-b63e-e714a7095bb3";
-const IMG_JIAOYUBU =
-  "https://www.figma.com/api/mcp/asset/20ab7a81-d765-4aac-96d0-5203306496aa";
-const IMG_985 =
-  "https://www.figma.com/api/mcp/asset/d901af88-3a06-421c-8e44-2841712bb76d";
-const IMG_211 =
-  "https://www.figma.com/api/mcp/asset/46369cb1-39bc-44cf-81bc-9c678b56358a";
-const IMG_ZHIYUAN =
-  "https://www.figma.com/api/mcp/asset/4ec6e7c4-c3b8-4c24-801a-24c7f5f4181f";
-const IMG_HAPPY_HORSE =
-  "https://www.figma.com/api/mcp/asset/77c03770-e422-47cf-9ef1-3186d445504e";
-const IMG_BEIKAO_1 =
-  "https://www.figma.com/api/mcp/asset/5be83c1f-4631-4b0a-b458-fb9179b39ec5";
-const IMG_XUKE =
-  "https://www.figma.com/api/mcp/asset/6f5da48d-68ec-4278-8f16-c173c95e4053";
-const IMG_PROVINCE =
-  "https://www.figma.com/api/mcp/asset/d20c2612-ec4d-44ef-bf25-5b4d8e466d31";
-const IMG_PROVINCE_TOTAL =
-  "https://www.figma.com/api/mcp/asset/6b1c3d7f-2be7-4448-9fa9-9bf967d472cf";
-const IMG_BEIKAO_2 =
-  "https://www.figma.com/api/mcp/asset/0aa9b543-97f0-4a92-b844-9194cc85caeb";
-// 03 · 第三方应用 — Figma node 1209:7416 (updated 2026-06-22)
-const IMG_NOTION =
-  "https://www.figma.com/api/mcp/asset/e3140dc3-5c4d-4882-aa5f-bac8dc17bc8a";
-const IMG_FEISHU =
-  "https://www.figma.com/api/mcp/asset/c3de4ba0-4508-409b-9f1f-9001dcb6345a";
+import { useEffect } from "react";
+import {
+  PAGE0D_ASSET_BASE,
+  preloadPage0dImages,
+} from "./slide-page0d-assets";
+
+const P = PAGE0D_ASSET_BASE;
+const IMG_DAXUE = `${P}/daxue.png`;
+const IMG_JIAOYUBU = `${P}/jiaoyubu.png`;
+const IMG_985 = `${P}/985.png`;
+const IMG_211 = `${P}/211.png`;
+const IMG_ZHIYUAN = `${P}/zhiyuan.png`;
+const IMG_HAPPY_HORSE = `${P}/happy-horse.png`;
+const IMG_BEIKAO_1 = `${P}/beikao-1.png`;
+const IMG_XUKE = `${P}/xuke.png`;
+const IMG_PROVINCE = `${P}/province.png`;
+const IMG_PROVINCE_TOTAL = `${P}/province-total.png`;
+const IMG_NOTION = `${P}/notion.png`;
+const IMG_FEISHU = `${P}/feishu.png`;
 
 // ─── Section header ───────────────────────────────────────────────────────────
 function SectionLabel({
@@ -147,6 +138,9 @@ function FileCard({
           <img
             alt=""
             src={imgSrc}
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
             style={{
               position: "absolute",
               inset: 0,
@@ -221,6 +215,10 @@ function FileCard({
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function SlidePage0d() {
+  useEffect(() => {
+    preloadPage0dImages();
+  }, []);
+
   return (
     <div
       style={{
@@ -397,6 +395,9 @@ export default function SlidePage0d() {
             <img
               alt="Happy Horse 1.1 重磅升级！火热内测中"
               src={IMG_HAPPY_HORSE}
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
               style={{
                 position: "absolute",
                 inset: 0,

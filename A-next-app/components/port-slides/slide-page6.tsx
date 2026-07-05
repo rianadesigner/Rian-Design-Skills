@@ -21,9 +21,9 @@ export default function SlidePage6() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img loading="lazy" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
+        <img loading="eager" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             专业研究场景3:&nbsp;&nbsp;学术阅读 / 06
           </p>
         </div>
@@ -126,7 +126,7 @@ export default function SlidePage6() {
       >
         {/* 左侧截图 */}
         <img
-          src={`${P6}/card-left.png`}
+          src={`${P6}/card-left.jpg`}
           alt=""
           className="absolute"
           style={{
@@ -141,7 +141,7 @@ export default function SlidePage6() {
         />
         {/* 右侧截图 */}
         <img
-          src={`${P6}/card-right.png`}
+          src={`${P6}/card-right.jpg`}
           alt=""
           className="absolute"
           style={{

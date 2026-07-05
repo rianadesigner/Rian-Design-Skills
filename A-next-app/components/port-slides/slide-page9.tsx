@@ -21,9 +21,9 @@ export default function SlidePage9() {
 
       {/* ── Header ───────────────────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img loading="lazy" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
+        <img loading="eager" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(12px, calc(1.67 * var(--u)), 24px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             日常消费场景2:&nbsp;&nbsp;专注用户碎片化知识管理 / 09
           </p>
         </div>
@@ -123,7 +123,7 @@ export default function SlidePage9() {
                     <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(8px, calc(0.69 * var(--u)), 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>辅助用户解决上传复杂度</p>
                   </div>
                 </div>
-                <img loading="lazy" decoding="async" src={`${P9}/card-01.png`} alt="" style={{ flex: 1, width: "100%", height: 0, minHeight: "100%", objectFit: "cover", objectPosition: "bottom", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
+                <img loading="lazy" decoding="async" src={`${P9}/card-01.webp`} alt="" style={{ flex: 1, width: "100%", height: 0, minHeight: "100%", objectFit: "cover", objectPosition: "bottom", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
               </div>
               <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.4)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
@@ -150,7 +150,7 @@ export default function SlidePage9() {
                     <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(8px, calc(0.69 * var(--u)), 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>沿用通用搜索框架</p>
                   </div>
                 </div>
-                <img loading="lazy" decoding="async" src={`${P9}/card-03.png`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
+                <img loading="lazy" decoding="async" src={`${P9}/card-03.webp`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
               </div>
               <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.4)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
@@ -162,7 +162,7 @@ export default function SlidePage9() {
                     <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(8px, calc(0.69 * var(--u)), 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>解读/翻译/复制</p>
                   </div>
                 </div>
-                <img loading="lazy" decoding="async" src={`${P9}/card-04.png`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
+                <img loading="lazy" decoding="async" src={`${P9}/card-04.webp`} alt="" style={{ flex: 1, width: "100%", objectFit: "cover", objectPosition: "center top", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
               </div>
             </div>
           </div>
