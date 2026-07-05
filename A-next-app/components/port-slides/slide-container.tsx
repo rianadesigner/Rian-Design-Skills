@@ -91,12 +91,12 @@ const variants = {
 const EASE_IN_ACCEL: [number, number, number, number] = [0.4, 0, 0.7, 1];
 
 // Cinema "punch-in": cover ↔ content0 (index 0 ↔ 1)
-// 封面像被镜头急速推近后穿入，content0 从放大模糊态向内收缩归位——
-// 配合 CinemaFrameReveal 的快门/边框收拢，营造「首页是一帧胶片开场画面」的观感。
+// 封面像被镜头急速推近后穿入，content0 从放大淡入归位——
+// 去掉 blur filter（GPU 代价过高），用 opacity + scale 营造同等冲击感。
 const cinemaVariants = {
-  enter: (_direction: number) => ({ x: 0, opacity: 0, scale: 1.5, filter: "blur(16px)" }),
-  center: { x: 0, opacity: 1, scale: 1, filter: "blur(0px)" },
-  exit: (_direction: number) => ({ x: 0, opacity: 0, scale: 1.5, filter: "blur(16px)" }),
+  enter: (_direction: number) => ({ x: 0, opacity: 0, scale: 1.4 }),
+  center: { x: 0, opacity: 1, scale: 1 },
+  exit: (_direction: number) => ({ x: 0, opacity: 0, scale: 1.4 }),
 };
 
 const CINEMA_EASE: [number, number, number, number] = [0.85, 0, 0.15, 1];
@@ -388,10 +388,10 @@ export default function SlideContainer() {
     setCurrent([visibleIndex, dir]);
   }, [current]);
 
-  // ——— 进入页面后立即预加载所有懒加载 chunk ———
+  // ——— 分阶段预取策略，兼顾初始渲染速度与导航流畅度 ———
   useEffect(() => {
-    // requestIdleCallback 在浏览器空闲时按顺序 prefetch，不阻塞渲染
-    const tasks = [
+    // allImports[i] 对应 allSlideIds[i+2]（跳过 cover 和 content0）
+    const allImports: Array<() => Promise<unknown>> = [
       () => import("./slide-page0a"),  () => import("./slide-page0b"),
       () => import("./slide-page0c"),  () => import("./slide-page0d"),
       () => import("./slide-page0e"),  () => import("./slide-page0f"),
@@ -410,22 +410,55 @@ export default function SlideContainer() {
       () => import("./slide-page23"),  () => import("./slide-page24"),
       () => import("./slide-page25"),  () => import("./slide-page26"),
     ];
-    let i = 0;
-    const run = () => {
-      if (i >= tasks.length) return;
-      tasks[i++]().finally(() => {
-        if (typeof requestIdleCallback !== "undefined") {
-          requestIdleCallback(run, { timeout: 2000 });
-        } else {
-          setTimeout(run, 100);
-        }
-      });
+
+    // content0 中点击可跳转的幻灯片 slideIndex（相对 allSlideIds），转换到 allImports 下标
+    const JUMP_TARGETS = [2, 10, 24, 32].map((idx) => idx - 2).filter((i) => i >= 0 && i < allImports.length);
+
+    const loaded = new Set<number>();
+    const runSequential = (indices: number[], delay: number, interval: number) => {
+      let i = 0;
+      const run = () => {
+        while (i < indices.length && loaded.has(indices[i])) i++;
+        if (i >= indices.length) return;
+        const idx = indices[i++];
+        loaded.add(idx);
+        allImports[idx]().finally(() => {
+          if (typeof requestIdleCallback !== "undefined") {
+            requestIdleCallback(run, { timeout: interval });
+          } else {
+            setTimeout(run, interval);
+          }
+        });
+      };
+      if (delay > 0) {
+        setTimeout(() => {
+          if (typeof requestIdleCallback !== "undefined") requestIdleCallback(run, { timeout: interval });
+          else run();
+        }, delay);
+      } else {
+        if (typeof requestIdleCallback !== "undefined") requestIdleCallback(run, { timeout: interval });
+        else setTimeout(run, 50);
+      }
     };
-    if (typeof requestIdleCallback !== "undefined") {
-      requestIdleCallback(run, { timeout: 500 });
-    } else {
-      setTimeout(run, 200);
-    }
+
+    // 阶段1：立即预取当前 ±2 和 content0 可跳转目标（体验最关键）
+    const offset = current - 2;
+    const near = Array.from(
+      new Set([
+        ...Array.from({ length: 5 }, (_, i) => offset - 1 + i).filter((i) => i >= 0 && i < allImports.length),
+        ...JUMP_TARGETS,
+      ])
+    );
+    runSequential(near, 0, 800);
+
+    // 阶段2：2s 后预取前 12 个 slide（顺序浏览场景）
+    const first12 = Array.from({ length: Math.min(12, allImports.length) }, (_, i) => i);
+    runSequential(first12, 2000, 600);
+
+    // 阶段3：6s 后预取剩余全部（覆盖完整集）
+    const rest = Array.from({ length: allImports.length }, (_, i) => i);
+    runSequential(rest, 6000, 400);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
       const Slide = slideComponents[current];
@@ -467,6 +500,7 @@ export default function SlideContainer() {
             width: ${DESIGN_WIDTH}px;
             height: ${DESIGN_HEIGHT}px;
             transform-origin: center center;
+            will-change: transform;
             /* Pure CSS cover scaling via container-query units.
                100cqw / --slide-design-w  = scale to fit width
                100cqh / --slide-design-h  = scale to fit height
@@ -492,6 +526,7 @@ export default function SlideContainer() {
           }
           .slide-canvas .slide-inner {
             cursor: grab;
+            will-change: transform, opacity;
           }
           .slide-canvas .slide-inner:active {
             cursor: grabbing;

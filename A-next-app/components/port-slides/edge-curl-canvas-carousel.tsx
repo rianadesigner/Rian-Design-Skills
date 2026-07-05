@@ -544,9 +544,29 @@ export function EdgeCurlCanvasCarousel() {
       return texture;
     });
 
+    // Wait for all <img> elements in a DOM node to finish loading
+    const waitForImages = (root: HTMLElement): Promise<void> => {
+      const imgs = Array.from(root.querySelectorAll<HTMLImageElement>("img"));
+      const pending = imgs.filter((img) => !img.complete);
+      if (pending.length === 0) return Promise.resolve();
+      return Promise.all(
+        pending.map(
+          (img) =>
+            new Promise<void>((resolve) => {
+              img.onload = img.onerror = () => resolve();
+            }),
+        ),
+      ).then(() => undefined);
+    };
+
     // Capture real SlidePage0 frames into WebGL textures in parallel (no artificial delay)
     const updateTexturesFromSlideFrames = async () => {
       await document.fonts?.ready;
+      if (disposed) return;
+      // Ensure all images inside every frame have loaded before html-to-image captures them
+      await Promise.all(
+        frameRefs.current.map((frame) => (frame ? waitForImages(frame) : Promise.resolve())),
+      );
       if (disposed) return;
       await Promise.all(
         frameRefs.current.map(async (frame, index) => {

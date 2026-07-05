@@ -15,6 +15,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  // 优化重型依赖库的 barrel import，减少 bundle 冗余
+  experimental: {
+    optimizePackageImports: ["motion", "lucide-react", "@hugeicons/react"],
+  },
 };
 
 export default nextConfig;

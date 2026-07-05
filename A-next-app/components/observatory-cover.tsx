@@ -1,7 +1,8 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { mountEffect1 } from "./effect1";
+// 动态导入 Three.js（508KB），避免阻塞首屏渲染主 bundle
+type MountEffect1 = typeof import("./effect1")["mountEffect1"];
 
 interface ObservatoryCoverProps {
   onEnter?: () => void;
@@ -91,11 +92,21 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
   useEffect(() => {
     const container = canvasRef.current;
     if (!container) return;
-    const cleanup = mountEffect1(container, {
-      onTap: () => startExitRef.current(),
+    let cleanup: (() => void) | undefined;
+    let disposed = false;
+    // 动态加载 Three.js，不阻塞首屏 JS bundle
+    import("./effect1").then(({ mountEffect1 }: { mountEffect1: MountEffect1 }) => {
+      if (disposed) return;
+      cleanup = mountEffect1(container, {
+        onTap: () => startExitRef.current(),
+      });
     });
     const timer = setTimeout(() => setShowUI(true), 2800);
-    return () => { cleanup(); clearTimeout(timer); };
+    return () => {
+      disposed = true;
+      cleanup?.();
+      clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => () => { if (exitTimer.current) clearTimeout(exitTimer.current); }, []);
