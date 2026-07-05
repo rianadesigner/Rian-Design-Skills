@@ -664,7 +664,7 @@ export function ResumePlanner() {
       </div>
 
       {/* ── 桌面端双页展开（≥ sm） ────────────────────────────────────────────── */}
-      <div ref={wrapperRef} className="hidden sm:flex flex-1 w-full min-h-0 items-center justify-center overflow-hidden">
+      <div ref={wrapperRef} className="hidden sm:flex flex-1 w-full min-h-0 items-center justify-center overflow-visible">
         <div className="relative mx-auto shrink-0" style={{ width: `${RESUME_DESIGN_W * scale}px`, height: `${RESUME_DESIGN_H * scale}px` }}>
           <div
             className="absolute left-0 top-0 h-[700px] w-[1000px] origin-top-left"
