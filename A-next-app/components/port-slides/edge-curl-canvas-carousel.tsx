@@ -489,6 +489,84 @@ const fragmentShader = `
 
 const LOOP_PANELS = [...PANELS, ...PANELS];
 
+function shouldUseStableFallback() {
+  if (typeof window === "undefined") return false;
+  const nav = navigator as Navigator & {
+    connection?: { saveData?: boolean; effectiveType?: string };
+    deviceMemory?: number;
+    hardwareConcurrency?: number;
+  };
+  const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+  const slowConnection = nav.connection?.saveData || /(^|-)2g$/.test(nav.connection?.effectiveType ?? "");
+  const lowMemory = typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4;
+  const lowCoreCount = typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency <= 4;
+  return Boolean(reducedMotion || slowConnection || lowMemory || lowCoreCount);
+}
+
+function StableCarouselFallback() {
+  return (
+    <div
+      aria-hidden
+      style={{
+        position: "absolute",
+        left: 0,
+        right: 0,
+        top: 330,
+        bottom: 44,
+        zIndex: 10,
+        overflowX: "auto",
+        overflowY: "hidden",
+        scrollbarWidth: "none",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          alignItems: "stretch",
+          width: "max-content",
+          height: "100%",
+          padding: "0 72px",
+        }}
+      >
+        {PANELS.map((panel) => {
+          const cardW = 880;
+          const scale = cardW / DESIGN_W;
+          return (
+            <div
+              key={panel.view}
+              style={{
+                position: "relative",
+                width: cardW,
+                height: "100%",
+                flex: "0 0 auto",
+                overflow: "hidden",
+                borderRadius: 28,
+                background: PANEL_BG[panel.view] ?? "#f8f8f8",
+                boxShadow: "0 22px 70px rgba(0,0,0,0.28)",
+              }}
+            >
+              <div
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  width: DESIGN_W,
+                  height: DESIGN_H,
+                  transform: `scale(${scale})`,
+                  transformOrigin: "top left",
+                }}
+              >
+                <SlidePage0 initialView={panel.view} />
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function EdgeCurlCanvasCarousel() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRefs = useRef<Array<HTMLDivElement | null>>([]);
@@ -506,8 +584,16 @@ export function EdgeCurlCanvasCarousel() {
   const pausedRef = useRef(false);
   const dragRef = useRef({ active: false, lastX: 0, velocityX: 0, momentumX: 0, lastTime: 0 });
   const didCenterInitialPanelRef = useRef(false);
+  const [useStableFallback, setUseStableFallback] = useState(false);
 
   useEffect(() => {
+    if (shouldUseStableFallback()) {
+      setUseStableFallback(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (useStableFallback) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -516,7 +602,10 @@ export function EdgeCurlCanvasCarousel() {
       antialias: true,
       premultipliedAlpha: true,
     });
-    if (!gl) return;
+    if (!gl) {
+      setUseStableFallback(true);
+      return;
+    }
 
     const program = createProgram(gl, vertexShader, fragmentShader);
     const locations = {
@@ -801,10 +890,11 @@ export function EdgeCurlCanvasCarousel() {
       if (vertexBuffer) gl.deleteBuffer(vertexBuffer);
       if (indexBuffer) gl.deleteBuffer(indexBuffer);
     };
-  }, []);
+  }, [useStableFallback]);
 
   return (
     <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 10, pointerEvents: "none" }}>
+      {useStableFallback && <StableCarouselFallback />}
       <canvas
         ref={canvasRef}
         style={{
@@ -812,7 +902,7 @@ export function EdgeCurlCanvasCarousel() {
           inset: 0,
           width: "100%",
           height: "100%",
-          display: "block",
+          display: useStableFallback ? "none" : "block",
         }}
       />
 
@@ -869,9 +959,10 @@ export function EdgeCurlCanvasCarousel() {
           top: 0,
           height: 0,
           overflow: "hidden",
-          pointerEvents: "auto",
+          pointerEvents: useStableFallback ? "none" : "auto",
           zIndex: 2,
           cursor: "grab",
+          display: useStableFallback ? "none" : undefined,
         }}
       >
         <div ref={domTrackRef} style={{ position: "absolute", inset: 0, willChange: "transform" }}>
