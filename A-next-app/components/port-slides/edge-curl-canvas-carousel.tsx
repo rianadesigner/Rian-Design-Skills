@@ -14,7 +14,8 @@ const FOOTER_H = 68;
 const EDGE_MIN = 108;
 const EDGE_MAX = 190;
 const EDGE_RATIO = 0.10;
-const CAROUSEL_DOWN = 44;
+const CAROUSEL_DOWN = 72;
+const SIDE_REVEAL_RATIO = 0.20;
 
 type PanelDef = {
   view: "landing" | "library" | "graph" | "agent";
@@ -504,6 +505,7 @@ export function EdgeCurlCanvasCarousel() {
   const runtimeRef = useRef<RuntimeState | null>(null);
   const pausedRef = useRef(false);
   const dragRef = useRef({ active: false, lastX: 0, velocityX: 0, momentumX: 0, lastTime: 0 });
+  const didCenterInitialPanelRef = useRef(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -632,7 +634,9 @@ export function EdgeCurlCanvasCarousel() {
          card width = height × aspect-ratio
          top = height − bh − footer
       ───────────────────────────────────────────────────────────────────── */
-      const bh = Math.min(height * 0.70, height - HEADER_H * scaleY);
+      const revealW = width * SIDE_REVEAL_RATIO;
+      const maxPanelW = Math.max(width - revealW * 2, width * 0.56);
+      const bh = Math.min(height * 0.70, height - HEADER_H * scaleY, maxPanelW / PANELS[0].ratio);
       const top = height - bh - FOOTER_H * scaleY + CAROUSEL_DOWN * scaleY;
       state.top = Math.max(80 * scaleY, top);
       state.bodyHeight = bh;
@@ -657,6 +661,12 @@ export function EdgeCurlCanvasCarousel() {
         x += w + gap;
       });
       state.trackWidth = x;
+
+      if (!didCenterInitialPanelRef.current && state.panels[1] && width >= DESIGN_W * 0.5) {
+        const centerPanel = state.panels[1];
+        state.x = width / 2 - (centerPanel.x + centerPanel.w / 2);
+        didCenterInitialPanelRef.current = true;
+      }
 
       /* ── Live DOM overlay — real SlidePage0 frames in the flat centre ──────
          Mirrors the exact WebGL panel geometry. The left/right edge windows

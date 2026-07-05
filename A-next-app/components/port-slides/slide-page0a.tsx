@@ -101,7 +101,7 @@ export default function SlidePage0a() {
           ══════════════════════════════════════════ */}
       <div style={{
         position: "absolute",
-        top: 34, left: 0, right: 0, zIndex: 17,
+        top: 104, left: 0, right: 0, zIndex: 17,
         display: "flex", flexDirection: "column",
         alignItems: "center", textAlign: "center",
         padding: "0 80px",

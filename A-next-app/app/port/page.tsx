@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import SlideContainer from "@/components/port-slides/slide-container";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "作品集 | Rian Design",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function PortPage() {
-  return <SlideContainer />;
+  redirect("/01");
 }

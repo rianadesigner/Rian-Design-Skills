@@ -117,10 +117,12 @@ export default function SlidePage5() {
           border: "1px solid rgba(255,255,255,0.08)",
           borderRadius: "calc(0.83 * var(--u))",
           boxShadow: "0px 0px 24px 0px rgba(0,0,0,0.6)",
-          overflow: "hidden",
+          overflow: "visible",
         }}
       >
-        <ModeSelectionCard />
+        <div className="absolute inset-0 overflow-hidden" style={{ borderRadius: "inherit" }}>
+          <ModeSelectionCard />
+        </div>
         {/* Speech bubble */}
         <img
           src={`${P5}/speech-bubble.png`}

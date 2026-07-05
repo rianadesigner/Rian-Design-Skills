@@ -102,6 +102,7 @@ function FilmCard({
       transition={{ duration: 0.78, delay, ease: [0.22, 1, 0.36, 1] }}
       whileHover={canNavigate ? { scale: 1.03, y: ty - 6 } : undefined}
       onClick={canNavigate ? () => onNavigate(project.slideIndex) : undefined}
+      data-slide-index={project.slideIndex}
       style={{
         position: "relative",
         flexShrink: 0,
@@ -289,6 +290,7 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
   const velocityRef = useRef(0); // px / ms
   const inertiaRaf = useRef<number | null>(null);
   const autoRaf = useRef<number | null>(null);
+  const pressedSlideIndexRef = useRef<number | null>(null);
 
   /* ── Zoom drag (drag counter axis left/right) ───────────── */
   const ZOOM_MIN = 0.68;
@@ -368,6 +370,8 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
     e.stopPropagation();
     cancelInertia();
     setIsDragging(true);
+    const card = (e.target as HTMLElement).closest<HTMLElement>("[data-slide-index]");
+    pressedSlideIndexRef.current = card?.dataset.slideIndex ? Number(card.dataset.slideIndex) : null;
     dragStartX.current = e.pageX;
     dragDistanceRef.current = 0;
     dragStartScroll.current = stripRef.current?.scrollLeft ?? 0;
@@ -403,6 +407,14 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
     } catch {
       /* already released */
     }
+    if (dragDistanceRef.current <= 6 && pressedSlideIndexRef.current !== null) {
+      const target = pressedSlideIndexRef.current;
+      pressedSlideIndexRef.current = null;
+      dragDistanceRef.current = 0;
+      onNavigate?.(target);
+      return;
+    }
+    pressedSlideIndexRef.current = null;
     startInertia(velocityRef.current);
   };
 

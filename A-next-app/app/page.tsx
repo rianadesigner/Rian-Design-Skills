@@ -1,5 +1,5 @@
-import { ResumePlanner } from "@/components/resume-planner"
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <ResumePlanner />
+  redirect("/01");
 }

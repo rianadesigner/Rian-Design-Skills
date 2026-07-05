@@ -26,6 +26,27 @@ const PANEL_H = SLIDE_H - PANEL_T; // 633 — remaining height
 // Scale SlidePage0 (1440×900) → fit panel width (1200px)
 const SCALE = PANEL_W / INNER_W; // ≈ 0.8333
 
+const VERSION_LABEL_STYLE: React.CSSProperties = {
+  position: "absolute",
+  left: 8,
+  top: 10,
+  zIndex: 10,
+  background: "#202124",
+  borderRadius: 6,
+  padding: "4px 12px",
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+  filter: "drop-shadow(0 0 6px rgba(0,0,0,0.35))",
+};
+
+const VERSION_BADGE_STYLE: React.CSSProperties = {
+  background: "#34363a",
+  borderRadius: 4,
+  padding: "2px 4px",
+  flexShrink: 0,
+};
+
 // Snap threshold for manual drag (px)
 const SNAP_THRESHOLD = 60;
 
@@ -171,17 +192,12 @@ export default function SlidePage0b() {
               }}
             />
             {/* BEFORE / V1.0 label */}
-            <div style={{
-              position: "absolute", left: 8, top: 10, zIndex: 10,
-              background: "rgba(20,20,20,0.72)",
-              borderRadius: 6, padding: "4px 12px",
-              display: "flex", alignItems: "center", gap: 8,
-            }}>
-              <div style={{ background: "rgba(255,255,255,0.07)", borderRadius: 4, padding: "2px 4px" }}>
+            <div style={VERSION_LABEL_STYLE}>
+              <div style={VERSION_BADGE_STYLE}>
                 <span style={{ fontFamily: "Impact", fontSize: 8, color: "#fff", lineHeight: "10px", display: "block" }}>BEFORE</span>
               </div>
-              <span style={{ fontFamily: "Impact", fontSize: 20, color: "rgba(255,255,255,0.35)" }}>V 1.0</span>
-              <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "rgba(255,255,255,0.5)", whiteSpace: "nowrap" }}>
+              <span style={{ fontFamily: "Impact", fontSize: 20, color: "#e0e7ff" }}>V 1.0</span>
+              <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "#ffffff", whiteSpace: "nowrap" }}>
                 旧版界面 · 心流 AI 搜索
               </span>
             </div>
@@ -215,23 +231,12 @@ export default function SlidePage0b() {
               <SlidePage0 initialView="landing" />
             </div>
             {/* NEW / V2.0 label */}
-            <div style={{
-              position: "absolute", left: 8, top: 10, zIndex: 10,
-              backgroundImage: "linear-gradient(170.7deg, rgb(37,99,235) 0%, rgb(124,58,237) 100%)",
-              borderRadius: 6, padding: "4px 12px",
-              display: "flex", alignItems: "center", gap: 7.17,
-              filter: "drop-shadow(0 0 6px rgba(124,58,237,0.55))",
-            }}>
-              <div style={{ background: "rgba(255,255,255,0.22)", borderRadius: 4, padding: "2px 4px", flexShrink: 0 }}>
+            <div style={VERSION_LABEL_STYLE}>
+              <div style={VERSION_BADGE_STYLE}>
                 <span style={{ fontFamily: "Impact", fontSize: 8, color: "#fff", lineHeight: "10px", display: "block" }}>NEW</span>
               </div>
-              <span style={{
-                fontFamily: "Impact", fontSize: 20,
-                backgroundImage: "linear-gradient(148.39deg, rgb(224,231,255) 0%, rgb(196,181,253) 100%)",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}>V 2.0</span>
-              <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "rgba(255,255,255,0.5)", whiteSpace: "nowrap" }}>
+              <span style={{ fontFamily: "Impact", fontSize: 20, color: "#e0e7ff" }}>V 2.0</span>
+              <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "#ffffff", whiteSpace: "nowrap" }}>
                 全新界面 · AI 工作台
               </span>
             </div>

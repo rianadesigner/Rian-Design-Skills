@@ -60,6 +60,14 @@ const visibleSlideEntries = allSlideIds
 
 const slideComponents = visibleSlideEntries.map((entry) => entry.Component);
 const slideIds = visibleSlideEntries.map((entry) => entry.id);
+const numberedSlidePaths = slideIds.map((_, index) => `/${String(index + 1).padStart(2, "0")}`);
+
+function getNumberedSlideIndex(pathname: string) {
+  const match = pathname.match(/^\/(\d{2})\/?$/);
+  if (!match) return -1;
+  const index = Number(match[1]) - 1;
+  return index >= 0 && index < slideIds.length ? index : -1;
+}
 
 /** 封面导航等使用的逻辑页码 → 实际渲染索引 */
 function toVisibleSlideIndex(logicalIndex: number) {
@@ -143,6 +151,8 @@ function CinemaFrameReveal() {
 export default function SlideContainer() {
   const getInitialSlide = () => {
     if (typeof window === "undefined") return 0;
+    const pathIndex = getNumberedSlideIndex(window.location.pathname);
+    if (pathIndex >= 0) return pathIndex;
     const hash = window.location.hash.replace("#", "");
     const idx = slideIds.indexOf(hash);
     return idx >= 0 ? idx : 0;
@@ -362,7 +372,11 @@ export default function SlideContainer() {
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
-    // 同步 URL hash
+    // 数字路由进入时同步 /01、/02...；旧 /port 入口仍保留 hash 行为。
+    if (getNumberedSlideIndex(window.location.pathname) >= 0) {
+      window.history.replaceState(null, "", numberedSlidePaths[current]);
+      return;
+    }
     const id = slideIds[current];
     if (id) window.history.replaceState(null, "", `#${id}`);
   }, [current]);
