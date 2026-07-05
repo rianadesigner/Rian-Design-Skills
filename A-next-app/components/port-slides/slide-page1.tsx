@@ -72,7 +72,7 @@ export default function SlidePage1() {
         />
         {/* 右侧信息 */}
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "20px", fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             Web端： 面向专业研究场景 / 01
           </p>
         </div>

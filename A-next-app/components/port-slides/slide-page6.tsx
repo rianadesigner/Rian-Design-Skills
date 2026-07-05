@@ -23,7 +23,7 @@ export default function SlidePage6() {
       <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
         <img loading="eager" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "20px", fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             专业研究场景3:&nbsp;&nbsp;学术阅读 / 06
           </p>
         </div>
@@ -42,7 +42,7 @@ export default function SlidePage6() {
           style={{
             color: "#FFFFFF",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
-            fontFamily: "'LogoSC Unbounded Sans', sans-serif",
+            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
           }}
@@ -56,7 +56,7 @@ export default function SlidePage6() {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
-            fontFamily: "'LogoSC Unbounded Sans', sans-serif",
+            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
           }}

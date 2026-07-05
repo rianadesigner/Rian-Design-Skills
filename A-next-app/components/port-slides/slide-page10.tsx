@@ -42,7 +42,7 @@ export default function SlidePage10() {
           </p>
         </div>
         <div className="ml-auto flex items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "20px", fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             日常消费场景3:&nbsp;&nbsp;让优质内容形成社区生态 / 10
           </p>
         </div>
@@ -57,7 +57,7 @@ export default function SlidePage10() {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
-            fontFamily: "'LogoSC Unbounded Sans', sans-serif",
+            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
           }}
@@ -68,7 +68,7 @@ export default function SlidePage10() {
           style={{
             color: "#FFFFFF",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
-            fontFamily: "'LogoSC Unbounded Sans', sans-serif",
+            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
           }}

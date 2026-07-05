@@ -28,7 +28,7 @@ export default function SlidePage3() {
           style={{ width: "5.97%" }}
         />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "16px", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
+          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "20px", fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
             专业研究场景2:&nbsp;&nbsp;高级研究模式 / 03
           </p>
         </div>
@@ -50,7 +50,7 @@ export default function SlidePage3() {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
-            fontFamily: "'LogoSC Unbounded Sans', sans-serif",
+            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
           }}
@@ -61,7 +61,7 @@ export default function SlidePage3() {
           style={{
             color: "#FFFFFF",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
-            fontFamily: "'LogoSC Unbounded Sans', sans-serif",
+            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
             letterSpacing: "1.08px",
           }}

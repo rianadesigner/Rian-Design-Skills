@@ -194,7 +194,7 @@ export default function SlidePage2() {
       <div className="absolute z-10" style={{ left:"4.17%", top:"1.48%", width:"91.67%", height:"3.33%" }}>
         <img loading="eager" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width:"5.97%" }} />
         <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7*var(--u))]">
-          <p style={{ color:"rgba(255,255,255,0.38)", fontSize:"16px", fontFamily:"'LogoSC Unbounded Sans', sans-serif", textAlign:"right", lineHeight:1.4, margin:0, whiteSpace:"nowrap" }}>
+          <p style={{ color:"rgba(255,255,255,0.38)", fontSize:"20px", fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", textAlign:"right", lineHeight:1.4, margin:0, whiteSpace:"nowrap" }}>
             专业研究场景1: AI搜 / 02
           </p>
         </div>
@@ -210,8 +210,8 @@ export default function SlidePage2() {
       {/* ── 标题行 ───────────────────────────────────────────────── */}
       <div className="absolute z-10 flex items-baseline gap-[calc(0.83*var(--u))]" style={{ left:"4.17%", top:"9.26%" }}>
         <span>
-          <span style={{ backgroundImage:"linear-gradient(90deg,#5C5CFF 0%,#AE5CFF 100%)", backgroundClip:"text", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", fontSize:"clamp(20px,calc(2.5*var(--u)),36px)", fontFamily:"'LogoSC Unbounded Sans', sans-serif", lineHeight:"52px", letterSpacing:"1.08px" }}>AI搜</span>
-          <span style={{ color:"#FFFFFF", fontSize:"clamp(20px,calc(2.5*var(--u)),36px)", fontFamily:"'LogoSC Unbounded Sans', sans-serif", lineHeight:"52px", letterSpacing:"1.08px" }}>模式</span>
+          <span style={{ backgroundImage:"linear-gradient(90deg,#5C5CFF 0%,#AE5CFF 100%)", backgroundClip:"text", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", fontSize:"clamp(20px,calc(2.5*var(--u)),36px)", fontFamily:"'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", lineHeight:"52px", letterSpacing:"1.08px" }}>AI搜</span>
+          <span style={{ color:"#FFFFFF", fontSize:"clamp(20px,calc(2.5*var(--u)),36px)", fontFamily:"'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", lineHeight:"52px", letterSpacing:"1.08px" }}>模式</span>
         </span>
       </div>
       <p className="absolute z-10" style={{ right:"4.17%", top:"11.11%", color:"rgba(255,255,255,0.45)", fontSize:"clamp(11px,calc(1.11*var(--u)),16px)", fontFamily:"'PingFang SC', sans-serif", fontWeight:500, textAlign:"right", lineHeight:1.7, margin:0, whiteSpace:"nowrap" }}>

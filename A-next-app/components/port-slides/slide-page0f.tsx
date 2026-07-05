@@ -827,8 +827,8 @@ export default function SlidePage0f() {
               LLM WIKI 核心操作动线
             </span>
           </div>
-          <h1 style={{ margin: 0, fontWeight: 600, fontSize: 46, color: "#fff", lineHeight: `${y(52)}px`, letterSpacing: 0.5, whiteSpace: "nowrap" }}>
-            多产品形态交互
+          <h1 style={{ margin: 0, fontWeight: 600, fontSize: 44, color: "#fff", lineHeight: `${y(52)}px`, letterSpacing: 0.5, whiteSpace: "nowrap" }}>
+            3. 多产品形态交互
           </h1>
           <p style={{ margin: 0, fontSize: 14, color: "rgba(255,255,255,0.5)", lineHeight: `${y(26)}px`, textAlign: "center", maxWidth: 625 }}>
             通过编辑器和智能体的多种产品可交互形态，让知识真正流动起来。
