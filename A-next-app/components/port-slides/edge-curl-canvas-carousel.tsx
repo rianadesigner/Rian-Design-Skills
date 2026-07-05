@@ -11,9 +11,9 @@ const GAP = 8;
 const SPEED = 56;
 const HEADER_H = 200;
 const FOOTER_H = 68;
-const EDGE_MIN = 108;
-const EDGE_MAX = 190;
-const EDGE_RATIO = 0.10;
+const EDGE_MIN = 56;
+const EDGE_MAX = 96;
+const EDGE_RATIO = 0.055;
 const CAROUSEL_DOWN = 72;
 const SIDE_REVEAL_RATIO = 0.20;
 
@@ -684,10 +684,10 @@ export function EdgeCurlCanvasCarousel() {
         const mask =
           `linear-gradient(to right,` +
           ` rgba(0,0,0,0) 0,` +
-          ` rgba(0,0,0,0) ${edge * 0.92}px,` +
-          ` #000 ${edge * 1.6}px,` +
-          ` #000 calc(100% - ${edge * 1.6}px),` +
-          ` rgba(0,0,0,0) calc(100% - ${edge * 0.92}px),` +
+          ` rgba(0,0,0,0) ${edge * 0.35}px,` +
+          ` #000 ${edge * 0.85}px,` +
+          ` #000 calc(100% - ${edge * 0.85}px),` +
+          ` rgba(0,0,0,0) calc(100% - ${edge * 0.35}px),` +
           ` rgba(0,0,0,0) 100%)`;
         wrap.style.webkitMaskImage = mask;
         wrap.style.maskImage = mask;
