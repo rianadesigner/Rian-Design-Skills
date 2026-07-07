@@ -181,6 +181,7 @@ export default function SlideContainer() {
   });
   const momentumRef = useRef<number>(0);
   const wheelCooldownRef = useRef(false);
+  const tapRef = useRef({ x: 0, y: 0, t: 0 });
 
   useLayoutEffect(() => {
     const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
@@ -249,6 +250,54 @@ export default function SlideContainer() {
       setCurrent([next, newDirection]);
     },
     [current],
+  );
+
+  /* ── 触屏轻点翻页（iPad 等无滚轮设备）────────────────────────────────
+     判定为「轻点」= 位移 < 10px 且时长 < 350ms。命中交互元素（链接、按钮、
+     cursor:pointer/grab 的可点击/可拖拽区域、可滚动区域）时不翻页。 */
+  const isInteractiveTarget = useCallback((start: HTMLElement | null, boundary: HTMLElement) => {
+    let node: HTMLElement | null = start;
+    while (node && node !== boundary && node !== document.body) {
+      const tag = node.tagName;
+      if (
+        tag === "A" || tag === "BUTTON" || tag === "INPUT" || tag === "TEXTAREA" ||
+        tag === "SELECT" || tag === "LABEL" || tag === "AUDIO" || tag === "VIDEO" ||
+        node.isContentEditable ||
+        node.getAttribute("role") === "button" ||
+        node.getAttribute("role") === "link" ||
+        node.getAttribute("role") === "slider"
+      ) {
+        return true;
+      }
+      const styles = getComputedStyle(node);
+      if (styles.cursor === "pointer" || styles.cursor === "grab" || styles.cursor === "grabbing") return true;
+      const { overflowY, overflowX } = styles;
+      if (
+        ((overflowY === "auto" || overflowY === "scroll") && node.scrollHeight > node.clientHeight + 1) ||
+        ((overflowX === "auto" || overflowX === "scroll") && node.scrollWidth > node.clientWidth + 1)
+      ) {
+        return true;
+      }
+      node = node.parentElement;
+    }
+    return false;
+  }, []);
+
+  const handleTapPointerDown = useCallback((e: React.PointerEvent) => {
+    tapRef.current = { x: e.clientX, y: e.clientY, t: Date.now() };
+  }, []);
+
+  const handleTapPointerUp = useCallback(
+    (e: React.PointerEvent) => {
+      if (e.pointerType !== "touch") return; // 桌面鼠标行为保持不变
+      if (slideIds[current] === "cover") return; // 封面有自己的进入交互
+      const tap = tapRef.current;
+      const moved = Math.hypot(e.clientX - tap.x, e.clientY - tap.y);
+      if (moved > 10 || Date.now() - tap.t > 350) return; // 是拖拽/长按，不是轻点
+      if (isInteractiveTarget(e.target as HTMLElement, e.currentTarget as HTMLElement)) return;
+      paginate(1);
+    },
+    [current, paginate, isInteractiveTarget],
   );
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
@@ -663,6 +712,8 @@ export default function SlideContainer() {
               onTouchStart={isMobilePortrait ? handleTouchStart : undefined}
               onTouchMove={isMobilePortrait ? handleTouchMove : undefined}
               onTouchEnd={isMobilePortrait ? handleTouchEnd : undefined}
+              onPointerDown={handleTapPointerDown}
+              onPointerUp={handleTapPointerUp}
             >
               <div ref={scrollRef} className="slide-scroll h-full w-full">
                 <Suspense fallback={<SlideFallback />}>
