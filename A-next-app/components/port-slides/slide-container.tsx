@@ -77,6 +77,15 @@ function toVisibleSlideIndex(logicalIndex: number) {
 
 const SWIPE_THRESHOLD = 60;
 const SWIPE_VELOCITY = 300;
+
+/** 整页纵向长滚动的幻灯片：触屏上由原生滚动接管，滚到边界后再滑动才翻页 */
+const SCROLL_SLIDES = new Set(["page3"]);
+/** 禁用 framer drag 的幻灯片：
+    - content0/page0e/page0f：有内部点击交互，防止 drag 拦截 click；
+    - SCROLL_SLIDES（page3 等长滚动页）：framer drag 会给容器设
+      touch-action: pan-x，浏览器按祖先链交集判定手势，内部内容在触屏上
+      将无法原生滚动；禁用后由原生滚动 + 触摸边界翻页逻辑接管。 */
+const NO_DRAG_SLIDES = new Set(["content0", "page0e", "page0f", ...SCROLL_SLIDES]);
 const DESIGN_WIDTH = SLIDE_DESIGN_WIDTH;
 const DESIGN_HEIGHT = SLIDE_DESIGN_HEIGHT;
 
@@ -291,6 +300,8 @@ export default function SlideContainer() {
       const g = scrollTouchRef.current;
       if (!g.scrollEl) return; // 非滚动区域：framer drag 负责翻页
       if (slideIds[current] === "cover") return;
+      /* framer drag 启用的页面由 drag 翻页，此处不重复处理（防双重翻页） */
+      if (!NO_DRAG_SLIDES.has(slideIds[current])) return;
       const touch = e.changedTouches[0];
       const dy = touch.clientY - g.y;
       const dx = touch.clientX - g.x;
@@ -357,6 +368,8 @@ export default function SlideContainer() {
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     const { offset, velocity } = info;
+    /* 只接受纵向手势翻页：以横向为主的滑动（左右滑）一律忽略 */
+    if (Math.abs(offset.x) > Math.abs(offset.y)) return;
     if (offset.y < -SWIPE_THRESHOLD || velocity.y < -SWIPE_VELOCITY) {
       paginate(1);
     } else if (offset.y > SWIPE_THRESHOLD || velocity.y > SWIPE_VELOCITY) {
@@ -440,6 +453,20 @@ export default function SlideContainer() {
     },
     [paginate, getMaxScroll],
   );
+
+  /* Safari（iPad/iPhone）保险：iOS 会忽略 user-scalable=no，且部分版本的
+     捏合手势走独立的 gesturestart 事件、绕过 touch-action。一旦意外缩放，
+     visual viewport 被放大平移（画面偏移、滑动手势被视口平移吞掉，只能刷新恢复）。
+     在幻灯片场景下直接阻止该手势。 */
+  useEffect(() => {
+    const preventGesture = (e: Event) => e.preventDefault();
+    document.addEventListener("gesturestart", preventGesture, { passive: false });
+    document.addEventListener("gesturechange", preventGesture, { passive: false });
+    return () => {
+      document.removeEventListener("gesturestart", preventGesture);
+      document.removeEventListener("gesturechange", preventGesture);
+    };
+  }, []);
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -603,18 +630,18 @@ export default function SlideContainer() {
 
       const Slide = slideComponents[current];
   const slideProps = current <= 1 ? { onEnter: handleEnter, onNavigate: handleNavigate } : {};
-  /** 有内部点击交互的幻灯片，禁用 drag 以防 framer-motion 拦截 click 事件 */
-  const NO_DRAG_SLIDES = new Set(["content0", "page0e", "page0f"]);
   const noDrag = NO_DRAG_SLIDES.has(slideIds[current]);
 
   return (
     <>
       <style>{`
         .slide-root { --u: calc(${DESIGN_WIDTH}px / 100); }
-        /* touch-action 不可继承，需覆盖到所有后代：禁用 iPad Safari 双击缩放
-           （轻点翻页时连点两下会触发缩放并平移画面），保留单击与滑动手势。
+        /* touch-action 不可继承，需覆盖到所有后代。
+           pan-x pan-y：保留滑动/滚动手势，同时禁用双击缩放 *和* 捏合缩放——
+           iOS Safari 会忽略 user-scalable=no，而 manipulation 仍允许 pinch-zoom，
+           偶然的双指触碰会把页面放大并平移到一侧（表现为"画面偏右、无法翻页"）。
            内联设置了 touch-action 的元素（轮播 none / 标签页 pan-y）优先级更高，不受影响。 */
-        .slide-root, .slide-root * { touch-action: manipulation; }
+        .slide-root, .slide-root * { touch-action: pan-x pan-y; }
         @media (min-width: 641px), (orientation: landscape) {
           .slide-root {
             position: fixed;
