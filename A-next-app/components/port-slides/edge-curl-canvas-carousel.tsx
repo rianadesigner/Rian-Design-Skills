@@ -856,7 +856,11 @@ export function EdgeCurlCanvasCarousel() {
       const loopWidth = state.trackWidth / 2;
       if (loopWidth > 0 && Math.abs(state.x) > loopWidth) state.x += loopWidth;
 
-      gl.clearColor(1, 1, 1, 0);
+      /* Must be (0,0,0,0): with premultipliedAlpha the RGB components may not
+         exceed alpha. (1,1,1,0) is an illegal premultiplied colour — Chrome
+         forgives it, but Safari/WebKit composites it as opaque WHITE, painting
+         the whole slide background white on iPad. */
+      gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
       gl.useProgram(program);
       gl.uniform2f(locations.resolution, state.width, state.height);
