@@ -437,7 +437,7 @@ export default function SlidePage10() {
                 background: "rgba(255,255,255,0.15)",
                 border: "1px solid rgba(255,255,255,0.28)",
                 borderRadius: "48px",
-                backdropFilter: "blur(10px)",
+                backdropFilter: "blur(10px)", WebkitBackdropFilter: "blur(10px)",
               }}
             >
               <span

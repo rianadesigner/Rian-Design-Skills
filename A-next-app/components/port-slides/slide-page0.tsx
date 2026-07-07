@@ -508,7 +508,7 @@ function LandingView({ onNavigate }: { onNavigate?: () => void }) {
       {/* Video label (left, -15°) */}
       <div className="absolute left-[10.29%] top-[45.84%] flex h-[106.55px] w-[243.73px] items-center justify-center">
         <div className="-rotate-[15deg]">
-          <div className="flex w-[240px] items-center justify-center px-5 py-3" style={{ backdropFilter: "blur(2px)", background: "rgba(255,255,255,0.01)" }}>
+          <div className="flex w-[240px] items-center justify-center px-5 py-3" style={{ backdropFilter: "blur(2px)", WebkitBackdropFilter: "blur(2px)", background: "rgba(255,255,255,0.01)" }}>
             <span className="whitespace-nowrap text-[14px] font-semibold leading-[22px] text-[#111]">Happy-Notes Skill</span>
           </div>
         </div>

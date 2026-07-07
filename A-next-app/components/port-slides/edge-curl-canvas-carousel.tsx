@@ -499,7 +499,15 @@ function shouldUseStableFallback() {
   const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
   const slowConnection = nav.connection?.saveData || /(^|-)2g$/.test(nav.connection?.effectiveType ?? "");
   const lowMemory = typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4;
-  const lowCoreCount = typeof nav.hardwareConcurrency === "number" && nav.hardwareConcurrency <= 4;
+  /* Safari (especially iOS/iPadOS) intentionally caps hardwareConcurrency at a
+     low fixed value (~2-4) for anti-fingerprinting, so it is NOT a reliable
+     performance signal there — even M-series iPad Pros report 4. Only treat
+     core count as a signal on non-Safari engines, and use a stricter <=2 bar. */
+  const isSafari = /^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(navigator.userAgent);
+  const lowCoreCount =
+    !isSafari &&
+    typeof nav.hardwareConcurrency === "number" &&
+    nav.hardwareConcurrency <= 2;
   return Boolean(reducedMotion || slowConnection || lowMemory || lowCoreCount);
 }
 
@@ -659,18 +667,30 @@ export function EdgeCurlCanvasCarousel() {
         frameRefs.current.map((frame) => (frame ? waitForImages(frame) : Promise.resolve())),
       );
       if (disposed) return;
+      /* WebKit (Safari/iPadOS) has a long-standing bug where the first
+         SVG-foreignObject rasterisation returns before images/fonts inside it
+         are decoded, producing a blank or partial capture. The standard
+         workaround is to capture multiple times and keep the last result. */
+      const isWebKit =
+        typeof navigator !== "undefined" &&
+        /^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(navigator.userAgent);
+      const capturePasses = isWebKit ? 3 : 1;
       await Promise.all(
         frameRefs.current.map(async (frame, index) => {
           if (!frame || !textures[index]) return;
           try {
-            const sourceCanvas = await toCanvas(frame, {
-              width: DESIGN_W,
-              height: DESIGN_H,
-              pixelRatio: 1,
-              cacheBust: false,
-              backgroundColor: PANEL_BG[PANELS[index].view] ?? "#f8f8f8",
-            });
-            if (disposed) return;
+            let sourceCanvas: HTMLCanvasElement | null = null;
+            for (let pass = 0; pass < capturePasses; pass++) {
+              sourceCanvas = await toCanvas(frame, {
+                width: DESIGN_W,
+                height: DESIGN_H,
+                pixelRatio: 1,
+                cacheBust: false,
+                backgroundColor: PANEL_BG[PANELS[index].view] ?? "#f8f8f8",
+              });
+              if (disposed) return;
+            }
+            if (!sourceCanvas) return;
             gl.bindTexture(gl.TEXTURE_2D, textures[index]);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, sourceCanvas);
           } catch {
@@ -962,6 +982,9 @@ export function EdgeCurlCanvasCarousel() {
           pointerEvents: useStableFallback ? "none" : "auto",
           zIndex: 2,
           cursor: "grab",
+          /* Without this, iPad Safari treats the touch as a page pan and fires
+             pointercancel — the carousel would be un-draggable on touch. */
+          touchAction: "none",
           display: useStableFallback ? "none" : undefined,
         }}
       >
