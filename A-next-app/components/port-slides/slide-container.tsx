@@ -270,7 +270,10 @@ export default function SlideContainer() {
         return true;
       }
       const styles = getComputedStyle(node);
-      if (styles.cursor === "pointer" || styles.cursor === "grab" || styles.cursor === "grabbing") return true;
+      /* 只排除 cursor:pointer（真实可点击元素）。cursor 会被继承，而
+         .slide-inner 全局是 grab —— 若把 grab 也算交互，整页都无法轻点翻页。
+         拖拽类区域由「位移 >10px 不算轻点」的判定保护，无需在此排除。 */
+      if (styles.cursor === "pointer") return true;
       const { overflowY, overflowX } = styles;
       if (
         ((overflowY === "auto" || overflowY === "scroll") && node.scrollHeight > node.clientHeight + 1) ||
