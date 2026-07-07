@@ -252,6 +252,58 @@ export default function SlideContainer() {
     [current],
   );
 
+  /* ── 触屏滑动翻页：内部可滚动页面（如 page3 长页）────────────────────
+     这类页面上触摸会被浏览器原生滚动接管，framer drag 收到 pointercancel
+     而失效。镜像滚轮逻辑：手势起点在可滚动区域内、且该区域已到底/到顶时，
+     上/下滑动翻页；未到边界则交给原生滚动。非滚动页面交给 framer drag，
+     避免双重翻页。 */
+  const scrollTouchRef = useRef({
+    x: 0, y: 0, t: 0,
+    scrollEl: null as HTMLElement | null,
+    atTop: true, atBottom: true,
+  });
+
+  const findScrollableAncestor = useCallback((start: HTMLElement | null, boundary: HTMLElement) => {
+    let node: HTMLElement | null = start;
+    while (node && node !== boundary && node !== document.body) {
+      const { overflowY } = getComputedStyle(node);
+      if ((overflowY === "auto" || overflowY === "scroll") && node.scrollHeight > node.clientHeight + 1) {
+        return node;
+      }
+      node = node.parentElement;
+    }
+    return null;
+  }, []);
+
+  const handleScrollAreaTouchStart = useCallback((e: React.TouchEvent) => {
+    const touch = e.touches[0];
+    const el = findScrollableAncestor(e.target as HTMLElement, e.currentTarget as HTMLElement);
+    scrollTouchRef.current = {
+      x: touch.clientX, y: touch.clientY, t: Date.now(),
+      scrollEl: el,
+      atTop: el ? el.scrollTop <= 0 : true,
+      atBottom: el ? el.scrollTop + el.clientHeight >= el.scrollHeight - 1 : true,
+    };
+  }, [findScrollableAncestor]);
+
+  const handleScrollAreaTouchEnd = useCallback(
+    (e: React.TouchEvent) => {
+      const g = scrollTouchRef.current;
+      if (!g.scrollEl) return; // 非滚动区域：framer drag 负责翻页
+      if (slideIds[current] === "cover") return;
+      const touch = e.changedTouches[0];
+      const dy = touch.clientY - g.y;
+      const dx = touch.clientX - g.x;
+      if (Math.abs(dy) <= Math.abs(dx)) return; // 横向手势
+      const dt = Math.max(1, Date.now() - g.t);
+      const vy = (Math.abs(dy) / dt) * 1000;
+      if (Math.abs(dy) < SWIPE_THRESHOLD && vy < SWIPE_VELOCITY) return;
+      if (dy < 0 && g.atBottom) paginate(1);
+      else if (dy > 0 && g.atTop) paginate(-1);
+    },
+    [current, paginate],
+  );
+
   /* ── 触屏轻点翻页（iPad 等无滚轮设备）────────────────────────────────
      判定为「轻点」= 位移 < 10px 且时长 < 350ms。命中交互元素（链接、按钮、
      cursor:pointer/grab 的可点击/可拖拽区域、可滚动区域）时不翻页。 */
@@ -716,9 +768,9 @@ export default function SlideContainer() {
               dragElastic={0.15}
               onDragEnd={isMobilePortrait || noDrag ? undefined : handleDragEnd}
               className="slide-inner absolute inset-0 h-full w-full cursor-grab active:cursor-grabbing"
-              onTouchStart={isMobilePortrait ? handleTouchStart : undefined}
+              onTouchStart={isMobilePortrait ? handleTouchStart : handleScrollAreaTouchStart}
               onTouchMove={isMobilePortrait ? handleTouchMove : undefined}
-              onTouchEnd={isMobilePortrait ? handleTouchEnd : undefined}
+              onTouchEnd={isMobilePortrait ? handleTouchEnd : handleScrollAreaTouchEnd}
               onPointerDown={handleTapPointerDown}
               onPointerUp={handleTapPointerUp}
             >
