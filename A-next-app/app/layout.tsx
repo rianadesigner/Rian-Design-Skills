@@ -1,4 +1,4 @@
-import type { Metadata } from "next"; // 1. 引入 Metadata 类型
+import type { Metadata, Viewport } from "next"; // 1. 引入 Metadata 类型
 import { Geist, Geist_Mono, Inter, Syne } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -32,6 +32,15 @@ const syne = Syne({
 export const metadata: Metadata = {
   title: "Rian Design", // 👈 这里修改为您想要的网站标题
   description: "Personal portfolio and design skills showcase", // 👈 这里是网站描述（可选）
+};
+
+// 幻灯片为固定 1440×900 画布自适应缩放，禁用移动端手势缩放，
+// 避免 iPad 双击/捏合缩放导致画面平移错位。
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({

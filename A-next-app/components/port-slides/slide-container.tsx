@@ -559,6 +559,10 @@ export default function SlideContainer() {
     <>
       <style>{`
         .slide-root { --u: calc(${DESIGN_WIDTH}px / 100); }
+        /* touch-action 不可继承，需覆盖到所有后代：禁用 iPad Safari 双击缩放
+           （轻点翻页时连点两下会触发缩放并平移画面），保留单击与滑动手势。
+           内联设置了 touch-action 的元素（轮播 none / 标签页 pan-y）优先级更高，不受影响。 */
+        .slide-root, .slide-root * { touch-action: manipulation; }
         @media (min-width: 641px), (orientation: landscape) {
           .slide-root {
             position: fixed;
