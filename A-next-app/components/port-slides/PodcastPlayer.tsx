@@ -135,7 +135,18 @@ function TranscriptPanel({ segments, current, onSeek }: TranscriptPanelProps) {
   const activeIdx = useMemo(() => findTranscriptIndex(segments, current), [segments, current]);
 
   useEffect(() => {
-    lineRefs.current[activeIdx]?.scrollIntoView({ behavior: "smooth", block: "center" });
+    const container = scrollRef.current;
+    const line = lineRefs.current[activeIdx];
+    if (!container || !line) return;
+
+    const containerRect = container.getBoundingClientRect();
+    const lineRect = line.getBoundingClientRect();
+    const top =
+      container.scrollTop +
+      lineRect.top -
+      containerRect.top -
+      (container.clientHeight - lineRect.height) / 2;
+    container.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
   }, [activeIdx]);
 
   return (

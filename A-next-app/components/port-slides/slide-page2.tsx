@@ -65,6 +65,7 @@ export default function SlidePage2() {
   const [activeIdx, setActiveIdx] = useState(0);
   const active = ALL_CARDS[activeIdx];
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const tabScrollRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const imgScrollRef = useRef<HTMLDivElement>(null);
   const userSelected = useRef(false);
@@ -79,11 +80,12 @@ export default function SlidePage2() {
   }, [activeIdx]);
 
   useEffect(() => {
-    tabRefs.current[activeIdx]?.scrollIntoView({
-      behavior: "smooth",
-      inline: "center",
-      block: "nearest",
-    });
+    const container = tabScrollRef.current;
+    const tab = tabRefs.current[activeIdx];
+    if (container && tab) {
+      const left = tab.offsetLeft - (container.clientWidth - tab.offsetWidth) / 2;
+      container.scrollTo({ left: Math.max(0, left), behavior: "smooth" });
+    }
     imgScrollRef.current?.scrollTo({ top: 0 });
   }, [activeIdx]);
 
@@ -236,6 +238,7 @@ export default function SlidePage2() {
       >
         {/* ── Tab 标签行（横向滚动） ─────────────────────────────── */}
         <div
+          ref={tabScrollRef}
           className="p2-tab-scroll"
           style={{
             display: "flex",

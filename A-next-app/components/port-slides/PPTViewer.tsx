@@ -14,8 +14,12 @@ export default function PPTViewer() {
     const container = scrollRef.current;
     if (!container) return;
     const items = container.querySelectorAll<HTMLDivElement>(".ppt-slide-item");
-    if (items[idx]) {
-      items[idx].scrollIntoView({ behavior: "smooth", block: "nearest" });
+    const item = items[idx];
+    if (item) {
+      const containerRect = container.getBoundingClientRect();
+      const itemRect = item.getBoundingClientRect();
+      const top = container.scrollTop + itemRect.top - containerRect.top;
+      container.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
     }
     setActive(idx);
   };

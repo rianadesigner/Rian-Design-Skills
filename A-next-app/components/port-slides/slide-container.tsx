@@ -192,6 +192,51 @@ export default function SlideContainer() {
   const wheelCooldownRef = useRef(false);
   const tapRef = useRef({ x: 0, y: 0, t: 0 });
 
+  /* 锁定作品集的文档视口。iPad Safari 的 scrollIntoView、橡皮筋滚动和
+     visual viewport 调整可能会移动 fixed 画布所在的布局视口，表现为整页
+     向右偏移。内部需要滚动的区域仍由各自的 overflow 容器负责。 */
+  useLayoutEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const previous = {
+      htmlOverflow: html.style.overflow,
+      htmlOverscroll: html.style.overscrollBehavior,
+      htmlWidth: html.style.width,
+      htmlHeight: html.style.height,
+      bodyOverflow: body.style.overflow,
+      bodyOverscroll: body.style.overscrollBehavior,
+      bodyPosition: body.style.position,
+      bodyInset: body.style.inset,
+      bodyWidth: body.style.width,
+      bodyHeight: body.style.height,
+    };
+
+    html.style.overflow = "hidden";
+    html.style.overscrollBehavior = "none";
+    html.style.width = "100%";
+    html.style.height = "100%";
+    body.style.overflow = "hidden";
+    body.style.overscrollBehavior = "none";
+    body.style.position = "fixed";
+    body.style.inset = "0";
+    body.style.width = "100%";
+    body.style.height = "100%";
+    window.scrollTo(0, 0);
+
+    return () => {
+      html.style.overflow = previous.htmlOverflow;
+      html.style.overscrollBehavior = previous.htmlOverscroll;
+      html.style.width = previous.htmlWidth;
+      html.style.height = previous.htmlHeight;
+      body.style.overflow = previous.bodyOverflow;
+      body.style.overscrollBehavior = previous.bodyOverscroll;
+      body.style.position = previous.bodyPosition;
+      body.style.inset = previous.bodyInset;
+      body.style.width = previous.bodyWidth;
+      body.style.height = previous.bodyHeight;
+    };
+  }, []);
+
   useLayoutEffect(() => {
     const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
     const root = rootRef.current;
@@ -298,7 +343,6 @@ export default function SlideContainer() {
   const handleScrollAreaTouchEnd = useCallback(
     (e: React.TouchEvent) => {
       const g = scrollTouchRef.current;
-      if (!g.scrollEl) return; // 非滚动区域：framer drag 负责翻页
       if (slideIds[current] === "cover") return;
       /* framer drag 启用的页面由 drag 翻页，此处不重复处理（防双重翻页） */
       if (!NO_DRAG_SLIDES.has(slideIds[current])) return;
@@ -309,8 +353,14 @@ export default function SlideContainer() {
       const dt = Math.max(1, Date.now() - g.t);
       const vy = (Math.abs(dy) / dt) * 1000;
       if (Math.abs(dy) < SWIPE_THRESHOLD && vy < SWIPE_VELOCITY) return;
-      if (dy < 0 && g.atBottom) paginate(1);
-      else if (dy > 0 && g.atTop) paginate(-1);
+      if (!g.scrollEl) {
+        if (dy < 0) paginate(1);
+        else paginate(-1);
+      } else if (dy < 0 && g.atBottom) {
+        paginate(1);
+      } else if (dy > 0 && g.atTop) {
+        paginate(-1);
+      }
     },
     [current, paginate],
   );
@@ -646,11 +696,16 @@ export default function SlideContainer() {
           .slide-root {
             position: fixed;
             inset: 0;
+            width: 100dvw;
+            height: 100dvh;
+            max-width: 100%;
+            max-height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             background: #000;
             overflow: hidden;
+            overscroll-behavior: none;
           }
           .slide-fit-stage {
             position: relative;
