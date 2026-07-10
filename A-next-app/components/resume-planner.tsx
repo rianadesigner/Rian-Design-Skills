@@ -355,6 +355,9 @@ export function ResumePlanner() {
   const curlSize   = useTransform(pageCurl, [0, 1], [0, CURL_MAX_PX])
   const brCurlSize = useTransform([curlSize, curlDir], ([s, d]) => (d === 1 ? s : 0)) as MotionValue<number>
   const blCurlSize = useTransform([curlSize, curlDir], ([s, d]) => (d === -1 ? s : 0)) as MotionValue<number>
+  /** Safari 3D 翻页时正反面可能同时漏出卷角，按角度只显示当前朝向的一页 */
+  const frontFaceVisible = useTransform(rotateY, (r) => (r > -89 ? 1 : 0))
+  const backFaceVisible  = useTransform(rotateY, (r) => (r <= -89 ? 1 : 0))
   /**
    * Layer0 右页（Education/Skills）：不按角度隐藏。
    * 第四页始终在纸片下层完整渲染，靠上层不透明版面挡住；掀开时再露出，避免临近竖页时突然闪现。
@@ -664,8 +667,8 @@ export function ResumePlanner() {
       </div>
 
       {/* ── 桌面端双页展开（≥ sm） ────────────────────────────────────────────── */}
-      <div ref={wrapperRef} className="hidden sm:flex flex-1 w-full min-h-0 items-center justify-center overflow-visible">
-        <div className="relative mx-auto shrink-0" style={{ width: `${RESUME_DESIGN_W * scale}px`, height: `${RESUME_DESIGN_H * scale}px` }}>
+      <div ref={wrapperRef} className="hidden sm:flex flex-1 w-full min-h-0 items-center justify-center overflow-hidden">
+        <div className="relative mx-auto shrink-0 overflow-hidden" style={{ width: `${RESUME_DESIGN_W * scale}px`, height: `${RESUME_DESIGN_H * scale}px` }}>
           <div
             className="absolute left-0 top-0 h-[700px] w-[1000px] origin-top-left"
             style={{ transform: `scale(${scale})` }}
@@ -851,7 +854,10 @@ export function ResumePlanner() {
                  *  背景与内容统一在 clipPath 层内，裁角时二者同步 → 仅一张纸的视觉。 ── */}
                 <motion.div
                   className="absolute inset-0"
-                  style={{ backfaceVisibility: "hidden" as const }}
+                  style={{
+                    backfaceVisibility: "hidden" as const,
+                    WebkitBackfaceVisibility: "hidden" as const,
+                  }}
                 >
                   <motion.div
                     className="absolute inset-0 overflow-hidden"
@@ -964,7 +970,7 @@ export function ResumePlanner() {
                   </motion.div>
 
                   {/* 正面右下角卷角（不参与内层 clip，否则会被裁掉） */}
-                  <PageCurlStack corner="br" size={brCurlSize} />
+                  <PageCurlStack corner="br" size={brCurlSize} faceVisible={frontFaceVisible} />
                 </motion.div>
 
                 {/* ── 背面：Career Work（左页样式）
@@ -973,6 +979,7 @@ export function ResumePlanner() {
                   className="absolute inset-0"
                   style={{
                     backfaceVisibility: "hidden" as const,
+                    WebkitBackfaceVisibility: "hidden" as const,
                     transform:          "rotateY(180deg)",
                   }}
                 >
@@ -1027,7 +1034,7 @@ export function ResumePlanner() {
                     />
                   </motion.div>
 
-                  <PageCurlStack corner="bl" size={blCurlSize} />
+                  <PageCurlStack corner="bl" size={blCurlSize} faceVisible={backFaceVisible} />
                 </motion.div>
               </motion.div>
 
@@ -1051,9 +1058,11 @@ export function ResumePlanner() {
 function PageCurlStack({
   corner,
   size,
+  faceVisible,
 }: {
   corner: "br" | "bl"
   size: MotionValue<number>
+  faceVisible: MotionValue<number>
 }) {
   const isBR = corner === "br"
   const idPrefix = isBR ? "page-curl-br" : "page-curl-bl"
@@ -1067,19 +1076,21 @@ function PageCurlStack({
     ? "M0 100 C22 84 67 39 100 0"
     : "M100 100 C78 84 33 39 0 0"
   const rimPath = isBR ? "M100 100 L100 0" : "M0 100 L0 0"
+  const opacity = useTransform([size, faceVisible], ([s, v]) => (s < 1 || v < 0.5 ? 0 : 1))
 
   return (
     <motion.div
-      className="pointer-events-none absolute z-[12] overflow-visible"
+      className="pointer-events-none absolute z-[12] overflow-hidden"
       style={{
         ...(isBR ? { right: 0, bottom: 0 } : { left: 0, bottom: 0 }),
         width:  size,
         height: size,
+        opacity,
       }}
     >
       <svg
         aria-hidden
-        className="absolute inset-0 overflow-visible"
+        className="absolute inset-0 overflow-hidden"
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
       >

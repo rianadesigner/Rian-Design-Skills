@@ -115,7 +115,7 @@ export default function SlidePage9() {
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "clamp(6px, calc(0.7 * var(--u)), 10px)", minHeight: 0 }}>
               <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.4)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
-                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>01</span>
                   </div>
                   <div>
@@ -123,11 +123,11 @@ export default function SlidePage9() {
                     <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(8px, calc(0.69 * var(--u)), 10px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, margin: 0 }}>辅助用户解决上传复杂度</p>
                   </div>
                 </div>
-                <img loading="lazy" decoding="async" src={`${P9}/card-01.webp`} alt="" style={{ flex: 1, width: "100%", height: 0, minHeight: "100%", objectFit: "cover", objectPosition: "bottom", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
+                <img loading="lazy" decoding="async" src={`${P9}/card-01.png`} alt="" style={{ flex: 1, width: "100%", height: 0, minHeight: "100%", objectFit: "cover", objectPosition: "bottom", borderRadius: "clamp(6px, calc(0.6 * var(--u)), 8px)", marginTop: "4px" }} />
               </div>
               <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.4)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
-                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>02</span>
                   </div>
                   <div>
@@ -142,7 +142,7 @@ export default function SlidePage9() {
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "clamp(6px, calc(0.7 * var(--u)), 10px)", minHeight: 0 }}>
               <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.4)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
-                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>03</span>
                   </div>
                   <div>
@@ -154,7 +154,7 @@ export default function SlidePage9() {
               </div>
               <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.4)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
-                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                     <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>04</span>
                   </div>
                   <div>
