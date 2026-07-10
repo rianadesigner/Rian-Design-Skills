@@ -352,12 +352,12 @@ export function ResumePlanner() {
   const pageCurl   = useMotionValue<number>(0)
   // 1 = 正面翻开卷右下角，-1 = 背面翻回卷左下角
   const curlDir    = useMotionValue<number>(1)
-  const curlSize   = useTransform(pageCurl, [0, 1], [0, CURL_MAX_PX])
-  const brCurlSize = useTransform([curlSize, curlDir], ([s, d]) => (d === 1 ? s : 0)) as MotionValue<number>
-  const blCurlSize = useTransform([curlSize, curlDir], ([s, d]) => (d === -1 ? s : 0)) as MotionValue<number>
+  const curlSize   = useTransform<number, number>(pageCurl, [0, 1], [0, CURL_MAX_PX])
+  const brCurlSize = useTransform([curlSize, curlDir], ([s, d]): number => (d === 1 ? Number(s) : 0))
+  const blCurlSize = useTransform([curlSize, curlDir], ([s, d]): number => (d === -1 ? Number(s) : 0))
   /** Safari 3D 翻页时正反面可能同时漏出卷角，按角度只显示当前朝向的一页 */
-  const frontFaceVisible = useTransform(rotateY, (r) => (r > -89 ? 1 : 0))
-  const backFaceVisible  = useTransform(rotateY, (r) => (r <= -89 ? 1 : 0))
+  const frontFaceVisible = useTransform(rotateY, (r): number => (r > -89 ? 1 : 0))
+  const backFaceVisible  = useTransform(rotateY, (r): number => (r <= -89 ? 1 : 0))
   /**
    * Layer0 右页（Education/Skills）：不按角度隐藏。
    * 第四页始终在纸片下层完整渲染，靠上层不透明版面挡住；掀开时再露出，避免临近竖页时突然闪现。
@@ -1076,7 +1076,7 @@ function PageCurlStack({
     ? "M0 100 C22 84 67 39 100 0"
     : "M100 100 C78 84 33 39 0 0"
   const rimPath = isBR ? "M100 100 L100 0" : "M0 100 L0 0"
-  const opacity = useTransform([size, faceVisible], ([s, v]) => (s < 1 || v < 0.5 ? 0 : 1))
+  const opacity = useTransform([size, faceVisible], ([s, v]): number => (Number(s) < 1 || Number(v) < 0.5 ? 0 : 1))
 
   return (
     <motion.div
