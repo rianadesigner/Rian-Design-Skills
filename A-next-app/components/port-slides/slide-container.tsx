@@ -75,8 +75,10 @@ function toVisibleSlideIndex(logicalIndex: number) {
   return visibleSlideEntries.findIndex((entry) => entry.index === logicalIndex);
 }
 
-const SWIPE_THRESHOLD = 60;
-const SWIPE_VELOCITY = 300;
+const SWIPE_THRESHOLD = 48;
+const SWIPE_VELOCITY = 280;
+const WHEEL_DELTA_TRIGGER = 40;
+const WHEEL_COOLDOWN_MS = 420;
 
 /** 整页纵向长滚动的幻灯片：触屏上由原生滚动接管，滚到边界后再滑动才翻页 */
 const SCROLL_SLIDES = new Set(["page3"]);
@@ -169,6 +171,8 @@ export default function SlideContainer() {
   };
   const [[current, direction], setCurrent] = useState(() => [getInitialSlide(), 0]);
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
+  /** iPad / 手机等以触屏为主的设备：不用 Framer drag，改由 touch 手势翻页 */
+  const [isTouchPrimary, setIsTouchPrimary] = useState(false);
   // fitScale only needed by slide-fit-shell; slide-container uses pure-CSS CQ scaling.
   const stageRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
@@ -190,6 +194,8 @@ export default function SlideContainer() {
   });
   const momentumRef = useRef<number>(0);
   const wheelCooldownRef = useRef(false);
+  const wheelAccumRef = useRef(0);
+  const wheelResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tapRef = useRef({ x: 0, y: 0, t: 0 });
 
   /* 锁定作品集的文档视口。iPad Safari 的 scrollIntoView、橡皮筋滚动和
@@ -238,13 +244,20 @@ export default function SlideContainer() {
   }, []);
 
   useLayoutEffect(() => {
-    const mq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
+    const portraitMq = window.matchMedia("(max-width: 640px) and (orientation: portrait)");
+    const coarseMq = window.matchMedia("(pointer: coarse)");
+    const noHoverMq = window.matchMedia("(hover: none)");
     const root = rootRef.current;
     if (!root) return;
 
+    const updateTouchPrimary = () => {
+      setIsTouchPrimary(coarseMq.matches || noHoverMq.matches);
+    };
+
     const update = () => {
-      const matches = mq.matches;
+      const matches = portraitMq.matches;
       setIsMobilePortrait(matches);
+      updateTouchPrimary();
 
       document.documentElement.style.setProperty("--slide-design-w", `${DESIGN_WIDTH}px`);
       document.documentElement.style.setProperty("--slide-design-h", `${DESIGN_HEIGHT}px`);
@@ -260,18 +273,23 @@ export default function SlideContainer() {
     };
 
     update();
+    updateTouchPrimary();
     requestAnimationFrame(update);
     const ro = new ResizeObserver(update);
     ro.observe(root);
     if (root.parentElement) ro.observe(root.parentElement);
-    mq.addEventListener("change", update);
+    portraitMq.addEventListener("change", update);
+    coarseMq.addEventListener("change", updateTouchPrimary);
+    noHoverMq.addEventListener("change", updateTouchPrimary);
     window.addEventListener("resize", update);
     window.visualViewport?.addEventListener("resize", update);
     window.visualViewport?.addEventListener("scroll", update);
 
     return () => {
       ro.disconnect();
-      mq.removeEventListener("change", update);
+      portraitMq.removeEventListener("change", update);
+      coarseMq.removeEventListener("change", updateTouchPrimary);
+      noHoverMq.removeEventListener("change", updateTouchPrimary);
       window.removeEventListener("resize", update);
       window.visualViewport?.removeEventListener("resize", update);
       window.visualViewport?.removeEventListener("scroll", update);
@@ -344,8 +362,6 @@ export default function SlideContainer() {
     (e: React.TouchEvent) => {
       const g = scrollTouchRef.current;
       if (slideIds[current] === "cover") return;
-      /* framer drag 启用的页面由 drag 翻页，此处不重复处理（防双重翻页） */
-      if (!NO_DRAG_SLIDES.has(slideIds[current])) return;
       const touch = e.changedTouches[0];
       const dy = touch.clientY - g.y;
       const dx = touch.clientX - g.x;
@@ -547,25 +563,34 @@ export default function SlideContainer() {
           const atBottom =
             node.scrollTop + node.clientHeight >= node.scrollHeight - 1;
           if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) {
+            wheelAccumRef.current = 0;
             return;
           }
         }
         node = node.parentElement;
       }
 
-      if (Math.abs(e.deltaY) < 30) return;
+      /* 触控板/Magic Mouse 单次 delta 很小，累积后再判定翻页 */
+      wheelAccumRef.current += e.deltaY;
+      if (wheelResetTimerRef.current) clearTimeout(wheelResetTimerRef.current);
+      wheelResetTimerRef.current = setTimeout(() => {
+        wheelAccumRef.current = 0;
+      }, 140);
+
+      if (Math.abs(wheelAccumRef.current) < WHEEL_DELTA_TRIGGER) return;
 
       e.preventDefault();
-      if (e.deltaY > 0) {
-        paginate(1);
-      } else {
-        paginate(-1);
-      }
+      const dir = wheelAccumRef.current > 0 ? 1 : -1;
+      wheelAccumRef.current = 0;
+      paginate(dir);
       wheelCooldownRef.current = true;
-      setTimeout(() => { wheelCooldownRef.current = false; }, 800);
+      setTimeout(() => { wheelCooldownRef.current = false; }, WHEEL_COOLDOWN_MS);
     };
     window.addEventListener("wheel", handleWheel, { passive: false });
-    return () => window.removeEventListener("wheel", handleWheel);
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      if (wheelResetTimerRef.current) clearTimeout(wheelResetTimerRef.current);
+    };
   }, [current, paginate]);
 
   useEffect(() => {
@@ -681,6 +706,7 @@ export default function SlideContainer() {
       const Slide = slideComponents[current];
   const slideProps = current <= 1 ? { onEnter: handleEnter, onNavigate: handleNavigate } : {};
   const noDrag = NO_DRAG_SLIDES.has(slideIds[current]);
+  const disableFramerDrag = isMobilePortrait || noDrag || isTouchPrimary;
 
   return (
     <>
@@ -753,6 +779,8 @@ export default function SlideContainer() {
           .slide-canvas .slide-inner {
             cursor: grab;
             will-change: transform, opacity;
+            /* 覆盖 .slide-root * { pan-x pan-y }，否则 iOS Safari 会吞掉纵向手势 */
+            touch-action: none;
           }
           .slide-canvas .slide-inner:active {
             cursor: grabbing;
@@ -845,10 +873,10 @@ export default function SlideContainer() {
               animate="center"
               exit="exit"
               transition={activeTransition}
-              drag={isMobilePortrait || noDrag ? false : "y"}
+              drag={disableFramerDrag ? false : "y"}
               dragConstraints={{ top: 0, bottom: 0 }}
               dragElastic={0.15}
-              onDragEnd={isMobilePortrait || noDrag ? undefined : handleDragEnd}
+              onDragEnd={disableFramerDrag ? undefined : handleDragEnd}
               className="slide-inner absolute inset-0 h-full w-full cursor-grab active:cursor-grabbing"
               onTouchStart={isMobilePortrait ? handleTouchStart : handleScrollAreaTouchStart}
               onTouchMove={isMobilePortrait ? handleTouchMove : undefined}
