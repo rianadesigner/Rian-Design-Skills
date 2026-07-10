@@ -34,7 +34,7 @@ const PROJECTS = [
     aspect: COVER_ASPECT,
     accent: "#60a5fa",
     pages: "1 – 14",
-    slideIndex: 10, // page1
+    slideIndex: 11, // page1
   },
   {
     id: "wanxiang",
@@ -45,7 +45,7 @@ const PROJECTS = [
     aspect: COVER_ASPECT,
     accent: "#c084fc",
     pages: "13 – 22",
-    slideIndex: 22, // page13
+    slideIndex: 23, // page13
   },
   {
     id: "xingliu",
@@ -56,7 +56,7 @@ const PROJECTS = [
     aspect: COVER_ASPECT,
     accent: "#22d3ee",
     pages: "23 – 26",
-    slideIndex: 32, // page23
+    slideIndex: 33, // page23
   },
 ];
 

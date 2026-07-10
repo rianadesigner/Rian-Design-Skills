@@ -11,6 +11,7 @@ import { preloadPage0dImages } from "./slide-page0d-assets";
 // 首屏只加载 cover + content0，其余全部懒加载以缩减初始 bundle
 const SlidePage0a  = lazy(() => import("./slide-page0a"));
 const SlidePage0b  = lazy(() => import("./slide-page0b"));
+const SlidePage4b  = lazy(() => import("./slide-page4b"));
 const SlidePage0c  = lazy(() => import("./slide-page0c"));
 const SlidePage0d  = lazy(() => import("./slide-page0d"));
 const SlidePage0e  = lazy(() => import("./slide-page0e"));
@@ -47,8 +48,8 @@ const SlidePage26  = lazy(() => import("./slide-page26"));
 /** 暂时隐藏的幻灯片（保留源码，取消 id 即可恢复） */
 const HIDDEN_SLIDE_IDS = new Set<string>(["page0"]);
 
-const allSlideComponents = [ObservatoryCover, SlideContent0, SlidePage0a, SlidePage0b, SlidePage0c, SlidePage0d, SlidePage0e, SlidePage0f, SlidePage0g, SlidePage0, SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
-const allSlideIds = ["cover", "content0", "page0a", "page0b", "page0c", "page0d", "page0e", "page0f", "page0g", "page0", "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
+const allSlideComponents = [ObservatoryCover, SlideContent0, SlidePage0a, SlidePage0b, SlidePage4b, SlidePage0c, SlidePage0d, SlidePage0e, SlidePage0f, SlidePage0g, SlidePage0, SlidePage1, SlidePage2, SlidePage3, SlidePage4, SlidePage5, SlidePage6, SlidePage7, SlidePage8, SlidePage9, SlidePage10, SlidePage11, SlidePage12, SlidePage13, SlidePage14, SlidePage15, SlidePage16, SlidePage17, SlidePage18, SlidePage19, SlidePage20, SlidePage21, SlidePage22, SlidePage23, SlidePage24, SlidePage25, SlidePage26];
+const allSlideIds = ["cover", "content0", "page0a", "page0b", "page4b", "page0c", "page0d", "page0e", "page0f", "page0g", "page0", "page1", "page2", "page3", "page4", "page5", "page6", "page7", "page8", "page9", "page10", "page11", "page12", "page13", "page14", "page15", "page16", "page17", "page18", "page19", "page20", "page21", "page22", "page23", "page24", "page25", "page26"];
 
 /** 懒加载 fallback：与幻灯片背景色一致的纯黑占位，避免白闪 */
 function SlideFallback() {
@@ -631,6 +632,7 @@ export default function SlideContainer() {
     // allImports[i] 对应 allSlideIds[i+2]（跳过 cover 和 content0）
     const allImports: Array<() => Promise<unknown>> = [
       () => import("./slide-page0a"),  () => import("./slide-page0b"),
+      () => import("./slide-page4b"),
       () => import("./slide-page0c"),  () => import("./slide-page0d"),
       () => import("./slide-page0e"),  () => import("./slide-page0f"),
       () => import("./slide-page0g"),  () => import("./slide-page0"),
@@ -650,7 +652,7 @@ export default function SlideContainer() {
     ];
 
     // content0 中点击可跳转的幻灯片 slideIndex（相对 allSlideIds），转换到 allImports 下标
-    const JUMP_TARGETS = [2, 10, 22, 32].map((idx) => idx - 2).filter((i) => i >= 0 && i < allImports.length);
+    const JUMP_TARGETS = [2, 11, 23, 33].map((idx) => idx - 2).filter((i) => i >= 0 && i < allImports.length);
 
     const loaded = prefetchedImportsRef.current;
     const runSequential = (indices: number[], delay: number, interval: number) => {

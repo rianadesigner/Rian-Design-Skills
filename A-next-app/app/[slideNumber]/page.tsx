@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SlideContainer from "@/components/port-slides/slide-container";
 
-const SLIDE_COUNT = 35;
+const SLIDE_COUNT = 36;
 
 type Props = {
   params: Promise<{ slideNumber: string }>;
