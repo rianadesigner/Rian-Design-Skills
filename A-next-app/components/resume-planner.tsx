@@ -668,7 +668,7 @@ export function ResumePlanner() {
 
       {/* ── 桌面端双页展开（≥ sm） ────────────────────────────────────────────── */}
       <div ref={wrapperRef} className="hidden sm:flex flex-1 w-full min-h-0 items-center justify-center overflow-hidden">
-        <div className="relative mx-auto shrink-0 overflow-hidden" style={{ width: `${RESUME_DESIGN_W * scale}px`, height: `${RESUME_DESIGN_H * scale}px` }}>
+        <div className="relative mx-auto shrink-0 overflow-visible" style={{ width: `${RESUME_DESIGN_W * scale}px`, height: `${RESUME_DESIGN_H * scale}px` }}>
           <div
             className="absolute left-0 top-0 h-[700px] w-[1000px] origin-top-left"
             style={{ transform: `scale(${scale})` }}
@@ -676,7 +676,11 @@ export function ResumePlanner() {
               {/* ── 透视舞台 ──────────────────────────────────────────────── */}
             <div
               className="absolute inset-0"
-              style={{ perspective: "1400px", perspectiveOrigin: "50% 48%" }}
+              style={{
+                perspective: "1400px",
+                perspectiveOrigin: "50% 48%",
+                transformStyle: "preserve-3d",
+              }}
             >
               {/* 左页底色 */}
               <div
@@ -751,10 +755,7 @@ export function ResumePlanner() {
               </motion.div>
 
               {/* ── Layer 0：Education+Skills 页（右半，永远在底部） ──────── */}
-              <motion.div
-                className="absolute inset-y-0 right-0 w-[500px] overflow-hidden bg-transparent"
-                style={{ clipPath: clipPathFront }}
-              >
+              <div className="absolute inset-y-0 right-0 z-0 w-[500px] overflow-hidden bg-transparent">
                 {/* 水印 */}
                 <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
                   <div className="-rotate-[5deg] size-[400px]">
@@ -821,7 +822,7 @@ export function ResumePlanner() {
                     <PortfolioBadge />
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* ── Layer 2：3D 翻页（motion.div 绑定 MotionValue） ────── */}
               {/*
@@ -842,6 +843,7 @@ export function ResumePlanner() {
                   originY:        0.5,
                   rotateY,
                   transformStyle: "preserve-3d" as const,
+                  z:              0.5,
                   zIndex:         2,
                   cursor:         isAnimating ? "default" : "pointer",
                 }}
