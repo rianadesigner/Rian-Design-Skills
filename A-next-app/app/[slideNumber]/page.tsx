@@ -30,5 +30,5 @@ export default async function NumberedSlidePage({ params }: Props) {
     notFound();
   }
 
-  return <SlideContainer />;
+  return <SlideContainer initialSlide={index - 1} />;
 }

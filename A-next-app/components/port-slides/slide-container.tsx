@@ -161,16 +161,8 @@ function CinemaFrameReveal() {
   );
 }
 
-export default function SlideContainer() {
-  const getInitialSlide = () => {
-    if (typeof window === "undefined") return 0;
-    const pathIndex = getNumberedSlideIndex(window.location.pathname);
-    if (pathIndex >= 0) return pathIndex;
-    const hash = window.location.hash.replace("#", "");
-    const idx = slideIds.indexOf(hash);
-    return idx >= 0 ? idx : 0;
-  };
-  const [[current, direction], setCurrent] = useState(() => [getInitialSlide(), 0]);
+export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: number }) {
+  const [[current, direction], setCurrent] = useState(() => [initialSlide, 0]);
   const [isMobilePortrait, setIsMobilePortrait] = useState(false);
   /** iPad / 手机等以触屏为主的设备：不用 Framer drag，改由 touch 手势翻页 */
   const [isTouchPrimary, setIsTouchPrimary] = useState(false);
