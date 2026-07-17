@@ -9,10 +9,12 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   ],
   page0b: ["/images/page0b/ai1-bg.webp"],
   page0f: [
-    "/images/page0f/agent-panel.webp",
-    "/images/page0f/editor-panel.webp",
+    "/images/page0/agent-stage-glow.svg",
+    "/images/page0/agent-avatar.png",
+    "/images/page0/agent-3d-upload.webp",
     "/images/page0/agent-3d-app.webp",
     "/images/page0/agent-3d-webpage.webp",
+    "/images/page0/agent-3d-git-rendered.webp",
   ],
   page0g: [
     "/images/page0g/ppt-preview.webp",
