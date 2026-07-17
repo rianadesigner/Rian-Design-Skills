@@ -187,14 +187,12 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
 
       {/* ── Cinematic atmosphere layers (above canvas, below UI) ── */}
 
-      {/* Film grain */}
-      <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 2, pointerEvents: "none", opacity: 0.065 }} aria-hidden>
-        <filter id="cov-grain">
-          <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#cov-grain)" />
-      </svg>
+      {/* Static grain avoids repainting a full-screen SVG filter every frame. */}
+      <div aria-hidden style={{
+        position: "absolute", inset: 0, zIndex: 2, pointerEvents: "none", opacity: 0.065,
+        backgroundImage: "url('/images/film-grain.png')", backgroundRepeat: "repeat", backgroundSize: "128px 128px",
+        mixBlendMode: "overlay",
+      }} />
 
       {/* Scanlines */}
       <div aria-hidden style={{

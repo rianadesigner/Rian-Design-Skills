@@ -28,7 +28,7 @@ const CARDS: OutputCard[] = [
     desc: "应用 HappyHorse 生成视频，让讲解画面动起来",
     icon: `${G}/video-icon.png`,
     previewStyle: "cover",
-    preview: `${G}/video-preview.png`,
+    preview: `${G}/video-preview.webp`,
   },
   {
     title: "信息图",
@@ -43,7 +43,7 @@ const CARDS: OutputCard[] = [
     desc: "支持深度研报/文献综述/影子审稿/学习指南",
     icon: `${G}/report-icon.svg`,
     previewStyle: "tall",
-    preview: `${G}/report-preview.png`,
+    preview: `${G}/report-preview.webp`,
     previewCss: { height: "264.38%", left: "0", top: "0.12%", width: "100%" },
   },
   {
@@ -61,7 +61,7 @@ const CARDS: OutputCard[] = [
     previewStyle: "cover",
     preview: `${G}/ppt-preview.webp`,
     overlay: {
-      src: `${G}/quiz-preview.png`,
+      src: `${G}/quiz-preview.webp`,
       css: { height: "284.17%", left: "0", top: "-0.03%", width: "100%" },
     },
   },

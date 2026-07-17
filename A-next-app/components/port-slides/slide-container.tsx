@@ -7,6 +7,7 @@ import SlideContent0 from "./slide-content0";
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design";
 import { measureFitStage } from "./slide-fit";
 import { preloadPage0dImages } from "./slide-page0d-assets";
+import { predecodeSlideImages } from "./slide-image-preload";
 
 // 首屏只加载 cover + content0，其余全部懒加载以缩减初始 bundle
 const SlidePage0a  = lazy(() => import("./slide-page0a"));
@@ -78,8 +79,8 @@ function toVisibleSlideIndex(logicalIndex: number) {
 
 const SWIPE_THRESHOLD = 48;
 const SWIPE_VELOCITY = 280;
-const WHEEL_DELTA_TRIGGER = 40;
-const WHEEL_COOLDOWN_MS = 420;
+const WHEEL_DELTA_TRIGGER = 22;
+const WHEEL_COOLDOWN_MS = 260;
 
 /** 整页纵向长滚动的幻灯片：触屏上由原生滚动接管，滚到边界后再滑动才翻页 */
 const SCROLL_SLIDES = new Set(["page3"]);
@@ -109,7 +110,7 @@ const variants = {
 };
 
 // 先慢后快：ease-in cubic-bezier，初速为 0，逐渐加速冲入
-const EASE_IN_ACCEL: [number, number, number, number] = [0.4, 0, 0.7, 1];
+const EASE_OUT_FAST: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 // Cinema "punch-in": cover ↔ content0 (index 0 ↔ 1)
 // 封面像被镜头急速推近后穿入，content0 从放大淡入归位——
@@ -597,6 +598,24 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
     if (id) window.history.replaceState(null, "", `#${id}`);
   }, [current]);
 
+  useEffect(() => {
+    const adjacent = [current - 1, current + 1]
+      .filter((index) => index >= 0 && index < slideIds.length)
+      .map((index) => slideIds[index]);
+
+    const decode = () => {
+      void Promise.all(adjacent.map(predecodeSlideImages));
+    };
+
+    if (typeof requestIdleCallback !== "undefined") {
+      const idleId = requestIdleCallback(decode, { timeout: 700 });
+      return () => cancelIdleCallback(idleId);
+    }
+
+    const timer = window.setTimeout(decode, 80);
+    return () => window.clearTimeout(timer);
+  }, [current]);
+
   // 进入 content0 且来自封面时，触发电影边框收拢转场
   useEffect(() => {
     const prev = prevCurrentRef.current;
@@ -856,7 +875,7 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
         const activeVariants = isCinema ? cinemaVariants : variants;
         const activeTransition = isCinema
           ? { duration: 0.9, ease: CINEMA_EASE }
-          : { duration: 0.48, ease: EASE_IN_ACCEL };
+          : { duration: 0.34, ease: EASE_OUT_FAST };
         return (
           <AnimatePresence initial={false} custom={direction} mode="popLayout">
             <motion.div

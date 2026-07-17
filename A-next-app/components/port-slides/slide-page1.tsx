@@ -53,7 +53,7 @@ export default function SlidePage1() {
             top: "2.37%",
             width: "96.97%",
             height: "92.65%",
-            backgroundImage: `url(${P1}/screenshot.png)`,
+            backgroundImage: `url(${P1}/screenshot.webp)`,
             backgroundSize: "cover",
             backgroundPosition: "center top",
             borderRadius: "calc(1.25 * var(--u))",

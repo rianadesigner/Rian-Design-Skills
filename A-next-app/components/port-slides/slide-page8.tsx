@@ -217,7 +217,7 @@ export default function SlidePage8() {
           {[1, 2, 3, 4].map((i) => (
             <img
               key={i}
-              src={`${P8}/top-${i}.png`}
+              src={`${P8}/top-${i}.webp`}
               alt=""
               style={{
                 flex: 1,
@@ -300,7 +300,7 @@ export default function SlidePage8() {
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="relative" style={{ flex: 1, minWidth: 0 }}>
               <img
-                src={`${P8}/bottom-${i}.png`}
+                src={`${P8}/bottom-${i}.webp`}
                 alt=""
                 style={{
                   width: "100%",

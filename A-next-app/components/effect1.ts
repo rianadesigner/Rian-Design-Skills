@@ -4,7 +4,7 @@ import * as THREE from "three";
  * Observatory cover — "Living Universe" GPU shader galaxy.
  *
  * Design goals:
- *  • 300k main-disk particles + 22k far stars, all animated on the GPU
+ *  • 120k main-disk particles + 12k far stars, all animated on the GPU
  *    (vertex shader). CPU only updates a few uniforms per frame.
  *  • Differential rotation + per-particle gravitational wobble + tangential
  *    drift + vertical breathing → fluid "living" feel, never loops.
@@ -35,11 +35,11 @@ export function mountEffect1(
   );
 
   const renderer = new THREE.WebGLRenderer({
-    antialias: true,
+    antialias: false,
     powerPreference: "high-performance",
   });
   renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setClearColor(0x02040a, 1);
   container.appendChild(renderer.domElement);
 
@@ -67,7 +67,7 @@ export function mountEffect1(
      3 spiral arms, soft scatter. Differential rotation done in the
      vertex shader with a deliberately tiny angular velocity so arms
      stay crisp for >30min of viewing. */
-  const GAL = 300_000;
+  const GAL = 120_000;
   const ARMS = 3;
   const MAX_R = 520;
 
@@ -217,7 +217,7 @@ export function mountEffect1(
   scene.add(galaxy);
 
   /* ═══ Layer 2 — Far star sphere (twinkle) ═════════════════ */
-  const STARS = 22_000;
+  const STARS = 12_000;
   const sPos = new Float32Array(STARS * 3);
   const sSz = new Float32Array(STARS);
   const sPh = new Float32Array(STARS);
@@ -376,13 +376,13 @@ export function mountEffect1(
   containerRo.observe(container);
 
   /* ═══ Animation loop ══════════════════════════════════════ */
-  const clock = new THREE.Clock();
+  const startedAt = performance.now();
   let rafId = 0;
   let cancelled = false;
 
   const tick = () => {
     if (cancelled) return;
-    const t = clock.getElapsedTime();
+    const t = (performance.now() - startedAt) / 1000;
 
     // Smooth interpolation — slower during intro warp
     const introFactor = t < 3 ? 0.02 : 0.06;

@@ -63,10 +63,10 @@ export default function SlidePage4b() {
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", overflow: "hidden", background: "#070707", fontFamily: "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif" }}>
       <div aria-hidden style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse 20% 66% at 0% 50%, rgba(200,8,8,0.25), transparent 78%), radial-gradient(ellipse 20% 66% at 100% 50%, rgba(200,8,8,0.25), transparent 78%)" }} />
-      <svg aria-hidden style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.1, mixBlendMode: "overlay", pointerEvents: "none" }}>
-        <filter id="pg4b-grain"><feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="3" stitchTiles="stitch" /><feColorMatrix type="saturate" values="0" /></filter>
-        <rect width="100%" height="100%" filter="url(#pg4b-grain)" />
-      </svg>
+      <div aria-hidden style={{
+        position: "absolute", inset: 0, opacity: 0.1, mixBlendMode: "overlay", pointerEvents: "none",
+        backgroundImage: "url('/images/film-grain.png')", backgroundRepeat: "repeat", backgroundSize: "128px 128px",
+      }} />
       <CornerMarks />
 
       <header style={{ position: "absolute", left: 48, right: 48, top: 58, display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "start", zIndex: 10 }}>

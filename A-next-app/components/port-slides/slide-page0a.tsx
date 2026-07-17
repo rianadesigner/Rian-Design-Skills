@@ -47,20 +47,11 @@ export default function SlidePage0a() {
         ["--slide-h" as string]: `${DESIGN_H}px`,
       }}
     >
-      {/* ── Film grain ── */}
-      <svg
-        style={{
-          position: "absolute", inset: 0, width: "100%", height: "100%",
-          pointerEvents: "none", opacity: 0.12, mixBlendMode: "overlay", zIndex: 1,
-        }}
-        aria-hidden
-      >
-        <filter id="grain0a">
-          <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="3" stitchTiles="stitch" />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#grain0a)" />
-      </svg>
+      <div aria-hidden style={{
+        position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.12,
+        mixBlendMode: "overlay", zIndex: 1, backgroundImage: "url('/images/film-grain.png')",
+        backgroundRepeat: "repeat", backgroundSize: "128px 128px",
+      }} />
 
       {/* ── Left red glow ── */}
       <div aria-hidden style={{

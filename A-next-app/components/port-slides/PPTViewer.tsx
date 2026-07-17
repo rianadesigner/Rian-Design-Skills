@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 
 const SLIDES = Array.from({ length: 12 }, (_, i) =>
-  `/images/page2/ppt/slide-${String(i + 1).padStart(2, "0")}.png`
+  `/images/page2/ppt/slide-${String(i + 1).padStart(2, "0")}.webp`
 );
 
 export default function PPTViewer() {

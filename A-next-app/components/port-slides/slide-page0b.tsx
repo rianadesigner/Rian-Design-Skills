@@ -90,17 +90,11 @@ export default function SlidePage0b() {
         pointerEvents: "none", zIndex: 2,
       }} />
 
-      {/* ── Film grain ── */}
-      <svg aria-hidden style={{
-        position: "absolute", inset: 0, width: "100%", height: "100%",
-        pointerEvents: "none", opacity: 0.12, mixBlendMode: "overlay", zIndex: 1,
-      }}>
-        <filter id="pg0b-grain">
-          <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="3" stitchTiles="stitch" />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#pg0b-grain)" />
-      </svg>
+      <div aria-hidden style={{
+        position: "absolute", inset: 0, pointerEvents: "none", opacity: 0.12,
+        mixBlendMode: "overlay", zIndex: 1, backgroundImage: "url('/images/film-grain.png')",
+        backgroundRepeat: "repeat", backgroundSize: "128px 128px",
+      }} />
 
       {/* ── Four corner marks ── */}
       <div aria-hidden style={{ position: "absolute", left: 24, top: 24, width: 38, height: 38, borderTop: "0.951px solid rgba(255,255,255,0.22)", borderLeft: "0.951px solid rgba(255,255,255,0.22)", pointerEvents: "none", zIndex: 20 }} />

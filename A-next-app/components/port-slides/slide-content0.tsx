@@ -170,8 +170,9 @@ function FilmCard({
           position: "absolute",
           inset: 0,
           opacity: 0.18,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: "140px 140px",
+          backgroundImage: "url('/images/film-grain.png')",
+          backgroundRepeat: "repeat",
+          backgroundSize: "128px 128px",
           mixBlendMode: "overlay",
         }}
       />
@@ -466,31 +467,11 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
         willChange: "transform",
       }}>
 
-      {/* ── Film grain ────────────────────────────────────── */}
-      <svg
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          pointerEvents: "none",
-          mixBlendMode: "overlay",
-          opacity: 0.15,
-          zIndex: 1,
-        }}
-        aria-hidden
-      >
-        <filter id="cgrain2">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.7"
-            numOctaves="3"
-            stitchTiles="stitch"
-          />
-          <feColorMatrix type="saturate" values="0" />
-        </filter>
-        <rect width="100%" height="100%" filter="url(#cgrain2)" />
-      </svg>
+      <div aria-hidden style={{
+        position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "overlay",
+        opacity: 0.15, zIndex: 1, backgroundImage: "url('/images/film-grain.png')",
+        backgroundRepeat: "repeat", backgroundSize: "128px 128px",
+      }} />
 
       {/* ── Film scratches ────────────────────────────────── */}
       <div
