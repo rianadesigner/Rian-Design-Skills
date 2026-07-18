@@ -69,18 +69,23 @@ export default function SlidePage4b() {
       }} />
       <CornerMarks />
 
-      <header style={{ position: "absolute", left: 48, right: 48, top: 58, display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "start", zIndex: 10 }}>
-        <div style={{ paddingTop: 8 }}>
-          <span style={{ display: "block", fontFamily: "Impact, 'Arial Black', sans-serif", fontSize: 11, letterSpacing: 2.4, color: red }}>03 / LLM WIKI</span>
+      <header style={{ position: "absolute", left: 48, right: 48, top: 32, display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "start", zIndex: 10 }}>
+        <div style={{ paddingTop: 34 }}>
+          <span style={{ display: "block", fontFamily: "Impact, 'Arial Black', sans-serif", fontSize: 11, letterSpacing: 2.4, color: red }}>LLM WIKI / 02</span>
           <span style={{ display: "block", marginTop: 6, fontSize: 10, letterSpacing: 2.4, color: "rgba(255,255,255,0.3)" }}>METHOD &amp; SYSTEM</span>
         </div>
 
         <div style={{ textAlign: "center" }}>
+          <div style={{ height: 16, display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 10 }}>
+            <span style={{ fontFamily: "Impact, 'Arial Black', sans-serif", fontSize: 11, letterSpacing: 2, color: red }}>02</span>
+            <span aria-hidden style={{ width: 28, height: 1, background: "rgba(255,255,255,0.22)" }} />
+            <span style={{ fontSize: 10.5, letterSpacing: 2.6, color: "rgba(255,255,255,0.46)" }}>LLM WIKI 思维框架</span>
+          </div>
           <p style={{ margin: 0, fontSize: 42, lineHeight: 1.15, fontWeight: 600, letterSpacing: 1, color: "#fff" }}>LLM WIKI 方法论</p>
-          <p style={{ margin: "12px 0 0", fontSize: 13, lineHeight: 1.65, color: "rgba(255,255,255,0.5)" }}>让知识在使用中被持续整理、连接、验证与更新</p>
+          <p style={{ margin: "9px 0 0", fontSize: 13, lineHeight: 1.65, color: "rgba(255,255,255,0.5)" }}>让知识在使用中被持续整理、连接、验证与更新</p>
         </div>
 
-        <div style={{ justifySelf: "end", width: 260, paddingTop: 8, textAlign: "right" }}>
+        <div style={{ justifySelf: "end", width: 260, paddingTop: 34, textAlign: "right" }}>
           <span style={{ display: "block", fontSize: 9, letterSpacing: 2.2, color: red }}>CORE INSIGHT</span>
           <p style={{ margin: "7px 0 0", fontSize: 11, lineHeight: 1.7, color: "rgba(255,255,255,0.48)" }}>维护知识库的瓶颈不是阅读，而是持续、准确地维护知识关系。</p>
         </div>

@@ -115,7 +115,7 @@ export default function SlidePage0b() {
             fontFamily: "Impact, 'Arial Black', sans-serif",
             fontSize: 10.46, lineHeight: "15.69px", color: "rgba(200,8,8,0.85)",
             letterSpacing: "1.88px",
-          }}>02</span>
+          }}>01</span>
           <div style={{ width: 26.63, height: 0.95, background: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
           <span style={{
             fontFamily: "'PingFang SC', sans-serif", fontWeight: 400,

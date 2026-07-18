@@ -106,7 +106,7 @@ export default function SlidePage0a() {
           <span style={{
             fontSize: 11, fontFamily: FONT_EN, fontWeight: 600,
             letterSpacing: "0.18em", color: "rgba(200,8,8,0.85)",
-          }}>01</span>
+          }}>00</span>
           <span style={{ width: 28, height: 1, background: "rgba(255,255,255,0.2)" }} />
           <span style={{
             fontSize: 10.5, letterSpacing: "0.26em",

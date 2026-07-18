@@ -721,13 +721,12 @@ export function EdgeCurlCanvasCarousel() {
          render size is ALWAYS the design size. We must never feed it the
          transform-scaled getBoundingClientRect width — doing so pollutes the
          design-space geometry and breaks layout on resize. */
-      const rect = canvas.getBoundingClientRect();
       const width = Math.max(1, canvas.clientWidth || DESIGN_W);
       const height = Math.max(1, canvas.clientHeight || DESIGN_H);
-      /* On-screen CSS scale (fit-scale). Used only to keep the backing store
-         crisp when the slide is scaled up — it never changes the logical size. */
-      const cssScale = rect.width > 0 && width > 0 ? rect.width / width : 1;
-      const dpr = Math.min((window.devicePixelRatio || 1) * Math.max(cssScale, 1), 3);
+      /* Cap the backing store independently from CSS scale. This avoids multi-
+         megapixel redraws on Retina iPads and 4K displays. */
+      const touchPrimary = window.matchMedia("(pointer: coarse)").matches;
+      const dpr = Math.min(window.devicePixelRatio || 1, touchPrimary ? 1.25 : 1.5);
       state.width = width;
       state.height = height;
       state.dpr = dpr;
@@ -837,7 +836,18 @@ export function EdgeCurlCanvasCarousel() {
       gl.drawElements(gl.TRIANGLES, grid.indices.length, gl.UNSIGNED_SHORT, 0);
     };
 
+    let pageVisible = !document.hidden;
+    const onVisibilityChange = () => {
+      pageVisible = !document.hidden;
+      state.lastTime = performance.now();
+    };
+    document.addEventListener("visibilitychange", onVisibilityChange, { passive: true });
+
     const render = (now: number) => {
+      if (!pageVisible) {
+        state.raf = requestAnimationFrame(render);
+        return;
+      }
       const delta = Math.min(64, now - state.lastTime) / 1000;
       state.lastTime = now;
       const drag = dragRef.current;
@@ -909,6 +919,7 @@ export function EdgeCurlCanvasCarousel() {
       observer.disconnect();
       window.removeEventListener("resize", layout);
       window.visualViewport?.removeEventListener("resize", layout);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
       textures.forEach((texture) => gl.deleteTexture(texture));
       gl.deleteProgram(program);
       if (vertexBuffer) gl.deleteBuffer(vertexBuffer);

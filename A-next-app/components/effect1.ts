@@ -39,7 +39,8 @@ export function mountEffect1(
     powerPreference: "high-performance",
   });
   renderer.setSize(container.clientWidth, container.clientHeight);
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  const touchPrimary = window.matchMedia("(pointer: coarse)").matches;
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, touchPrimary ? 1.25 : 1.5));
   renderer.setClearColor(0x02040a, 1);
   container.appendChild(renderer.domElement);
 
@@ -331,7 +332,11 @@ export function mountEffect1(
     dsy = e.clientY;
     dsTheta = cam.thetaT;
     dsPhi = cam.phiT;
-    dom.setPointerCapture(e.pointerId);
+    try {
+      dom.setPointerCapture(e.pointerId);
+    } catch {
+      /* Older WebKit may reject pointer capture during gesture arbitration. */
+    }
     dom.style.cursor = "grabbing";
   };
   const onPtrMove = (e: PointerEvent) => {
@@ -379,9 +384,19 @@ export function mountEffect1(
   const startedAt = performance.now();
   let rafId = 0;
   let cancelled = false;
+  let pageVisible = !document.hidden;
+
+  const onVisibilityChange = () => {
+    pageVisible = !document.hidden;
+  };
+  document.addEventListener("visibilitychange", onVisibilityChange, { passive: true });
 
   const tick = () => {
     if (cancelled) return;
+    if (!pageVisible) {
+      rafId = requestAnimationFrame(tick);
+      return;
+    }
     const t = (performance.now() - startedAt) / 1000;
 
     // Smooth interpolation — slower during intro warp
@@ -443,6 +458,7 @@ export function mountEffect1(
       dom.removeEventListener("wheel", onWheel);
     }
     window.removeEventListener("resize", onResize);
+    document.removeEventListener("visibilitychange", onVisibilityChange);
     containerRo.disconnect();
     galGeo.dispose();
     galMat.dispose();

@@ -54,22 +54,6 @@ export default function RootLayout({
       suppressHydrationWarning
       className={cn("antialiased", fontMono.variable, "font-sans", geist.variable, inter.variable, syne.variable)}
     >
-      <head>
-        <link
-          rel="preload"
-          href="/fonts/AlimamaShuZhiTiVF-Thin.ttf"
-          as="font"
-          type="font/ttf"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/LogoSCUnboundedSans-Regular.ttf"
-          as="font"
-          type="font/ttf"
-          crossOrigin="anonymous"
-        />
-      </head>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
       </body>

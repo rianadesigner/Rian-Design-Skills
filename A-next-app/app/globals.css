@@ -4,28 +4,28 @@
 
 @font-face {
   font-family: 'AliMama ShuZhiTi';
-  src: url('/fonts/AlimamaShuZhiTiVF-Thin.ttf') format('truetype');
+  src: url('/fonts/AlimamaShuZhiTiVF-Thin.woff2') format('woff2');
   font-weight: 100 900;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Alimama ShuZhiTi VF';
-  src: url('/fonts/AlimamaShuZhiTiVF-Thin.ttf') format('truetype');
+  src: url('/fonts/AlimamaShuZhiTiVF-Thin.woff2') format('woff2');
   font-weight: 100 900;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Alimama ShuHeiTi';
-  src: url('/fonts/AlimamaShuZhiTiVF-Thin.ttf') format('truetype');
+  src: url('/fonts/AlimamaShuZhiTiVF-Thin.woff2') format('woff2');
   font-weight: 100 900;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'LogoSC Unbounded Sans';
-  src: url('/fonts/LogoSCUnboundedSans-Regular.ttf') format('truetype');
+  src: url('/fonts/LogoSCUnboundedSans-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -33,7 +33,7 @@
 
 @font-face {
   font-family: '标小智无界黑';
-  src: url('/fonts/LogoSCUnboundedSans-Regular.ttf') format('truetype');
+  src: url('/fonts/LogoSCUnboundedSans-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -181,10 +181,6 @@
   .slide-fit-stage {
     --slide-design-w: 1440px;
     --slide-design-h: 900px;
-    --slide-fit-scale: min(
-      calc(100cqw / var(--slide-design-w)),
-      calc(100cqh / var(--slide-design-h))
-    );
 
     container-type: size;
     width: 100%;

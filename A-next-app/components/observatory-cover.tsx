@@ -94,14 +94,19 @@ export function ObservatoryCover({ onEnter, onNavigate }: ObservatoryCoverProps 
     if (!container) return;
     let cleanup: (() => void) | undefined;
     let disposed = false;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    const skipWebGL = reduceMotion || connection?.saveData;
     // 动态加载 Three.js，不阻塞首屏 JS bundle
-    import("./effect1").then(({ mountEffect1 }: { mountEffect1: MountEffect1 }) => {
-      if (disposed) return;
-      cleanup = mountEffect1(container, {
-        onTap: () => startExitRef.current(),
+    if (!skipWebGL) {
+      import("./effect1").then(({ mountEffect1 }: { mountEffect1: MountEffect1 }) => {
+        if (disposed) return;
+        cleanup = mountEffect1(container, {
+          onTap: () => startExitRef.current(),
+        });
       });
-    });
-    const timer = setTimeout(() => setShowUI(true), 2800);
+    }
+    const timer = setTimeout(() => setShowUI(true), reduceMotion ? 0 : 700);
     return () => {
       disposed = true;
       cleanup?.();

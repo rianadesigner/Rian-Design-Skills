@@ -5,7 +5,7 @@ import { motion, AnimatePresence, useReducedMotion, type PanInfo } from "motion/
 import { ObservatoryCover } from "../observatory-cover";
 import SlideContent0 from "./slide-content0";
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design";
-import { measureFitStage } from "./slide-fit";
+import { computeSlideFitScale, measureFitStage } from "./slide-fit";
 import { preloadPage0dImages } from "./slide-page0d-assets";
 import { predecodeSlideImages } from "./slide-image-preload";
 
@@ -256,11 +256,21 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
       document.documentElement.style.setProperty("--slide-design-w", `${DESIGN_WIDTH}px`);
       document.documentElement.style.setProperty("--slide-design-h", `${DESIGN_HEIGHT}px`);
 
+      const viewportWidth = window.visualViewport?.width ?? window.innerWidth;
+      const viewportHeight = window.visualViewport?.height ?? window.innerHeight;
+      document.documentElement.style.setProperty("--slide-vw", `${viewportWidth}px`);
+      document.documentElement.style.setProperty("--slide-vh", `${viewportHeight}px`);
+
       if (matches) {
         const { height } = measureFitStage(root);
         zoomRef.current = height / DESIGN_WIDTH;
         document.documentElement.style.setProperty("--slide-zoom", String(zoomRef.current));
       } else {
+        const { width, height } = measureFitStage(root);
+        document.documentElement.style.setProperty(
+          "--slide-fit-scale",
+          String(computeSlideFitScale(width, height)),
+        );
         zoomRef.current = 1;
         document.documentElement.style.removeProperty("--slide-zoom");
       }
@@ -268,7 +278,7 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
 
     update();
     updateTouchPrimary();
-    requestAnimationFrame(update);
+    const initialRaf = requestAnimationFrame(update);
     const ro = new ResizeObserver(update);
     ro.observe(root);
     if (root.parentElement) ro.observe(root.parentElement);
@@ -281,6 +291,7 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
 
     return () => {
       ro.disconnect();
+      cancelAnimationFrame(initialRaf);
       portraitMq.removeEventListener("change", update);
       coarseMq.removeEventListener("change", updateTouchPrimary);
       noHoverMq.removeEventListener("change", updateTouchPrimary);
@@ -290,6 +301,9 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
       document.documentElement.style.removeProperty("--slide-zoom");
       document.documentElement.style.removeProperty("--slide-design-w");
       document.documentElement.style.removeProperty("--slide-design-h");
+      document.documentElement.style.removeProperty("--slide-fit-scale");
+      document.documentElement.style.removeProperty("--slide-vw");
+      document.documentElement.style.removeProperty("--slide-vh");
     };
   }, []);
 
@@ -666,29 +680,40 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
     const JUMP_TARGETS = [2, 11, 23, 33].map((idx) => idx - 2).filter((i) => i >= 0 && i < allImports.length);
 
     const loaded = prefetchedImportsRef.current;
+    let cancelled = false;
+    const timers = new Set<number>();
+    const schedule = (callback: () => void, delay: number) => {
+      const timer = window.setTimeout(() => {
+        timers.delete(timer);
+        if (!cancelled) callback();
+      }, delay);
+      timers.add(timer);
+    };
     const runSequential = (indices: number[], delay: number, interval: number) => {
       let i = 0;
       const run = () => {
+        if (cancelled) return;
         while (i < indices.length && loaded.has(indices[i])) i++;
         if (i >= indices.length) return;
         const idx = indices[i++];
         loaded.add(idx);
         allImports[idx]().finally(() => {
+          if (cancelled) return;
           if (typeof requestIdleCallback !== "undefined") {
             requestIdleCallback(run, { timeout: interval });
           } else {
-            setTimeout(run, interval);
+            schedule(run, interval);
           }
         });
       };
       if (delay > 0) {
-        setTimeout(() => {
+        schedule(() => {
           if (typeof requestIdleCallback !== "undefined") requestIdleCallback(run, { timeout: interval });
           else run();
         }, delay);
       } else {
         if (typeof requestIdleCallback !== "undefined") requestIdleCallback(run, { timeout: interval });
-        else setTimeout(run, 50);
+        else schedule(run, 50);
       }
     };
 
@@ -703,9 +728,15 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
     ).filter((i) => i >= 0 && i < allImports.length);
     runSequential(near, 0, 900);
 
-    if (current <= 1) {
-      runSequential(JUMP_TARGETS, 1600, 1000);
+    if (current === 1) {
+      runSequential(JUMP_TARGETS, 2400, 1200);
     }
+
+    return () => {
+      cancelled = true;
+      timers.forEach((timer) => window.clearTimeout(timer));
+      timers.clear();
+    };
   }, [current]);
 
   // page0d 图标较多：在用户翻到 page0c 时提前预热本地资源
@@ -735,7 +766,9 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
           .slide-root {
             position: fixed;
             inset: 0;
+            width: 100vw;
             width: 100dvw;
+            height: 100vh;
             height: 100dvh;
             max-width: 100%;
             max-height: 100%;
@@ -766,17 +799,12 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
             height: ${DESIGN_HEIGHT}px;
             transform-origin: center center;
             will-change: transform;
-            /* Pure CSS contain scaling via container-query units.
-               100cqw / --slide-design-w  = scale to fit width
-               100cqh / --slide-design-h  = scale to fit height
-               min() picks the smaller → "contain" mode (no clipping, letterbox if needed).
-               On 16:9 screens the 16:10 design canvas would previously have its
-               top/bottom clipped with max() (cover mode). Using min() ensures all
-               content is always fully visible. */
-            transform: scale(min(
-              calc(100cqw / var(--slide-design-w, ${DESIGN_WIDTH}px)),
-              calc(100cqh / var(--slide-design-h, ${DESIGN_HEIGHT}px))
-            ));
+            /* JS measures the actual visual viewport and writes a unitless scale.
+               This avoids container-unit rounding and transform flicker in WebKit. */
+            transform: translateZ(0) scale(var(--slide-fit-scale, 1));
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            contain: layout paint style;
           }
           .slide-canvas {
             position: relative;
@@ -792,6 +820,8 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
           .slide-canvas .slide-inner {
             cursor: grab;
             will-change: transform, opacity;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
             /* 覆盖 .slide-root * { pan-x pan-y }，否则 iOS Safari 会吞掉纵向手势 */
             touch-action: none;
           }
@@ -818,15 +848,15 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
             inset: 0 !important;
             transform: rotate(90deg) translateY(-100%);
             transform-origin: top left;
-            width: 100vh !important;
-            height: 100vw !important;
+            width: var(--slide-vh, 100vh) !important;
+            height: var(--slide-vw, 100vw) !important;
             overflow: hidden !important;
           }
           .slide-inner {
             position: absolute !important;
             inset: 0 !important;
-            width: 100vh !important;
-            height: 100vw !important;
+            width: var(--slide-vh, 100vh) !important;
+            height: var(--slide-vw, 100vw) !important;
             transform: none !important;
             touch-action: none !important;
           }
@@ -873,7 +903,9 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
         const prevSlide = current - direction;
         const isCinema = !reduceMotion && direction !== 0 && Math.min(current, prevSlide) === 0 && Math.max(current, prevSlide) === 1;
         const activeVariants = isCinema ? cinemaVariants : variants;
-        const activeTransition = isCinema
+        const activeTransition = reduceMotion
+          ? { duration: 0 }
+          : isCinema
           ? { duration: 0.9, ease: CINEMA_EASE }
           : { duration: 0.34, ease: EASE_OUT_FAST };
         return (
