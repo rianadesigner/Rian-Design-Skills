@@ -234,7 +234,7 @@ export default function SlidePage0f() {
             <div style={{ width: 28, height: 1, background: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
             <span style={{ fontSize: 11, color: "rgba(255,255,255,0.55)", letterSpacing: 3, fontWeight: 600, whiteSpace: "nowrap" }}>LLM WIKI 产品形态决策</span>
           </div>
-          <h1 style={{ margin: 0, fontWeight: 600, fontSize: 44, color: "#fff", lineHeight: `${y(52)}px`, letterSpacing: 0, whiteSpace: "nowrap" }}>3. 为什么需要多产品形态</h1>
+          <h1 style={{ margin: 0, fontWeight: 600, fontSize: 44, color: "#fff", lineHeight: `${y(52)}px`, letterSpacing: 0, whiteSpace: "nowrap" }}>3.多用户交互形态</h1>
           <p style={{ margin: 0, maxWidth: 850, fontSize: 14, color: "rgba(255,255,255,0.62)", lineHeight: `${y(24)}px`, textAlign: "center" }}>
             知识工作同时需要低门槛执行与高精度创作；双形态共享上下文，让任务从提问、编辑到交付连续流转。
           </p>

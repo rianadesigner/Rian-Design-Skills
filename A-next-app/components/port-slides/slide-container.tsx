@@ -80,7 +80,8 @@ function toVisibleSlideIndex(logicalIndex: number) {
 const SWIPE_THRESHOLD = 48;
 const SWIPE_VELOCITY = 280;
 const WHEEL_DELTA_TRIGGER = 22;
-const WHEEL_COOLDOWN_MS = 260;
+/** 连续 wheel 事件静止到此时长后，才视为下一次独立手势。 */
+const WHEEL_GESTURE_END_MS = 180;
 
 /** 整页纵向长滚动的幻灯片：触屏上由原生滚动接管，滚到边界后再滑动才翻页 */
 const SCROLL_SLIDES = new Set(["page3"]);
@@ -187,9 +188,11 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
     lastTime: 0,
   });
   const momentumRef = useRef<number>(0);
-  const wheelCooldownRef = useRef(false);
   const wheelAccumRef = useRef(0);
-  const wheelResetTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wheelGestureLockedRef = useRef(false);
+  const wheelScrollConsumedRef = useRef(false);
+  const wheelLastEventAtRef = useRef(0);
+  const wheelEndTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const tapRef = useRef({ x: 0, y: 0, t: 0 });
 
   /* 锁定作品集的文档视口。iPad Safari 的 scrollIntoView、橡皮筋滚动和
@@ -323,14 +326,13 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
     return () => root.removeEventListener("error", handleImageError, true);
   }, []);
 
-  const paginate = useCallback(
-    (newDirection: number) => {
-      const next = current + newDirection;
-      if (next < 0 || next >= slideComponents.length) return;
-      setCurrent([next, newDirection]);
-    },
-    [current],
-  );
+  const paginate = useCallback((newDirection: number) => {
+    setCurrent((previous) => {
+      const next = previous[0] + newDirection;
+      if (next < 0 || next >= slideComponents.length) return previous;
+      return [next, newDirection];
+    });
+  }, []);
 
   /* ── 触屏滑动翻页：内部可滚动页面（如 page3 长页）────────────────────
      这类页面上触摸会被浏览器原生滚动接管，framer drag 收到 pointercancel
@@ -553,11 +555,38 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
 
   // Wheel event: 所有幻灯片（除 cover）均通过滚轮上下翻页
   useEffect(() => {
+    const finishWheelGesture = () => {
+      if (wheelEndTimerRef.current) clearTimeout(wheelEndTimerRef.current);
+      wheelAccumRef.current = 0;
+      wheelGestureLockedRef.current = false;
+      wheelScrollConsumedRef.current = false;
+      wheelLastEventAtRef.current = 0;
+      wheelEndTimerRef.current = null;
+    };
+
+    const scheduleGestureEnd = () => {
+      if (wheelEndTimerRef.current) clearTimeout(wheelEndTimerRef.current);
+      wheelEndTimerRef.current = setTimeout(finishWheelGesture, WHEEL_GESTURE_END_MS);
+    };
+
     const handleWheel = (e: WheelEvent) => {
-      if (wheelCooldownRef.current) return;
       const curId = slideIds[current];
       // cover 页面保留原有行为，不拦截
       if (curId === "cover") return;
+
+      const now = performance.now();
+      if (now - wheelLastEventAtRef.current > WHEEL_GESTURE_END_MS) {
+        finishWheelGesture();
+      }
+      wheelLastEventAtRef.current = now;
+      scheduleGestureEnd();
+
+      /* 一次触控板/Magic Mouse 惯性手势只允许翻一页。转场后的残余
+         wheel 事件会继续延后手势结束时间，但不会触发下一页。 */
+      if (wheelGestureLockedRef.current) {
+        e.preventDefault();
+        return;
+      }
 
       // 优先让内部可滚动区域（如截图区）消费滚轮
       let node = e.target as HTMLElement | null;
@@ -571,7 +600,15 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
           const atBottom =
             node.scrollTop + node.clientHeight >= node.scrollHeight - 1;
           if ((e.deltaY > 0 && !atBottom) || (e.deltaY < 0 && !atTop)) {
+            wheelScrollConsumedRef.current = true;
             wheelAccumRef.current = 0;
+            return;
+          }
+          /* 同一次手势已经滚动过内部区域时，即使惯性将它推到边界，也不
+             接力触发整页翻页；用户停下后再次滚动才会翻页。 */
+          if (wheelScrollConsumedRef.current) {
+            wheelAccumRef.current = 0;
+            e.preventDefault();
             return;
           }
         }
@@ -580,24 +617,18 @@ export default function SlideContainer({ initialSlide = 0 }: { initialSlide?: nu
 
       /* 触控板/Magic Mouse 单次 delta 很小，累积后再判定翻页 */
       wheelAccumRef.current += e.deltaY;
-      if (wheelResetTimerRef.current) clearTimeout(wheelResetTimerRef.current);
-      wheelResetTimerRef.current = setTimeout(() => {
-        wheelAccumRef.current = 0;
-      }, 140);
-
       if (Math.abs(wheelAccumRef.current) < WHEEL_DELTA_TRIGGER) return;
 
       e.preventDefault();
       const dir = wheelAccumRef.current > 0 ? 1 : -1;
       wheelAccumRef.current = 0;
+      wheelGestureLockedRef.current = true;
       paginate(dir);
-      wheelCooldownRef.current = true;
-      setTimeout(() => { wheelCooldownRef.current = false; }, WHEEL_COOLDOWN_MS);
     };
     window.addEventListener("wheel", handleWheel, { passive: false });
     return () => {
       window.removeEventListener("wheel", handleWheel);
-      if (wheelResetTimerRef.current) clearTimeout(wheelResetTimerRef.current);
+      if (wheelEndTimerRef.current) clearTimeout(wheelEndTimerRef.current);
     };
   }, [current, paginate]);
 
