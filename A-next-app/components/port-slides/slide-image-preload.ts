@@ -1,4 +1,5 @@
 const imageDecodeCache = new Map<string, Promise<void>>()
+const ADJACENT_PRELOAD_LIMIT = 3
 
 const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   content0: [
@@ -255,32 +256,44 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   ],
 }
 
-function decodeImage(src: string) {
-  const cached = imageDecodeCache.get(src)
+function decodeImage(src: string, shouldDecode: boolean) {
+  const cacheKey = `${shouldDecode ? "decode" : "fetch"}:${src}`
+  const cached = imageDecodeCache.get(cacheKey)
   if (cached) return cached
 
   const task = new Promise<void>((resolve) => {
     const image = new Image()
     image.decoding = "async"
-    image.src = src
+    image.fetchPriority = "low"
 
     const finish = () => resolve()
-    if (typeof image.decode === "function") {
-      image.decode().then(finish, finish)
-    } else if (image.complete) {
+    image.onload = () => {
+      if (shouldDecode && typeof image.decode === "function") {
+        image.decode().then(finish, finish)
+        return
+      }
       finish()
-    } else {
-      image.onload = finish
-      image.onerror = finish
     }
+    image.onerror = finish
+    image.src = src
+
+    if (image.complete) finish()
   })
 
-  imageDecodeCache.set(src, task)
+  imageDecodeCache.set(cacheKey, task)
   return task
 }
 
 export async function predecodeSlideImages(slideId: string) {
   const assets = SLIDE_IMAGE_ASSETS[slideId]
   if (!assets?.length) return
-  await Promise.all(assets.map(decodeImage))
+
+  // iPad and other touch devices are more sensitive to decoded bitmap memory.
+  // Fetch only the first visible assets there and let Safari decode on demand.
+  const shouldDecode = !window.matchMedia("(pointer: coarse)").matches
+  await Promise.all(
+    assets
+      .slice(0, ADJACENT_PRELOAD_LIMIT)
+      .map((src) => decodeImage(src, shouldDecode))
+  )
 }

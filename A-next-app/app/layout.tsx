@@ -12,6 +12,7 @@ const geist = Geist({
 const fontMono = Geist_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
+  preload: false,
 });
 
 const inter = Inter({
@@ -19,6 +20,7 @@ const inter = Inter({
   weight: ["300", "400", "500"],
   variable: "--font-inter",
   display: "swap",
+  preload: false,
 });
 
 const syne = Syne({
@@ -26,6 +28,7 @@ const syne = Syne({
   weight: ["400", "600", "700"],
   variable: "--font-syne",
   display: "swap",
+  preload: false,
 });
 
 // 2. 添加 metadata 配置对象
