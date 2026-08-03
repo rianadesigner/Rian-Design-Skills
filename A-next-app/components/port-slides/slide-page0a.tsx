@@ -67,26 +67,6 @@ export default function SlidePage0a() {
         pointerEvents: "none", zIndex: 2,
       }} />
 
-      {/* ── Four corner marks ── */}
-      {(
-        [
-          { top: 18, left: 18,  borderTopWidth: 1, borderLeftWidth: 1   },
-          { top: 18, right: 18, borderTopWidth: 1, borderRightWidth: 1  },
-          { bottom: 18, left: 18,  borderBottomWidth: 1, borderLeftWidth: 1  },
-          { bottom: 18, right: 18, borderBottomWidth: 1, borderRightWidth: 1 },
-        ] as React.CSSProperties[]
-      ).map((pos, i) => (
-        <div
-          key={i}
-          style={{
-            position: "absolute", width: 38, height: 38,
-            pointerEvents: "none", zIndex: 20,
-            borderStyle: "solid", borderColor: "rgba(255,255,255,0.22)", borderWidth: 0,
-            ...pos,
-          }}
-        />
-      ))}
-
       {/* ══════════════════════════════════════════
           TOP — centred header text
           ══════════════════════════════════════════ */}
@@ -119,12 +99,12 @@ export default function SlidePage0a() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.06, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            margin: 0, fontSize: 46, lineHeight: 1.08, fontWeight: 700,
-            letterSpacing: "0.01em", color: "#fff", fontFamily: FONT,
+            margin: 0, fontSize: 46, lineHeight: 1.08, fontWeight: 400,
+            letterSpacing: "1.5px", color: "#fff", fontFamily: "'标小智无界黑', sans-serif",
             textWrap: "balance" as never,
           }}
         >
-          LLM Wiki_你的AI知识库承载全部知识生产
+          LLM Wiki-你的AI知识库
         </motion.h1>
 
         <motion.p
@@ -133,7 +113,7 @@ export default function SlidePage0a() {
           transition={{ delay: 0.18, duration: 0.6 }}
           style={{
             margin: "14px 0 0", maxWidth: 640,
-            fontSize: 13, lineHeight: 1.75,
+            fontSize: 14, fontWeight: 600, lineHeight: 1.75,
             color: "rgba(255,255,255,0.5)", fontFamily: FONT,
             textWrap: "pretty" as never,
           }}

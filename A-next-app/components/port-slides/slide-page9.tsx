@@ -10,40 +10,13 @@ export default function SlidePage9() {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute" style={{ top: 0, left: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
         <div className="absolute" style={{ top: 0, right: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
-        {/* 网格线装饰 */}
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="absolute inset-0 h-full w-full" viewBox="0 0 1443 1081.5" preserveAspectRatio="none">
-          <path d="M62,1081.5L61,1081.5L61,61.5L62,61.5L62,1081.5ZM461,61.5L462,61.5L462,1081.5L461,1081.5L461,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
-          <path d="M522,1081.5L521,1081.5L521,61.5L522,61.5L522,1081.5ZM921,61.5L922,61.5L922,1081.5L921,1081.5L921,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
-          <path d="M982,1081.5L981,1081.5L981,61.5L982,61.5L982,1081.5ZM1381,61.5L1382,61.5L1382,1081.5L1381,1081.5L1381,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
-          <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.08" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
-        </svg>
-      </div>
-
-      {/* ── Header ───────────────────────────────────────────────── */}
-      <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img loading="eager" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width: "5.97%" }} />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "20px", fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
-            日常消费场景2:&nbsp;&nbsp;专注用户碎片化知识管理 / 09
-          </p>
-        </div>
-        <div className="absolute" style={{ left: "7.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid rgba(255,255,255,0.22)", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
-            <p style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0, color: "rgba(255,255,255,0.55)" }}>
-              2024 / 2025
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* ── 标题：AI问答 知识管理 ─────────────────────────────────── */}
       <div className="absolute z-10" style={{ left: "4.17%", top: "9.26%" }}>
         <span
           style={{
-            backgroundImage: "linear-gradient(90deg, #5C5CFF 0%, #AE5CFF 100%)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
+            color: "#ef3b46",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
@@ -63,7 +36,7 @@ export default function SlidePage9() {
         >
           知识管理
         </span>
-        <svg height="13" viewBox="0 0 152 13" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "clamp(72px, calc(9 * var(--u)), 128px)", display: "block", marginTop: "-6px", opacity: 0.5 }}>
+        <svg height="13" viewBox="0 0 152 13" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ display: "none" }}>
           <defs>
             <linearGradient x1="0.0735" y1="0.129" x2="1.003" y2="0.132" id="p9wv">
               <stop offset="0%" stopColor="#5C5CFF" />
@@ -115,8 +88,8 @@ export default function SlidePage9() {
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "clamp(6px, calc(0.7 * var(--u)), 10px)", minHeight: 0 }}>
               <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.4)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
-                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>01</span>
+                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "#ef3b46", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>01</span>
                   </div>
                   <div>
                     <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.9 * var(--u)), 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>明确路径引导</p>
@@ -127,8 +100,8 @@ export default function SlidePage9() {
               </div>
               <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.4)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
-                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>02</span>
+                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "#ef3b46", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>02</span>
                   </div>
                   <div>
                     <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.9 * var(--u)), 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>知识库ai搜</p>
@@ -142,8 +115,8 @@ export default function SlidePage9() {
             <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "clamp(6px, calc(0.7 * var(--u)), 10px)", minHeight: 0 }}>
               <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.4)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
-                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>03</span>
+                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "#ef3b46", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>03</span>
                   </div>
                   <div>
                     <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.9 * var(--u)), 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>调用AI搜能力</p>
@@ -154,8 +127,8 @@ export default function SlidePage9() {
               </div>
               <div style={{ flex: 1, minHeight: 0, background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px)", boxShadow: "0px 0px 6px 0px rgba(0,0,0,0.4)", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
                 <div style={{ display: "flex", alignItems: "flex-start", gap: "8px", marginBottom: "4px" }}>
-                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                    <span style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>04</span>
+                  <div style={{ minWidth: "30px", height: "30px", borderRadius: "50%", background: "#ef3b46", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>04</span>
                   </div>
                   <div>
                     <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.9 * var(--u)), 13px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>沉浸式AI辅助</p>
@@ -170,8 +143,8 @@ export default function SlidePage9() {
           {/* 底部：深色卡片 05 横跨两列 */}
           <div style={{ background: "#1F1F1F", borderRadius: "clamp(8px, calc(0.83 * var(--u)), 12px) clamp(8px, calc(0.83 * var(--u)), 12px) 0 0", padding: "clamp(10px, calc(1 * var(--u)), 16px)", display: "flex", flexDirection: "column", overflow: "hidden", flex: 1 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-              <div style={{ minWidth: "clamp(22px, calc(2 * var(--u)), 30px)", height: "clamp(22px, calc(2 * var(--u)), 30px)", borderRadius: "50%", background: "rgba(209,251,57)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <span style={{ color: "#1F1F1F", fontSize: "clamp(9px, calc(0.9 * var(--u)), 13px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>05</span>
+              <div style={{ minWidth: "clamp(22px, calc(2 * var(--u)), 30px)", height: "clamp(22px, calc(2 * var(--u)), 30px)", borderRadius: "50%", background: "#ef3b46", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <span style={{ color: "#FFFFFF", fontSize: "clamp(9px, calc(0.9 * var(--u)), 13px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 600 }}>05</span>
               </div>
               <p style={{ color: "#FFFFFF", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.4, margin: 0 }}>
                 更清晰的数据展示和管理：可视化查看所有库&文件信息

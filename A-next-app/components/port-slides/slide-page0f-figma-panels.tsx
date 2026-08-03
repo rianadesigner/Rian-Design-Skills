@@ -340,3 +340,4 @@ export function FigmaEditorPanel({ left }: { left: number }) {
 }
 
 export const FIGMA_PANEL_DISPLAY_HEIGHT = PANEL_HEIGHT;
+export const FIGMA_PANEL_DISPLAY_WIDTH = PANEL_WIDTH;

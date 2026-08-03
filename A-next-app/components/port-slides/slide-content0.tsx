@@ -12,7 +12,7 @@ const STRIP_LOOPS = 3;
 
 /* ── Project data ─────────────────────────────────────────────── */
 // slideIndex = index in allSlideIds array defined in slide-container.tsx
-// cover(0) content0(1) page0a(2)…page0g(8) page0(9) page1(10)… page15(24)… page24(33)
+// cover(0) content0(1) page0a(2)…page0g(9)，AI 视频项目(10…23)，page0(24)，page1(25)…
 const PROJECTS = [
   {
     id: "kb",
@@ -34,7 +34,7 @@ const PROJECTS = [
     aspect: COVER_ASPECT,
     accent: "#60a5fa",
     pages: "1 – 14",
-    slideIndex: 11, // page1
+    slideIndex: 25, // page1
   },
   {
     id: "wanxiang",
@@ -45,7 +45,7 @@ const PROJECTS = [
     aspect: COVER_ASPECT,
     accent: "#c084fc",
     pages: "13 – 22",
-    slideIndex: 23, // page13
+    slideIndex: 37, // page13
   },
   {
     id: "xingliu",
@@ -56,11 +56,22 @@ const PROJECTS = [
     aspect: COVER_ASPECT,
     accent: "#22d3ee",
     pages: "23 – 26",
-    slideIndex: 33, // page23
+    slideIndex: 48, // if-studio
+  },
+  {
+    id: "delta-video",
+    num: "05",
+    name: "Delta 视频编辑",
+    subtitle: "高可控 AI 视频创作与编辑体验",
+    cover: "/images/page0/content0-card-delta.png",
+    aspect: COVER_ASPECT,
+    accent: "#ef3b46",
+    pages: "11 – 20",
+    slideIndex: 10, // page27 → 当前 /11
   },
 ];
 
-const NAV = ["LLM Wiki", "IFlow心流", "万相·星链", "万相·营造"];
+const NAV = PROJECTS.map((project) => project.name);
 
 const SEGMENT_CARD_W =
   PROJECTS.length * CARD_W + (PROJECTS.length - 1) * STRIP_GAP;
@@ -564,12 +575,6 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
       />
 
 
-      {/* ── Four-corner L-frames ──────────────────────────── */}
-      <div style={{ position:"absolute", top:18, left:18, width:46, height:46, borderTop:"1px solid rgba(255,255,255,0.28)", borderLeft:"1px solid rgba(255,255,255,0.28)", zIndex:12, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", top:18, right:18, width:46, height:46, borderTop:"1px solid rgba(255,255,255,0.28)", borderRight:"1px solid rgba(255,255,255,0.28)", zIndex:12, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:18, left:18, width:46, height:46, borderBottom:"1px solid rgba(255,255,255,0.28)", borderLeft:"1px solid rgba(255,255,255,0.28)", zIndex:12, pointerEvents:"none" }} />
-      <div style={{ position:"absolute", bottom:18, right:18, width:46, height:46, borderBottom:"1px solid rgba(255,255,255,0.28)", borderRight:"1px solid rgba(255,255,255,0.28)", zIndex:12, pointerEvents:"none" }} />
-
       {/* ── Top nav bar (DGC ceremony) ────────────────────── */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -809,7 +814,7 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
             whiteSpace: "nowrap",
           }}
         >
-          设计 AI 产品全链路体验，覆盖 LLM Wiki / IFlow心流 / 万相·星链 / 万相·营造等场景的产品化探索与落地
+          设计 AI 产品全链路体验，覆盖 LLM Wiki / IFlow心流 / 万相·星链 / 万相·营造 / Delta 视频编辑等场景的产品化探索与落地
         </div>
       </motion.div>
 

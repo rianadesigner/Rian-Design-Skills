@@ -183,18 +183,36 @@ export default function SlidePage24() {
       {/* ── Bands 2–4: Badge + 3 Screenshots ────────────────────── */}
       {bands.map((band) => (
         <div key={band.num}>
-          <div className="absolute z-10 flex items-center" style={{ left: "25.28%", top: band.badgeTop, gap: "clamp(3px, calc(0.42 * var(--u)), 6px)" }}>
-            <div className="flex items-center justify-center flex-shrink-0" style={{ width: "clamp(14px, calc(1.39 * var(--u)), 20px)", height: "clamp(14px, calc(1.39 * var(--u)), 20px)", background: "#D1FB39", borderRadius: "10px" }}>
-              <p style={{ color: "#111111", fontSize: "clamp(7px, calc(0.69 * var(--u)), 10px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+          <div
+            className="absolute z-30 inline-flex w-fit items-center"
+            style={{
+              left: "25.28%",
+              top: band.badgeTop,
+              zIndex: 40,
+              width: "max-content",
+              maxWidth: "70.56%",
+              minHeight: "clamp(32px, calc(3.33 * var(--u)), 48px)",
+              gap: "clamp(7px, calc(0.83 * var(--u)), 12px)",
+              padding: "clamp(5px, calc(0.63 * var(--u)), 9px) clamp(9px, calc(1.11 * var(--u)), 16px)",
+              background: "linear-gradient(90deg, rgba(30, 30, 30, 0.98), rgba(18, 18, 18, 0.94))",
+              border: "1px solid rgba(255, 255, 255, 0.24)",
+              borderRadius: "clamp(4px, calc(0.56 * var(--u)), 8px)",
+              boxShadow: "0 8px 24px rgba(0, 0, 0, 0.42)",
+            }}
+          >
+            <div className="flex items-center justify-center flex-shrink-0" style={{ width: "clamp(18px, calc(1.67 * var(--u)), 24px)", height: "clamp(18px, calc(1.67 * var(--u)), 24px)", background: "#D1FB39", borderRadius: "50%" }}>
+              <p style={{ color: "#111111", fontSize: "clamp(8px, calc(0.76 * var(--u)), 11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 700, textAlign: "center", lineHeight: 1, margin: 0 }}>
                 {band.num}
               </p>
             </div>
-            <span style={{ color: "#FFFFFF", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
-              {band.label}
-            </span>
-            <span style={{ color: "rgba(255,255,255,0.8)", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.4, whiteSpace: "nowrap" }}>
-              {band.desc}
-            </span>
+            <div className="flex min-w-0 items-baseline" style={{ gap: "clamp(8px, calc(0.97 * var(--u)), 14px)" }}>
+              <span style={{ color: "#FFFFFF", fontSize: "clamp(11px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.4, whiteSpace: "nowrap", flexShrink: 0 }}>
+                {band.label}
+              </span>
+              <span style={{ color: "rgba(255,255,255,0.82)", fontSize: "clamp(9px, calc(0.83 * var(--u)), 12px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.45, whiteSpace: "nowrap" }}>
+                {band.desc}
+              </span>
+            </div>
           </div>
           {band.images.map((img, i) => (
             <img

@@ -146,7 +146,7 @@ export default function SlidePage19() {
         />
       </div>
 
-      {/* ── Card B (top-right): 提升用户理解和使用效率 ─────────── */}
+      {/* ── Card B (top-right): 包包展示视频流程画布 ─────────── */}
       <div
         className="absolute z-10 overflow-hidden"
         style={{
@@ -160,8 +160,9 @@ export default function SlidePage19() {
           boxShadow: "0px 0px 12px rgba(0,0,0,0.4)",
         }}
       >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={`${P19}/cardB-screenshot.webp`}
+          src={`${P19}/bag-video-flow.jpg`}
           alt=""
           className="absolute"
           style={{
@@ -170,7 +171,7 @@ export default function SlidePage19() {
             width: "69.74%",
             height: "100%",
             objectFit: "cover",
-            objectPosition: "center top",
+            objectPosition: "center 16%",
           }}
         />
         <div
@@ -183,12 +184,10 @@ export default function SlidePage19() {
           }}
         >
           <span style={{ color: "#FFFFFF", fontSize: "clamp(12px, calc(1.11 * var(--u)), 16px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 500, lineHeight: 1.3 }}>
-            提升用户理解和使用效率
+            包包展示视频流程画布
           </span>
           <span style={{ color: "rgba(255,255,255,0.38)", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.7 }}>
-            支持用户查看MCP介绍
-            <br />
-            增强工具测试与验证
+            将模特、包袋、场景与参考视频统一输入，按模板分支批量生成图片和视频结果。
           </span>
         </div>
       </div>

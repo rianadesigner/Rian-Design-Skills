@@ -326,21 +326,6 @@ export default function SlidePage0e() {
         }}
       />
 
-      {/* ── Four corner marks ── */}
-      {(
-        [
-          { top: 24, left: 24 },
-          { top: 24, right: 24, transform: "scaleX(-1)" },
-          { bottom: 24, left: 24, transform: "scaleY(-1)" },
-          { bottom: 24, right: 24, transform: "scale(-1,-1)" },
-        ] as React.CSSProperties[]
-      ).map((s, i) => (
-        <div key={i} aria-hidden style={{ position: "absolute", ...s, width: 18, height: 18, zIndex: 6 }}>
-          <div style={{ position: "absolute", top: 0, left: 0, width: 18, height: 1, background: "rgba(255,255,255,0.22)" }} />
-          <div style={{ position: "absolute", top: 0, left: 0, width: 1, height: 18, background: "rgba(255,255,255,0.22)" }} />
-        </div>
-      ))}
-
       {/* ── Header ── */}
       <div
         style={{
@@ -358,14 +343,14 @@ export default function SlidePage0e() {
       >
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <span style={{ fontFamily: "Impact, 'Arial Black', sans-serif", fontSize: 13, color: "rgba(200,8,8,0.85)", letterSpacing: 2 }}>
-            03
+            05
           </span>
           <div style={{ width: 28, height: 1, background: "rgba(255,255,255,0.2)" }} />
           <span style={{ fontSize: 11, color: "rgba(255,255,255,0.4)", letterSpacing: 3 }}>
             LLM WIKI 核心操作动线
           </span>
         </div>
-        <p style={{ fontWeight: 600, fontSize: 44, color: "#fff", lineHeight: "51.92px", letterSpacing: 0.5, margin: 0 }}>
+        <p style={{ fontFamily: "'标小智无界黑', sans-serif", fontWeight: 400, fontSize: 40, color: "#fff", lineHeight: "51.92px", letterSpacing: "1.5px", margin: 0 }}>
           2. Wiki图谱编译
         </p>
         <p

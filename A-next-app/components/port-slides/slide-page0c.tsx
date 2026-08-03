@@ -61,12 +61,6 @@ export default function SlidePage0c() {
         backgroundRepeat: "repeat", backgroundSize: "128px 128px",
       }} />
 
-      {/* ── Four corner marks ── */}
-      <div aria-hidden style={{ position: "absolute", left: 24, top: 24, width: 38, height: 38, borderTop: "0.951px solid rgba(255,255,255,0.22)", borderLeft: "0.951px solid rgba(255,255,255,0.22)", pointerEvents: "none", zIndex: 20 }} />
-      <div aria-hidden style={{ position: "absolute", right: 24, top: 24, width: 38, height: 38, borderTop: "0.951px solid rgba(255,255,255,0.22)", borderRight: "0.951px solid rgba(255,255,255,0.22)", pointerEvents: "none", zIndex: 20 }} />
-      <div aria-hidden style={{ position: "absolute", left: 24, bottom: 24, width: 38, height: 38, borderBottom: "0.951px solid rgba(255,255,255,0.22)", borderLeft: "0.951px solid rgba(255,255,255,0.22)", pointerEvents: "none", zIndex: 20 }} />
-      <div aria-hidden style={{ position: "absolute", right: 24, bottom: 24, width: 38, height: 38, borderBottom: "0.951px solid rgba(255,255,255,0.22)", borderRight: "0.951px solid rgba(255,255,255,0.22)", pointerEvents: "none", zIndex: 20 }} />
-
       {/* ══════════════════════════════════════════
           HEADER  (centered, top: 204px)
       ══════════════════════════════════════════ */}
@@ -102,10 +96,10 @@ export default function SlidePage0c() {
         {/* Main title */}
         <p style={{
           margin: 0,
-          fontFamily: "'PingFang SC', sans-serif", fontWeight: 600,
+          fontFamily: "'标小智无界黑', sans-serif", fontWeight: 400,
           fontSize: 44, lineHeight: "47.251px",
           color: "#fff",
-          letterSpacing: "1px",
+          letterSpacing: "1.5px",
         }}>LLM WIKI 关键产品链路</p>
 
         {/* Subtitle */}
@@ -127,13 +121,16 @@ export default function SlidePage0c() {
         top: 420,
         display: "flex",
         flexDirection: "row",
-        gap: 1,
-        background: "rgba(255,255,255,0.1)",
+        gap: 0,
+        background: "transparent",
         zIndex: 10,
       }}>
-        {STEPS.map((step) => (
+        {STEPS.map((step, index) => (
           <div key={step.num} style={{
-            background: "#070707",
+            background: "transparent",
+            borderRight: index < STEPS.length - 1
+              ? "1px solid rgba(255,255,255,0.1)"
+              : "none",
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",

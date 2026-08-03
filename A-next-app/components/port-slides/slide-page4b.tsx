@@ -37,17 +37,6 @@ const border = "rgba(255,255,255,0.12)";
 const red = "rgba(200,8,8,0.88)";
 const muted = "rgba(255,255,255,0.46)";
 
-function CornerMarks() {
-  const marks = [
-    { left: 24, top: 24, borderTop: `1px solid ${border}`, borderLeft: `1px solid ${border}` },
-    { right: 24, top: 24, borderTop: `1px solid ${border}`, borderRight: `1px solid ${border}` },
-    { left: 24, bottom: 24, borderBottom: `1px solid ${border}`, borderLeft: `1px solid ${border}` },
-    { right: 24, bottom: 24, borderBottom: `1px solid ${border}`, borderRight: `1px solid ${border}` },
-  ];
-
-  return <>{marks.map((style, index) => <div key={index} aria-hidden style={{ position: "absolute", width: 38, height: 38, pointerEvents: "none", zIndex: 20, ...style }} />)}</>;
-}
-
 function SectionLabel({ num, title, en }: { num: string; title: string; en: string }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 12, height: 26 }}>
@@ -67,8 +56,6 @@ export default function SlidePage4b() {
         position: "absolute", inset: 0, opacity: 0.1, mixBlendMode: "overlay", pointerEvents: "none",
         backgroundImage: "url('/images/film-grain.png')", backgroundRepeat: "repeat", backgroundSize: "128px 128px",
       }} />
-      <CornerMarks />
-
       <header style={{ position: "absolute", left: 48, right: 48, top: 32, display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "start", zIndex: 10 }}>
         <div style={{ paddingTop: 34 }}>
           <span style={{ display: "block", fontFamily: "Impact, 'Arial Black', sans-serif", fontSize: 11, letterSpacing: 2.4, color: red }}>LLM WIKI / 02</span>
@@ -81,7 +68,7 @@ export default function SlidePage4b() {
             <span aria-hidden style={{ width: 28, height: 1, background: "rgba(255,255,255,0.22)" }} />
             <span style={{ fontSize: 10.5, letterSpacing: 2.6, color: "rgba(255,255,255,0.46)" }}>LLM WIKI 思维框架</span>
           </div>
-          <p style={{ margin: 0, fontSize: 42, lineHeight: 1.15, fontWeight: 600, letterSpacing: 1, color: "#fff" }}>LLM WIKI 方法论</p>
+          <p style={{ margin: 0, fontFamily: "'标小智无界黑', sans-serif", fontSize: 42, lineHeight: 1.15, fontWeight: 400, letterSpacing: "1.5px", color: "#fff" }}>LLM WIKI 方法论</p>
           <p style={{ margin: "9px 0 0", fontSize: 13, lineHeight: 1.65, color: "rgba(255,255,255,0.5)" }}>让知识在使用中被持续整理、连接、验证与更新</p>
         </div>
 

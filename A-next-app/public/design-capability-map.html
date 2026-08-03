@@ -1,0 +1,6633 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>设计能力地图</title>
+  <style>
+    :root {
+      --ink: #18181b;
+      --subtle-ink: #71717a;
+      --muted-ink: #a1a1aa;
+      --line: #e9e9ee;
+      --line-strong: #dadbe3;
+      --panel: rgba(255,255,255,.88);
+      --panel-strong: #fff;
+      --purple: #7067e8;
+      --purple-soft: #f0efff;
+      --cyan-soft: #e8fbfb;
+      --orange: #df8a3d;
+      --orange-soft: #fff3e8;
+      --shadow: 0 18px 50px rgba(32, 35, 52, .07);
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+      background:
+        linear-gradient(rgba(112,103,232,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(112,103,232,.035) 1px, transparent 1px),
+        radial-gradient(circle at 18% 7%, rgba(121,106,255,.07), transparent 25%),
+        radial-gradient(circle at 86% 1%, rgba(44,207,205,.07), transparent 23%),
+        #fbfbfc;
+      background-size: 32px 32px, 32px 32px, auto, auto, auto;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+
+    .app {
+      width: min(1500px, calc(100% - 56px));
+      margin: 0 auto;
+      padding: 42px 0 72px;
+    }
+
+    .masthead {
+      display: grid;
+      grid-template-columns: 1fr minmax(360px, 610px);
+      gap: 40px;
+      align-items: end;
+      padding: 12px 8px 30px;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 4vw, 52px);
+      line-height: 1.08;
+      letter-spacing: -.045em;
+      font-weight: 650;
+    }
+
+    .subtitle {
+      margin: 14px 0 0;
+      max-width: 680px;
+      color: var(--subtle-ink);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .search-border {
+      padding: 1.5px;
+      border-radius: 999px;
+      background: linear-gradient(100deg, #80e5e5, #8b7cf2 34%, #f1c261 67%, #ee8bc2);
+      box-shadow: 0 10px 26px rgba(112,103,232,.08);
+    }
+
+    .header-tools {
+      display: grid;
+      gap: 10px;
+    }
+
+    .global-network-button {
+      justify-self: end;
+      padding: 10px 15px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 650;
+      cursor: pointer;
+      box-shadow: 0 7px 18px rgba(24,24,27,.13);
+    }
+
+    .global-network-button::before { content: "✦ "; color: #bcb5ff; }
+
+    .search {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 4px 6px 4px 22px;
+      border-radius: inherit;
+      background: rgba(255,255,255,.96);
+    }
+
+    .search input {
+      width: 100%;
+      height: 48px;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--ink);
+      font-size: 15px;
+    }
+
+    .search input::placeholder { color: #a8a8b0; }
+
+    .search-icon {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      font-size: 18px;
+    }
+
+    .primary-nav {
+      display: flex;
+      gap: 34px;
+      align-items: center;
+      padding: 0 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .primary-tab {
+      position: relative;
+      padding: 16px 0 18px;
+      border: 0;
+      background: transparent;
+      color: var(--subtle-ink);
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .primary-tab.active {
+      color: var(--purple);
+      font-weight: 650;
+    }
+
+    .primary-tab.active::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -1px;
+      height: 3px;
+      border-radius: 99px 99px 0 0;
+      background: var(--purple);
+    }
+
+    .secondary-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      margin: 0 -16px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(233,233,238,.92);
+      background: rgba(251,251,252,.86);
+      backdrop-filter: blur(16px);
+    }
+
+    .secondary-nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .secondary-nav::-webkit-scrollbar { display: none; }
+
+    .secondary-tab,
+    .filter-button {
+      flex: 0 0 auto;
+      padding: 10px 16px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      background: transparent;
+      color: #55555f;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .secondary-tab:hover,
+    .filter-button:hover { background: #f0f0f3; }
+
+    .secondary-tab.active {
+      background: var(--ink);
+      color: #fff;
+      box-shadow: 0 5px 14px rgba(24,24,27,.14);
+    }
+
+    main { padding: 32px 0 0; }
+
+    .overview {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 28px;
+      align-items: start;
+      margin-bottom: 24px;
+    }
+
+    .overview h2 {
+      margin: 0;
+      font-size: clamp(24px, 3vw, 36px);
+      line-height: 1.2;
+      letter-spacing: -.035em;
+      font-weight: 650;
+    }
+
+    .overview p {
+      margin: 10px 0 0;
+      max-width: 820px;
+      color: var(--subtle-ink);
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+    }
+
+    .stat {
+      min-width: 92px;
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.7);
+    }
+
+    .stat b {
+      display: block;
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 650;
+    }
+
+    .stat span {
+      display: block;
+      margin-top: 7px;
+      color: var(--muted-ink);
+      font-size: 11px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .toolbar-title {
+      color: var(--subtle-ink);
+      font-size: 13px;
+    }
+
+    .filters {
+      display: flex;
+      gap: 6px;
+      padding: 4px;
+      border-radius: 999px;
+      background: #f0f0f3;
+    }
+
+    .filter-button {
+      padding: 7px 12px;
+      font-size: 12px;
+    }
+
+    .filter-button.active {
+      background: #fff;
+      color: var(--ink);
+      box-shadow: 0 2px 8px rgba(24,24,27,.08);
+    }
+
+    .atom-panel { padding: 24px; }
+
+    .atom-group + .atom-group { margin-top: 24px; }
+
+    .group-heading {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 14px;
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .group-heading small {
+      color: var(--muted-ink);
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--ink);
+    }
+
+    .status-dot.planned { background: var(--orange); }
+
+    .capsules {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .capsule {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 13px;
+      border: 1px solid var(--line-strong);
+      border-radius: 999px;
+      background: rgba(255,255,255,.76);
+      color: #55555f;
+      font-size: 12px;
+      line-height: 1.35;
+      transition: .18s ease;
+    }
+
+    .capsule.planned {
+      border-color: #ead7c5;
+      background: rgba(255,248,241,.8);
+      color: #9a673c;
+    }
+
+    .capsule.selected {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: #fff;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(24,24,27,.14);
+    }
+
+    .capsule.planned.selected {
+      border-color: var(--orange);
+      background: var(--orange);
+      color: #fff;
+      box-shadow: 0 6px 16px rgba(223,138,61,.18);
+    }
+
+    .empty {
+      padding: 42px 20px;
+      color: var(--muted-ink);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    .stage-panel {
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .stage-flow {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .stage-flow::-webkit-scrollbar { display: none; }
+
+    .stage-step {
+      position: relative;
+      min-width: 176px;
+      flex: 1 0 176px;
+      padding-right: 28px;
+    }
+
+    .stage-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: 8px;
+      top: 22px;
+      color: #b7b7c0;
+      font-size: 18px;
+    }
+
+    .stage-button {
+      width: 100%;
+      min-height: 70px;
+      padding: 13px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.74);
+      text-align: left;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .stage-button:hover {
+      border-color: #cfcfe0;
+      transform: translateY(-1px);
+    }
+
+    .stage-button.active {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: #fff;
+      box-shadow: 0 8px 22px rgba(24,24,27,.13);
+    }
+
+    .stage-index {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted-ink);
+      font-size: 10px;
+      letter-spacing: .12em;
+    }
+
+    .stage-button.active .stage-index { color: rgba(255,255,255,.58); }
+
+    .stage-name {
+      display: block;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .stage-count {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted-ink);
+      font-size: 11px;
+    }
+
+    .stage-button.active .stage-count { color: rgba(255,255,255,.62); }
+
+    .selected-stage {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .selected-stage b {
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .selected-stage span {
+      margin-left: 10px;
+      color: var(--subtle-ink);
+      font-size: 13px;
+    }
+
+    .solution-section {
+      margin-bottom: 18px;
+      padding: 22px;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-heading h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 650;
+    }
+
+    .section-heading p {
+      margin: 5px 0 0;
+      color: var(--muted-ink);
+      font-size: 12px;
+    }
+
+    .clear-button {
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--subtle-ink);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .solution-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 12px;
+    }
+
+    .solution-card {
+      position: relative;
+      min-height: 142px;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,.76);
+      text-align: left;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .solution-card:hover {
+      border-color: #cfcfe0;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(34,34,44,.06);
+    }
+
+    .solution-card.active {
+      border-color: var(--purple);
+      background:
+        linear-gradient(135deg, rgba(112,103,232,.09), rgba(74,207,205,.05)),
+        #fff;
+      box-shadow: 0 10px 28px rgba(112,103,232,.11);
+    }
+
+    .solution-number {
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 9px;
+      background: #f0f0f3;
+      color: var(--subtle-ink);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .solution-card.active .solution-number {
+      background: var(--purple);
+      color: #fff;
+    }
+
+    .solution-card h4 {
+      margin: 15px 0 7px;
+      font-size: 15px;
+      font-weight: 650;
+    }
+
+    .solution-card p {
+      margin: 0;
+      color: var(--subtle-ink);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    .solution-meta {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+      color: var(--muted-ink);
+      font-size: 10px;
+    }
+
+    .solution-card.active .solution-meta { color: var(--purple); }
+
+    .method-panel {
+      margin-bottom: 18px;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .method-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .method-kicker {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--purple);
+      font-size: 10px;
+      font-weight: 750;
+      letter-spacing: .14em;
+    }
+
+    .method-heading h3 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: -.02em;
+    }
+
+    .method-heading p {
+      margin: 7px 0 0;
+      color: var(--subtle-ink);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .method-rule {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 20px;
+      padding: 11px 13px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, rgba(112,103,232,.08), rgba(70,207,205,.055));
+      color: var(--subtle-ink);
+      font-size: 11px;
+    }
+
+    .method-rule b {
+      color: var(--ink);
+      font-weight: 650;
+    }
+
+    .method-rule span:not(:last-child)::after {
+      content: "·";
+      margin-left: 7px;
+      color: #b0b0bc;
+    }
+
+    .method-canvas {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: minmax(250px, 1fr);
+      gap: 14px;
+      padding: 34px 2px 4px;
+      overflow-x: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #d6d6df transparent;
+    }
+
+    .method-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      padding: 20px 16px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.62);
+    }
+
+    .method-stage::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: -15px;
+      top: -19px;
+      height: 1px;
+      background: #d8d8e2;
+    }
+
+    .method-stage:last-child::before { right: 50%; }
+
+    .method-stage:not(:last-child)::after {
+      content: "›";
+      position: absolute;
+      z-index: 2;
+      right: -12px;
+      top: -31px;
+      color: #9c9ca8;
+      font-size: 24px;
+      line-height: 24px;
+      background: #fbfbfc;
+    }
+
+    .method-marker {
+      position: absolute;
+      top: -29px;
+      left: 0;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      width: 22px;
+      height: 22px;
+      border: 3px solid #fbfbfc;
+      border-radius: 50%;
+      background: var(--ink);
+      color: #fff;
+      font-size: 8px;
+      font-weight: 750;
+      box-shadow: 0 0 0 1px #d8d8e2;
+    }
+
+    .method-stage-label {
+      color: var(--purple);
+      font-size: 9px;
+      font-weight: 750;
+      letter-spacing: .13em;
+    }
+
+    .method-stage h4 {
+      margin: 8px 0 7px;
+      font-size: 16px;
+      font-weight: 650;
+      letter-spacing: -.02em;
+    }
+
+    .method-stage-goal {
+      min-height: 54px;
+      margin: 0;
+      color: var(--subtle-ink);
+      font-size: 11px;
+      line-height: 1.65;
+    }
+
+    .method-output-label {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin: 16px 0 9px;
+      padding-top: 13px;
+      border-top: 1px dashed #dddde5;
+      color: var(--muted-ink);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .1em;
+    }
+
+    .method-output-label::before {
+      content: "";
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--purple);
+    }
+
+    .method-solutions {
+      display: grid;
+      gap: 8px;
+    }
+
+    .method-solution {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255,255,255,.9);
+      text-align: left;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .method-solution:hover {
+      border-color: #c7c5ef;
+      transform: translateY(-1px);
+      box-shadow: 0 7px 18px rgba(34,34,44,.06);
+    }
+
+    .method-solution.active {
+      border-color: var(--purple);
+      background: var(--purple-soft);
+      box-shadow: inset 3px 0 0 var(--purple);
+    }
+
+    .method-solution-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .method-solution-code {
+      color: var(--muted-ink);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: .1em;
+    }
+
+    .method-solution-count {
+      color: var(--muted-ink);
+      font-size: 9px;
+    }
+
+    .method-solution b {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .method-solution small {
+      display: block;
+      margin-top: 5px;
+      color: var(--subtle-ink);
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .knowledge-hub {
+      position: relative;
+      width: min(620px, 90%);
+      margin: 6px auto 38px;
+      padding: 17px 22px;
+      border: 1px solid rgba(112,103,232,.24);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 16% 10%, rgba(86,211,205,.12), transparent 32%),
+        linear-gradient(135deg, rgba(112,103,232,.1), rgba(255,255,255,.92));
+      text-align: center;
+      box-shadow: 0 12px 34px rgba(112,103,232,.09);
+    }
+
+    .knowledge-hub::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 100%;
+      width: 1px;
+      height: 39px;
+      background: #d6d6df;
+    }
+
+    .knowledge-hub small {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--purple);
+      font-size: 9px;
+      font-weight: 750;
+      letter-spacing: .13em;
+    }
+
+    .knowledge-hub b {
+      display: block;
+      font-size: 15px;
+      font-weight: 650;
+    }
+
+    .knowledge-hub span {
+      display: block;
+      margin-top: 6px;
+      color: var(--subtle-ink);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    .cluster-map {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(235px, 1fr));
+      gap: 14px;
+      padding-top: 22px;
+    }
+
+    .cluster-map::before {
+      content: "";
+      position: absolute;
+      left: 9%;
+      right: 9%;
+      top: 0;
+      height: 1px;
+      background: #d6d6df;
+    }
+
+    .stage-cluster {
+      position: relative;
+      min-width: 0;
+      padding: 18px 15px 15px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.64);
+    }
+
+    .stage-cluster::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 100%;
+      width: 1px;
+      height: 23px;
+      background: #d6d6df;
+    }
+
+    .cluster-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 11px;
+    }
+
+    .cluster-index {
+      display: grid;
+      place-items: center;
+      width: 27px;
+      height: 27px;
+      flex: 0 0 auto;
+      border-radius: 9px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 750;
+    }
+
+    .cluster-header h4 {
+      margin: 1px 0 4px;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .cluster-header span {
+      display: block;
+      color: var(--purple);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: .11em;
+    }
+
+    .cluster-goal {
+      min-height: 50px;
+      margin: 0 0 13px;
+      color: var(--subtle-ink);
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+    .cluster-solutions {
+      display: grid;
+      gap: 7px;
+    }
+
+    .cluster-solution {
+      width: 100%;
+      padding: 10px 11px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: rgba(255,255,255,.92);
+      text-align: left;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .cluster-solution:hover {
+      border-color: #c6c3f3;
+      transform: translateY(-1px);
+    }
+
+    .cluster-solution.active {
+      border-color: var(--purple);
+      background: var(--purple-soft);
+      box-shadow: inset 3px 0 0 var(--purple);
+    }
+
+    .cluster-solution-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      color: var(--muted-ink);
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: .08em;
+    }
+
+    .cluster-solution b {
+      display: block;
+      margin-top: 5px;
+      font-size: 11px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .solution-help {
+      position: fixed;
+      z-index: 120;
+      width: min(390px, calc(100vw - 28px));
+      padding: 16px;
+      border: 1px solid rgba(112,103,232,.22);
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 100% 0, rgba(84,211,205,.11), transparent 36%),
+        rgba(255,255,255,.98);
+      box-shadow: 0 24px 70px rgba(27,27,38,.18);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(6px) scale(.985);
+      transition: opacity .14s ease, transform .14s ease, visibility .14s ease;
+      backdrop-filter: blur(18px);
+    }
+
+    .solution-help.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .solution-help-kicker {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: var(--purple);
+      font-size: 9px;
+      font-weight: 750;
+      letter-spacing: .11em;
+    }
+
+    .solution-help h4 {
+      margin: 8px 0 7px;
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .solution-help p {
+      margin: 0;
+      color: var(--subtle-ink);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .solution-help-output {
+      margin-top: 12px;
+      padding: 10px 11px;
+      border-radius: 11px;
+      background: #f5f5f8;
+      color: #52525d;
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .solution-help-output b {
+      color: var(--ink);
+      font-weight: 650;
+    }
+
+    .solution-help img {
+      display: block;
+      width: 100%;
+      height: 148px;
+      margin-top: 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #f3f3f5;
+      object-fit: cover;
+    }
+
+    .solution-help-caption {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted-ink);
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    .network-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 15px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 650;
+      cursor: pointer;
+      box-shadow: 0 7px 18px rgba(24,24,27,.13);
+    }
+
+    .network-toggle::before {
+      content: "✦";
+      color: #bcb5ff;
+    }
+
+    .network-toggle.expanded {
+      border-color: var(--line-strong);
+      background: #fff;
+      color: var(--ink);
+      box-shadow: none;
+    }
+
+    .ability-network {
+      margin-top: 22px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+    }
+
+    .network-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 18px;
+      margin-bottom: 14px;
+    }
+
+    .network-heading h4 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .network-heading p {
+      margin: 5px 0 0;
+      color: var(--muted-ink);
+      font-size: 10px;
+    }
+
+    .node-network {
+      position: relative;
+      min-width: 860px;
+      height: 620px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(112,103,232,.08), transparent 28%),
+        radial-gradient(circle at 18% 50%, rgba(24,24,27,.035), transparent 30%),
+        radial-gradient(circle at 82% 50%, rgba(223,138,61,.055), transparent 30%),
+        linear-gradient(rgba(112,103,232,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(112,103,232,.035) 1px, transparent 1px),
+        rgba(252,252,253,.9);
+      background-size: auto, auto, auto, 28px 28px, 28px 28px, auto;
+    }
+
+    .node-network-wrap {
+      overflow-x: auto;
+      border-radius: 20px;
+    }
+
+    .network-lines {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .network-lines path {
+      fill: none;
+      stroke: #cfcfd9;
+      stroke-width: 1.2;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .network-lines path.planned { stroke: #e5c6a9; }
+
+    .network-center {
+      position: absolute;
+      z-index: 3;
+      left: 50%;
+      top: 50%;
+      width: 190px;
+      padding: 17px 15px;
+      border: 1px solid var(--purple);
+      border-radius: 18px;
+      background: #fff;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 15px 40px rgba(112,103,232,.17), 0 0 0 7px rgba(112,103,232,.05);
+    }
+
+    .network-center small {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--purple);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: .12em;
+    }
+
+    .network-center b {
+      display: block;
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .network-center span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted-ink);
+      font-size: 9px;
+    }
+
+    .network-node {
+      position: absolute;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      width: 132px;
+      min-height: 40px;
+      padding: 8px 10px;
+      border: 1px solid #d6d6df;
+      border-radius: 999px;
+      background: rgba(255,255,255,.94);
+      color: #4f4f59;
+      font-size: 9px;
+      line-height: 1.35;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 5px 14px rgba(35,35,43,.05);
+    }
+
+    .network-node.existing::before,
+    .network-node.planned::before {
+      content: "";
+      position: absolute;
+      left: 8px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--ink);
+    }
+
+    .network-node.planned {
+      border-color: #e7d2be;
+      background: rgba(255,248,241,.96);
+      color: #8d6039;
+    }
+
+    .network-node.planned::before { background: var(--orange); }
+
+    .network-side-label {
+      position: absolute;
+      top: 19px;
+      z-index: 2;
+      color: var(--muted-ink);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: .13em;
+    }
+
+    .network-side-label.left { left: 24px; }
+    .network-side-label.right { right: 24px; color: var(--orange); }
+
+    .network-empty {
+      padding: 36px 16px;
+      border: 1px dashed var(--line-strong);
+      border-radius: 16px;
+      color: var(--muted-ink);
+      text-align: center;
+      font-size: 12px;
+    }
+
+    .full-graph-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 13px;
+    }
+
+    .full-graph-toolbar h4 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .full-graph-toolbar p {
+      margin: 5px 0 0;
+      color: var(--muted-ink);
+      font-size: 10px;
+    }
+
+    .graph-reset {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--subtle-ink);
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    .graph-reset:hover {
+      border-color: var(--line-strong);
+      color: var(--ink);
+    }
+
+    .full-graph-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #fcfcfd;
+    }
+
+    .full-graph-canvas {
+      position: relative;
+      width: 1880px;
+      min-height: 760px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 24% 50%, rgba(112,103,232,.055), transparent 33%),
+        radial-gradient(circle at 70% 42%, rgba(24,24,27,.025), transparent 34%),
+        radial-gradient(circle at 91% 42%, rgba(223,138,61,.045), transparent 30%),
+        linear-gradient(rgba(112,103,232,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(112,103,232,.03) 1px, transparent 1px);
+      background-size: auto, auto, auto, 28px 28px, 28px 28px;
+    }
+
+    .graph-divider {
+      position: absolute;
+      z-index: 0;
+      top: 48px;
+      bottom: 28px;
+      width: 1px;
+      background: #e1e1e7;
+    }
+
+    .graph-divider.first { left: 498px; }
+    .graph-divider.second { left: 1365px; }
+
+    .graph-zone-label {
+      position: absolute;
+      z-index: 4;
+      top: 20px;
+      color: var(--muted-ink);
+      font-size: 9px;
+      font-weight: 750;
+      letter-spacing: .14em;
+    }
+
+    .graph-zone-label.existing { left: 32px; }
+    .graph-zone-label.solutions { left: 720px; color: var(--purple); }
+    .graph-zone-label.planned { left: 1410px; color: var(--orange); }
+
+    .graph-stage-band {
+      position: absolute;
+      z-index: 1;
+      left: 510px;
+      width: 850px;
+      border: 1px solid rgba(112,103,232,.1);
+      border-radius: 16px;
+      background: rgba(255,255,255,.54);
+    }
+
+    .graph-stage-label {
+      position: absolute;
+      left: 18px;
+      top: 15px;
+      width: 185px;
+    }
+
+    .graph-stage-label small {
+      display: block;
+      color: var(--purple);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: .11em;
+    }
+
+    .graph-stage-label b {
+      display: block;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .graph-stage-label span {
+      display: block;
+      margin-top: 5px;
+      color: var(--muted-ink);
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    .graph-edges {
+      position: absolute;
+      z-index: 0;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .graph-edge {
+      fill: none;
+      stroke: #bfc0cb;
+      stroke-width: .8;
+      opacity: .12;
+      vector-effect: non-scaling-stroke;
+      transition: opacity .16s ease, stroke-width .16s ease, stroke .16s ease;
+    }
+
+    .graph-edge.planned { stroke: #ddb993; }
+    .graph-edge.active {
+      stroke: var(--purple);
+      stroke-width: 1.8;
+      opacity: .82;
+    }
+
+    .graph-edge.planned.active { stroke: var(--orange); }
+
+    .graph-solution-node,
+    .graph-atom-node {
+      position: absolute;
+      z-index: 3;
+      border: 1px solid var(--line-strong);
+      background: rgba(255,255,255,.96);
+      text-align: left;
+      cursor: pointer;
+      transition: opacity .16s ease, transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .graph-solution-node {
+      width: 278px;
+      min-height: 42px;
+      padding: 9px 12px;
+      border-radius: 11px;
+    }
+
+    .graph-solution-node small {
+      display: block;
+      color: var(--muted-ink);
+      font-size: 7px;
+      font-weight: 750;
+      letter-spacing: .1em;
+    }
+
+    .graph-solution-node b {
+      display: block;
+      margin-top: 4px;
+      font-size: 10px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .graph-atom-node {
+      display: grid;
+      place-items: center;
+      width: 154px;
+      min-height: 34px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: #52525c;
+      font-size: 8.5px;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    .graph-atom-node .reuse-count {
+      position: absolute;
+      top: -7px;
+      right: -5px;
+      display: grid;
+      place-items: center;
+      min-width: 22px;
+      height: 17px;
+      padding: 0 5px;
+      border: 2px solid #fcfcfd;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 7px;
+      font-weight: 750;
+      letter-spacing: .02em;
+      box-shadow: 0 3px 8px rgba(24,24,27,.13);
+    }
+
+    .graph-atom-node.planned .reuse-count {
+      background: var(--orange);
+    }
+
+    .graph-atom-node.planned {
+      border-color: #e5cfba;
+      background: rgba(255,248,241,.98);
+      color: #8d6039;
+    }
+
+    .graph-solution-node:hover,
+    .graph-atom-node:hover {
+      z-index: 5;
+      transform: translateY(-1px);
+      border-color: #bdb9ef;
+      box-shadow: 0 7px 18px rgba(34,34,44,.08);
+    }
+
+    .graph-solution-node.active,
+    .graph-atom-node.active {
+      z-index: 5;
+      border-color: var(--purple);
+      background: var(--purple-soft);
+      box-shadow: 0 8px 22px rgba(112,103,232,.14);
+    }
+
+    .graph-atom-node.planned.active {
+      border-color: var(--orange);
+      background: var(--orange-soft);
+      box-shadow: 0 8px 22px rgba(223,138,61,.13);
+    }
+
+    .graph-solution-node.dimmed,
+    .graph-atom-node.dimmed { opacity: .22; }
+
+    .graph-focus-note {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      margin-top: 11px;
+      padding: 7px 11px;
+      border-radius: 10px;
+      background: #f2f2f5;
+      color: var(--subtle-ink);
+      font-size: 10px;
+    }
+
+    .integrated-graph {
+      margin-top: 22px;
+    }
+
+    .graph-inline-toolbar {
+      margin: 0 0 13px;
+      padding: 0 2px;
+    }
+
+    .graph-objective {
+      position: absolute;
+      z-index: 5;
+      left: 760px;
+      top: 55px;
+      width: 360px;
+      padding: 16px 20px;
+      border: 1px solid var(--purple);
+      border-radius: 18px;
+      background: rgba(255,255,255,.98);
+      text-align: center;
+      box-shadow: 0 13px 34px rgba(112,103,232,.15), 0 0 0 7px rgba(112,103,232,.045);
+    }
+
+    .graph-objective small {
+      display: block;
+      color: var(--purple);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: .13em;
+    }
+
+    .graph-objective b {
+      display: block;
+      margin-top: 5px;
+      font-size: 15px;
+      font-weight: 680;
+    }
+
+    .graph-objective span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted-ink);
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    body.modal-open { overflow: hidden; }
+
+    .graph-modal {
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 22px;
+      background: rgba(15,15,20,.42);
+      backdrop-filter: blur(13px);
+      animation: modal-in .2s ease both;
+    }
+
+    @keyframes modal-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .graph-modal-dialog {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: min(1880px, 96vw);
+      height: 92vh;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.72);
+      border-radius: 26px;
+      background: rgba(252,252,253,.98);
+      box-shadow: 0 30px 100px rgba(12,12,18,.28);
+    }
+
+    .global-graph-wrap {
+      position: relative;
+      z-index: 1;
+      flex: 1 1 auto;
+      overflow: auto;
+      cursor: grab;
+      overscroll-behavior: contain;
+      touch-action: none;
+      background:
+        linear-gradient(rgba(112,103,232,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(112,103,232,.04) 1px, transparent 1px),
+        #f8f8fa;
+      background-size: 32px 32px;
+    }
+
+    .global-graph-wrap.dragging { cursor: grabbing; user-select: none; }
+    .global-graph-stage { position: relative; }
+
+    .global-graph-canvas {
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform-origin: 0 0;
+    }
+
+    .global-graph-edges {
+      position: absolute;
+      inset: 0;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .global-edge {
+      fill: none;
+      stroke: #a9a9b7;
+      stroke-width: 1.1;
+      opacity: .075;
+      transition: opacity .14s ease, stroke .14s ease, stroke-width .14s ease;
+    }
+
+    .global-edge.active { stroke: var(--purple); stroke-width: 2.5; opacity: .88; }
+    .global-edge.dimmed { opacity: .012; }
+
+    .global-node {
+      position: absolute;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      min-height: 36px;
+      padding: 7px 10px;
+      border: 1px solid var(--line-strong);
+      border-radius: 11px;
+      background: rgba(255,255,255,.97);
+      color: #52525c;
+      font-size: 10px;
+      line-height: 1.35;
+      text-align: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(30,30,40,.045);
+      transition: opacity .14s ease, border-color .14s ease, box-shadow .14s ease;
+    }
+
+    .global-node.root {
+      min-height: 72px;
+      border-color: var(--purple);
+      border-radius: 22px;
+      background: linear-gradient(135deg, #18181b, #37334f);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 700;
+      box-shadow: 0 16px 38px rgba(24,24,27,.2);
+    }
+
+    .global-node.general-category,
+    .global-node.scene {
+      min-height: 52px;
+      border-color: #bbb7ed;
+      background: var(--purple-soft);
+      color: #403a9d;
+      font-size: 12px;
+      font-weight: 680;
+    }
+
+    .global-node.stage { background: #eefafa; border-color: #bde8e6; color: #347c79; font-weight: 650; }
+    .global-node.solution { border-left: 4px solid var(--purple); color: var(--ink); font-weight: 620; }
+    .global-node.atom { border-radius: 999px; font-size: 9px; }
+    .global-node.atom.planned { border-color: #e4c7a9; background: var(--orange-soft); color: #8a5a2d; }
+    .global-node.active { z-index: 4; border-color: var(--purple); box-shadow: 0 0 0 5px rgba(112,103,232,.12), 0 12px 28px rgba(34,34,44,.12); }
+    .global-node.dimmed { opacity: .12; }
+
+    .global-zoom {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .global-zoom button {
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .graph-modal-header {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.94);
+    }
+
+    .graph-modal-header h3 {
+      margin: 5px 0 0;
+      font-size: 18px;
+      font-weight: 680;
+    }
+
+    .graph-modal-header p {
+      margin: 6px 0 0;
+      color: var(--muted-ink);
+      font-size: 10px;
+    }
+
+    .graph-modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--muted-ink);
+      font-size: 9px;
+      white-space: nowrap;
+    }
+
+    .graph-modal-actions > span {
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #f2f2f5;
+    }
+
+    .graph-modal-close {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      padding: 0 0 2px;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      background: #fff;
+      color: var(--ink);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .graph-modal-close:hover {
+      border-color: var(--ink);
+      transform: rotate(4deg);
+    }
+
+    .canvas-controls {
+      position: absolute;
+      z-index: 50;
+      top: 18px;
+      right: 18px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px;
+      border: 1px solid rgba(218,219,227,.9);
+      border-radius: 14px;
+      background: rgba(255,255,255,.9);
+      box-shadow: 0 12px 32px rgba(32,35,52,.12);
+      backdrop-filter: blur(14px);
+      pointer-events: auto;
+    }
+
+    .canvas-controls button {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: #fff;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .canvas-controls button:hover { border-color: var(--ink); }
+
+    .canvas-controls .canvas-scale {
+      min-width: 48px;
+      color: var(--subtle-ink);
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+
+    .graph-modal.canvas-only {
+      display: block;
+      padding: 0;
+      background: #f8f8fa;
+      backdrop-filter: none;
+    }
+
+    .graph-modal.canvas-only .graph-modal-dialog {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .graph-modal-legend {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 20px;
+      padding: 10px 24px;
+      border-bottom: 1px solid var(--line);
+      background: #fafafd;
+      color: var(--subtle-ink);
+      font-size: 9px;
+    }
+
+    .graph-modal-legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-swatch.solution { background: var(--purple); }
+
+    .radial-graph-wrap {
+      position: relative;
+      flex: 1 1 auto;
+      overflow: auto;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(112,103,232,.055), transparent 28%),
+        linear-gradient(rgba(112,103,232,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(112,103,232,.025) 1px, transparent 1px),
+        #fbfbfc;
+      background-size: auto, 28px 28px, 28px 28px, auto;
+      scrollbar-color: #cfcfd8 transparent;
+    }
+
+    .radial-graph-canvas {
+      position: relative;
+      flex: none;
+      overflow: hidden;
+    }
+
+    .radial-ring {
+      position: absolute;
+      z-index: 0;
+      left: 50%;
+      top: 50%;
+      border: 1px dashed rgba(112,103,232,.15);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .radial-ring.ring-outer { width: 1800px; height: 1380px; }
+    .radial-ring.ring-middle { width: 1360px; height: 1000px; }
+    .radial-ring.ring-solution {
+      width: 840px;
+      height: 600px;
+      border-style: solid;
+      border-color: rgba(112,103,232,.22);
+      background: radial-gradient(circle, rgba(255,255,255,.72), rgba(112,103,232,.018));
+    }
+
+    .radial-layer-label {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      color: var(--muted-ink);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: .12em;
+      transform: translateX(-50%);
+    }
+
+    .radial-layer-label.atom-label { top: 92px; }
+    .radial-layer-label.solution-label {
+      top: 482px;
+      color: var(--purple);
+    }
+
+    .radial-edges {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .scene-solution-edge {
+      fill: none;
+      stroke: var(--purple);
+      stroke-width: 1;
+      opacity: .16;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .scene-solution-edge.active {
+      stroke-width: 2;
+      opacity: .78;
+    }
+
+    .radial-scene-node {
+      position: absolute;
+      z-index: 6;
+      left: 1100px;
+      top: 800px;
+      width: 250px;
+      padding: 20px 18px;
+      border: 1px solid var(--purple);
+      border-radius: 22px;
+      background: #fff;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 18px 48px rgba(112,103,232,.18), 0 0 0 9px rgba(112,103,232,.055);
+    }
+
+    .radial-scene-node small {
+      display: block;
+      color: var(--purple);
+      font-size: 8px;
+      font-weight: 750;
+      letter-spacing: .13em;
+    }
+
+    .radial-scene-node b {
+      display: block;
+      margin-top: 7px;
+      font-size: 17px;
+      font-weight: 680;
+    }
+
+    .radial-scene-node span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted-ink);
+      font-size: 9px;
+      line-height: 1.5;
+    }
+
+    .radial-solution-node,
+    .radial-atom-node {
+      position: absolute;
+      z-index: 4;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line-strong);
+      background: rgba(255,255,255,.97);
+      text-align: center;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      transition: opacity .16s ease, transform .16s ease, border-color .16s ease, box-shadow .16s ease;
+    }
+
+    .radial-solution-node {
+      width: 164px;
+      min-height: 54px;
+      padding: 9px 12px;
+      border-color: #c8c4f0;
+      border-radius: 15px;
+      box-shadow: 0 7px 18px rgba(43,39,96,.07);
+    }
+
+    .radial-solution-node small {
+      display: block;
+      max-width: 138px;
+      overflow: hidden;
+      color: var(--purple);
+      font-size: 7px;
+      font-weight: 750;
+      letter-spacing: .04em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .radial-solution-node b {
+      display: block;
+      margin-top: 4px;
+      font-size: 9px;
+      line-height: 1.3;
+      font-weight: 650;
+    }
+
+    .radial-atom-node {
+      width: 112px;
+      min-height: 28px;
+      padding: 6px 8px;
+      border-radius: 999px;
+      color: #51515b;
+      font-size: 7.5px;
+      line-height: 1.25;
+    }
+
+    .radial-atom-node.planned {
+      border-color: #e5cfba;
+      background: rgba(255,248,241,.98);
+      color: #8d6039;
+    }
+
+    .radial-atom-node .reuse-count {
+      position: absolute;
+      top: -8px;
+      right: -5px;
+      display: grid;
+      place-items: center;
+      min-width: 21px;
+      height: 16px;
+      padding: 0 4px;
+      border: 2px solid #fbfbfc;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      font-size: 7px;
+      font-weight: 750;
+    }
+
+    .radial-atom-node.planned .reuse-count { background: var(--orange); }
+
+    .radial-solution-node:hover,
+    .radial-atom-node:hover {
+      z-index: 8;
+      border-color: var(--purple);
+      transform: translate(-50%, -50%) scale(1.05);
+      box-shadow: 0 10px 25px rgba(34,34,44,.12);
+    }
+
+    .radial-solution-node.active,
+    .radial-atom-node.active {
+      z-index: 7;
+      border-color: var(--purple);
+      background: var(--purple-soft);
+      box-shadow: 0 10px 27px rgba(112,103,232,.2);
+    }
+
+    .radial-atom-node.planned.active {
+      border-color: var(--orange);
+      background: var(--orange-soft);
+    }
+
+    .radial-solution-node.dimmed,
+    .radial-atom-node.dimmed { opacity: .16; }
+
+    .graph-modal-footer {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 10px 24px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+      color: var(--muted-ink);
+      font-size: 9px;
+    }
+
+    .atom-callout {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 42px;
+      margin-bottom: 18px;
+      padding: 10px 13px;
+      border-radius: 12px;
+      background: #f4f4f7;
+      color: var(--subtle-ink);
+      font-size: 12px;
+    }
+
+    .atom-callout b { color: var(--ink); }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      color: var(--muted-ink);
+      font-size: 11px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .legend-swatch {
+      width: 9px;
+      height: 9px;
+      border-radius: 3px;
+      background: var(--ink);
+    }
+
+    .legend-swatch.planned { background: var(--orange); }
+
+    .footer-note {
+      margin-top: 22px;
+      color: var(--muted-ink);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media (max-width: 900px) {
+      .app {
+        width: min(100% - 28px, 1500px);
+        padding-top: 24px;
+      }
+      .masthead {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .overview { grid-template-columns: 1fr; }
+      .stats { justify-content: flex-start; }
+    }
+
+    @media (max-width: 600px) {
+      .app { width: min(100% - 20px, 1500px); }
+      .masthead { padding-inline: 4px; }
+      .primary-nav { gap: 24px; }
+      .overview { margin-bottom: 18px; }
+      .stats { width: 100%; }
+      .stat { flex: 1; min-width: 0; }
+      .toolbar, .section-heading {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+      .atom-panel, .stage-panel, .solution-section, .method-panel { padding: 17px; }
+      .solution-grid { grid-template-columns: 1fr; }
+      .selected-stage span {
+        display: block;
+        margin: 7px 0 0;
+      }
+      .method-heading { flex-direction: column; }
+      .method-canvas { grid-auto-columns: minmax(235px, 82vw); }
+      .cluster-map { grid-template-columns: 1fr; }
+      .cluster-map::before, .stage-cluster::before, .knowledge-hub::after { display: none; }
+      .network-heading { align-items: flex-start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="masthead">
+      <div>
+        <p class="eyebrow">Design Capability Map</p>
+        <h1>设计能力地图</h1>
+        <p class="subtitle">从通用设计生产能力到电商营销解决方案，清晰查看场景、阶段、解决方案与原子能力之间的调用关系。</p>
+      </div>
+      <div class="header-tools">
+        <button class="global-network-button" id="openGlobalNetwork">查看完整能力网络</button>
+        <div class="search-border">
+          <label class="search">
+            <input id="searchInput" type="search" placeholder="搜索分类、场景、解决方案或原子能力">
+            <span class="search-icon" aria-hidden="true">⌕</span>
+          </label>
+        </div>
+      </div>
+    </header>
+
+    <nav class="primary-nav" aria-label="一级分类">
+      <button class="primary-tab active" data-primary="general">通用设计能力</button>
+      <button class="primary-tab" data-primary="ecommerce">电商营销</button>
+    </nav>
+
+    <div class="secondary-wrap">
+      <nav id="secondaryNav" class="secondary-nav" aria-label="二级分类"></nav>
+    </div>
+
+    <main id="content"></main>
+    <p class="footer-note">点击解决方案切换能力关系；展开能力网络可查看方案与原子能力的节点连接。</p>
+  </div>
+  <aside id="solutionHelp" class="solution-help" role="tooltip" aria-hidden="true"></aside>
+  <div id="globalGraphHost"></div>
+
+  <script>
+    /*
+     * 唯一能力数据源
+     * - 原子能力只在 nodes.atoms 中定义一次；
+     * - 通用分类与电商解决方案只保存原子能力 ID；
+     * - edges 可直接用于绘制“通用设计能力 / 电商营销”为中心的全量关系图；
+     * - 当前页面也由同一份 capabilityGraph 派生，不维护第二套名称。
+     */
+    const capabilityGraph = {
+      "version": "1.0",
+      "namingPolicy": {
+        "atomNameSource": "nodes.atoms",
+        "relationRule": "分类、场景和解决方案只引用原子能力ID，不重复保存原子能力名称",
+        "renameRule": "原子能力改名时只修改nodes.atoms中的name，所有关系保持不变"
+      },
+      "nodes": {
+        "roots": [
+          {
+            "id": "root-general",
+            "type": "root",
+            "key": "general",
+            "name": "通用设计能力",
+            "childIds": [
+              "category-image",
+              "category-video",
+              "category-poster",
+              "category-audio",
+              "category-text",
+              "category-avatar",
+              "category-assistant"
+            ]
+          },
+          {
+            "id": "root-ecommerce",
+            "type": "root",
+            "key": "ecommerce",
+            "name": "电商营销",
+            "childIds": [
+              "scene-launch",
+              "scene-hero",
+              "scene-campaign",
+              "scene-content",
+              "scene-live",
+              "scene-brand",
+              "scene-global"
+            ]
+          }
+        ],
+        "categories": [
+          {
+            "id": "category-image",
+            "type": "general-category",
+            "key": "image",
+            "name": "图片制作",
+            "description": "覆盖商品图、人像试穿、场景创意与基础图片编辑。",
+            "atomIds": [
+              "atom-0001",
+              "atom-0002",
+              "atom-0003",
+              "atom-0004",
+              "atom-0005",
+              "atom-0006",
+              "atom-0007",
+              "atom-0008",
+              "atom-0009",
+              "atom-0010",
+              "atom-0011",
+              "atom-0012",
+              "atom-0013",
+              "atom-0014",
+              "atom-0015",
+              "atom-0016",
+              "atom-0017",
+              "atom-0018",
+              "atom-0019",
+              "atom-0020",
+              "atom-0021",
+              "atom-0022",
+              "atom-0023",
+              "atom-0024",
+              "atom-0025",
+              "atom-0026",
+              "atom-0027",
+              "atom-0028",
+              "atom-0029",
+              "atom-0030",
+              "atom-0031",
+              "atom-0032",
+              "atom-0033",
+              "atom-0034",
+              "atom-0035",
+              "atom-0036",
+              "atom-0037",
+              "atom-0038",
+              "atom-0039",
+              "atom-0040",
+              "atom-0041",
+              "atom-0042",
+              "atom-0043",
+              "atom-0044",
+              "atom-0045",
+              "atom-0046",
+              "atom-0047",
+              "atom-0048",
+              "atom-0049",
+              "atom-0050",
+              "atom-0051",
+              "atom-0052",
+              "atom-0053",
+              "atom-0054",
+              "atom-0055",
+              "atom-0056",
+              "atom-0057",
+              "atom-0058",
+              "atom-0059",
+              "atom-0060",
+              "atom-0061",
+              "atom-0062",
+              "atom-0063",
+              "atom-0064",
+              "atom-0065",
+              "atom-0066",
+              "atom-0067",
+              "atom-0068",
+              "atom-0069",
+              "atom-0070",
+              "atom-0071",
+              "atom-0072",
+              "atom-0073",
+              "atom-0074",
+              "atom-0075",
+              "atom-0076",
+              "atom-0077",
+              "atom-0078",
+              "atom-0079",
+              "atom-0080",
+              "atom-0081",
+              "atom-0082",
+              "atom-0083",
+              "atom-0084",
+              "atom-0085",
+              "atom-0086",
+              "atom-0087",
+              "atom-0088",
+              "atom-0089",
+              "atom-0090",
+              "atom-0091",
+              "atom-0092",
+              "atom-0093",
+              "atom-0094",
+              "atom-0095",
+              "atom-0096",
+              "atom-0097",
+              "atom-0098",
+              "atom-0099",
+              "atom-0100",
+              "atom-0101",
+              "atom-0102",
+              "atom-0103",
+              "atom-0104",
+              "atom-0105",
+              "atom-0106",
+              "atom-0107",
+              "atom-0108",
+              "atom-0109",
+              "atom-0110",
+              "atom-0111",
+              "atom-0112",
+              "atom-0113",
+              "atom-0114",
+              "atom-0115",
+              "atom-0116",
+              "atom-0117",
+              "atom-0118",
+              "atom-0119",
+              "atom-0120",
+              "atom-0121",
+              "atom-0122",
+              "atom-0123",
+              "atom-0124",
+              "atom-0125",
+              "atom-0126",
+              "atom-0127",
+              "atom-0128"
+            ]
+          },
+          {
+            "id": "category-video",
+            "type": "general-category",
+            "key": "video",
+            "name": "视频制作",
+            "description": "覆盖视频生成、商品广告、模板成片与视频后期编辑。",
+            "atomIds": [
+              "atom-0129",
+              "atom-0130",
+              "atom-0131",
+              "atom-0132",
+              "atom-0133",
+              "atom-0134",
+              "atom-0135",
+              "atom-0136",
+              "atom-0137",
+              "atom-0138",
+              "atom-0139",
+              "atom-0140",
+              "atom-0141",
+              "atom-0142",
+              "atom-0143",
+              "atom-0144",
+              "atom-0145",
+              "atom-0146",
+              "atom-0147",
+              "atom-0148"
+            ]
+          },
+          {
+            "id": "category-poster",
+            "type": "general-category",
+            "key": "poster",
+            "name": "图文海报",
+            "description": "将图片、文字与信息组织成完整的营销视觉。",
+            "atomIds": [
+              "atom-0149",
+              "atom-0150",
+              "atom-0151",
+              "atom-0152",
+              "atom-0153",
+              "atom-0154",
+              "atom-0155",
+              "atom-0156",
+              "atom-0157",
+              "atom-0158",
+              "atom-0159",
+              "atom-0160",
+              "atom-0161",
+              "atom-0162",
+              "atom-0163",
+              "atom-0164",
+              "atom-0165",
+              "atom-0166",
+              "atom-0167",
+              "atom-0168",
+              "atom-0169",
+              "atom-0170",
+              "atom-0171",
+              "atom-0172",
+              "atom-0173",
+              "atom-0174",
+              "atom-0175",
+              "atom-0176",
+              "atom-0177",
+              "atom-0178",
+              "atom-0179",
+              "atom-0180",
+              "atom-0181",
+              "atom-0182",
+              "atom-0183",
+              "atom-0184",
+              "atom-0185",
+              "atom-0186",
+              "atom-0187",
+              "atom-0188",
+              "atom-0189",
+              "atom-0190",
+              "atom-0191"
+            ]
+          },
+          {
+            "id": "category-audio",
+            "type": "general-category",
+            "key": "audio",
+            "name": "音频生成",
+            "description": "生成视频、直播和数字人所需的声音资产。",
+            "atomIds": [
+              "atom-0192",
+              "atom-0193",
+              "atom-0194",
+              "atom-0195",
+              "atom-0196",
+              "atom-0197",
+              "atom-0198",
+              "atom-0199",
+              "atom-0200",
+              "atom-0201",
+              "atom-0202",
+              "atom-0203"
+            ]
+          },
+          {
+            "id": "category-text",
+            "type": "general-category",
+            "key": "text",
+            "name": "文本创作",
+            "description": "为图片、视频、直播和商品页面提供文字内容。",
+            "atomIds": [
+              "atom-0204",
+              "atom-0205",
+              "atom-0206",
+              "atom-0207",
+              "atom-0208",
+              "atom-0209",
+              "atom-0210",
+              "atom-0211",
+              "atom-0212",
+              "atom-0213",
+              "atom-0214",
+              "atom-0215",
+              "atom-0216",
+              "atom-0217",
+              "atom-0218",
+              "atom-0219",
+              "atom-0220",
+              "atom-0221",
+              "atom-0222"
+            ]
+          },
+          {
+            "id": "category-avatar",
+            "type": "general-category",
+            "key": "avatar",
+            "name": "数字人",
+            "description": "覆盖数字人形象、试穿、视频和直播带货能力。",
+            "atomIds": [
+              "atom-0223",
+              "atom-0224",
+              "atom-0225",
+              "atom-0226",
+              "atom-0227",
+              "atom-0228",
+              "atom-0229",
+              "atom-0230",
+              "atom-0231"
+            ]
+          },
+          {
+            "id": "category-assistant",
+            "type": "general-category",
+            "key": "assistant",
+            "name": "辅助功能",
+            "description": "辅助理解需求、洞察商品、推荐创意并编排生产任务。",
+            "atomIds": [
+              "atom-0232",
+              "atom-0233",
+              "atom-0234",
+              "atom-0235",
+              "atom-0236",
+              "atom-0237",
+              "atom-0238",
+              "atom-0239",
+              "atom-0240",
+              "atom-0241",
+              "atom-0242",
+              "atom-0243",
+              "atom-0244"
+            ]
+          }
+        ],
+        "scenes": [
+          {
+            "id": "scene-launch",
+            "type": "scene",
+            "key": "launch",
+            "name": "宝贝上新",
+            "description": "将商品原始资料加工成完整、可上线、可传播的电商设计资产。",
+            "stageIds": [
+              "stage-launch-01",
+              "stage-launch-02",
+              "stage-launch-03",
+              "stage-launch-04",
+              "stage-launch-05"
+            ]
+          },
+          {
+            "id": "scene-hero",
+            "type": "scene",
+            "key": "hero",
+            "name": "爆品营销",
+            "description": "对已上线的重点商品进行视觉强化、内容放大和多渠道持续供给。",
+            "stageIds": [
+              "stage-hero-01",
+              "stage-hero-02",
+              "stage-hero-03",
+              "stage-hero-04"
+            ]
+          },
+          {
+            "id": "scene-campaign",
+            "type": "scene",
+            "key": "campaign",
+            "name": "大促与节点营销",
+            "description": "围绕大促、节日和品牌节点，完成预热、爆发、返场全周期设计。",
+            "stageIds": [
+              "stage-campaign-01",
+              "stage-campaign-02",
+              "stage-campaign-03",
+              "stage-campaign-04"
+            ]
+          },
+          {
+            "id": "scene-content",
+            "type": "scene",
+            "key": "content",
+            "name": "内容营销与种草",
+            "description": "持续生产适合短视频、图文、达人和社交平台传播的商品内容。",
+            "stageIds": [
+              "stage-content-01",
+              "stage-content-02",
+              "stage-content-03",
+              "stage-content-04"
+            ]
+          },
+          {
+            "id": "scene-live",
+            "type": "scene",
+            "key": "live",
+            "name": "直播带货",
+            "description": "完成真人及数字人直播前、直播中和直播后的视觉内容生产。",
+            "stageIds": [
+              "stage-live-01",
+              "stage-live-02",
+              "stage-live-03"
+            ]
+          },
+          {
+            "id": "scene-brand",
+            "type": "scene",
+            "key": "brand",
+            "name": "品牌营销",
+            "description": "围绕品牌认知、品牌表达与全渠道传播，建立统一且可持续复用的品牌视觉内容体系。",
+            "stageIds": [
+              "stage-brand-01",
+              "stage-brand-02",
+              "stage-brand-03",
+              "stage-brand-04",
+              "stage-brand-05"
+            ]
+          },
+          {
+            "id": "scene-global",
+            "type": "scene",
+            "key": "global",
+            "name": "跨境电商",
+            "description": "将商品与营销内容适配不同国家、语言、文化和海外平台。",
+            "stageIds": [
+              "stage-global-01",
+              "stage-global-02",
+              "stage-global-03",
+              "stage-global-04",
+              "stage-global-05"
+            ]
+          }
+        ],
+        "stages": [
+          {
+            "id": "stage-launch-01",
+            "type": "stage",
+            "name": "商品素材准备",
+            "description": "完成商品基础图、模特场景、细节参数等上新底座。",
+            "solutionIds": [
+              "solution-launch-01-01",
+              "solution-launch-01-02",
+              "solution-launch-01-03"
+            ]
+          },
+          {
+            "id": "stage-launch-02",
+            "type": "stage",
+            "name": "商品货架呈现",
+            "description": "完成用户进入商品页后看到的核心视觉。",
+            "solutionIds": [
+              "solution-launch-02-01",
+              "solution-launch-02-02",
+              "solution-launch-02-03",
+              "solution-launch-02-04",
+              "solution-launch-02-05"
+            ]
+          },
+          {
+            "id": "stage-launch-03",
+            "type": "stage",
+            "name": "新品内容传播",
+            "description": "生产商品页之外的新品预热、种草和直播物料。",
+            "solutionIds": [
+              "solution-launch-03-01",
+              "solution-launch-03-02",
+              "solution-launch-03-03"
+            ]
+          },
+          {
+            "id": "stage-launch-04",
+            "type": "stage",
+            "name": "平台上线适配",
+            "description": "将设计成果转换为各平台可直接发布的版本。",
+            "solutionIds": [
+              "solution-launch-04-01",
+              "solution-launch-04-02"
+            ]
+          },
+          {
+            "id": "stage-launch-05",
+            "type": "stage",
+            "name": "上线后的设计优化",
+            "description": "根据实际使用反馈更新图片、页面和视频版本。",
+            "solutionIds": [
+              "solution-launch-05-01",
+              "solution-launch-05-02"
+            ]
+          },
+          {
+            "id": "stage-hero-01",
+            "type": "stage",
+            "name": "爆品视觉升级",
+            "description": "强化重点商品的辨识度和核心卖点。",
+            "solutionIds": [
+              "solution-hero-01-01",
+              "solution-hero-01-02",
+              "solution-hero-01-03"
+            ]
+          },
+          {
+            "id": "stage-hero-02",
+            "type": "stage",
+            "name": "爆品内容生产",
+            "description": "围绕同一商品规模化生产视频、图文和广告。",
+            "solutionIds": [
+              "solution-hero-02-01",
+              "solution-hero-02-02",
+              "solution-hero-02-03"
+            ]
+          },
+          {
+            "id": "stage-hero-03",
+            "type": "stage",
+            "name": "多渠道内容放大",
+            "description": "把爆品内容应用到达人、直播和广告渠道。",
+            "solutionIds": [
+              "solution-hero-03-01",
+              "solution-hero-03-02",
+              "solution-hero-03-03"
+            ]
+          },
+          {
+            "id": "stage-hero-04",
+            "type": "stage",
+            "name": "爆品素材迭代",
+            "description": "持续更新爆品素材并沉淀高效资产。",
+            "solutionIds": [
+              "solution-hero-04-01"
+            ]
+          },
+          {
+            "id": "stage-campaign-01",
+            "type": "stage",
+            "name": "大促视觉准备",
+            "description": "建立活动主视觉和可批量复用的模板。",
+            "solutionIds": [
+              "solution-campaign-01-01",
+              "solution-campaign-01-02"
+            ]
+          },
+          {
+            "id": "stage-campaign-02",
+            "type": "stage",
+            "name": "预热期",
+            "description": "提前建立活动氛围并承接预约预售。",
+            "solutionIds": [
+              "solution-campaign-02-01",
+              "solution-campaign-02-02"
+            ]
+          },
+          {
+            "id": "stage-campaign-03",
+            "type": "stage",
+            "name": "爆发期",
+            "description": "集中完成会场、商品、直播和传播素材。",
+            "solutionIds": [
+              "solution-campaign-03-01",
+              "solution-campaign-03-02",
+              "solution-campaign-03-03",
+              "solution-campaign-03-04"
+            ]
+          },
+          {
+            "id": "stage-campaign-04",
+            "type": "stage",
+            "name": "返场与延续期",
+            "description": "延续活动热度并沉淀传播成果。",
+            "solutionIds": [
+              "solution-campaign-04-01",
+              "solution-campaign-04-02"
+            ]
+          },
+          {
+            "id": "stage-content-01",
+            "type": "stage",
+            "name": "内容资产准备",
+            "description": "准备商品种草素材与统一内容模板。",
+            "solutionIds": [
+              "solution-content-01-01",
+              "solution-content-01-02"
+            ]
+          },
+          {
+            "id": "stage-content-02",
+            "type": "stage",
+            "name": "内容生产",
+            "description": "生产图文、测评、科普和短视频。",
+            "solutionIds": [
+              "solution-content-02-01",
+              "solution-content-02-02",
+              "solution-content-02-03"
+            ]
+          },
+          {
+            "id": "stage-content-03",
+            "type": "stage",
+            "name": "达人与平台适配",
+            "description": "适配不同达人、账号与内容平台。",
+            "solutionIds": [
+              "solution-content-03-01",
+              "solution-content-03-02",
+              "solution-content-03-03"
+            ]
+          },
+          {
+            "id": "stage-content-04",
+            "type": "stage",
+            "name": "内容复用与迭代",
+            "description": "将优质内容转化为其他渠道素材并持续更新。",
+            "solutionIds": [
+              "solution-content-04-01"
+            ]
+          },
+          {
+            "id": "stage-live-01",
+            "type": "stage",
+            "name": "直播前准备",
+            "description": "搭建直播间、准备商品讲解物料和数字人资产。",
+            "solutionIds": [
+              "solution-live-01-01",
+              "solution-live-01-02",
+              "solution-live-01-03"
+            ]
+          },
+          {
+            "id": "stage-live-02",
+            "type": "stage",
+            "name": "直播中呈现",
+            "description": "实时展示商品、互动信息并支持数字人直播。",
+            "solutionIds": [
+              "solution-live-02-01"
+            ]
+          },
+          {
+            "id": "stage-live-03",
+            "type": "stage",
+            "name": "直播后内容生产",
+            "description": "将直播内容转化为短视频和跨渠道素材。",
+            "solutionIds": [
+              "solution-live-03-01",
+              "solution-live-03-02",
+              "solution-live-03-03"
+            ]
+          },
+          {
+            "id": "stage-brand-01",
+            "type": "stage",
+            "name": "品牌视觉资产化",
+            "description": "识别并沉淀品牌色彩、字体、图形与影像风格等核心视觉资产。",
+            "solutionIds": [
+              "solution-brand-01-01",
+              "solution-brand-01-02"
+            ]
+          },
+          {
+            "id": "stage-brand-02",
+            "type": "stage",
+            "name": "品牌主题创意",
+            "description": "将品牌价值与商品卖点转化为具有识别度的主题视觉和叙事内容。",
+            "solutionIds": [
+              "solution-brand-02-01",
+              "solution-brand-02-02",
+              "solution-brand-02-03"
+            ]
+          },
+          {
+            "id": "stage-brand-03",
+            "type": "stage",
+            "name": "品牌内容传播",
+            "description": "持续生产社交内容、广告与节点传播素材，强化品牌认知。",
+            "solutionIds": [
+              "solution-brand-03-01",
+              "solution-brand-03-02",
+              "solution-brand-03-03"
+            ]
+          },
+          {
+            "id": "stage-brand-04",
+            "type": "stage",
+            "name": "电商触点品牌化",
+            "description": "将品牌视觉统一应用到店铺、商品页、直播与达人传播触点。",
+            "solutionIds": [
+              "solution-brand-04-01",
+              "solution-brand-04-02",
+              "solution-brand-04-03"
+            ]
+          },
+          {
+            "id": "stage-brand-05",
+            "type": "stage",
+            "name": "品牌资产沉淀与治理",
+            "description": "沉淀模板、组件和版本，并持续维护品牌一致性。",
+            "solutionIds": [
+              "solution-brand-05-01"
+            ]
+          },
+          {
+            "id": "stage-global-01",
+            "type": "stage",
+            "name": "商品视觉本地化",
+            "description": "准备符合目标市场审美和规则的商品素材。",
+            "solutionIds": [
+              "solution-global-01-01",
+              "solution-global-01-02",
+              "solution-global-01-03",
+              "solution-global-01-04"
+            ]
+          },
+          {
+            "id": "stage-global-02",
+            "type": "stage",
+            "name": "跨境商品页制作",
+            "description": "完成Listing、A+与独立站商品页面。",
+            "solutionIds": [
+              "solution-global-02-01",
+              "solution-global-02-02",
+              "solution-global-02-03",
+              "solution-global-02-04"
+            ]
+          },
+          {
+            "id": "stage-global-03",
+            "type": "stage",
+            "name": "海外营销内容生产",
+            "description": "生产海外短视频、达人和广告内容。",
+            "solutionIds": [
+              "solution-global-03-01",
+              "solution-global-03-02",
+              "solution-global-03-03"
+            ]
+          },
+          {
+            "id": "stage-global-04",
+            "type": "stage",
+            "name": "多平台与多市场适配",
+            "description": "批量生成不同国家、语言和平台版本。",
+            "solutionIds": [
+              "solution-global-04-01",
+              "solution-global-04-02"
+            ]
+          },
+          {
+            "id": "stage-global-05",
+            "type": "stage",
+            "name": "海外内容迭代",
+            "description": "持续更新海外内容并管理跨境资产。",
+            "solutionIds": [
+              "solution-global-05-01"
+            ]
+          }
+        ],
+        "solutions": [
+          {
+            "id": "solution-launch-01-01",
+            "type": "solution",
+            "name": "商品基础图制作",
+            "description": "把原始商品图加工为标准可用素材。",
+            "atomIds": [
+              "atom-0077",
+              "atom-0024",
+              "atom-0025",
+              "atom-0073",
+              "atom-0066",
+              "atom-0017",
+              "atom-0018",
+              "atom-0104",
+              "atom-0106",
+              "atom-0109"
+            ]
+          },
+          {
+            "id": "solution-launch-01-02",
+            "type": "solution",
+            "name": "模特与场景图制作",
+            "description": "生成试穿、人物手持与商品使用场景。",
+            "atomIds": [
+              "atom-0062",
+              "atom-0063",
+              "atom-0075",
+              "atom-0035",
+              "atom-0081",
+              "atom-0082",
+              "atom-0083",
+              "atom-0067",
+              "atom-0092",
+              "atom-0123"
+            ]
+          },
+          {
+            "id": "solution-launch-01-03",
+            "type": "solution",
+            "name": "商品细节与参数图制作",
+            "description": "清晰展示商品细节、规格和使用信息。",
+            "atomIds": [
+              "atom-0084",
+              "atom-0047",
+              "atom-0031",
+              "atom-0030",
+              "atom-0166",
+              "atom-0151",
+              "atom-0181",
+              "atom-0182",
+              "atom-0186",
+              "atom-0185",
+              "atom-0113",
+              "atom-0184"
+            ]
+          },
+          {
+            "id": "solution-launch-02-01",
+            "type": "solution",
+            "name": "主图制作",
+            "description": "制作首图、卖点图和多版本主图。",
+            "atomIds": [
+              "atom-0044",
+              "atom-0045",
+              "atom-0168",
+              "atom-0163",
+              "atom-0077",
+              "atom-0066",
+              "atom-0052",
+              "atom-0211"
+            ]
+          },
+          {
+            "id": "solution-launch-02-02",
+            "type": "solution",
+            "name": "SKU图制作",
+            "description": "展示不同颜色、款式、规格和组合。",
+            "atomIds": [
+              "atom-0041",
+              "atom-0039",
+              "atom-0017",
+              "atom-0018",
+              "atom-0168",
+              "atom-0187"
+            ]
+          },
+          {
+            "id": "solution-launch-02-03",
+            "type": "solution",
+            "name": "主视频制作",
+            "description": "用视频完整展示商品与核心卖点。",
+            "atomIds": [
+              "atom-0139",
+              "atom-0134",
+              "atom-0192",
+              "atom-0143",
+              "atom-0144"
+            ]
+          },
+          {
+            "id": "solution-launch-02-04",
+            "type": "solution",
+            "name": "详情页制作",
+            "description": "完成商品信息与购买理由的长页面表达。",
+            "atomIds": [
+              "atom-0152",
+              "atom-0153",
+              "atom-0154",
+              "atom-0163",
+              "atom-0207",
+              "atom-0181",
+              "atom-0189",
+              "atom-0188"
+            ]
+          },
+          {
+            "id": "solution-launch-02-05",
+            "type": "solution",
+            "name": "店铺新品承接页制作",
+            "description": "在店铺内集中承接新品流量。",
+            "atomIds": [
+              "atom-0163",
+              "atom-0164",
+              "atom-0174",
+              "atom-0182"
+            ]
+          },
+          {
+            "id": "solution-launch-03-01",
+            "type": "solution",
+            "name": "新品预热图文制作",
+            "description": "提前制造新品关注与期待。",
+            "atomIds": [
+              "atom-0206",
+              "atom-0081",
+              "atom-0163",
+              "atom-0211"
+            ]
+          },
+          {
+            "id": "solution-launch-03-02",
+            "type": "solution",
+            "name": "新品种草内容制作",
+            "description": "生成新品图文、测评和短视频。",
+            "atomIds": [
+              "atom-0205",
+              "atom-0208",
+              "atom-0148"
+            ]
+          },
+          {
+            "id": "solution-launch-03-03",
+            "type": "solution",
+            "name": "新品直播视觉组件制作",
+            "description": "为新品直播准备传播与商品视觉。",
+            "atomIds": [
+              "atom-0206",
+              "atom-0207",
+              "atom-0183",
+              "atom-0190"
+            ]
+          },
+          {
+            "id": "solution-launch-04-01",
+            "type": "solution",
+            "name": "多平台素材尺寸适配",
+            "description": "完成尺寸、比例和格式适配。",
+            "atomIds": [
+              "atom-0017",
+              "atom-0018",
+              "atom-0163"
+            ]
+          },
+          {
+            "id": "solution-launch-04-02",
+            "type": "solution",
+            "name": "商品发布图片切图与导出",
+            "description": "整理商品、SKU、页面和视频发布资产。",
+            "atomIds": [
+              "atom-0017",
+              "atom-0018",
+              "atom-0077",
+              "atom-0166",
+              "atom-0180",
+              "atom-0211"
+            ]
+          },
+          {
+            "id": "solution-launch-05-01",
+            "type": "solution",
+            "name": "商品图片与详情页迭代",
+            "description": "持续更新主图、详情页和SKU图。",
+            "atomIds": [
+              "atom-0174",
+              "atom-0206",
+              "atom-0207"
+            ]
+          },
+          {
+            "id": "solution-launch-05-02",
+            "type": "solution",
+            "name": "商品视频版本迭代",
+            "description": "持续迭代视频封面、节奏和版本。",
+            "atomIds": [
+              "atom-0142",
+              "atom-0192"
+            ]
+          },
+          {
+            "id": "solution-hero-01-01",
+            "type": "solution",
+            "name": "爆品营销主视觉制作",
+            "description": "形成统一且高识别的爆品视觉。",
+            "atomIds": [
+              "atom-0044",
+              "atom-0045",
+              "atom-0100",
+              "atom-0052"
+            ]
+          },
+          {
+            "id": "solution-hero-01-02",
+            "type": "solution",
+            "name": "爆品主图制作",
+            "description": "强化首图点击与卖点呈现。",
+            "atomIds": [
+              "atom-0014",
+              "atom-0077",
+              "atom-0066",
+              "atom-0052",
+              "atom-0163",
+              "atom-0211"
+            ]
+          },
+          {
+            "id": "solution-hero-01-03",
+            "type": "solution",
+            "name": "爆品详情页制作",
+            "description": "强化商品说服力和购买理由。",
+            "atomIds": [
+              "atom-0154",
+              "atom-0084",
+              "atom-0031",
+              "atom-0207",
+              "atom-0187",
+              "atom-0179"
+            ]
+          },
+          {
+            "id": "solution-hero-02-01",
+            "type": "solution",
+            "name": "爆品短视频制作",
+            "description": "批量生产商品短视频。",
+            "atomIds": [
+              "atom-0139",
+              "atom-0142",
+              "atom-0192",
+              "atom-0144",
+              "atom-0145"
+            ]
+          },
+          {
+            "id": "solution-hero-02-02",
+            "type": "solution",
+            "name": "爆品种草图文制作",
+            "description": "持续输出高频图文内容。",
+            "atomIds": [
+              "atom-0083",
+              "atom-0205",
+              "atom-0208"
+            ]
+          },
+          {
+            "id": "solution-hero-02-03",
+            "type": "solution",
+            "name": "爆品广告投放图片制作",
+            "description": "生成适合广告测试的多版本素材。",
+            "atomIds": [
+              "atom-0017",
+              "atom-0018",
+              "atom-0081",
+              "atom-0163",
+              "atom-0174",
+              "atom-0215"
+            ]
+          },
+          {
+            "id": "solution-hero-03-01",
+            "type": "solution",
+            "name": "爆品达人种草内容制作",
+            "description": "适配达人与社交种草渠道。",
+            "atomIds": [
+              "atom-0083",
+              "atom-0206",
+              "atom-0205"
+            ]
+          },
+          {
+            "id": "solution-hero-03-02",
+            "type": "solution",
+            "name": "爆品直播视觉组件制作",
+            "description": "在直播间集中强化爆品。",
+            "atomIds": [
+              "atom-0207",
+              "atom-0208",
+              "atom-0183",
+              "atom-0190"
+            ]
+          },
+          {
+            "id": "solution-hero-03-03",
+            "type": "solution",
+            "name": "爆品渠道尺寸适配",
+            "description": "生成不同平台和渠道版本。",
+            "atomIds": [
+              "atom-0017",
+              "atom-0018",
+              "atom-0142",
+              "atom-0174"
+            ]
+          },
+          {
+            "id": "solution-hero-04-01",
+            "type": "solution",
+            "name": "爆品图片与视频迭代",
+            "description": "快速替换低效视觉和内容版本。",
+            "atomIds": [
+              "atom-0174",
+              "atom-0142"
+            ]
+          },
+          {
+            "id": "solution-campaign-01-01",
+            "type": "solution",
+            "name": "大促主视觉制作",
+            "description": "建立统一的大促视觉语言。",
+            "atomIds": [
+              "atom-0054",
+              "atom-0014",
+              "atom-0163",
+              "atom-0191",
+              "atom-0217"
+            ]
+          },
+          {
+            "id": "solution-campaign-01-02",
+            "type": "solution",
+            "name": "大促视觉模板制作",
+            "description": "建立会场、商品与传播模板。",
+            "atomIds": [
+              "atom-0174",
+              "atom-0017",
+              "atom-0018"
+            ]
+          },
+          {
+            "id": "solution-campaign-02-01",
+            "type": "solution",
+            "name": "大促预热图文制作",
+            "description": "生产预告、倒计时和社交素材。",
+            "atomIds": [
+              "atom-0206",
+              "atom-0208"
+            ]
+          },
+          {
+            "id": "solution-campaign-02-02",
+            "type": "solution",
+            "name": "预约预售图文制作",
+            "description": "展示预约、定金、赠品等权益。",
+            "atomIds": [
+              "atom-0207",
+              "atom-0190"
+            ]
+          },
+          {
+            "id": "solution-campaign-03-01",
+            "type": "solution",
+            "name": "大促会场页面制作",
+            "description": "完成店铺首页和活动会场。",
+            "atomIds": [
+              "atom-0163",
+              "atom-0017",
+              "atom-0018"
+            ]
+          },
+          {
+            "id": "solution-campaign-03-02",
+            "type": "solution",
+            "name": "大促商品促销图制作",
+            "description": "批量更新商品促销素材。",
+            "atomIds": [
+              "atom-0039",
+              "atom-0168",
+              "atom-0066",
+              "atom-0163",
+              "atom-0190"
+            ]
+          },
+          {
+            "id": "solution-campaign-03-03",
+            "type": "solution",
+            "name": "大促直播视觉组件制作",
+            "description": "支撑大促直播集中成交。",
+            "atomIds": [
+              "atom-0208",
+              "atom-0183"
+            ]
+          },
+          {
+            "id": "solution-campaign-03-04",
+            "type": "solution",
+            "name": "大促传播图文与视频制作",
+            "description": "覆盖社交、达人和广告渠道。",
+            "atomIds": [
+              "atom-0139",
+              "atom-0208",
+              "atom-0146"
+            ]
+          },
+          {
+            "id": "solution-campaign-04-01",
+            "type": "solution",
+            "name": "大促返场图文制作",
+            "description": "生产返场、补货和延续促销素材。",
+            "atomIds": [
+              "atom-0174",
+              "atom-0066",
+              "atom-0163",
+              "atom-0206"
+            ]
+          },
+          {
+            "id": "solution-campaign-04-02",
+            "type": "solution",
+            "name": "活动战报图文制作",
+            "description": "展示活动成果与用户反馈。",
+            "atomIds": [
+              "atom-0153",
+              "atom-0154"
+            ]
+          },
+          {
+            "id": "solution-content-01-01",
+            "type": "solution",
+            "name": "商品种草场景图制作",
+            "description": "建立真实、有生活感的商品素材。",
+            "atomIds": [
+              "atom-0083",
+              "atom-0035",
+              "atom-0081",
+              "atom-0084"
+            ]
+          },
+          {
+            "id": "solution-content-01-02",
+            "type": "solution",
+            "name": "内容图文模板制作",
+            "description": "建立可持续复用的图文和视频模板。",
+            "atomIds": [
+              "atom-0151",
+              "atom-0174"
+            ]
+          },
+          {
+            "id": "solution-content-02-01",
+            "type": "solution",
+            "name": "种草笔记图文制作",
+            "description": "生产适合社交平台的种草图文。",
+            "atomIds": [
+              "atom-0205",
+              "atom-0206"
+            ]
+          },
+          {
+            "id": "solution-content-02-02",
+            "type": "solution",
+            "name": "商品测评与科普信息图制作",
+            "description": "把商品知识转化为易懂内容。",
+            "atomIds": [
+              "atom-0151",
+              "atom-0152",
+              "atom-0153",
+              "atom-0154",
+              "atom-0084",
+              "atom-0031",
+              "atom-0204",
+              "atom-0186"
+            ]
+          },
+          {
+            "id": "solution-content-02-03",
+            "type": "solution",
+            "name": "内容短视频制作",
+            "description": "生产测评、使用和商品展示短视频。",
+            "atomIds": [
+              "atom-0139",
+              "atom-0192",
+              "atom-0144",
+              "atom-0148"
+            ]
+          },
+          {
+            "id": "solution-content-03-01",
+            "type": "solution",
+            "name": "达人种草内容制作",
+            "description": "让商品内容匹配不同达人风格。",
+            "atomIds": [
+              "atom-0174",
+              "atom-0205",
+              "atom-0208",
+              "atom-0148"
+            ]
+          },
+          {
+            "id": "solution-content-03-02",
+            "type": "solution",
+            "name": "UGC图文模板制作",
+            "description": "降低用户和KOC生产内容的门槛。",
+            "atomIds": [
+              "atom-0083",
+              "atom-0218"
+            ]
+          },
+          {
+            "id": "solution-content-03-03",
+            "type": "solution",
+            "name": "多平台内容版式适配",
+            "description": "将内容转换为不同平台原生版本。",
+            "atomIds": [
+              "atom-0017",
+              "atom-0018",
+              "atom-0174"
+            ]
+          },
+          {
+            "id": "solution-content-04-01",
+            "type": "solution",
+            "name": "内容跨渠道改编",
+            "description": "把内容转为广告、商品页和直播素材。",
+            "atomIds": [
+              "atom-0142",
+              "atom-0174"
+            ]
+          },
+          {
+            "id": "solution-live-01-01",
+            "type": "solution",
+            "name": "直播间视觉组件制作",
+            "description": "搭建品牌化直播间视觉。",
+            "atomIds": [
+              "atom-0017",
+              "atom-0018",
+              "atom-0014",
+              "atom-0067",
+              "atom-0163",
+              "atom-0059",
+              "atom-0084",
+              "atom-0151",
+              "atom-0207",
+              "atom-0208",
+              "atom-0039",
+              "atom-0183",
+              "atom-0190"
+            ]
+          },
+          {
+            "id": "solution-live-01-02",
+            "type": "solution",
+            "name": "直播预告图文与视频制作",
+            "description": "为直播进行预告和引流。",
+            "atomIds": [
+              "atom-0206",
+              "atom-0208"
+            ]
+          },
+          {
+            "id": "solution-live-01-03",
+            "type": "solution",
+            "name": "数字人形象制作",
+            "description": "建立可持续使用的数字人形象。",
+            "atomIds": [
+              "atom-0224",
+              "atom-0225",
+              "atom-0226",
+              "atom-0223",
+              "atom-0069",
+              "atom-0093",
+              "atom-0230"
+            ]
+          },
+          {
+            "id": "solution-live-02-01",
+            "type": "solution",
+            "name": "数字人直播带货",
+            "description": "使用数字人进行商品讲解和直播。",
+            "atomIds": [
+              "atom-0224",
+              "atom-0192",
+              "atom-0225",
+              "atom-0226"
+            ]
+          },
+          {
+            "id": "solution-live-03-01",
+            "type": "solution",
+            "name": "直播切片视频制作",
+            "description": "把直播内容加工为高光短视频。",
+            "atomIds": [
+              "atom-0142",
+              "atom-0192"
+            ]
+          },
+          {
+            "id": "solution-live-03-02",
+            "type": "solution",
+            "name": "数字人带货视频制作",
+            "description": "批量生产数字人商品讲解视频。",
+            "atomIds": [
+              "atom-0224",
+              "atom-0192",
+              "atom-0213",
+              "atom-0147"
+            ]
+          },
+          {
+            "id": "solution-live-03-03",
+            "type": "solution",
+            "name": "直播内容二次改编",
+            "description": "将直播内容用于种草、广告和商品页。",
+            "atomIds": [
+              "atom-0142",
+              "atom-0208",
+              "atom-0147"
+            ]
+          },
+          {
+            "id": "solution-brand-01-01",
+            "type": "solution",
+            "name": "品牌视觉基因提取",
+            "description": "从现有品牌与商品素材中提取统一的视觉特征。",
+            "atomIds": [
+              "atom-0044",
+              "atom-0054",
+              "atom-0163"
+            ]
+          },
+          {
+            "id": "solution-brand-01-02",
+            "type": "solution",
+            "name": "品牌基础视觉资产制作",
+            "description": "建立可复用的品牌基础设计元素。",
+            "atomIds": [
+              "atom-0100",
+              "atom-0054",
+              "atom-0163",
+              "atom-0059",
+              "atom-0124",
+              "atom-0125",
+              "atom-0126"
+            ]
+          },
+          {
+            "id": "solution-brand-02-01",
+            "type": "solution",
+            "name": "品牌主视觉制作",
+            "description": "形成品牌级主题主视觉及系列延展。",
+            "atomIds": [
+              "atom-0044",
+              "atom-0100",
+              "atom-0163"
+            ]
+          },
+          {
+            "id": "solution-brand-02-02",
+            "type": "solution",
+            "name": "品牌故事图文制作",
+            "description": "用图文方式表达品牌理念、历程、工艺与价值。",
+            "atomIds": [
+              "atom-0152",
+              "atom-0151",
+              "atom-0153",
+              "atom-0163"
+            ]
+          },
+          {
+            "id": "solution-brand-02-03",
+            "type": "solution",
+            "name": "品牌形象短片",
+            "description": "生产品牌态度、故事与形象类视频。",
+            "atomIds": [
+              "atom-0139",
+              "atom-0134",
+              "atom-0192",
+              "atom-0145",
+              "atom-0197"
+            ]
+          },
+          {
+            "id": "solution-brand-03-01",
+            "type": "solution",
+            "name": "品牌社媒图文制作",
+            "description": "生产具有统一品牌感的日常社交内容。",
+            "atomIds": [
+              "atom-0083",
+              "atom-0208",
+              "atom-0206"
+            ]
+          },
+          {
+            "id": "solution-brand-03-02",
+            "type": "solution",
+            "name": "品牌广告图与视频制作",
+            "description": "生成覆盖图片与视频的品牌广告内容。",
+            "atomIds": [
+              "atom-0142",
+              "atom-0017",
+              "atom-0018"
+            ]
+          },
+          {
+            "id": "solution-brand-03-03",
+            "type": "solution",
+            "name": "品牌节点传播视觉制作",
+            "description": "围绕周年、节日、联名和品牌事件进行传播。",
+            "atomIds": [
+              "atom-0174",
+              "atom-0014",
+              "atom-0163",
+              "atom-0191",
+              "atom-0217"
+            ]
+          },
+          {
+            "id": "solution-brand-04-01",
+            "type": "solution",
+            "name": "品牌店铺页面制作",
+            "description": "建立品牌化的店铺首页、专区与活动页面。",
+            "atomIds": [
+              "atom-0017",
+              "atom-0018",
+              "atom-0163",
+              "atom-0174",
+              "atom-0014",
+              "atom-0124"
+            ]
+          },
+          {
+            "id": "solution-brand-04-02",
+            "type": "solution",
+            "name": "品牌化商品视觉制作",
+            "description": "让主图、详情页和视频保持品牌统一。",
+            "atomIds": [
+              "atom-0044",
+              "atom-0054",
+              "atom-0100",
+              "atom-0066",
+              "atom-0052",
+              "atom-0163",
+              "atom-0126"
+            ]
+          },
+          {
+            "id": "solution-brand-04-03",
+            "type": "solution",
+            "name": "品牌渠道视觉适配",
+            "description": "统一达人、直播和不同平台中的品牌表达。",
+            "atomIds": [
+              "atom-0174",
+              "atom-0017",
+              "atom-0018"
+            ]
+          },
+          {
+            "id": "solution-brand-05-01",
+            "type": "solution",
+            "name": "品牌视觉多尺寸延展",
+            "description": "将核心品牌创意批量扩展到不同内容与规格。",
+            "atomIds": [
+              "atom-0017",
+              "atom-0018",
+              "atom-0142"
+            ]
+          },
+          {
+            "id": "solution-global-01-01",
+            "type": "solution",
+            "name": "海外平台商品基础图制作",
+            "description": "处理海外平台所需的基础商品图。",
+            "atomIds": [
+              "atom-0077",
+              "atom-0025",
+              "atom-0073",
+              "atom-0084",
+              "atom-0066",
+              "atom-0127"
+            ]
+          },
+          {
+            "id": "solution-global-01-02",
+            "type": "solution",
+            "name": "海外模特与场景图制作",
+            "description": "生成符合目标市场的模特和场景。",
+            "atomIds": [
+              "atom-0062",
+              "atom-0063",
+              "atom-0081",
+              "atom-0083",
+              "atom-0035"
+            ]
+          },
+          {
+            "id": "solution-global-01-03",
+            "type": "solution",
+            "name": "多语言商品图片制作",
+            "description": "生成不同语言的商品图和说明。",
+            "atomIds": [
+              "atom-0163",
+              "atom-0017",
+              "atom-0018",
+              "atom-0174",
+              "atom-0127",
+              "atom-0128"
+            ]
+          },
+          {
+            "id": "solution-global-01-04",
+            "type": "solution",
+            "name": "包装与说明书本地化设计",
+            "description": "本地化包装、说明书和规格信息。",
+            "atomIds": [
+              "atom-0031",
+              "atom-0166",
+              "atom-0151",
+              "atom-0114"
+            ]
+          },
+          {
+            "id": "solution-global-02-01",
+            "type": "solution",
+            "name": "Amazon Listing主图制作",
+            "description": "制作商品图片序列中的第一张图，清晰准确地展示商品主体。",
+            "atomIds": [
+              "atom-0077",
+              "atom-0025",
+              "atom-0107"
+            ]
+          },
+          {
+            "id": "solution-global-02-02",
+            "type": "solution",
+            "name": "Amazon Listing辅图制作",
+            "description": "制作主图之后的卖点、功能、场景、尺寸、细节和对比图片。",
+            "atomIds": [
+              "atom-0084",
+              "atom-0039",
+              "atom-0151",
+              "atom-0154",
+              "atom-0163",
+              "atom-0183",
+              "atom-0187",
+              "atom-0182"
+            ]
+          },
+          {
+            "id": "solution-global-02-03",
+            "type": "solution",
+            "name": "Amazon A+内容页面制作",
+            "description": "使用模块化图文、对比表和品牌内容制作Amazon增强商品详情页面。",
+            "atomIds": [
+              "atom-0151",
+              "atom-0154",
+              "atom-0163"
+            ]
+          },
+          {
+            "id": "solution-global-02-04",
+            "type": "solution",
+            "name": "独立站商品页制作",
+            "description": "制作独立站首屏和商品页面。",
+            "atomIds": [
+              "atom-0081",
+              "atom-0163",
+              "atom-0151",
+              "atom-0219"
+            ]
+          },
+          {
+            "id": "solution-global-03-01",
+            "type": "solution",
+            "name": "海外商品短视频制作",
+            "description": "生产适合海外平台的商品短视频。",
+            "atomIds": [
+              "atom-0139",
+              "atom-0192",
+              "atom-0144",
+              "atom-0196"
+            ]
+          },
+          {
+            "id": "solution-global-03-02",
+            "type": "solution",
+            "name": "海外达人内容制作",
+            "description": "生产海外达人和UGC内容。",
+            "atomIds": [
+              "atom-0083",
+              "atom-0208",
+              "atom-0220"
+            ]
+          },
+          {
+            "id": "solution-global-03-03",
+            "type": "solution",
+            "name": "海外广告图与视频制作",
+            "description": "生产不同市场的图片和视频广告。",
+            "atomIds": [
+              "atom-0081",
+              "atom-0163",
+              "atom-0174",
+              "atom-0215"
+            ]
+          },
+          {
+            "id": "solution-global-04-01",
+            "type": "solution",
+            "name": "多国家语言版本适配",
+            "description": "生成国家和语言版本。",
+            "atomIds": [
+              "atom-0017",
+              "atom-0018",
+              "atom-0174",
+              "atom-0128"
+            ]
+          },
+          {
+            "id": "solution-global-04-02",
+            "type": "solution",
+            "name": "海外平台版式与尺寸适配",
+            "description": "适配Amazon、TikTok和独立站等渠道。",
+            "atomIds": [
+              "atom-0017",
+              "atom-0018",
+              "atom-0142"
+            ]
+          },
+          {
+            "id": "solution-global-05-01",
+            "type": "solution",
+            "name": "海外图片与视频版本迭代",
+            "description": "按市场更新图片、页面和视频版本。",
+            "atomIds": [
+              "atom-0142",
+              "atom-0017",
+              "atom-0174"
+            ]
+          }
+        ],
+        "atoms": [
+          {
+            "id": "atom-0001",
+            "type": "atom",
+            "name": "细节图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0002",
+            "type": "atom",
+            "name": "多角度图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0003",
+            "type": "atom",
+            "name": "仿实拍",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0004",
+            "type": "atom",
+            "name": "多风格商品背景图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0005",
+            "type": "atom",
+            "name": "商品同场景多角度套图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0006",
+            "type": "atom",
+            "name": "趋势热点图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0007",
+            "type": "atom",
+            "name": "人群视觉偏好图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0008",
+            "type": "atom",
+            "name": "产品视觉调性图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0009",
+            "type": "atom",
+            "name": "行业竞争生图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0010",
+            "type": "atom",
+            "name": "商品卖点生图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0011",
+            "type": "atom",
+            "name": "目标人群生图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0012",
+            "type": "atom",
+            "name": "节促氛围生图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0013",
+            "type": "atom",
+            "name": "趋势热点生图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0014",
+            "type": "atom",
+            "name": "特效背景生图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0015",
+            "type": "atom",
+            "name": "基础图片编辑",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0016",
+            "type": "atom",
+            "name": "图片裂变",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0017",
+            "type": "atom",
+            "name": "尺寸编辑",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0018",
+            "type": "atom",
+            "name": "尺寸拓展",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0019",
+            "type": "atom",
+            "name": "服饰试穿生图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0020",
+            "type": "atom",
+            "name": "完美穿鞋",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0021",
+            "type": "atom",
+            "name": "局部替换",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0022",
+            "type": "atom",
+            "name": "服饰、配饰多品摆拍",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0023",
+            "type": "atom",
+            "name": "服饰摆拍",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0024",
+            "type": "atom",
+            "name": "生成式抠图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0025",
+            "type": "atom",
+            "name": "商品精修",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0026",
+            "type": "atom",
+            "name": "AI消除",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0027",
+            "type": "atom",
+            "name": "涂抹擦除",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0028",
+            "type": "atom",
+            "name": "口红上妆",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0029",
+            "type": "atom",
+            "name": "手套试穿",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0030",
+            "type": "atom",
+            "name": "商品图案提取",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0031",
+            "type": "atom",
+            "name": "商品材质提取",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0032",
+            "type": "atom",
+            "name": "口红上妆（带模特）",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0033",
+            "type": "atom",
+            "name": "家具白底图生背景",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0034",
+            "type": "atom",
+            "name": "家具放我家",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0035",
+            "type": "atom",
+            "name": "手持商品-带人像",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0036",
+            "type": "atom",
+            "name": "口播首帧图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0037",
+            "type": "atom",
+            "name": "服装试穿-买家秀",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0038",
+            "type": "atom",
+            "name": "服饰套图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0039",
+            "type": "atom",
+            "name": "产品组合特效",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0040",
+            "type": "atom",
+            "name": "卖点创意图生成",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0041",
+            "type": "atom",
+            "name": "产品改色特效",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0042",
+            "type": "atom",
+            "name": "商品使用状态（倾倒）",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0043",
+            "type": "atom",
+            "name": "商品转角度",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0044",
+            "type": "atom",
+            "name": "产品视觉调性生图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0045",
+            "type": "atom",
+            "name": "人群视觉偏好生图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0046",
+            "type": "atom",
+            "name": "热点创意图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0047",
+            "type": "atom",
+            "name": "指定细节局部放大特写图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0048",
+            "type": "atom",
+            "name": "商品使用状态（泵头按压）",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0049",
+            "type": "atom",
+            "name": "商品使用状态（挤压）",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0050",
+            "type": "atom",
+            "name": "商品使用状态（喷雾）",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0051",
+            "type": "atom",
+            "name": "三维模型",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0052",
+            "type": "atom",
+            "name": "光影呈现",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0053",
+            "type": "atom",
+            "name": "纯色棚拍",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0054",
+            "type": "atom",
+            "name": "品牌色",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0055",
+            "type": "atom",
+            "name": "生活场景",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0056",
+            "type": "atom",
+            "name": "展台场景",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0057",
+            "type": "atom",
+            "name": "同场景转角度",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0058",
+            "type": "atom",
+            "name": "中古风家装",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0059",
+            "type": "atom",
+            "name": "矢量图标生成",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0060",
+            "type": "atom",
+            "name": "妆容迁移",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0061",
+            "type": "atom",
+            "name": "发型迁移",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0062",
+            "type": "atom",
+            "name": "智能试衣",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0063",
+            "type": "atom",
+            "name": "鞋子试穿",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0064",
+            "type": "atom",
+            "name": "鞋类实拍图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0065",
+            "type": "atom",
+            "name": "全商品巨物来袭广告",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0066",
+            "type": "atom",
+            "name": "商品换背景",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0067",
+            "type": "atom",
+            "name": "前背景融合",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0068",
+            "type": "atom",
+            "name": "商品光影融合",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0069",
+            "type": "atom",
+            "name": "人物换脸",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0070",
+            "type": "atom",
+            "name": "尺寸魔方",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0071",
+            "type": "atom",
+            "name": "通用编辑",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0072",
+            "type": "atom",
+            "name": "AI生成仿实拍图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0073",
+            "type": "atom",
+            "name": "超清放大",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0074",
+            "type": "atom",
+            "name": "服饰套图-多角度姿势衍生",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0075",
+            "type": "atom",
+            "name": "套装服饰迁移",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0076",
+            "type": "atom",
+            "name": "帽子试戴",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0077",
+            "type": "atom",
+            "name": "AI抠图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0078",
+            "type": "atom",
+            "name": "人像光影编辑",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0079",
+            "type": "atom",
+            "name": "AI擦除",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0080",
+            "type": "atom",
+            "name": "模特图换背景",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0081",
+            "type": "atom",
+            "name": "商品生图_生活场景",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0082",
+            "type": "atom",
+            "name": "商品生图_展台场景",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0083",
+            "type": "atom",
+            "name": "商品生图-实拍",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0084",
+            "type": "atom",
+            "name": "商品细节特写",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0085",
+            "type": "atom",
+            "name": "多类服饰图模特试穿",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0086",
+            "type": "atom",
+            "name": "围巾试穿",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0087",
+            "type": "atom",
+            "name": "内衣裤试穿",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0088",
+            "type": "atom",
+            "name": "服饰面料材质提取",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0089",
+            "type": "atom",
+            "name": "眼镜试戴",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0090",
+            "type": "atom",
+            "name": "项链试戴",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0091",
+            "type": "atom",
+            "name": "袜子试穿",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0092",
+            "type": "atom",
+            "name": "光影和谐",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0093",
+            "type": "atom",
+            "name": "身材编辑",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0094",
+            "type": "atom",
+            "name": "尺寸魔方new",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0095",
+            "type": "atom",
+            "name": "服装搭配图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0096",
+            "type": "atom",
+            "name": "美瞳试戴",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0097",
+            "type": "atom",
+            "name": "美甲试戴",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0098",
+            "type": "atom",
+            "name": "高清放大 2&4倍",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0099",
+            "type": "atom",
+            "name": "小红书风格商品图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0100",
+            "type": "atom",
+            "name": "商品唯美品牌图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0101",
+            "type": "atom",
+            "name": "服装实拍套图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0102",
+            "type": "atom",
+            "name": "耳机巨物广告",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0103",
+            "type": "atom",
+            "name": "快消实拍套图",
+            "status": "existing",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0104",
+            "type": "atom",
+            "name": "透明材质商品自动抠图",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0105",
+            "type": "atom",
+            "name": "毛发边缘主体自动抠图",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0106",
+            "type": "atom",
+            "name": "商品图片透视自动校正",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0107",
+            "type": "atom",
+            "name": "商品白底图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0108",
+            "type": "atom",
+            "name": "图片噪点与模糊问题自动修复",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0109",
+            "type": "atom",
+            "name": "商品阴影与倒影自动生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0110",
+            "type": "atom",
+            "name": "图片中的Logo与文字自动替换",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0111",
+            "type": "atom",
+            "name": "图片指定区域材质替换",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0112",
+            "type": "atom",
+            "name": "商品360度环绕展示图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0113",
+            "type": "atom",
+            "name": "商品结构爆炸拆解图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0114",
+            "type": "atom",
+            "name": "商品包装效果图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0115",
+            "type": "atom",
+            "name": "商品成分微观结构图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0116",
+            "type": "atom",
+            "name": "透明液体商品质感图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0117",
+            "type": "atom",
+            "name": "商品内部结构剖面图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0118",
+            "type": "atom",
+            "name": "商品使用前后效果对比图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0119",
+            "type": "atom",
+            "name": "箱包模特试背图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0120",
+            "type": "atom",
+            "name": "手表模特试戴图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0121",
+            "type": "atom",
+            "name": "耳饰模特试戴图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0122",
+            "type": "atom",
+            "name": "戒指模特试戴图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0123",
+            "type": "atom",
+            "name": "人物姿态迁移",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0124",
+            "type": "atom",
+            "name": "品牌Logo图形生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0125",
+            "type": "atom",
+            "name": "品牌辅助图形生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0126",
+            "type": "atom",
+            "name": "品牌纹理背景图生成",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0127",
+            "type": "atom",
+            "name": "图片文字多语言替换",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0128",
+            "type": "atom",
+            "name": "图片货币与计量单位替换",
+            "status": "planned",
+            "categoryId": "category-image"
+          },
+          {
+            "id": "atom-0129",
+            "type": "atom",
+            "name": "商品使用场景视频",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0130",
+            "type": "atom",
+            "name": "产品细节视频",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0131",
+            "type": "atom",
+            "name": "创意表现视频视觉向",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0132",
+            "type": "atom",
+            "name": "AI脚本视频",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0133",
+            "type": "atom",
+            "name": "参考商品信息生视频",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0134",
+            "type": "atom",
+            "name": "视频参考生成",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0135",
+            "type": "atom",
+            "name": "视频生成",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0136",
+            "type": "atom",
+            "name": "视频生成（happyhorse）",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0137",
+            "type": "atom",
+            "name": "视频光效生成",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0138",
+            "type": "atom",
+            "name": "星辰模型-即刻成片",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0139",
+            "type": "atom",
+            "name": "AI图生视频",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0140",
+            "type": "atom",
+            "name": "视频模板合成",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0141",
+            "type": "atom",
+            "name": "商品视频广告",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0142",
+            "type": "atom",
+            "name": "视频创意复刻",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0143",
+            "type": "atom",
+            "name": "商品解说视频",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0144",
+            "type": "atom",
+            "name": "商品展示视频",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0145",
+            "type": "atom",
+            "name": "品牌广告视频",
+            "status": "existing",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0146",
+            "type": "atom",
+            "name": "活动宣推视频",
+            "status": "planned",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0147",
+            "type": "atom",
+            "name": "直播带货视频",
+            "status": "planned",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0148",
+            "type": "atom",
+            "name": "种草视频",
+            "status": "planned",
+            "categoryId": "category-video"
+          },
+          {
+            "id": "atom-0149",
+            "type": "atom",
+            "name": "种草笔记-测评",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0150",
+            "type": "atom",
+            "name": "种草笔记-科普",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0151",
+            "type": "atom",
+            "name": "信息大图-解构",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0152",
+            "type": "atom",
+            "name": "信息大图-流程",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0153",
+            "type": "atom",
+            "name": "信息大图-数据",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0154",
+            "type": "atom",
+            "name": "信息大图-对比",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0155",
+            "type": "atom",
+            "name": "条漫-长图",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0156",
+            "type": "atom",
+            "name": "条漫-常规短图",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0157",
+            "type": "atom",
+            "name": "SKU聚合",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0158",
+            "type": "atom",
+            "name": "内容种草-科普3图",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0159",
+            "type": "atom",
+            "name": "内容种草-测评3图",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0160",
+            "type": "atom",
+            "name": "创意卖点图",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0161",
+            "type": "atom",
+            "name": "商品社媒内容套图",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0162",
+            "type": "atom",
+            "name": "商品详情页套图",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0163",
+            "type": "atom",
+            "name": "文字排版设计",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0164",
+            "type": "atom",
+            "name": "基础文案生图",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0165",
+            "type": "atom",
+            "name": "商详长图模版合成",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0166",
+            "type": "atom",
+            "name": "白底图生尺寸标注线稿图",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0167",
+            "type": "atom",
+            "name": "白底图生卖点图",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0168",
+            "type": "atom",
+            "name": "sku模版复刻",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0169",
+            "type": "atom",
+            "name": "万能banner工具gpt版",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0170",
+            "type": "atom",
+            "name": "活动宣传海报",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0171",
+            "type": "atom",
+            "name": "倒计时海报",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0172",
+            "type": "atom",
+            "name": "招商海报",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0173",
+            "type": "atom",
+            "name": "笔记图文模板合成",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0174",
+            "type": "atom",
+            "name": "创意复刻",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0175",
+            "type": "atom",
+            "name": "商品kv海报",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0176",
+            "type": "atom",
+            "name": "商品大促风格海报",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0177",
+            "type": "atom",
+            "name": "商品图文海报",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0178",
+            "type": "atom",
+            "name": "营销/产品banner工具",
+            "status": "existing",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0179",
+            "type": "atom",
+            "name": "用户评论展示卡片生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0180",
+            "type": "atom",
+            "name": "商品SKU规格信息图生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0181",
+            "type": "atom",
+            "name": "商品尺码表生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0182",
+            "type": "atom",
+            "name": "商品参数信息图生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0183",
+            "type": "atom",
+            "name": "商品功能说明图生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0184",
+            "type": "atom",
+            "name": "商品使用步骤图生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0185",
+            "type": "atom",
+            "name": "商品包装清单图生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0186",
+            "type": "atom",
+            "name": "商品成分说明图生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0187",
+            "type": "atom",
+            "name": "商品差异对比表生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0188",
+            "type": "atom",
+            "name": "商品常见问题模块生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0189",
+            "type": "atom",
+            "name": "商品资质证书展示模块生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0190",
+            "type": "atom",
+            "name": "优惠券与价格权益信息图生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0191",
+            "type": "atom",
+            "name": "营销活动主题字体生成",
+            "status": "planned",
+            "categoryId": "category-poster"
+          },
+          {
+            "id": "atom-0192",
+            "type": "atom",
+            "name": "TTS语音合成",
+            "status": "existing",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0193",
+            "type": "atom",
+            "name": "根据声音样本克隆说话音色",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0194",
+            "type": "atom",
+            "name": "按指定情绪合成语音",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0195",
+            "type": "atom",
+            "name": "多角色对话语音合成",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0196",
+            "type": "atom",
+            "name": "多语言文字转语音",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0197",
+            "type": "atom",
+            "name": "根据风格描述生成音乐",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0198",
+            "type": "atom",
+            "name": "根据场景描述生成音效",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0199",
+            "type": "atom",
+            "name": "音频片段裁剪与拼接",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0200",
+            "type": "atom",
+            "name": "音频背景噪声消除",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0201",
+            "type": "atom",
+            "name": "音频人声与伴奏分离",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0202",
+            "type": "atom",
+            "name": "多轨音频自动混音",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0203",
+            "type": "atom",
+            "name": "多段音频响度自动统一",
+            "status": "planned",
+            "categoryId": "category-audio"
+          },
+          {
+            "id": "atom-0204",
+            "type": "atom",
+            "name": "卖点创意文案",
+            "status": "existing",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0205",
+            "type": "atom",
+            "name": "笔记文案生成",
+            "status": "existing",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0206",
+            "type": "atom",
+            "name": "标题文案生成",
+            "status": "existing",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0207",
+            "type": "atom",
+            "name": "导购文案生成",
+            "status": "existing",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0208",
+            "type": "atom",
+            "name": "商品推广文案",
+            "status": "existing",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0209",
+            "type": "atom",
+            "name": "从商品资料中提炼核心卖点",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0210",
+            "type": "atom",
+            "name": "商品详情页文案生成",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0211",
+            "type": "atom",
+            "name": "商品主图短文案生成",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0212",
+            "type": "atom",
+            "name": "商品SKU差异描述生成",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0213",
+            "type": "atom",
+            "name": "商品直播讲解话术生成",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0214",
+            "type": "atom",
+            "name": "直播互动引导话术生成",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0215",
+            "type": "atom",
+            "name": "广告标题与正文文案生成",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0216",
+            "type": "atom",
+            "name": "品牌宣传口号生成",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0217",
+            "type": "atom",
+            "name": "营销活动主题文案生成",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0218",
+            "type": "atom",
+            "name": "用户UGC创作引导文案生成",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0219",
+            "type": "atom",
+            "name": "跨境电商Listing文案生成",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0220",
+            "type": "atom",
+            "name": "营销内容本地化翻译",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0221",
+            "type": "atom",
+            "name": "文案多种语言风格改写",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0222",
+            "type": "atom",
+            "name": "长篇文案自动摘要",
+            "status": "planned",
+            "categoryId": "category-text"
+          },
+          {
+            "id": "atom-0223",
+            "type": "atom",
+            "name": "数字人手部修复",
+            "status": "existing",
+            "categoryId": "category-avatar"
+          },
+          {
+            "id": "atom-0224",
+            "type": "atom",
+            "name": "模特数字人形象生成",
+            "status": "existing",
+            "categoryId": "category-avatar"
+          },
+          {
+            "id": "atom-0225",
+            "type": "atom",
+            "name": "数字人服饰平铺图试穿",
+            "status": "existing",
+            "categoryId": "category-avatar"
+          },
+          {
+            "id": "atom-0226",
+            "type": "atom",
+            "name": "数字人手持试色",
+            "status": "existing",
+            "categoryId": "category-avatar"
+          },
+          {
+            "id": "atom-0227",
+            "type": "atom",
+            "name": "数字人穿搭帖子生产",
+            "status": "existing",
+            "categoryId": "category-avatar"
+          },
+          {
+            "id": "atom-0228",
+            "type": "atom",
+            "name": "根据品牌要求生成数字人形象",
+            "status": "planned",
+            "categoryId": "category-avatar"
+          },
+          {
+            "id": "atom-0229",
+            "type": "atom",
+            "name": "数字人服装替换",
+            "status": "planned",
+            "categoryId": "category-avatar"
+          },
+          {
+            "id": "atom-0230",
+            "type": "atom",
+            "name": "数字人发型与妆容替换",
+            "status": "planned",
+            "categoryId": "category-avatar"
+          },
+          {
+            "id": "atom-0231",
+            "type": "atom",
+            "name": "根据声音样本克隆数字人音色",
+            "status": "planned",
+            "categoryId": "category-avatar"
+          },
+          {
+            "id": "atom-0232",
+            "type": "atom",
+            "name": "行业竞争洞察",
+            "status": "existing",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0233",
+            "type": "atom",
+            "name": "商品信息洞察",
+            "status": "existing",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0234",
+            "type": "atom",
+            "name": "Mio意图理解SKILL",
+            "status": "existing",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0235",
+            "type": "atom",
+            "name": "节促推理·纯洞察",
+            "status": "existing",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0236",
+            "type": "atom",
+            "name": "创意意图推荐",
+            "status": "existing",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0237",
+            "type": "atom",
+            "name": "意图追问",
+            "status": "existing",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0238",
+            "type": "atom",
+            "name": "轻策略生图",
+            "status": "existing",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0239",
+            "type": "atom",
+            "name": "Derdo创意玩法",
+            "status": "existing",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0240",
+            "type": "atom",
+            "name": "创意诊断专家",
+            "status": "existing",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0241",
+            "type": "atom",
+            "name": "竞品视觉要素拆解",
+            "status": "planned",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0242",
+            "type": "atom",
+            "name": "从品牌素材中提取视觉风格",
+            "status": "planned",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0243",
+            "type": "atom",
+            "name": "按设计需求搜索创意参考",
+            "status": "planned",
+            "categoryId": "category-assistant"
+          },
+          {
+            "id": "atom-0244",
+            "type": "atom",
+            "name": "为图片生成模型编写提示词",
+            "status": "planned",
+            "categoryId": "category-assistant"
+          }
+        ]
+      },
+      "edges": []
+    };
+
+    function buildCapabilityEdges(graph) {
+      const edges = [];
+      const connect = (source, targets, relation) => {
+        targets.forEach(target => edges.push({
+          id: `edge-${edges.length + 1}`,
+          source,
+          target,
+          relation
+        }));
+      };
+
+      graph.nodes.roots.forEach(root => connect(root.id, root.childIds, 'contains'));
+      graph.nodes.categories.forEach(category => connect(category.id, category.atomIds, 'provides'));
+      graph.nodes.scenes.forEach(scene => connect(scene.id, scene.stageIds, 'contains'));
+      graph.nodes.stages.forEach(stage => connect(stage.id, stage.solutionIds, 'contains'));
+      graph.nodes.solutions.forEach(solution => connect(solution.id, solution.atomIds, 'uses'));
+      return edges;
+    }
+
+    function validateCapabilityGraph(graph) {
+      const collections = Object.values(graph.nodes);
+      const allNodes = collections.flat();
+      const nodeIds = new Set();
+      const atomNames = new Set();
+
+      allNodes.forEach(node => {
+        if (nodeIds.has(node.id)) throw new Error(`重复节点ID：${node.id}`);
+        nodeIds.add(node.id);
+      });
+      graph.nodes.atoms.forEach(atom => {
+        if (atomNames.has(atom.name)) throw new Error(`重复原子能力名称：${atom.name}`);
+        if (!['existing', 'planned'].includes(atom.status)) throw new Error(`原子能力状态无效：${atom.name}`);
+        atomNames.add(atom.name);
+      });
+
+      const referenceFields = [
+        ...graph.nodes.roots.map(node => [node.id, node.childIds]),
+        ...graph.nodes.categories.map(node => [node.id, node.atomIds]),
+        ...graph.nodes.scenes.map(node => [node.id, node.stageIds]),
+        ...graph.nodes.stages.map(node => [node.id, node.solutionIds]),
+        ...graph.nodes.solutions.map(node => [node.id, node.atomIds])
+      ];
+      referenceFields.forEach(([source, targets]) => targets.forEach(target => {
+        if (!nodeIds.has(target)) throw new Error(`关系引用了不存在的节点：${source} -> ${target}`);
+      }));
+    }
+
+    validateCapabilityGraph(capabilityGraph);
+    capabilityGraph.edges = buildCapabilityEdges(capabilityGraph);
+
+    const capabilityNodeById = new Map(
+      Object.values(capabilityGraph.nodes).flat().map(node => [node.id, node])
+    );
+
+    function getNodes(ids) {
+      return ids.map(id => capabilityNodeById.get(id));
+    }
+
+    function getAtomNames(atomIds, status) {
+      return getNodes(atomIds)
+        .filter(atom => atom.status === status)
+        .map(atom => atom.name);
+    }
+
+    const generalData = capabilityGraph.nodes.categories.map(category => ({
+      id: category.key,
+      name: category.name,
+      description: category.description,
+      existing: getAtomNames(category.atomIds, 'existing'),
+      planned: getAtomNames(category.atomIds, 'planned')
+    }));
+
+    const ecommerceData = capabilityGraph.nodes.scenes.map(scene => ({
+      id: scene.key,
+      name: scene.name,
+      description: scene.description,
+      stages: getNodes(scene.stageIds).map(stage => ({
+        name: stage.name,
+        description: stage.description,
+        solutions: getNodes(stage.solutionIds).map(solution => ({
+          name: solution.name,
+          description: solution.description,
+          existing: getAtomNames(solution.atomIds, 'existing'),
+          planned: getAtomNames(solution.atomIds, 'planned')
+        }))
+      }))
+    }));
+
+    const solutionGlossary = {
+      '爆品营销主视觉制作': {
+        explanation: '围绕一个重点商品建立整轮营销传播的核心视觉概念，统一色彩、构图、字体和图形语言，并作为广告、直播和店铺延展的视觉母版。',
+        outputs: '爆品核心画面、主题标题、视觉语言规范，以及横版、竖版、方形延展稿',
+        image: 'https://js.design/special/img/key-visual-design/07F30ED4.png',
+        caption: '主视觉示例：强调主题、氛围和可延展的统一视觉语言'
+      },
+      '品牌主视觉制作': {
+        explanation: '把品牌主题或传播概念转化为一套高识别度的核心画面。它服务于品牌认知，不等同于商品搜索列表中的主图。',
+        outputs: '品牌核心画面、主题字体、色彩与图形语言，以及系列传播延展稿',
+        image: 'https://js.design/special/img/key-visual-design/07F30ED4.png',
+        caption: '主视觉示例：一张母版视觉可继续延展到多种传播触点'
+      },
+      '主图制作': {
+        explanation: '围绕一个具体商品制作用户在搜索结果或商品列表中首先看到的图片，突出商品主体和最重要的购买信息。',
+        outputs: '商品首图、卖点主图和用于测试的主图版本',
+        image: 'https://d1.faiusr.com/4/AAEIABAEGAAgqJin_wUovrSQ5QMw2QY47wM.png',
+        caption: '商品主图示例：每张方图都围绕一个具体商品与核心促销信息'
+      },
+      '爆品主图制作': {
+        explanation: '针对重点商品重新组织商品主体、核心卖点和促销信息，用于提升搜索结果及商品列表中的点击表现。',
+        outputs: '爆品首图、卖点主图、人群版本和测试版本',
+        image: 'https://d1.faiusr.com/4/AAEIABAEGAAgqJin_wUovrSQ5QMw2QY47wM.png',
+        caption: '商品主图示例：重点是让用户快速识别商品并产生点击'
+      },
+      '爆品广告投放图片制作': {
+        explanation: '围绕重点商品制作可直接投放到信息流、展示广告位和引流渠道的图片，突出单一卖点、利益点与行动引导。',
+        outputs: '信息流广告图、展示广告图、引流广告图及多尺寸投放版本'
+      },
+      '直播间视觉组件制作': {
+        explanation: '统一制作直播画面中反复使用的视觉组件。边框、背景、信息贴片、商品讲解卡、价格卡、福利卡、提词卡和转场画面均归入这一方案，不再拆成独立解决方案。',
+        outputs: '直播背景、画面边框、标题条、角标、商品讲解卡、价格福利卡、互动组件、提词卡、转场与结束画面'
+      },
+      '品牌视觉基因提取': {
+        explanation: '从品牌手册、Logo、历史海报、店铺和商品素材中，提炼后续设计可以直接复用的视觉规则。',
+        outputs: '品牌色、字体风格、Logo与辅助图形、版式特征、影像风格和视觉关键词'
+      },
+      'Amazon Listing主图制作': {
+        explanation: '制作Amazon商品图片序列中的第一张图，清晰、准确地展示商品主体，承担商品识别和搜索点击的任务。',
+        outputs: '符合平台展示要求的商品首图及必要的规格版本',
+        image: 'https://cdn.sell2.brightspotcdn.com/dims4/default/eaf975e/2147483647/strip/true/crop/1420x690+0+175/resize/1440x700!/quality/90/?url=https%3A%2F%2Fsell2-production-sell2.s3.us-west-2.amazonaws.com%2Fbrightspot%2F0d%2F3d%2Fb35681654a9facb4657a56c2aac0%2Flist-new-products.jpg',
+        caption: 'Amazon Listing示意：主图位于商品图片序列首位，并参与搜索与详情页展示'
+      },
+      'Amazon Listing辅图制作': {
+        explanation: '制作主图之后的图片，用图文方式解释商品功能、卖点、使用场景、尺寸、细节、包装清单和对比信息。',
+        outputs: '卖点图、功能图、场景图、尺寸图、细节图、包装清单图和对比图'
+      },
+      'Amazon A+内容页面制作': {
+        explanation: '使用Amazon提供的模块组合增强图片、文字、品牌故事和商品对比信息，形成商品详情页下方的增强内容区域。',
+        outputs: 'A+图文模块、品牌故事模块、参数与对比模块；Premium版本可包含视频、轮播与热点模块',
+        image: 'https://cdn.sell2.brightspotcdn.com/dims4/default/ead4093/2147483647/strip/true/crop/2400x1167+0+354/resize/1440x700!/quality/90/?url=https%3A%2F%2Fsell2-production-sell2.s3.us-west-2.amazonaws.com%2Fbrightspot%2Fc2%2F05%2F5cfcbe3b436dbed851ed02100560%2Fseller-722373438.jpg',
+        caption: 'Amazon A+示意：位于商品详情页下方，由多个图文与品牌模块组合而成'
+      }
+    };
+
+    function inferSolutionOutputs(name) {
+      const rules = [
+        [/主图/, '商品首图、卖点主图及多版本主图'],
+        [/SKU图/, '颜色、款式、规格和套装组合图'],
+        [/详情页|内容页面/, '首屏、卖点、参数、对比、场景和信任模块'],
+        [/主视觉/, '核心画面、主题字体、色彩与图形语言及多尺寸延展'],
+        [/视觉组件/, '背景、边框、标题条、角标、信息卡片和动态贴片'],
+        [/短视频|视频制作|视频版本|切片视频|形象短片/, '横竖版视频成片、封面、字幕版和渠道版本'],
+        [/图文|信息图/, '可直接发布的图文成品及版式版本'],
+        [/页面制作|会场页面|店铺页面/, '页面首屏、楼层模块、商品卡片和终端适配稿'],
+        [/模板制作/, '可复用的版式模板、组件和使用规则'],
+        [/尺寸适配|版式适配|语言版本适配/, '不同平台、画幅、语言或规格的发布版本'],
+        [/迭代/, '根据反馈更新的图片、页面或视频版本'],
+        [/数字人形象/, '数字人标准形象、服装、妆发、表情和动作资产'],
+        [/数字人直播/, '数字人实时讲解画面、语音、口型、表情和动作驱动结果'],
+        [/提取/, '可复用的视觉规则、元素与风格描述'],
+        [/广告/, '可直接投放的图片或视频广告及多尺寸版本']
+      ];
+      return rules.find(([pattern]) => pattern.test(name))?.[1] || `可直接交付的“${name}”成品及对应渠道版本`;
+    }
+
+    const state = {
+      primary: 'general',
+      secondary: generalData[0].id,
+      stage: 0,
+      solution: 0,
+      networkExpanded: false,
+      graphFocus: null,
+      graphScroll: null,
+      status: 'all',
+      query: ''
+    };
+
+    const secondaryNav = document.getElementById('secondaryNav');
+    const content = document.getElementById('content');
+    const searchInput = document.getElementById('searchInput');
+    const solutionHelp = document.getElementById('solutionHelp');
+    const globalGraphHost = document.getElementById('globalGraphHost');
+    let globalGraphScale = .28;
+    let globalGraphFocus = null;
+
+    function unique(items) {
+      return [...new Set(items)];
+    }
+
+    function matches(text) {
+      return !state.query || text.toLowerCase().includes(state.query.toLowerCase());
+    }
+
+    function capsule(name, type, selected = false) {
+      const className = ['capsule', type === 'planned' ? 'planned' : '', selected ? 'selected' : ''].filter(Boolean).join(' ');
+      return `<span class="${className}">${name}</span>`;
+    }
+
+    function buildGlobalLayout() {
+      const positions = new Map();
+      const put = (node, x, y, width, height) => positions.set(node.id, { node, x, y, width, height });
+      const generalRoot = capabilityGraph.nodes.roots.find(node => node.key === 'general');
+      const ecommerceRoot = capabilityGraph.nodes.roots.find(node => node.key === 'ecommerce');
+      put(generalRoot, 1120, 100, 320, 82);
+      put(ecommerceRoot, 4620, 100, 320, 82);
+
+      capabilityGraph.nodes.categories.forEach((category, index) => {
+        const x = 120 + index * 405;
+        put(category, x, 480, 270, 56);
+        getNodes(category.atomIds).forEach((atom, atomIndex) => {
+          put(atom, x + 10, 760 + atomIndex * 46, 250, 34);
+        });
+      });
+
+      capabilityGraph.nodes.scenes.forEach((scene, sceneIndex) => {
+        const x = 3100 + sceneIndex * 410;
+        put(scene, x, 480, 280, 56);
+        let y = 760;
+        getNodes(scene.stageIds).forEach(stage => {
+          put(stage, x + 25, y, 230, 40);
+          y += 54;
+          getNodes(stage.solutionIds).forEach(solution => {
+            put(solution, x, y, 280, 42);
+            y += 52;
+          });
+          y += 24;
+        });
+      });
+
+      const maxBottom = Math.max(...[...positions.values()].map(item => item.y + item.height));
+      return { positions, width: 6060, height: Math.max(2200, maxBottom + 180) };
+    }
+
+    function globalNodeMarkup(item) {
+      const node = item.node;
+      const planned = node.type === 'atom' && node.status === 'planned' ? 'planned' : '';
+      return `<button class="global-node ${node.type} ${planned}" data-global-node="${node.id}"
+        style="left:${item.x}px;top:${item.y}px;width:${item.width}px;min-height:${item.height}px">${node.name}</button>`;
+    }
+
+    function globalEdgeMarkup(edge, layout) {
+      const source = layout.positions.get(edge.source);
+      const target = layout.positions.get(edge.target);
+      if (!source || !target) return '';
+      const x1 = source.x + source.width / 2;
+      const y1 = source.y + source.height;
+      const x2 = target.x + target.width / 2;
+      const y2 = target.y;
+      const midY = (y1 + y2) / 2;
+      return `<path class="global-edge" data-global-edge data-source="${edge.source}" data-target="${edge.target}"
+        d="M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}"></path>`;
+    }
+
+    function updateGlobalScale() {
+      const canvas = document.getElementById('globalGraphCanvas');
+      const stage = document.getElementById('globalGraphStage');
+      if (!canvas || !stage) return;
+      canvas.style.transform = `scale(${globalGraphScale})`;
+      stage.style.width = `${Number(canvas.dataset.width) * globalGraphScale}px`;
+      stage.style.height = `${Number(canvas.dataset.height) * globalGraphScale}px`;
+      const label = document.getElementById('globalScaleLabel');
+      if (label) label.textContent = `${Math.round(globalGraphScale * 100)}%`;
+    }
+
+    function zoomGlobalGraph(nextScale, clientX, clientY) {
+      const wrap = document.getElementById('globalGraphWrap');
+      if (!wrap) return;
+      const previousScale = globalGraphScale;
+      const rect = wrap.getBoundingClientRect();
+      const anchorX = (clientX ?? (rect.left + rect.width / 2)) - rect.left;
+      const anchorY = (clientY ?? (rect.top + rect.height / 2)) - rect.top;
+      const contentX = (wrap.scrollLeft + anchorX) / previousScale;
+      const contentY = (wrap.scrollTop + anchorY) / previousScale;
+      globalGraphScale = Math.max(.16, Math.min(1, nextScale));
+      updateGlobalScale();
+      wrap.scrollLeft = contentX * globalGraphScale - anchorX;
+      wrap.scrollTop = contentY * globalGraphScale - anchorY;
+    }
+
+    function focusGlobalNode(nodeId) {
+      globalGraphFocus = nodeId;
+      const related = new Set([nodeId]);
+      document.querySelectorAll('[data-global-edge]').forEach(edge => {
+        const active = edge.dataset.source === nodeId || edge.dataset.target === nodeId;
+        edge.classList.toggle('active', active);
+        edge.classList.toggle('dimmed', !active);
+        if (active) {
+          related.add(edge.dataset.source);
+          related.add(edge.dataset.target);
+        }
+      });
+      document.querySelectorAll('[data-global-node]').forEach(node => {
+        node.classList.toggle('active', node.dataset.globalNode === nodeId);
+        node.classList.toggle('dimmed', !related.has(node.dataset.globalNode));
+      });
+      const current = capabilityNodeById.get(nodeId);
+      const note = document.getElementById('globalFocusText');
+      if (note) note.textContent = `已聚焦：${current?.name || nodeId} · 高亮直接关联节点`;
+    }
+
+    function resetGlobalFocus() {
+      globalGraphFocus = null;
+      document.querySelectorAll('[data-global-edge], [data-global-node]').forEach(element => {
+        element.classList.remove('active', 'dimmed');
+      });
+      const note = document.getElementById('globalFocusText');
+      if (note) note.textContent = '全景模式：点击任一节点聚焦直接关系；原子能力只出现一次，可连接多个解决方案';
+    }
+
+    function closeGlobalGraph() {
+      if (window.parent !== window) {
+        window.parent.postMessage({ type: 'close-design-capability-map' }, window.location.origin);
+        return;
+      }
+      globalGraphHost.innerHTML = '';
+      globalGraphFocus = null;
+      document.body.classList.remove('modal-open');
+    }
+
+    function openGlobalGraph() {
+      const layout = buildGlobalLayout();
+      const allNodes = Object.values(capabilityGraph.nodes).flat();
+      const canvasOnly = new URLSearchParams(window.location.search).has('canvas');
+      if (canvasOnly) globalGraphScale = .3;
+      globalGraphHost.innerHTML = `
+        <div class="graph-modal${canvasOnly ? ' canvas-only' : ''}" id="globalGraphModal" role="dialog" aria-modal="true" aria-label="完整能力网络">
+          <div class="graph-modal-dialog">
+            ${canvasOnly ? `
+              <div class="canvas-controls" aria-label="画布控制">
+                <button id="globalZoomOut" data-global-control="zoom-out" type="button" title="缩小" aria-label="缩小" onclick="zoomGlobalGraph(globalGraphScale - .08); return false;">−</button>
+                <span class="canvas-scale" id="globalScaleLabel">30%</span>
+                <button id="globalZoomIn" data-global-control="zoom-in" type="button" title="放大" aria-label="放大" onclick="zoomGlobalGraph(globalGraphScale + .08); return false;">＋</button>
+                <button id="globalReset" data-global-control="reset" type="button" title="显示全部关系" aria-label="显示全部关系" onclick="resetGlobalFocus(); return false;">↺</button>
+                <button class="graph-modal-close" id="closeGlobalGraph" data-global-control="close" type="button" title="关闭" aria-label="关闭完整能力网络" onclick="closeGlobalGraph(); return false;">×</button>
+              </div>
+            ` : `<div class="graph-modal-header">
+              <div>
+                <span class="method-kicker">GENERAL · ECOMMERCE · SHARED ATOMIC CAPABILITIES</span>
+                <h3>完整设计能力网络</h3>
+                <p>左侧从通用设计能力展开，右侧从电商营销展开；两条路径连接同一批原子能力节点。</p>
+              </div>
+              <div class="graph-modal-actions">
+                <span>${allNodes.length} 个节点</span>
+                <span>${capabilityGraph.edges.length} 条关系</span>
+                <span class="global-zoom">
+                  <button id="globalZoomOut" aria-label="缩小">−</button>
+                  <span id="globalScaleLabel">28%</span>
+                  <button id="globalZoomIn" aria-label="放大">＋</button>
+                </span>
+                <button class="graph-reset" id="globalReset">查看全部关系</button>
+                <button class="graph-modal-close" id="closeGlobalGraph" aria-label="关闭完整能力网络">×</button>
+              </div>
+            </div>`}
+            ${canvasOnly ? '' : `<div class="graph-modal-legend">
+              <span><i class="legend-swatch solution"></i>根节点 / 分类 / 场景</span>
+              <span><i class="legend-swatch"></i>已有原子能力</span>
+              <span><i class="legend-swatch planned"></i>待建设原子能力</span>
+              <span>拖动空白区域平移 · 使用右上角缩放</span>
+            </div>`}
+            <div class="global-graph-wrap" id="globalGraphWrap">
+              <div class="global-graph-stage" id="globalGraphStage">
+                <div class="global-graph-canvas" id="globalGraphCanvas" data-width="${layout.width}" data-height="${layout.height}"
+                  style="width:${layout.width}px;height:${layout.height}px">
+                  <svg class="global-graph-edges" width="${layout.width}" height="${layout.height}" aria-hidden="true">
+                    ${capabilityGraph.edges.map(edge => globalEdgeMarkup(edge, layout)).join('')}
+                  </svg>
+                  ${[...layout.positions.values()].map(globalNodeMarkup).join('')}
+                </div>
+              </div>
+            </div>
+            ${canvasOnly ? '' : `<div class="graph-modal-footer">
+              <span id="globalFocusText">全景模式：点击任一节点聚焦直接关系；原子能力只出现一次，可连接多个解决方案</span>
+              <span>通用：分类 → 原子能力　·　电商：场景 → 阶段 → 解决方案 → 原子能力</span>
+            </div>`}
+          </div>
+        </div>`;
+      document.body.classList.add('modal-open');
+      updateGlobalScale();
+
+      globalGraphHost.querySelectorAll('[data-global-node]').forEach(node => {
+        node.addEventListener('click', () => focusGlobalNode(node.dataset.globalNode));
+      });
+      if (!canvasOnly) {
+        document.getElementById('globalZoomIn').addEventListener('click', () => {
+          zoomGlobalGraph(globalGraphScale + .08);
+        });
+        document.getElementById('globalZoomOut').addEventListener('click', () => {
+          zoomGlobalGraph(globalGraphScale - .08);
+        });
+        document.getElementById('globalReset').addEventListener('click', resetGlobalFocus);
+        document.getElementById('closeGlobalGraph').addEventListener('click', closeGlobalGraph);
+      }
+      document.getElementById('globalGraphModal').addEventListener('click', event => {
+        if (event.target.id === 'globalGraphModal') closeGlobalGraph();
+      });
+
+      const wrap = document.getElementById('globalGraphWrap');
+      if (canvasOnly) {
+        requestAnimationFrame(() => {
+          wrap.scrollLeft = Math.max(0, (wrap.scrollWidth - wrap.clientWidth) / 2);
+          wrap.scrollTop = 0;
+        });
+      }
+      wrap.addEventListener('wheel', event => {
+        if (!event.ctrlKey && !event.metaKey) return;
+        event.preventDefault();
+        const direction = event.deltaY > 0 ? -.05 : .05;
+        zoomGlobalGraph(globalGraphScale + direction, event.clientX, event.clientY);
+      }, { passive: false });
+      let dragging = false;
+      let startX = 0;
+      let startY = 0;
+      let startLeft = 0;
+      let startTop = 0;
+      wrap.addEventListener('pointerdown', event => {
+        if (event.target.closest('button')) return;
+        dragging = true;
+        wrap.classList.add('dragging');
+        startX = event.clientX;
+        startY = event.clientY;
+        startLeft = wrap.scrollLeft;
+        startTop = wrap.scrollTop;
+        wrap.setPointerCapture(event.pointerId);
+      });
+      wrap.addEventListener('pointermove', event => {
+        if (!dragging) return;
+        wrap.scrollLeft = startLeft - (event.clientX - startX);
+        wrap.scrollTop = startTop - (event.clientY - startY);
+      });
+      wrap.addEventListener('pointerup', () => {
+        dragging = false;
+        wrap.classList.remove('dragging');
+      });
+    }
+
+    function hideSolutionHelp() {
+      solutionHelp.classList.remove('visible');
+      solutionHelp.setAttribute('aria-hidden', 'true');
+    }
+
+    function showSolutionHelp(scene, button) {
+      const stageIndex = Number(button.dataset.stageIndex);
+      const solutionIndex = Number(button.dataset.solutionIndex);
+      const stage = scene.stages[stageIndex];
+      const solution = stage?.solutions[solutionIndex];
+      if (!stage || !solution) return;
+
+      const glossary = solutionGlossary[solution.name] || {};
+      const explanation = glossary.explanation || solution.description;
+      const outputs = glossary.outputs || inferSolutionOutputs(solution.name);
+      const atomCount = solution.existing.length + solution.planned.length;
+      solutionHelp.innerHTML = `
+        <div class="solution-help-kicker">
+          <span>${stage.name}</span>
+          <span>${atomCount} ATOMS</span>
+        </div>
+        <h4>${solution.name}</h4>
+        <p>${explanation}</p>
+        <div class="solution-help-output"><b>典型交付物：</b>${outputs}</div>
+        ${glossary.image ? `<img src="${glossary.image}" alt="${solution.name}示例图"><span class="solution-help-caption">${glossary.caption || '示例图片'}</span>` : ''}
+      `;
+      solutionHelp.classList.add('visible');
+      solutionHelp.setAttribute('aria-hidden', 'false');
+
+      const image = solutionHelp.querySelector('img');
+      image?.addEventListener('error', () => {
+        image.nextElementSibling?.remove();
+        image.remove();
+      }, { once: true });
+
+      requestAnimationFrame(() => {
+        const anchor = button.getBoundingClientRect();
+        const tooltip = solutionHelp.getBoundingClientRect();
+        const gap = 12;
+        let left = anchor.right + gap;
+        if (left + tooltip.width > window.innerWidth - 12) left = anchor.left - tooltip.width - gap;
+        left = Math.max(12, Math.min(left, window.innerWidth - tooltip.width - 12));
+        let top = anchor.top + (anchor.height - tooltip.height) / 2;
+        top = Math.max(12, Math.min(top, window.innerHeight - tooltip.height - 12));
+        solutionHelp.style.left = `${left}px`;
+        solutionHelp.style.top = `${top}px`;
+      });
+    }
+
+    function bindSolutionHelp(scene) {
+      content.querySelectorAll('[data-stage-index][data-solution-index]').forEach(button => {
+        button.addEventListener('mouseenter', () => showSolutionHelp(scene, button));
+        button.addEventListener('mouseleave', hideSolutionHelp);
+        button.addEventListener('focus', () => showSolutionHelp(scene, button));
+        button.addEventListener('blur', hideSolutionHelp);
+      });
+    }
+
+    function buildSceneGraph(scene) {
+      const solutions = [];
+      const atomMap = new Map();
+      const center = { x: 1100, y: 800 };
+      const solutionRadius = { x: 420, y: 300 };
+
+      scene.stages.forEach((stage, stageIndex) => {
+        stage.solutions.forEach((solution, solutionIndex) => {
+          const solutionId = `s-${stageIndex}-${solutionIndex}`;
+          solutions.push({ id: solutionId, stageIndex, solutionIndex, stage, solution });
+
+          solution.existing.forEach(name => {
+            if (!atomMap.has(name)) atomMap.set(name, { name, status: 'existing', solutionIds: [] });
+            atomMap.get(name).solutionIds.push(solutionId);
+          });
+          solution.planned.forEach(name => {
+            if (!atomMap.has(name)) atomMap.set(name, { name, status: 'planned', solutionIds: [] });
+            atomMap.get(name).solutionIds.push(solutionId);
+          });
+        });
+      });
+
+      solutions.forEach((item, index) => {
+        const angle = -Math.PI / 2 + index * Math.PI * 2 / solutions.length;
+        item.angle = angle;
+        item.x = center.x + Math.cos(angle) * solutionRadius.x;
+        item.y = center.y + Math.sin(angle) * solutionRadius.y;
+      });
+
+      const solutionById = new Map(solutions.map(solution => [solution.id, solution]));
+      const atomsSorted = [...atomMap.values()].map(atom => {
+        const vectors = atom.solutionIds.map(id => solutionById.get(id)?.angle).filter(angle => angle !== undefined);
+        const meanX = vectors.reduce((sum, angle) => sum + Math.cos(angle), 0);
+        const meanY = vectors.reduce((sum, angle) => sum + Math.sin(angle), 0);
+        return { ...atom, anchorAngle: Math.atan2(meanY, meanX) };
+      }).sort((a, b) => a.anchorAngle - b.anchorAngle || b.solutionIds.length - a.solutionIds.length);
+
+      const atomRings = [
+        { x: 570, y: 405 },
+        { x: 680, y: 500 },
+        { x: 790, y: 595 },
+        { x: 900, y: 690 }
+      ];
+      const atoms = atomsSorted.map((atom, index) => {
+        const angle = -Math.PI + index * Math.PI * 2 / atomsSorted.length;
+        const ringIndex = index % atomRings.length;
+        const radius = atomRings[ringIndex];
+        return {
+          ...atom,
+          id: `a-${index}`,
+          angle,
+          x: center.x + Math.cos(angle) * radius.x,
+          y: center.y + Math.sin(angle) * radius.y
+        };
+      });
+
+      const edges = [];
+
+      atoms.forEach(atom => {
+        atom.solutionIds.forEach(solutionId => {
+          const solution = solutionById.get(solutionId);
+          if (solution) edges.push({
+            id: `${solutionId}--${atom.id}`,
+            solutionId,
+            atomId: atom.id,
+            status: atom.status,
+            x1: solution.x,
+            y1: solution.y,
+            x2: atom.x,
+            y2: atom.y
+          });
+        });
+      });
+
+      return { center, solutions, atoms, edges, canvasWidth: 2200, canvasHeight: 1600 };
+    }
+
+    function renderSceneNetwork(scene) {
+      const graph = buildSceneGraph(scene);
+      const focusedSolution = graph.solutions.find(item => item.id === state.graphFocus);
+      const focusedAtom = graph.atoms.find(item => item.id === state.graphFocus);
+      const activeSolutionIds = new Set();
+      const activeAtomIds = new Set();
+
+      if (focusedSolution) {
+        activeSolutionIds.add(focusedSolution.id);
+        graph.edges.filter(edge => edge.solutionId === focusedSolution.id).forEach(edge => activeAtomIds.add(edge.atomId));
+      } else if (focusedAtom) {
+        activeAtomIds.add(focusedAtom.id);
+        focusedAtom.solutionIds.forEach(id => activeSolutionIds.add(id));
+      }
+
+      const hasFocus = activeSolutionIds.size > 0 || activeAtomIds.size > 0;
+      const focusText = focusedSolution
+        ? `已聚焦解决方案：${focusedSolution.solution.name}`
+        : focusedAtom
+          ? `已聚焦原子能力：${focusedAtom.name} · 被 ${focusedAtom.solutionIds.length} 个解决方案复用`
+          : '全景模式：全部关系以低对比展示，点击任一节点聚焦一度关联';
+
+      return `
+        <div class="graph-modal" id="graphModal" role="dialog" aria-modal="true" aria-label="${scene.name}知识图谱">
+          <div class="graph-modal-dialog">
+            <div class="graph-modal-header">
+            <div>
+                <span class="method-kicker">SCENE · SOLUTION · ATOMIC CAPABILITY</span>
+                <h3>${scene.name} · 能力知识图谱</h3>
+                <p>中心是场景，第二层是解决方案，第三层是去重后的原子能力。点击任一节点聚焦关联关系。</p>
+            </div>
+              <div class="graph-modal-actions">
+                <span>${graph.solutions.length} 个解决方案</span>
+                <span>${graph.atoms.length} 个原子能力</span>
+                <button class="graph-reset" id="graphReset">查看全部关系</button>
+                <button class="graph-modal-close" data-close-graph aria-label="关闭知识图谱">×</button>
+              </div>
+          </div>
+            <div class="graph-modal-legend">
+              <span><i class="legend-swatch solution"></i>解决方案层</span>
+              <span><i class="legend-swatch"></i>已有原子能力</span>
+              <span><i class="legend-swatch planned"></i>待建设原子能力</span>
+              <span>×N 表示被多个方案复用</span>
+            </div>
+            <div class="radial-graph-wrap">
+              <div class="radial-graph-canvas" style="width:${graph.canvasWidth}px;height:${graph.canvasHeight}px">
+                <span class="radial-ring ring-outer"></span>
+                <span class="radial-ring ring-middle"></span>
+                <span class="radial-ring ring-solution"></span>
+                <span class="radial-layer-label atom-label">L3 · ATOMIC CAPABILITIES</span>
+                <span class="radial-layer-label solution-label">L2 · SOLUTIONS</span>
+
+                <svg class="radial-edges" viewBox="0 0 ${graph.canvasWidth} ${graph.canvasHeight}" preserveAspectRatio="none" aria-hidden="true">
+                  ${graph.solutions.map(item => {
+                    const active = activeSolutionIds.has(item.id);
+                    return `<path class="scene-solution-edge ${active ? 'active' : ''}" d="M ${graph.center.x} ${graph.center.y} Q ${(graph.center.x + item.x) / 2} ${(graph.center.y + item.y) / 2} ${item.x} ${item.y}"></path>`;
+                  }).join('')}
+                  ${graph.edges.map(edge => {
+                    const active = activeSolutionIds.has(edge.solutionId) && activeAtomIds.has(edge.atomId);
+                    const midX = (edge.x1 + edge.x2) / 2;
+                    const midY = (edge.y1 + edge.y2) / 2;
+                    return `<path class="graph-edge ${edge.status === 'planned' ? 'planned' : ''} ${active ? 'active' : ''}" d="M ${edge.x1} ${edge.y1} Q ${midX} ${midY} ${edge.x2} ${edge.y2}"></path>`;
+                  }).join('')}
+                </svg>
+
+                <div class="radial-scene-node">
+                <small>SCENE OBJECTIVE</small>
+                <b>${scene.name}</b>
+                <span>${scene.description}</span>
+              </div>
+
+              ${graph.solutions.map(item => {
+                const active = activeSolutionIds.has(item.id);
+                const dimmed = hasFocus && !active;
+                return `
+                    <button class="radial-solution-node ${active ? 'active' : ''} ${dimmed ? 'dimmed' : ''}"
+                    style="left:${item.x}px;top:${item.y}px"
+                    data-graph-solution="${item.id}"
+                    data-stage-index="${item.stageIndex}"
+                    data-solution-index="${item.solutionIndex}"
+                    aria-describedby="solutionHelp">
+                      <small>${item.stage.name}</small>
+                    <b>${item.solution.name}</b>
+                  </button>
+                `;
+              }).join('')}
+
+              ${graph.atoms.map(atom => {
+                const active = activeAtomIds.has(atom.id);
+                const dimmed = hasFocus && !active;
+                return `
+                    <button class="radial-atom-node ${atom.status === 'planned' ? 'planned' : ''} ${active ? 'active' : ''} ${dimmed ? 'dimmed' : ''}"
+                    style="left:${atom.x}px;top:${atom.y}px"
+                    data-graph-atom="${atom.id}">
+                    ${atom.name}
+                    ${atom.solutionIds.length > 1 ? `<span class="reuse-count">×${atom.solutionIds.length}</span>` : ''}
+                  </button>
+                `;
+              }).join('')}
+              </div>
+            </div>
+            <div class="graph-modal-footer">
+              <span>${focusText}</span>
+              <span>拖动滚动区域可浏览完整图谱</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderSecondary() {
+      const source = state.primary === 'general' ? generalData : ecommerceData;
+      secondaryNav.innerHTML = source.map(item =>
+        `<button class="secondary-tab ${item.id === state.secondary ? 'active' : ''}" data-secondary="${item.id}">${item.name}</button>`
+      ).join('');
+      secondaryNav.querySelectorAll('[data-secondary]').forEach(button => {
+        button.addEventListener('click', () => {
+          state.secondary = button.dataset.secondary;
+          state.stage = 0;
+          state.solution = 0;
+          state.networkExpanded = false;
+          state.graphFocus = null;
+          state.graphScroll = null;
+          render();
+        });
+      });
+    }
+
+    function renderGeneral() {
+      document.body.classList.remove('modal-open');
+      const item = generalData.find(x => x.id === state.secondary) || generalData[0];
+      const existing = item.existing.filter(matches);
+      const planned = item.planned.filter(matches);
+      const showExisting = state.status === 'all' || state.status === 'existing';
+      const showPlanned = state.status === 'all' || state.status === 'planned';
+
+      content.innerHTML = `
+        <section class="overview">
+          <div>
+            <h2>${item.name}</h2>
+            <p>${item.description} 已有能力使用 skills 盘点原文名称及本次确认的新增名称；待建设能力使用规划名称。</p>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>${item.existing.length}</b><span>已有技能</span></div>
+            <div class="stat"><b>${item.planned.length}</b><span>待建设能力</span></div>
+          </div>
+        </section>
+        <div class="toolbar">
+          <span class="toolbar-title">设计能力池</span>
+          <div class="filters" aria-label="能力状态筛选">
+            <button class="filter-button ${state.status === 'all' ? 'active' : ''}" data-status="all">全部</button>
+            <button class="filter-button ${state.status === 'existing' ? 'active' : ''}" data-status="existing">已有</button>
+            <button class="filter-button ${state.status === 'planned' ? 'active' : ''}" data-status="planned">待建设</button>
+          </div>
+        </div>
+        <section class="panel atom-panel">
+          ${showExisting ? `
+            <div class="atom-group">
+              <h3 class="group-heading"><span class="status-dot"></span>已有技能 <small>${existing.length}</small></h3>
+              <div class="capsules">${existing.map(x => capsule(x, 'existing')).join('') || '<div class="empty">没有匹配的已有能力</div>'}</div>
+            </div>` : ''}
+          ${showPlanned ? `
+            <div class="atom-group">
+              <h3 class="group-heading"><span class="status-dot planned"></span>待建设原子能力 <small>${planned.length}</small></h3>
+              <div class="capsules">${planned.map(x => capsule(x, 'planned')).join('') || '<div class="empty">没有匹配的待建设能力</div>'}</div>
+            </div>` : ''}
+        </section>
+      `;
+
+      content.querySelectorAll('[data-status]').forEach(button => {
+        button.addEventListener('click', () => {
+          state.status = button.dataset.status;
+          renderGeneral();
+        });
+      });
+    }
+
+    function renderEcommerce() {
+      hideSolutionHelp();
+      const scene = ecommerceData.find(x => x.id === state.secondary) || ecommerceData[0];
+      const selectedStage = scene.stages[state.stage] || scene.stages[0];
+      const selectedSolution = state.solution >= 0 ? selectedStage.solutions[state.solution] : null;
+      const selectedExisting = new Set(selectedSolution?.existing || []);
+      const selectedPlanned = new Set(selectedSolution?.planned || []);
+      const allExisting = unique(scene.stages.flatMap(x => x.solutions.flatMap(y => y.existing))).filter(matches);
+      const allPlanned = unique(scene.stages.flatMap(x => x.solutions.flatMap(y => y.planned))).filter(matches);
+      const solutionCount = scene.stages.reduce((sum, x) => sum + x.solutions.length, 0);
+
+      content.innerHTML = `
+        <section class="overview">
+          <div>
+            <h2>${scene.name}</h2>
+              <p>${scene.description} 主视图呈现阶段与解决方案；可通过浮层知识图谱查看全场景的多对多能力复用关系。</p>
+          </div>
+          <div class="stats">
+            <div class="stat"><b>${scene.stages.length}</b><span>方法阶段</span></div>
+            <div class="stat"><b>${solutionCount}</b><span>解决方案</span></div>
+          </div>
+        </section>
+
+        <section class="panel method-panel">
+          <div class="method-heading">
+            <div>
+              <span class="method-kicker">SCENE KNOWLEDGE GRAPH · CAPABILITY CLUSTERS</span>
+              <h3>${scene.name}场景知识图谱</h3>
+              <p>阶段是围绕场景目标组织的并列能力簇，不代表固定顺序；解决方案可跨簇组合并复用原子能力。</p>
+            </div>
+            <button class="network-toggle" id="toggleNetwork">
+              查看知识图谱
+            </button>
+          </div>
+          <div class="method-rule">
+            <b>图谱阅读</b>
+            <span>场景目标是中心母节点</span>
+            <span>阶段是并列能力簇</span>
+            <span>解决方案是可组合节点</span>
+            <span>原子能力跨方案复用</span>
+            <span>×N 表示复用次数</span>
+          </div>
+          <div class="knowledge-hub">
+              <small>SCENE OBJECTIVE</small>
+              <b>${scene.name}</b>
+              <span>${scene.description}</span>
+            </div>
+            <div class="cluster-map">
+              ${scene.stages.map((stage, stageIndex) => {
+                const visibleSolutions = stage.solutions.filter(solution =>
+                  matches(solution.name) ||
+                  matches(solution.description) ||
+                  solution.existing.some(matches) ||
+                  solution.planned.some(matches)
+                );
+                return `
+                  <article class="stage-cluster">
+                    <div class="cluster-header">
+                      <span class="cluster-index">${String(stageIndex + 1).padStart(2, '0')}</span>
+                      <div>
+                        <span>CAPABILITY CLUSTER</span>
+                        <h4>${stage.name}</h4>
+                      </div>
+                    </div>
+                    <p class="cluster-goal">${stage.description}</p>
+                    <div class="cluster-solutions">
+                      ${visibleSolutions.map(solution => {
+                        const solutionIndex = stage.solutions.indexOf(solution);
+                        const active = stageIndex === state.stage && solutionIndex === state.solution;
+                        return `
+                          <button class="cluster-solution ${active ? 'active' : ''}" data-stage-index="${stageIndex}" data-solution-index="${solutionIndex}" aria-describedby="solutionHelp">
+                            <span class="cluster-solution-top">
+                              <span>S${String(stageIndex + 1).padStart(2, '0')}.${String(solutionIndex + 1).padStart(2, '0')}</span>
+                              <span>${solution.existing.length + solution.planned.length} ATOMS</span>
+                            </span>
+                            <b>${solution.name}</b>
+                          </button>
+                        `;
+                      }).join('') || '<div class="empty">无匹配方案</div>'}
+                    </div>
+                  </article>
+                `;
+              }).join('')}
+            </div>
+        </section>
+
+        <section class="panel atom-panel">
+          <div class="section-heading">
+            <div>
+              <h3>场景原子能力池</h3>
+              <p>所有能力保持可见，选中方案调用的能力会被高亮</p>
+            </div>
+            <div class="legend">
+              <span class="legend-item"><span class="legend-swatch"></span>已有</span>
+              <span class="legend-item"><span class="legend-swatch planned"></span>待建设</span>
+            </div>
+          </div>
+          ${selectedSolution ? `
+            <div class="atom-callout">
+              当前选中：<b>${selectedSolution.name}</b>
+              · 调用 ${selectedSolution.existing.length + selectedSolution.planned.length} 项原子能力
+            </div>` : ''}
+          <div class="atom-group">
+            <h3 class="group-heading"><span class="status-dot"></span>已有原子能力 <small>${allExisting.length}</small></h3>
+            <div class="capsules">
+              ${allExisting.map(x => capsule(x, 'existing', selectedExisting.has(x))).join('') || '<div class="empty">没有匹配的已有能力</div>'}
+            </div>
+          </div>
+          <div class="atom-group">
+            <h3 class="group-heading"><span class="status-dot planned"></span>待建设原子能力 <small>${allPlanned.length}</small></h3>
+            <div class="capsules">
+              ${allPlanned.map(x => capsule(x, 'planned', selectedPlanned.has(x))).join('') || '<div class="empty">没有匹配的待建设能力</div>'}
+            </div>
+          </div>
+        </section>
+        ${state.networkExpanded ? renderSceneNetwork(scene) : ''}
+      `;
+      document.body.classList.toggle('modal-open', state.networkExpanded);
+      if (state.networkExpanded) {
+        requestAnimationFrame(() => {
+          const wrap = content.querySelector('.radial-graph-wrap');
+          if (!wrap) return;
+          if (state.graphScroll) {
+            wrap.scrollLeft = state.graphScroll.left;
+            wrap.scrollTop = state.graphScroll.top;
+          } else {
+            wrap.scrollLeft = Math.max(0, (wrap.scrollWidth - wrap.clientWidth) / 2);
+            wrap.scrollTop = Math.max(0, (wrap.scrollHeight - wrap.clientHeight) / 2);
+          }
+        });
+      }
+
+      content.querySelectorAll('.cluster-solution[data-solution-index]').forEach(button => {
+        button.addEventListener('click', () => {
+          state.stage = Number(button.dataset.stageIndex);
+          state.solution = Number(button.dataset.solutionIndex);
+          state.graphFocus = `s-${state.stage}-${state.solution}`;
+          renderEcommerce();
+        });
+      });
+
+      document.getElementById('toggleNetwork')?.addEventListener('click', () => {
+        state.networkExpanded = true;
+        state.graphFocus = null;
+        state.graphScroll = null;
+        renderEcommerce();
+      });
+
+      content.querySelectorAll('[data-graph-solution]').forEach(button => {
+        button.addEventListener('click', () => {
+          const wrap = content.querySelector('.radial-graph-wrap');
+          state.graphScroll = wrap ? { left: wrap.scrollLeft, top: wrap.scrollTop } : null;
+          state.stage = Number(button.dataset.stageIndex);
+          state.solution = Number(button.dataset.solutionIndex);
+          state.graphFocus = button.dataset.graphSolution;
+          renderEcommerce();
+        });
+      });
+
+      content.querySelectorAll('[data-graph-atom]').forEach(button => {
+        button.addEventListener('click', () => {
+          const wrap = content.querySelector('.radial-graph-wrap');
+          state.graphScroll = wrap ? { left: wrap.scrollLeft, top: wrap.scrollTop } : null;
+          state.graphFocus = button.dataset.graphAtom;
+          renderEcommerce();
+        });
+      });
+
+      document.getElementById('graphReset')?.addEventListener('click', () => {
+        const wrap = content.querySelector('.radial-graph-wrap');
+        state.graphScroll = wrap ? { left: wrap.scrollLeft, top: wrap.scrollTop } : null;
+        state.graphFocus = null;
+        renderEcommerce();
+      });
+
+      content.querySelectorAll('[data-close-graph]').forEach(button => {
+        button.addEventListener('click', () => {
+          state.networkExpanded = false;
+          state.graphFocus = null;
+          state.graphScroll = null;
+          renderEcommerce();
+        });
+      });
+
+      document.getElementById('graphModal')?.addEventListener('click', event => {
+        if (event.target.id === 'graphModal') {
+          state.networkExpanded = false;
+          state.graphFocus = null;
+          state.graphScroll = null;
+          renderEcommerce();
+        }
+      });
+      bindSolutionHelp(scene);
+    }
+
+    function render() {
+      renderSecondary();
+      if (state.primary === 'general') renderGeneral();
+      else renderEcommerce();
+    }
+
+    document.querySelectorAll('[data-primary]').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('[data-primary]').forEach(x => x.classList.remove('active'));
+        button.classList.add('active');
+        state.primary = button.dataset.primary;
+        state.secondary = state.primary === 'general' ? generalData[0].id : ecommerceData[0].id;
+        state.stage = 0;
+        state.solution = 0;
+        state.networkExpanded = false;
+        state.graphFocus = null;
+        state.graphScroll = null;
+        state.status = 'all';
+        render();
+      });
+    });
+
+    searchInput.addEventListener('input', event => {
+      state.query = event.target.value.trim();
+      if (state.primary === 'general') renderGeneral();
+      else renderEcommerce();
+    });
+
+    document.getElementById('openGlobalNetwork').addEventListener('click', openGlobalGraph);
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && globalGraphHost.innerHTML) {
+        closeGlobalGraph();
+      } else if (event.key === 'Escape' && state.networkExpanded) {
+        state.networkExpanded = false;
+        state.graphFocus = null;
+        state.graphScroll = null;
+        renderEcommerce();
+      }
+    });
+
+    render();
+    if (window.parent !== window || new URLSearchParams(window.location.search).has('network')) {
+      openGlobalGraph();
+    }
+  </script>
+</body>
+</html>

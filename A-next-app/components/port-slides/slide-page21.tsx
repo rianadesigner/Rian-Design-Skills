@@ -1,3 +1,5 @@
+import { DarkPillTag } from "./dark-pill-tag";
+
 const P21 = "/images/page21";
 
 const steps = [
@@ -19,31 +21,9 @@ export default function SlidePage21() {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute" style={{ top: 0, left: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
         <div className="absolute" style={{ top: 0, right: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
-        {/* 网格线装饰 */}
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="absolute inset-0 h-full w-full" viewBox="0 0 1443 1081.5" preserveAspectRatio="none">
-          <path d="M62,1081.5L61,1081.5L61,61.5L62,61.5L62,1081.5ZM461,61.5L462,61.5L462,1081.5L461,1081.5L461,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
-          <path d="M522,1081.5L521,1081.5L521,61.5L522,61.5L522,1081.5ZM921,61.5L922,61.5L922,1081.5L921,1081.5L921,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
-          <path d="M982,1081.5L981,1081.5L981,61.5L982,61.5L982,1081.5ZM1381,61.5L1382,61.5L1382,1081.5L1381,1081.5L1381,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04" />
-          <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.08" stroke="#FFFFFF" fill="none" strokeWidth="1.5" />
-        </svg>
       </div>
 
-      {/* ── Header ───────────────────────────────────────────────── */}
-      <div className="absolute z-10" style={{ left: "4.17%", top: "1.48%", width: "91.67%", height: "3.33%" }}>
-        <img loading="eager" decoding="async" src="/images/brand/wanxiang-xinglian-title.png" alt="万相星链" className="absolute left-0 top-0 h-full object-contain" />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7 * var(--u))]">
-          <p style={{ color: "rgba(255,255,255,0.38)", fontSize: "20px", fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", textAlign: "right", lineHeight: 1.4, margin: 0, whiteSpace: "nowrap" }}>
-            P2F搭建助手 / 21
-          </p>
-        </div>
-        <div className="absolute" style={{ left: "9.5%", top: "-2.6%" }}>
-          <div style={{ border: "1px solid rgba(255,255,255,0.22)", padding: "calc(0.3 * var(--u)) calc(0.8 * var(--u))", transform: "rotate(-1deg)" }}>
-            <p style={{ color: "rgba(255,255,255,0.55)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontSize: "clamp(10px, calc(1.1 * var(--u)), 16px)", lineHeight: 1.4, margin: 0 }}>
-              2022 / 2024
-            </p>
-          </div>
-        </div>
-      </div>
+
 
       {/* ── Title ────────────────────────────────────────────────── */}
       <span className="absolute z-10" style={{ left: "4.17%", top: "9.26%" }}>
@@ -60,10 +40,9 @@ export default function SlidePage21() {
         </span>
         <span
           style={{
-            backgroundImage: "linear-gradient(135deg, #5C5CFF 0%, #AE5CFF 100%)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
+            display: "inline-block",
+            position: "relative",
+            color: "#ef3b46",
             fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
             fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
             lineHeight: "52px",
@@ -71,13 +50,40 @@ export default function SlidePage21() {
           }}
         >
           Workflow
+          <svg
+            style={{
+              display: "none",
+              position: "absolute",
+              left: 0,
+              bottom: "-1px",
+              width: "100%",
+              height: "13px",
+              opacity: 0.5,
+            }}
+            viewBox="0 0 152 13"
+            fill="none"
+            aria-hidden="true"
+          >
+            <defs>
+              <linearGradient id="p21WorkflowWave" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="#5C5CFF" />
+                <stop offset="100%" stopColor="#AE5CFF" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M2 9.5C31 5 54 4.5 76 7C101 9.8 124 5.2 150 5.6"
+              stroke="url(#p21WorkflowWave)"
+              strokeWidth="4"
+              strokeLinecap="round"
+            />
+          </svg>
         </span>
       </span>
 
       {/* ── Decorative wavy line ─────────────────────────────────── */}
       <svg
         className="absolute z-10"
-        style={{ left: "21.74%", top: "13.06%", width: "clamp(80px, calc(9.03 * var(--u)), 130px)", height: "13px", opacity: 0.5 }}
+        style={{ display: "none" }}
         viewBox="0 0 152 13"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -146,91 +152,72 @@ export default function SlidePage21() {
 
       {/* ── Floating emoji badges ────────────────────────────────── */}
       <div
-        className="absolute z-20 flex items-center"
-        style={{ left: "18.68%", top: "14.72%", gap: "clamp(4px, calc(0.56 * var(--u)), 8px)", padding: "clamp(4px, calc(0.56 * var(--u)), 8px)", background: "rgba(255,255,255,0.15)", borderRadius: "60px", border: "1px solid rgba(255,255,255,0.28)", boxShadow: "0px 0px 6px rgba(0,0,0,0.4)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
+        className="absolute z-20"
+        style={{ left: "18.68%", top: "14.72%" }}
       >
-        <div className="flex items-center justify-center" style={{ width: "clamp(16px, calc(1.74 * var(--u)), 25px)", height: "clamp(16px, calc(1.74 * var(--u)), 25px)", background: "#D1FB39", borderRadius: "66.67px" }}>
-          <span style={{ fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", lineHeight: 1 }}>👀</span>
-        </div>
-        <span style={{ color: "#0A0A0A", fontSize: "clamp(10px, calc(1.02 * var(--u)), 14.66px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
-          前：设计器空空如也
-        </span>
+        <DarkPillTag index="01">前：设计器空空如也</DarkPillTag>
       </div>
       <div
-        className="absolute z-20 flex items-center"
-        style={{ left: "67.71%", top: "14.81%", gap: "clamp(4px, calc(0.56 * var(--u)), 8px)", padding: "clamp(4px, calc(0.56 * var(--u)), 8px)", background: "rgba(255,255,255,0.15)", borderRadius: "60px", border: "1px solid rgba(255,255,255,0.28)", boxShadow: "0px 0px 6px rgba(0,0,0,0.4)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
+        className="absolute z-20"
+        style={{ left: "67.71%", top: "14.81%" }}
       >
-        <div className="flex items-center justify-center" style={{ width: "clamp(16px, calc(1.67 * var(--u)), 24px)", height: "clamp(16px, calc(1.67 * var(--u)), 24px)", background: "#D1FB39", borderRadius: "66.67px" }}>
-          <span style={{ fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", lineHeight: 1 }}>😄</span>
-        </div>
-        <span style={{ color: "#0A0A0A", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
-          后：生成结果/工作流保存
-        </span>
+        <DarkPillTag index="03">后：生成结果/工作流保存</DarkPillTag>
       </div>
       <div
-        className="absolute z-20 flex items-center"
-        style={{ left: "42.99%", top: "50%", gap: "clamp(4px, calc(0.56 * var(--u)), 8px)", padding: "clamp(4px, calc(0.56 * var(--u)), 8px)", background: "rgba(255,255,255,0.15)", borderRadius: "60px", border: "1px solid rgba(255,255,255,0.28)", boxShadow: "0px 0px 6px rgba(0,0,0,0.4)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
+        className="absolute z-20"
+        style={{ left: "42.99%", top: "50%" }}
       >
-        <div className="flex items-center justify-center" style={{ width: "clamp(16px, calc(1.67 * var(--u)), 24px)", height: "clamp(16px, calc(1.67 * var(--u)), 24px)", background: "#D1FB39", borderRadius: "66.67px" }}>
-          <span style={{ fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", lineHeight: 1 }}>🧐</span>
-        </div>
-        <span style={{ color: "#0A0A0A", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
-          中：自动搭建/执行/运行
-        </span>
+        <DarkPillTag index="02">中：自动搭建/执行/运行</DarkPillTag>
       </div>
 
       {/* ── Bottom glass panel with steps ────────────────────────── */}
       <div
-        className="absolute z-10 flex flex-col"
+        className="absolute z-10 grid"
         style={{
-          left: 0,
-          top: "51.94%",
-          width: "100%",
-          height: "56.02%",
-          padding: "clamp(16px, calc(2.08 * var(--u)), 30px)",
-          gap: "clamp(8px, calc(0.83 * var(--u)), 12px)",
-          background: "rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          borderRadius: "12px",
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
-          boxShadow: "0px 0px 12px rgba(0,0,0,0.4)",
+          left: "4.17%",
+          top: "55.2%",
+          width: "91.66%",
+          height: "38.6%",
+          gridTemplateColumns: "repeat(6, minmax(0, 1fr))",
+          gap: "clamp(8px, calc(0.9 * var(--u)), 13px)",
+          padding: "clamp(12px, calc(1.25 * var(--u)), 18px)",
+          background:
+            "linear-gradient(180deg, rgba(55,22,24,0.94) 0%, rgba(17,14,15,0.97) 46%, rgba(8,8,8,0.98) 100%)",
+          border: "1px solid rgba(239,59,70,0.3)",
+          borderRadius: "16px",
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
+          boxShadow:
+            "0 18px 42px rgba(0,0,0,0.48), inset 0 1px 0 rgba(255,255,255,0.06)",
         }}
       >
-        {/* Step labels row */}
-        <div className="flex items-start" style={{ gap: "clamp(8px, calc(0.83 * var(--u)), 12px)" }}>
-          {steps.map((step) => (
-            <div
-              key={step.num}
-              className="flex items-center"
-              style={{ width: "16.67%", gap: "clamp(4px, calc(0.42 * var(--u)), 6px)" }}
-            >
-              <div
-                className="flex items-center justify-center flex-shrink-0"
-                style={{ width: "clamp(16px, calc(1.67 * var(--u)), 24px)", height: "clamp(16px, calc(1.67 * var(--u)), 24px)", background: "#D1FB39", borderRadius: "66.67px" }}
-              >
-                <p style={{ color: "#1F1F1F", fontSize: "clamp(8px, calc(0.83 * var(--u)), 12px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
-                  {step.num}
-                </p>
-              </div>
-              <span style={{ color: "#0A0A0A", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.7, whiteSpace: "nowrap" }}>
-                {step.label}
-              </span>
+        {steps.map((step) => (
+          <article
+            key={step.num}
+            className="grid min-h-0 min-w-0"
+            style={{ gridTemplateRows: "auto minmax(0, 1fr)", rowGap: "10px" }}
+          >
+            <div className="min-w-0">
+              <DarkPillTag index={step.num}>{step.label}</DarkPillTag>
             </div>
-          ))}
-        </div>
-        {/* Step images row */}
-        <div className="flex flex-1 min-h-0" style={{ gap: "clamp(8px, calc(0.83 * var(--u)), 12px)" }}>
-          {steps.map((step) => (
-            <img
-              key={step.img}
-              src={`${P21}/${step.img}`}
-              alt=""
-              className="h-full object-cover"
-              style={{ width: "16.67%", flexShrink: 0, objectPosition: "left top" }}
-            />
-          ))}
-        </div>
+            <div
+              className="relative min-h-0 overflow-hidden"
+              style={{
+                borderRadius: "9px",
+                background: "#eef2f7",
+                border: "1px solid rgba(255,255,255,0.12)",
+                boxShadow: "0 10px 24px rgba(0,0,0,0.3)",
+              }}
+            >
+              <img
+                src={`${P21}/${step.img}`}
+                alt={`${step.num} ${step.label}`}
+                className="h-full w-full object-cover"
+                style={{ objectPosition: "left top" }}
+              />
+            </div>
+          </article>
+        ))}
       </div>
     </div>
   );

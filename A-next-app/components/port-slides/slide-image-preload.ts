@@ -1,4 +1,4 @@
-const imageDecodeCache = new Map<string, Promise<void>>();
+const imageDecodeCache = new Map<string, Promise<void>>()
 
 const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   content0: [
@@ -9,6 +9,11 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   ],
   page0b: ["/images/page0b/ai1-bg.webp"],
   page0f: [
+    "/images/page0/figma-home-input-v2.png",
+    "/images/page0/figma-multi-file-window-v2.png",
+    "/images/page0/figma-generation-config.png",
+    "/images/page0/figma-thinking-process.webp",
+    "/images/page0/figma-multi-format-delivery.webp",
     "/images/page0/agent-stage-glow.svg",
     "/images/page0/agent-avatar.png",
     "/images/page0/agent-3d-upload.webp",
@@ -149,34 +154,133 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/page26/right-top.webp",
     "/images/page26/phone1.webp",
   ],
-};
+  "other-creative-projects": [
+    "/images/page23/05.webp",
+    "/images/page23/06.webp",
+    "/images/page23/07.webp",
+    "/images/page24/research.jpg",
+    "/images/page24/phone1.webp",
+    "/images/page24/phone2.webp",
+    "/images/page25/card1.webp",
+    "/images/page25/card2.webp",
+    "/images/page25/card3.webp",
+    "/images/page26/right-bottom.webp",
+    "/images/page26/right-top.webp",
+    "/images/page26/phone1.webp",
+  ],
+  "other-agent-projects": [
+    "/images/other-agent-projects/01-agent-home.png",
+    "/images/other-agent-projects/02-intent-config.png",
+    "/images/other-agent-projects/03-plan-confirm.png",
+    "/images/other-agent-projects/04-execution-progress.png",
+    "/images/other-agent-projects/05-result-preview.png",
+  ],
+  "other-search-projects": [
+    "/images/other-search-projects/ui-v3/01-entry-default.png",
+    "/images/other-search-projects/ui-v3/02-entry-active.png",
+    "/images/other-search-projects/ui-v3/03-query-suggestions.png",
+    "/images/other-search-projects/ui-v3/04-result-entry.webp",
+    "/images/other-search-projects/ui-v3/05-result-full.png",
+    "/images/other-search-projects/ui-v3/06-result-visual.webp",
+    "/images/other-search-projects/ui-v3/07-social-proof.png",
+    "/images/other-search-projects/ui-v3/08-commerce-action.webp",
+    "/images/other-search-projects/ui-v3/09-map-zoom.webp",
+    "/images/other-search-projects/ui-v3/10-recommend-entry.png",
+  ],
+  page27: ["/images/page27/home.webp", "/images/page27/video-editor.webp"],
+  "video-user-journey": [],
+  "video-concurrent-tasks": [
+    "/images/page35/queued-v2.webp",
+    "/images/page35/generating-v2.webp",
+    "/images/page35/task-history.jpg",
+  ],
+  "video-context-system": [
+    "/images/page27/home.webp",
+    "/images/page27/video-editor.webp",
+    "/images/page27/result.webp",
+  ],
+  "video-template-remix": [
+    "/images/video/slide37-template-remix/01-home-template-entry.webp",
+    "/images/video/slide37-template-remix/02-template-waterfall.webp",
+    "/images/video/slide37-template-remix/03-template-detail.webp",
+    "/images/video/slide37-template-remix/04-creation-detail.webp",
+    "/images/video/slide37-template-remix/05-remix-editor.webp",
+    "/images/video/slide37-template-remix/06-make-same.webp",
+  ],
+  "video-entry-experience": [
+    "/images/page27/delta-home.webp",
+    "/images/page27/home.webp",
+    "/images/page27/remix.webp",
+  ],
+  "video-async-loop": [
+    "/images/page30/progress.webp",
+    "/images/page27/result.webp",
+  ],
+  page28: [
+    "/images/page27/remix.webp",
+    "/images/page27/result.webp",
+    "/images/page27/action-clone.webp",
+    "/images/page27/remove.webp",
+    "/images/page27/filter.webp",
+    "/images/page27/remove-brush-card.png",
+    "/images/page27/remove-person-card.png",
+    "/images/page27/remove-watermark-card.png",
+    "/images/page27/remove-text-card.png",
+    "/images/page27/remove-glasses-card.png",
+  ],
+  page29: [
+    "/images/page39/sketch-home.webp",
+    "/images/page39/sketch-material.webp",
+  ],
+  page30: [
+    "/images/page30/material-analysis.webp",
+    "/images/page30/clip-select.webp",
+    "/images/page30/progress.webp",
+  ],
+  page31: [
+    "/images/page30/compare.webp",
+    "/images/page30/object-selected.webp",
+    "/images/page30/action-selected.webp",
+    "/images/page30/paint-remove.webp",
+    "/images/page30/style-filter.webp",
+    "/images/page27/remove-brush-card.png",
+    "/images/page27/remove-person-card.png",
+    "/images/page27/remove-watermark-card.png",
+    "/images/page27/remove-text-card.png",
+    "/images/page27/remove-glasses-card.png",
+  ],
+  page32: [
+    "/images/page30/all-sketch-pages.webp",
+    "/images/page30/material-analysis.webp",
+  ],
+}
 
 function decodeImage(src: string) {
-  const cached = imageDecodeCache.get(src);
-  if (cached) return cached;
+  const cached = imageDecodeCache.get(src)
+  if (cached) return cached
 
   const task = new Promise<void>((resolve) => {
-    const image = new Image();
-    image.decoding = "async";
-    image.src = src;
+    const image = new Image()
+    image.decoding = "async"
+    image.src = src
 
-    const finish = () => resolve();
+    const finish = () => resolve()
     if (typeof image.decode === "function") {
-      image.decode().then(finish, finish);
+      image.decode().then(finish, finish)
     } else if (image.complete) {
-      finish();
+      finish()
     } else {
-      image.onload = finish;
-      image.onerror = finish;
+      image.onload = finish
+      image.onerror = finish
     }
-  });
+  })
 
-  imageDecodeCache.set(src, task);
-  return task;
+  imageDecodeCache.set(src, task)
+  return task
 }
 
 export async function predecodeSlideImages(slideId: string) {
-  const assets = SLIDE_IMAGE_ASSETS[slideId];
-  if (!assets?.length) return;
-  await Promise.all(assets.map(decodeImage));
+  const assets = SLIDE_IMAGE_ASSETS[slideId]
+  if (!assets?.length) return
+  await Promise.all(assets.map(decodeImage))
 }

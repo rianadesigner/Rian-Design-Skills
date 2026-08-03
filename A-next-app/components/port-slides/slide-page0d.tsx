@@ -250,29 +250,6 @@ export default function SlidePage0d() {
       />
 
 
-      {/* Four corner marks */}
-      {(
-        [
-          { top: 24, left: 24 },
-          { top: 24, right: 24, transform: "scaleX(-1)" },
-          { bottom: 24, left: 24, transform: "scaleY(-1)" },
-          { bottom: 24, right: 24, transform: "scale(-1,-1)" },
-        ] as React.CSSProperties[]
-      ).map((s, i) => (
-        <div
-          key={i}
-          aria-hidden
-          style={{ position: "absolute", ...s, width: 18, height: 18, zIndex: 6 }}
-        >
-          <div
-            style={{ position: "absolute", top: 0, left: 0, width: 18, height: 1, background: "rgba(255,255,255,0.22)" }}
-          />
-          <div
-            style={{ position: "absolute", top: 0, left: 0, width: 1, height: 18, background: "rgba(255,255,255,0.22)" }}
-          />
-        </div>
-      ))}
-
       {/* ── Header (Figma: top=184, centered) ────────────── */}
       <div
         style={{
@@ -298,7 +275,7 @@ export default function SlidePage0d() {
               letterSpacing: 2,
             }}
           >
-            03
+            04
           </span>
           <div style={{ width: 28, height: 1, background: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
           <span
@@ -315,12 +292,12 @@ export default function SlidePage0d() {
         {/* Main title */}
         <p
           style={{
-            fontFamily: "'PingFang SC', sans-serif",
-            fontWeight: 600,
-            fontSize: 44,
+            fontFamily: "'标小智无界黑', sans-serif",
+            fontWeight: 400,
+            fontSize: 40,
             color: "#ffffff",
             lineHeight: "47.25px",
-            letterSpacing: 1,
+            letterSpacing: "1.5px",
             margin: 0,
           }}
         >

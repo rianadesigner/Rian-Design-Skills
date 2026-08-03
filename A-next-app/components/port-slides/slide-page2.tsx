@@ -16,6 +16,14 @@ const ALL_CARDS = [
     desc: "基于通用AI搜索链路的基础框架搭建&新能力透传",
     img: `${P2}/screenshot-main.webp`,
     tags: ["首页支持模式&格式选择", "首页宫格场景引导"],
+    audience: "搜索 / 全量用户",
+    interactionTitle: "基础框架：从提问到可信答案",
+    detailRows: [
+      ["A", "触发条件", "输入研究问题，并按任务需要选择搜索模式与输出格式。"],
+      ["B", "系统响应", "检索公开资料与已有上下文，在回答中同步组织关键证据。"],
+      ["C", "交付结果", "输出带引用来源的结构化答案，支持继续追问与深入研究。"],
+    ],
+    principle: "答案与来源同时可见，让用户既获得结论，也理解结论从哪里来。",
     markmap: false, podcast: false, ppt: false, imgFit: true,
   },
   {
@@ -24,6 +32,14 @@ const ALL_CARDS = [
     desc: "通过多轮推理深化问题认知并进行规划纠偏, 打造完整deep research能力",
     img: `${P2}/screenshot-deep-search.jpg`,
     tags: ["思考过程展示", "二次编辑", "详情展示"],
+    audience: "研究 / 复杂任务",
+    interactionTitle: "深度搜索：多轮规划与纠偏",
+    detailRows: [
+      ["A", "触发条件", "面对复杂问题，用户开启深度搜索并补充目标与约束。"],
+      ["B", "系统响应", "自动拆解子问题，多轮检索、交叉验证并动态修正计划。"],
+      ["C", "交付结果", "沉淀完整研究结论与证据链，支持回看过程和二次编辑。"],
+    ],
+    principle: "把长任务拆成可理解、可检查的步骤，降低等待中的不确定感。",
     markmap: false, podcast: false, ppt: false, imgFit: true,
   },
   {
@@ -32,6 +48,14 @@ const ALL_CARDS = [
     desc: "梳理回答的结果框架, 支持多格式下载",
     img: "",
     tags: [],
+    audience: "整理 / 结构化表达",
+    interactionTitle: "思维导图：把答案变成结构",
+    detailRows: [
+      ["A", "触发条件", "在搜索结果中切换思维导图，或直接输入需要梳理的主题。"],
+      ["B", "系统响应", "提取主题层级、核心观点与关联关系，生成可缩放导图。"],
+      ["C", "交付结果", "支持节点浏览、继续扩写及多格式下载，便于复用与分享。"],
+    ],
+    principle: "不重复答案，而是重新组织信息，让复杂内容可以被快速扫描。",
     markmap: true, podcast: false, ppt: false, imgFit: false,
   },
   {
@@ -40,6 +64,14 @@ const ALL_CARDS = [
     desc: "gpt编排脚本, 火山音色, 待调优工程链路",
     img: "",
     tags: [],
+    audience: "收听 / 碎片场景",
+    interactionTitle: "AI 播客：从文本到可听内容",
+    detailRows: [
+      ["A", "触发条件", "选择回答或资料生成播客，并设定音色、时长与表达风格。"],
+      ["B", "系统响应", "重组口语化脚本、分配角色并合成自然连续的语音内容。"],
+      ["C", "交付结果", "生成可试听、续播和下载的音频，保留原文与来源关联。"],
+    ],
+    principle: "为内容增加新的消费方式，而不是把书面文本机械地朗读出来。",
     markmap: false, podcast: true, ppt: false, imgFit: false,
   },
   {
@@ -48,6 +80,14 @@ const ALL_CARDS = [
     desc: "自动化大纲生成及模板选择, 支持生成导出",
     img: `${P2}/card-ppt-ui.webp`,
     tags: [],
+    audience: "演示 / 内容交付",
+    interactionTitle: "AI PPT：从大纲到可交付演示",
+    detailRows: [
+      ["A", "触发条件", "选择研究结果，补充受众、页数、比例与演示目标。"],
+      ["B", "系统响应", "生成叙事大纲，匹配模板并逐页组织图文信息层级。"],
+      ["C", "交付结果", "支持预览、修改与导出，让结果直接进入汇报场景。"],
+    ],
+    principle: "先建立叙事逻辑，再生成页面，避免演示文稿只是内容的简单堆叠。",
     markmap: false, podcast: false, ppt: true, imgFit: false,
   },
   {
@@ -57,6 +97,14 @@ const ALL_CARDS = [
     img: `${P2}/card-formatting-long.png`,
     img2: `${P2}/card-formatting-right.png`,
     tags: [],
+    audience: "发布 / 图文表达",
+    interactionTitle: "图片排版：一键适配发布场景",
+    detailRows: [
+      ["A", "触发条件", "选择文本内容和目标渠道，指定画布比例与视觉模板。"],
+      ["B", "系统响应", "自动拆分信息、匹配图文层级，并进行版式与样式优化。"],
+      ["C", "交付结果", "生成适合不同渠道的成套图片，可继续调整并批量导出。"],
+    ],
+    principle: "把信息结构转换成视觉结构，确保换一种媒介仍然清楚易读。",
     markmap: false, podcast: false, ppt: false, imgFit: true,
   },
 ];
@@ -184,35 +232,12 @@ export default function SlidePage2() {
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute" style={{ top: 0, left: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
         <div className="absolute" style={{ top: 0, right: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" className="absolute inset-0 h-full w-full" viewBox="0 0 1443 1081.5" preserveAspectRatio="none">
-          <path d="M62,1081.5L61,1081.5L61,61.5L62,61.5L62,1081.5ZM461,61.5L462,61.5L462,1081.5L461,1081.5L461,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04"/>
-          <path d="M522,1081.5L521,1081.5L521,61.5L522,61.5L522,1081.5ZM921,61.5L922,61.5L922,1081.5L921,1081.5L921,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04"/>
-          <path d="M982,1081.5L981,1081.5L981,61.5L982,61.5L982,1081.5ZM1381,61.5L1382,61.5L1382,1081.5L1381,1081.5L1381,61.5Z" fillRule="evenodd" fill="#FFFFFF" fillOpacity="0.04"/>
-          <rect x="0.75" y="0.75" width="1441.5" height="61.5" rx="0" fillOpacity="0" strokeOpacity="0.08" stroke="#FFFFFF" fill="none" strokeWidth="1.5"/>
-        </svg>
-      </div>
-
-      {/* ── Header ───────────────────────────────────────────────── */}
-      <div className="absolute z-10" style={{ left:"4.17%", top:"1.48%", width:"91.67%", height:"3.33%" }}>
-        <img loading="eager" decoding="async" src={"/images/logo-new.webp"} alt="" className="absolute left-0 top-0 h-full object-contain" style={{ width:"5.97%" }} />
-        <div className="absolute right-0 top-0 flex h-full items-center gap-[calc(0.7*var(--u))]">
-          <p style={{ color:"rgba(255,255,255,0.38)", fontSize:"20px", fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", textAlign:"right", lineHeight:1.4, margin:0, whiteSpace:"nowrap" }}>
-            专业研究场景1: AI搜 / 02
-          </p>
-        </div>
-        <div className="absolute" style={{ left:"7.5%", top:"-2.6%" }}>
-          <div style={{ border:"1px solid rgba(255,255,255,0.22)", padding:"calc(0.3*var(--u)) calc(0.8*var(--u))", transform:"rotate(-1deg)" }}>
-            <p style={{ fontFamily:"'LogoSC Unbounded Sans', sans-serif", fontSize:"clamp(10px,calc(1.1*var(--u)),16px)", lineHeight:1.4, margin:0, color:"rgba(255,255,255,0.55)" }}>
-              2024 / 2025
-            </p>
-          </div>
-        </div>
       </div>
 
       {/* ── 标题行 ───────────────────────────────────────────────── */}
       <div className="absolute z-10 flex items-baseline gap-[calc(0.83*var(--u))]" style={{ left:"4.17%", top:"9.26%" }}>
         <span>
-          <span style={{ backgroundImage:"linear-gradient(90deg,#5C5CFF 0%,#AE5CFF 100%)", backgroundClip:"text", WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent", fontSize:"clamp(20px,calc(2.5*var(--u)),36px)", fontFamily:"'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", lineHeight:"52px", letterSpacing:"1.08px" }}>AI搜</span>
+          <span style={{ color:"#ef3b46", fontSize:"clamp(20px,calc(2.5*var(--u)),36px)", fontFamily:"'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", lineHeight:"52px", letterSpacing:"1.08px" }}>AI搜</span>
           <span style={{ color:"#FFFFFF", fontSize:"clamp(20px,calc(2.5*var(--u)),36px)", fontFamily:"'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif", lineHeight:"52px", letterSpacing:"1.08px" }}>模式</span>
         </span>
       </div>
@@ -279,13 +304,13 @@ export default function SlidePage2() {
                     justifyContent: "center",
                     width: "clamp(16px,calc(1.39*var(--u)),20px)",
                     height: "clamp(16px,calc(1.39*var(--u)),20px)",
-                    background: isActive ? "#D1FB39" : "rgba(255,255,255,0.12)",
+                    background: isActive ? "#ef3b46" : "rgba(255,255,255,0.12)",
                     borderRadius: "50%",
                     flexShrink: 0,
                     transition: "background 0.18s ease",
                   }}
                 >
-                  <span style={{ color: isActive ? "#1F1F1F" : "rgba(255,255,255,0.5)", fontSize:"clamp(6px,calc(0.63*var(--u)),9px)", fontFamily:"'LogoSC Unbounded Sans', sans-serif", lineHeight:1 }}>
+                  <span style={{ color: isActive ? "#FFFFFF" : "rgba(255,255,255,0.5)", fontSize:"clamp(6px,calc(0.63*var(--u)),9px)", fontFamily:"'LogoSC Unbounded Sans', sans-serif", lineHeight:1 }}>
                     {card.num}
                   </span>
                 </div>
@@ -373,53 +398,69 @@ export default function SlidePage2() {
             )}
           </div>
 
-          {/* 右：信息面板 */}
-          <div style={{ flex:1, display:"flex", flexDirection:"column", justifyContent:"center", padding:"clamp(16px,calc(2.22*var(--u)),32px) clamp(16px,calc(2.22*var(--u)),32px)", gap:"calc(0.83*var(--u))" }}>
-
-            {/* 编号 + 标题 */}
-            <div style={{ display:"flex", alignItems:"center", gap:"calc(0.56*var(--u))" }}>
-              <div style={{ width:"clamp(20px,calc(2*var(--u)),28px)", height:"clamp(20px,calc(2*var(--u)),28px)", background:"#D1FB39", borderRadius:"66.67px", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0 }}>
-                <span style={{ color:"#1F1F1F", fontSize:"clamp(7px,calc(0.8*var(--u)),11px)", fontFamily:"'LogoSC Unbounded Sans', sans-serif", lineHeight:1 }}>
-                  {active.num}
-                </span>
-              </div>
-              <span style={{ color:"rgba(255,255,255,0.92)", fontSize:"clamp(13px,calc(1.39*var(--u)),20px)", fontFamily:"'Alimama ShuHeiTi', sans-serif", fontWeight:700, lineHeight:1.3 }}>
-                {active.title}
+          {/* 右：交互逻辑说明 */}
+          <div
+            style={{
+              flex: 1,
+              minWidth: 0,
+              display: "flex",
+              flexDirection: "column",
+              padding: "clamp(14px,calc(1.67*var(--u)),24px)",
+              background: "linear-gradient(180deg, rgba(62,8,8,0.22) 0%, rgba(8,8,8,0.12) 58%, rgba(8,8,8,0.5) 100%)",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12 }}>
+              <span style={{ color: "#ff4747", fontSize: "clamp(8px,calc(0.76*var(--u)),11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 700, lineHeight: 1.2 }}>
+                INTERACTION {String(activeIdx + 1).padStart(2, "0")}
+              </span>
+              <span style={{ padding: "calc(0.28*var(--u)) calc(0.69*var(--u))", border: "1px solid rgba(255,255,255,0.14)", borderRadius: 999, color: "rgba(255,255,255,0.42)", fontSize: "clamp(8px,calc(0.76*var(--u)),11px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.2, whiteSpace: "nowrap" }}>
+                {active.audience}
               </span>
             </div>
 
-            {/* 描述 */}
-            <p style={{ color:"rgba(255,255,255,0.5)", fontSize:"clamp(10px,calc(1.04*var(--u)),15px)", fontFamily:"'PingFang SC', sans-serif", lineHeight:1.7, margin:0 }}>
-              {active.desc}
-            </p>
+            <h2 style={{ color: "#FFFFFF", fontSize: "clamp(17px,calc(1.67*var(--u)),24px)", fontFamily: "'PingFang SC', 'Microsoft YaHei', sans-serif", fontWeight: 700, lineHeight: 1.35, letterSpacing: 0, margin: "calc(0.83*var(--u)) 0 0" }}>
+              {active.interactionTitle}
+            </h2>
 
-            {/* Tags（仅当有标签时显示）*/}
-            {active.tags.length > 0 && (
-              <div style={{ display:"flex", flexWrap:"wrap", gap:"calc(0.42*var(--u))", marginTop:"calc(0.28*var(--u))" }}>
-                {active.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      padding:"calc(0.28*var(--u)) calc(0.69*var(--u))",
-                      background:"rgba(31,31,31,1)",
-                      border:"1px solid rgba(255,255,255,0.18)",
-                      borderRadius:"calc(2.78*var(--u))",
-                      color:"rgba(255,255,255,0.65)",
-                      fontSize:"clamp(9px,calc(0.9*var(--u)),13px)",
-                      fontFamily:"'Alimama ShuHeiTi', sans-serif",
-                      fontWeight:700,
-                      lineHeight:1,
-                      whiteSpace:"nowrap",
-                    }}
-                  >
-                    {tag}
+            <div style={{ height: 1, background: "rgba(255,255,255,0.12)", margin: "calc(1.11*var(--u)) 0 calc(0.42*var(--u))" }} />
+
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              {active.detailRows.map(([letter, label, content]) => (
+                <div
+                  key={letter}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "clamp(14px,calc(1.25*var(--u)),18px) clamp(52px,calc(5*var(--u)),72px) minmax(0,1fr)",
+                    alignItems: "start",
+                    columnGap: "calc(0.56*var(--u))",
+                    padding: "calc(0.76*var(--u)) 0",
+                    borderBottom: "1px solid rgba(255,255,255,0.06)",
+                  }}
+                >
+                  <span style={{ color: "#ff4747", fontSize: "clamp(8px,calc(0.76*var(--u)),11px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 700, lineHeight: 1.65 }}>
+                    {letter}
                   </span>
-                ))}
-              </div>
-            )}
+                  <span style={{ color: "rgba(255,255,255,0.9)", fontSize: "clamp(10px,calc(0.97*var(--u)),14px)", fontFamily: "'PingFang SC', sans-serif", fontWeight: 600, lineHeight: 1.65 }}>
+                    {label}
+                  </span>
+                  <span style={{ color: "rgba(255,255,255,0.66)", fontSize: "clamp(10px,calc(0.9*var(--u)),13px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.65 }}>
+                    {content}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ marginTop: "auto", padding: "calc(0.83*var(--u)) calc(0.97*var(--u))", borderLeft: "2px solid #e92f2f", background: "linear-gradient(90deg, rgba(125,17,17,0.28), rgba(125,17,17,0.04))" }}>
+              <span style={{ display: "block", color: "rgba(255,255,255,0.35)", fontSize: "clamp(7px,calc(0.69*var(--u)),10px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", fontWeight: 700, lineHeight: 1.2, marginBottom: "calc(0.35*var(--u))" }}>
+                DESIGN PRINCIPLE
+              </span>
+              <p style={{ color: "rgba(255,255,255,0.68)", fontSize: "clamp(9px,calc(0.9*var(--u)),13px)", fontFamily: "'PingFang SC', sans-serif", lineHeight: 1.55, margin: 0 }}>
+                {active.principle}
+              </p>
+            </div>
 
             {/* 分页指示点 */}
-            <div style={{ display:"flex", gap:6, marginTop:"auto", paddingTop:8 }}>
+            <div style={{ display:"flex", gap:6, paddingTop:"calc(0.76*var(--u))" }}>
               {ALL_CARDS.map((_, i) => (
                 <button
                   key={i}
@@ -429,7 +470,7 @@ export default function SlidePage2() {
                     width: i === activeIdx ? 20 : 6,
                     height: 6,
                     borderRadius: 3,
-                    background: i === activeIdx ? "#D1FB39" : "rgba(255,255,255,0.18)",
+                    background: i === activeIdx ? "#ef3b46" : "rgba(255,255,255,0.18)",
                     border: "none",
                     cursor: "pointer",
                     padding: 0,
