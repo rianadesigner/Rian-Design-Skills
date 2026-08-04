@@ -25,7 +25,9 @@ jobs:
 
       - name: Install dependencies
         working-directory: A-next-app
-        run: npm ci --legacy-peer-deps --prefer-offline --no-audit
+        env:
+          npm_config_registry: https://registry.npmjs.org
+        run: npm ci --legacy-peer-deps --prefer-offline --no-audit --no-fund
 
       - name: Build Next.js
         working-directory: A-next-app
