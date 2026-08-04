@@ -15,15 +15,19 @@ import {
   useReducedMotion,
   type PanInfo,
 } from "motion/react"
-import { ObservatoryCover } from "../observatory-cover"
-import SlideContent0 from "./slide-content0"
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design"
 import { computeSlideFitScale, measureFitStage } from "./slide-fit"
 import { preloadPage0dImages } from "./slide-page0d-assets"
 import { predecodeSlideImages } from "./slide-image-preload"
 import { SlideCornerMarks } from "./slide-corner-marks"
 
-// 首屏只加载 cover + content0，其余全部懒加载以缩减初始 bundle
+// 每个数字路由只加载当前幻灯片，其他页面按需获取以缩减初始 bundle。
+const ObservatoryCover = lazy(() =>
+  import("../observatory-cover").then((module) => ({
+    default: module.ObservatoryCover,
+  }))
+)
+const SlideContent0 = lazy(() => import("./slide-content0"))
 const SlidePage0a = lazy(() => import("./slide-page0a"))
 const SlidePage0b = lazy(() => import("./slide-page0b"))
 const SlidePage4b = lazy(() => import("./slide-page4b"))
@@ -960,8 +964,10 @@ export default function SlideContainer({
 
   // ——— 轻量预取策略：只预热当前附近页面，避免外部冷启动时解析完整作品集 ———
   useEffect(() => {
-    // allImports[i] 对应 allSlideIds[i+2]（跳过 cover 和 content0）
+    // 与 allSlideIds 一一对应，避免隐藏页面导致可见序号与资源序号错位。
     const allImports: Array<() => Promise<unknown>> = [
+      () => import("../observatory-cover"),
+      () => import("./slide-content0"),
       () => import("./slide-page0a"),
       () => import("./slide-page0b"),
       () => import("./slide-page4b"),
@@ -1014,10 +1020,10 @@ export default function SlideContainer({
       () => import("./slide-other-search-projects"),
     ]
 
-    // content0 中点击可跳转的幻灯片 slideIndex（相对 allSlideIds），转换到 allImports 下标
-    const JUMP_TARGETS = [2, 25, 37, 48]
-      .map((idx) => idx - 2)
-      .filter((i) => i >= 0 && i < allImports.length)
+    // content0 中项目卡片可跳转的逻辑页，进入目录后延迟预热。
+    const JUMP_TARGETS = [2, 10, 25, 37, 48].filter(
+      (i) => i >= 0 && i < allImports.length
+    )
 
     const loaded = prefetchedImportsRef.current
     let cancelled = false
@@ -1064,10 +1070,12 @@ export default function SlideContainer({
     }
 
     // 只预取当前前后 1 页；用户确实进入封面/content0 后，再延后预热可点击跳转目标。
-    const offset = current - 2
-    const near = Array.from(new Set([offset - 1, offset, offset + 1])).filter(
-      (i) => i >= 0 && i < allImports.length
-    )
+    const near = Array.from(new Set([current - 1, current, current + 1]))
+      .filter((visibleIndex) =>
+        visibleIndex >= 0 && visibleIndex < slideIds.length
+      )
+      .map((visibleIndex) => allSlideIds.indexOf(slideIds[visibleIndex]))
+      .filter((index) => index >= 0 && index < allImports.length)
     runSequential(near, 0, 900)
 
     if (current === 1) {

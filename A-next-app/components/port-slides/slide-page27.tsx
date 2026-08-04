@@ -286,7 +286,7 @@ export default function SlidePage27() {
           style={{ left: "17%", top: "1%", height: "97%", transform: "rotate(-1deg)", zIndex: 2 }}
         />
         <PhoneFrame
-          src={`${P27}/delta-material-v2.png`}
+          src={`${P27}/delta-material-v2.webp`}
           label="Delta AI 视频素材编辑界面"
           style={{ right: "17%", top: "8%", height: "90%", transform: "rotate(1deg)", zIndex: 3 }}
         />

@@ -25,17 +25,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: A-next-app
-        run: |
-          rm -rf node_modules package-lock.json
-          npm install --legacy-peer-deps
-          npm install next@16.1.7 react@19.2.4 react-dom@19.2.4 --legacy-peer-deps
-          ls -la node_modules/.bin | grep next || true
-          ./node_modules/.bin/next --version
+        run: npm ci --legacy-peer-deps --prefer-offline --no-audit
 
       - name: Build Next.js
         working-directory: A-next-app
-        run: |
-          ./node_modules/.bin/next build
+        run: npm run build
 
       - name: Deploy via SSH
         run: |
@@ -59,5 +53,37 @@ jobs:
             ./A-next-app/out/ \
             ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/var/www/rian-app/
 
-          echo "Reloading nginx..."
-          ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "nginx -t && systemctl reload nginx && echo '部署完成'"
+          echo "Installing portfolio cache policy..."
+          scp -i ~/.ssh/deploy_key \
+            ./A-next-app/deploy/nginx-performance.conf \
+            ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:/tmp/rian-app-performance.conf
+
+          echo "Validating and reloading nginx..."
+          ssh -i ~/.ssh/deploy_key ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} '
+            set -eu
+            target=/etc/nginx/conf.d/rian-app-performance.conf
+            backup=${target}.deployment-backup
+            had_existing=0
+
+            if [ -f "$target" ]; then
+              cp "$target" "$backup"
+              had_existing=1
+            fi
+
+            install -m 0644 /tmp/rian-app-performance.conf "$target"
+
+            if ! nginx -t; then
+              if [ "$had_existing" -eq 1 ]; then
+                mv "$backup" "$target"
+              else
+                rm -f "$target"
+              fi
+              rm -f /tmp/rian-app-performance.conf
+              nginx -t
+              exit 1
+            fi
+
+            rm -f "$backup" /tmp/rian-app-performance.conf
+            systemctl reload nginx
+            echo "部署完成"
+          '
