@@ -83,7 +83,7 @@ const SlidePage29 = lazy(() => import("./slide-page29"))
 const SlidePage30 = lazy(() => import("./slide-page30"))
 const SlidePage31 = lazy(() => import("./slide-page31"))
 const SlidePage32 = lazy(() => import("./slide-page32"))
-const SlideVideoFuture = lazy(() => import("./slide-video-future"))
+const SlideVideoFuture = lazy(() => import("./slide-video-workflow"))
 
 /** 暂时隐藏的幻灯片（保留源码，取消 id 即可恢复） */
 const HIDDEN_SLIDE_IDS = new Set<string>([
@@ -97,6 +97,7 @@ const HIDDEN_SLIDE_IDS = new Set<string>([
   "page20",
   "video-entry-experience",
   "video-async-loop",
+  "page31",
   "page9",
   "page29",
   "page30",
@@ -988,7 +989,7 @@ export default function SlideContainer({
       () => import("./slide-page28"),
       () => import("./slide-page29"),
       () => import("./slide-page30"),
-      () => import("./slide-video-future"),
+      () => import("./slide-video-workflow"),
       () => import("./slide-page32"),
       () => import("./slide-page0"),
       () => import("./slide-page1"),

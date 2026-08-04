@@ -11,10 +11,12 @@ const removalCards = [
 export function RemovalCardStrip({
   top = "73.7%",
   activeIndex = 1,
+  animated = true,
   style,
 }: {
   top?: string
   activeIndex?: number
+  animated?: boolean
   style?: CSSProperties
 }) {
   return (
@@ -52,10 +54,12 @@ export function RemovalCardStrip({
               index === activeIndex
                 ? "0 0 0 2px rgba(8,8,8,0.72), 0 8px 18px rgba(0,0,0,0.5), 0 0 15px rgba(225,55,68,0.2)"
                 : "0 6px 14px rgba(0,0,0,0.44)",
-            opacity: 0,
-            animation: `removal-card-fade-in 520ms cubic-bezier(.2,.75,.25,1) ${
-              120 + index * 90
-            }ms forwards`,
+            opacity: animated ? 0 : 1,
+            animation: animated
+              ? `removal-card-fade-in 520ms cubic-bezier(.2,.75,.25,1) ${
+                  120 + index * 90
+                }ms forwards`
+              : "none",
           }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}

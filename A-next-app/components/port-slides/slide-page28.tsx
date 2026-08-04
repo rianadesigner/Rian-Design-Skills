@@ -71,7 +71,7 @@ function FlowPhone({
         draggable={false}
         className="h-full w-full object-cover"
       />
-      {removalCard ? <RemovalCardStrip activeIndex={1} /> : null}
+      {removalCard ? <RemovalCardStrip activeIndex={1} animated={false} /> : null}
     </div>
   );
 }
