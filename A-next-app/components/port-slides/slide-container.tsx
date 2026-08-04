@@ -20,6 +20,7 @@ import { computeSlideFitScale, measureFitStage } from "./slide-fit"
 import { preloadPage0dImages } from "./slide-page0d-assets"
 import { predecodeSlideImages } from "./slide-image-preload"
 import { SlideCornerMarks } from "./slide-corner-marks"
+import { allSlideIds, HIDDEN_SLIDE_IDS } from "./slide-registry"
 
 // 每个数字路由只加载当前幻灯片，其他页面按需获取以缩减初始 bundle。
 const ObservatoryCover = lazy(() =>
@@ -85,24 +86,6 @@ const SlidePage31 = lazy(() => import("./slide-page31"))
 const SlidePage32 = lazy(() => import("./slide-page32"))
 const SlideVideoFuture = lazy(() => import("./slide-video-workflow"))
 
-/** 暂时隐藏的幻灯片（保留源码，取消 id 即可恢复） */
-const HIDDEN_SLIDE_IDS = new Set<string>([
-  "page0",
-  "page14",
-  "page15",
-  "page16",
-  "page17",
-  "page18",
-  "page19",
-  "page20",
-  "video-entry-experience",
-  "video-async-loop",
-  "page31",
-  "page9",
-  "page29",
-  "page30",
-])
-
 const allSlideComponents = [
   ObservatoryCover,
   SlideContent0,
@@ -157,61 +140,6 @@ const allSlideComponents = [
   SlideOtherAgentProjects,
   SlideOtherSearchProjects,
 ]
-const allSlideIds = [
-  "cover",
-  "content0",
-  "page0a",
-  "page0b",
-  "page4b",
-  "page0c",
-  "page0d",
-  "page0e",
-  "page0f",
-  "page0g",
-  "page27",
-  "video-user-journey",
-  "video-recommendation-upload",
-  "video-concurrent-tasks",
-  "video-context-system",
-  "video-template-remix",
-  "video-entry-experience",
-  "video-async-loop",
-  "page31",
-  "page28",
-  "page29",
-  "page30",
-  "video-future",
-  "page32",
-  "page0",
-  "page1",
-  "page2",
-  "page3",
-  "page4",
-  "page5",
-  "page6",
-  "page7",
-  "page8",
-  "page9",
-  "page10",
-  "page11",
-  "page12",
-  "page13",
-  "ai-platform-overview",
-  "page14",
-  "page15",
-  "page16",
-  "page17",
-  "page18",
-  "page19",
-  "page20",
-  "page21",
-  "page22",
-  "if-studio",
-  "other-creative-projects",
-  "other-agent-projects",
-  "other-search-projects",
-]
-
 /** 懒加载 fallback：与幻灯片背景色一致的纯黑占位，避免白闪 */
 function SlideFallback() {
   return (
