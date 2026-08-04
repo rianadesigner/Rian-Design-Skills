@@ -18,7 +18,10 @@ import {
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design"
 import { computeSlideFitScale, measureFitStage } from "./slide-fit"
 import { preloadPage0dImages } from "./slide-page0d-assets"
-import { predecodeSlideImages } from "./slide-image-preload"
+import {
+  getSlidePreloadPolicy,
+  predecodeSlideImages,
+} from "./slide-image-preload"
 import { SlideCornerMarks } from "./slide-corner-marks"
 import { allSlideIds, HIDDEN_SLIDE_IDS } from "./slide-registry"
 
@@ -849,20 +852,22 @@ export default function SlideContainer({
   }, [current])
 
   useEffect(() => {
-    const adjacent = [current - 1, current + 1]
+    const adjacent = [current + 1, current - 1]
       .filter((index) => index >= 0 && index < slideIds.length)
       .map((index) => slideIds[index])
 
-    const decode = () => {
-      void Promise.all(adjacent.map(predecodeSlideImages))
+    const decode = async () => {
+      for (const slideId of adjacent) {
+        await predecodeSlideImages(slideId)
+      }
     }
 
     if (typeof requestIdleCallback !== "undefined") {
-      const idleId = requestIdleCallback(decode, { timeout: 700 })
+      const idleId = requestIdleCallback(() => void decode(), { timeout: 1200 })
       return () => cancelIdleCallback(idleId)
     }
 
-    const timer = window.setTimeout(decode, 80)
+    const timer = window.setTimeout(() => void decode(), 160)
     return () => window.clearTimeout(timer)
   }, [current])
 
@@ -893,6 +898,8 @@ export default function SlideContainer({
 
   // ——— 轻量预取策略：只预热当前附近页面，避免外部冷启动时解析完整作品集 ———
   useEffect(() => {
+    const preloadPolicy = getSlidePreloadPolicy()
+
     // 与 allSlideIds 一一对应，避免隐藏页面导致可见序号与资源序号错位。
     const allImports: Array<() => Promise<unknown>> = [
       () => import("../observatory-cover"),
@@ -999,7 +1006,10 @@ export default function SlideContainer({
     }
 
     // 只预取当前前后 1 页；用户确实进入封面/content0 后，再延后预热可点击跳转目标。
-    const near = Array.from(new Set([current - 1, current, current + 1]))
+    const nearVisibleIndices = preloadPolicy.assetLimit === 0
+      ? [current + 1]
+      : [current + 1, current - 1]
+    const near = Array.from(new Set(nearVisibleIndices))
       .filter((visibleIndex) =>
         visibleIndex >= 0 && visibleIndex < slideIds.length
       )
@@ -1007,7 +1017,7 @@ export default function SlideContainer({
       .filter((index) => index >= 0 && index < allImports.length)
     runSequential(near, 0, 900)
 
-    if (current === 1) {
+    if (current === 1 && preloadPolicy.allowJumpPrefetch) {
       runSequential(JUMP_TARGETS, 2400, 1200)
     }
 

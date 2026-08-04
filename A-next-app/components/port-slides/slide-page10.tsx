@@ -211,10 +211,10 @@ export default function SlidePage10() {
             boxShadow: "0px 2px 4px rgba(25,33,61,0.3)",
           }}
         >
-          <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+          <p style={{ color: "#000000", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
             02
           </p>
-          <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#000000", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             用户&quot;看得懂&quot;的内容解释
           </span>
         </div>
@@ -358,10 +358,10 @@ export default function SlidePage10() {
             boxShadow: "0px 2px 4px rgba(25,33,61,0.3)",
           }}
         >
-          <p style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
+          <p style={{ color: "#000000", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'LogoSC Unbounded Sans', sans-serif", textAlign: "center", lineHeight: 1, margin: 0 }}>
             05
           </p>
-          <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
+          <span style={{ color: "#000000", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1, whiteSpace: "nowrap" }}>
             用户&quot;敢信赖&quot;的信任建设
           </span>
         </div>
