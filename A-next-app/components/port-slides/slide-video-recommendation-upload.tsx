@@ -137,7 +137,7 @@ export default function SlideVideoRecommendationUpload() {
           left: "4.2%",
           top: "21.5%",
           width: "91.6%",
-          height: "67.5%",
+          height: "70%",
           gridTemplateColumns: "24% 76%",
           borderTop: "1px solid rgba(255,255,255,.13)",
           borderBottom: "1px solid rgba(255,255,255,.13)",
