@@ -260,7 +260,7 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/page30/progress.webp",
     "/images/page27/result.webp",
   ],
-  "video-future": ["/images/video/ifs-workflow-canvas.jpeg"],
+  "video-future": ["/images/video/ifs-workflow-canvas.webp"],
   page28: [
     "/images/page27/remix.webp",
     "/images/page27/result.webp",
