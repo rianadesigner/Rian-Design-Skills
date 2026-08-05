@@ -92,7 +92,7 @@ function WorkflowCanvasPreview() {
       }}
     >
       <img
-        src="/images/video/ifs-workflow-canvas.jpeg"
+        src="/images/video/ifs-workflow-canvas.webp"
         alt="绘剪模板工作流画布：商品素材经过多分支图片生成、视频生成与模板合成后形成可复用链路"
         draggable={false}
         loading="eager"

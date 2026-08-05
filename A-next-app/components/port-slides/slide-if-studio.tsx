@@ -10,7 +10,7 @@ const panels = [
     index: "01",
     title: "首页",
     detail: "任务输入 · 专家 Agent · 灵感发现",
-    image: `${P_IF_STUDIO}/home-full.webp`,
+    image: `${P_IF_STUDIO}/home-full-hd.webp`,
     accent: "#ff694a",
     position: "center top",
   },
