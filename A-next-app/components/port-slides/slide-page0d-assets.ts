@@ -13,6 +13,7 @@ export const PAGE0D_IMAGES = [
   `${PAGE0D_ASSET_BASE}/feishu.png`,
   `${PAGE0D_ASSET_BASE}/province.png`,
   `${PAGE0D_ASSET_BASE}/province-total.png`,
+  `${PAGE0D_ASSET_BASE}/knowledge-base-full.png`,
 ] as const;
 
 export function preloadPage0dImages() {
