@@ -26,32 +26,25 @@ const PANEL_H = SLIDE_H - PANEL_T; // 633 — remaining height
 // Scale SlidePage0 (1440×900) → fit panel width (1200px)
 const SCALE = PANEL_W / INNER_W; // ≈ 0.8333
 
-const VERSION_LABEL_STYLE: React.CSSProperties = {
-  position: "absolute",
-  left: 8,
-  top: 10,
-  zIndex: 10,
-  background: "#202124",
-  borderRadius: 6,
-  padding: "4px 12px",
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-  filter: "drop-shadow(0 0 6px rgba(0,0,0,0.35))",
-};
-
-const VERSION_BADGE_STYLE: React.CSSProperties = {
-  background: "#34363a",
-  borderRadius: 4,
-  padding: "2px 4px",
-  flexShrink: 0,
-};
+const VERSION_META = [
+  {
+    badge: "BEFORE",
+    version: "V 1.0",
+    description: "旧版界面 · 心流 AI 搜索",
+  },
+  {
+    badge: "NEW",
+    version: "V 2.0",
+    description: "全新界面 · AI 工作台",
+  },
+] as const;
 
 // Snap threshold for manual drag (px)
 const SNAP_THRESHOLD = 60;
 
 export default function SlidePage0b() {
   const [active, setActive] = useState(0); // 0 = V1.0, 1 = V2.0
+  const activeVersion = VERSION_META[active];
 
   // Auto-advance to V2.0 after 1 second
   useEffect(() => {
@@ -123,7 +116,7 @@ export default function SlidePage0b() {
           fontFamily: "'标小智无界黑', sans-serif", fontWeight: 400,
           fontSize: 44, lineHeight: "47.25px", color: "#fff",
           letterSpacing: "1.5px", whiteSpace: "nowrap",
-        }}>心流2.0升级：LLM Wiki</p>
+        }}>心流2.0升级： LLM Wiki</p>
 
         <div style={{
           fontFamily: "'PingFang SC', sans-serif", fontWeight: 400,
@@ -179,26 +172,6 @@ export default function SlidePage0b() {
                 pointerEvents: "none",
               }}
             />
-            {/* BEFORE / V1.0 label */}
-            <div style={VERSION_LABEL_STYLE}>
-              <div style={VERSION_BADGE_STYLE}>
-                <span style={{ fontFamily: "Impact", fontSize: 8, color: "#fff", lineHeight: "10px", display: "block" }}>BEFORE</span>
-              </div>
-              <span style={{ fontFamily: "Impact", fontSize: 20, color: "#e0e7ff" }}>V 1.0</span>
-              <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "#ffffff", whiteSpace: "nowrap" }}>
-                旧版界面 · 心流 AI 搜索
-              </span>
-            </div>
-            {/* 向下箭头提示 */}
-            <div style={{
-              position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)",
-              display: "flex", flexDirection: "column", alignItems: "center", gap: 4, zIndex: 10,
-            }}>
-              <span style={{ fontFamily: "'PingFang SC'", fontSize: 9, color: "rgba(255,255,255,0.35)", letterSpacing: "1px" }}>上滑查看 V 2.0</span>
-              <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
-                <path d="M1 1L8 8L15 1" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
           </div>
 
           {/* ── Panel 1: V2.0 新版 LandingView ── */}
@@ -218,50 +191,94 @@ export default function SlidePage0b() {
             }}>
               <SlidePage0 initialView="landing" />
             </div>
-            {/* NEW / V2.0 label */}
-            <div style={VERSION_LABEL_STYLE}>
-              <div style={VERSION_BADGE_STYLE}>
-                <span style={{ fontFamily: "Impact", fontSize: 8, color: "#fff", lineHeight: "10px", display: "block" }}>NEW</span>
-              </div>
-              <span style={{ fontFamily: "Impact", fontSize: 20, color: "#e0e7ff" }}>V 2.0</span>
-              <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "#ffffff", whiteSpace: "nowrap" }}>
-                全新界面 · AI 工作台
-              </span>
-            </div>
           </div>
         </motion.div>
       </div>
 
-      {/* ── 轮播指示点 ── */}
+      {/* ── 版本标签 + 轮播切换 ── */}
       <div style={{
         position: "absolute",
         left: PANEL_L,
-        top: PANEL_T + PANEL_H - 30,
+        bottom: 16,
         width: PANEL_W,
         display: "flex",
         justifyContent: "center",
-        gap: 7,
         zIndex: 22,
         pointerEvents: "auto",
       }}>
-        {[0, 1].map(i => (
-          <button
-            key={i}
-            onClick={() => setActive(i)}
-            aria-label={i === 0 ? "显示 V1.0" : "显示 V2.0"}
+        <div
+          role="group"
+          aria-label="版本界面切换"
+          style={{
+            minWidth: 310,
+            height: 38,
+            padding: "0 9px 0 8px",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: 9,
+            background: "rgba(24,25,28,0.88)",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.34)",
+            backdropFilter: "blur(14px)",
+          }}
+        >
+          <span style={{
+            padding: "2px 4px",
+            borderRadius: 3,
+            color: "#fff",
+            background: "#3a3c41",
+            fontFamily: "Impact, sans-serif",
+            fontSize: 7,
+            lineHeight: "9px",
+            letterSpacing: "0.2px",
+          }}>
+            {activeVersion.badge}
+          </span>
+          <span
+            aria-live="polite"
             style={{
-              width: i === active ? 18 : 6,
-              height: 6,
-              borderRadius: 3,
-              background: i === active ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.28)",
-              border: "none",
-              cursor: "pointer",
-              padding: 0,
-              transition: "width 0.3s ease, background 0.3s ease",
-              flexShrink: 0,
+              color: "#e7eaff",
+              fontFamily: "Impact, sans-serif",
+              fontSize: 16,
+              whiteSpace: "nowrap",
             }}
-          />
-        ))}
+          >
+            {activeVersion.version}
+          </span>
+          <span style={{
+            color: "rgba(255,255,255,0.78)",
+            fontFamily: "'PingFang SC', sans-serif",
+            fontSize: 9,
+            fontWeight: 600,
+            whiteSpace: "nowrap",
+          }}>
+            {activeVersion.description}
+          </span>
+          <span aria-hidden style={{ width: 1, height: 16, marginLeft: 3, background: "rgba(255,255,255,0.14)" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            {[0, 1].map(i => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setActive(i)}
+                aria-label={i === 0 ? "显示 V1.0" : "显示 V2.0"}
+                aria-pressed={i === active}
+                style={{
+                  width: i === active ? 18 : 6,
+                  height: 6,
+                  borderRadius: 3,
+                  background: i === active ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.28)",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                  transition: "width 0.3s ease, background 0.3s ease",
+                  flexShrink: 0,
+                }}
+              />
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* ── Bottom gradient fade ── */}

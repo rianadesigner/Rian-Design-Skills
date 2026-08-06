@@ -334,8 +334,6 @@ export default function KnowledgeGraphSphere({
     raycaster.params.Points = { threshold: 0.2 }
     const pointer = new THREE.Vector2()
     let pointerDown = { x: 0, y: 0 }
-    let dragging = false
-    let autoRotateResumeAt = 0
 
     const updatePointer = (event: { clientX: number; clientY: number }) => {
       const bounds = renderer.domElement.getBoundingClientRect()
@@ -344,7 +342,6 @@ export default function KnowledgeGraphSphere({
     }
     const onPointerDown = (event: PointerEvent) => {
       pointerDown = { x: event.clientX, y: event.clientY }
-      dragging = true
       renderer.domElement.style.cursor = "grabbing"
     }
     const onPointerMove = (event: PointerEvent) => {
@@ -356,8 +353,6 @@ export default function KnowledgeGraphSphere({
     }
     const onPointerUp = (event: PointerEvent) => {
       renderer.domElement.style.cursor = "grab"
-      dragging = false
-      autoRotateResumeAt = performance.now() + 900
       if (
         Math.hypot(
           event.clientX - pointerDown.x,
@@ -406,9 +401,33 @@ export default function KnowledgeGraphSphere({
     const surfaceNormal = new THREE.Vector3()
     const cameraDirection = new THREE.Vector3()
     const projectedPoint = new THREE.Vector3()
-    let previousElapsed = 0
-    let autoRotation = 0
+    const selectedDirection = new THREE.Vector3()
+    const focusFromQuaternion = new THREE.Quaternion()
+    const focusTargetQuaternion = new THREE.Quaternion()
+    const focusQuaternion = new THREE.Quaternion()
+    const rollQuaternion = new THREE.Quaternion()
+    let focusedSelection = selectedIdRef.current
+    let focusStartedAt = Number.NEGATIVE_INFINITY
     let animationFrame = 0
+
+    const updateFocusTarget = (nodeId: string) => {
+      const position = positionMap.get(nodeId)
+      if (!position) return
+      selectedDirection.copy(position).normalize()
+      cameraDirection.copy(camera.position).sub(controls.target).normalize()
+      focusTargetQuaternion.setFromUnitVectors(
+        selectedDirection,
+        cameraDirection
+      )
+    }
+
+    // Start with the default node facing the camera so its label is centered
+    // from the first visible frame rather than drifting in from the sphere edge.
+    controls.update()
+    updateFocusTarget(focusedSelection)
+    focusFromQuaternion.copy(focusTargetQuaternion)
+    focusQuaternion.copy(focusTargetQuaternion)
+    graph.quaternion.copy(focusTargetQuaternion)
 
     const projectGridPoint = (
       gridIndex: number,
@@ -499,8 +518,6 @@ export default function KnowledgeGraphSphere({
 
     const animate = () => {
       const elapsed = clock.getElapsedTime()
-      const delta = Math.min(0.05, elapsed - previousElapsed)
-      previousElapsed = elapsed
       const globeProgress = reducedMotion
         ? 1
         : easeOutCubic(clamp01(elapsed / 0.78))
@@ -509,23 +526,36 @@ export default function KnowledgeGraphSphere({
       if (highlightedSelection !== selectedIdRef.current)
         rebuildHighlightedGridPaths(selectedIdRef.current, elapsed)
 
-      if (!reducedMotion) {
-        if (!dragging && performance.now() >= autoRotateResumeAt)
-          autoRotation += delta * 0.035
-        graph.rotation.x = -0.08 + Math.sin(elapsed * 0.42) * 0.014
-        graph.rotation.y =
-          -0.19 + easeOutCubic(clamp01(elapsed / 2.4)) * 0.2 + autoRotation
-        graph.rotation.z = 0.025 + Math.sin(elapsed * 0.31) * 0.006
-        graph.scale.set(
-          1 + Math.sin(elapsed * 0.54) * 0.006,
-          1 + Math.cos(elapsed * 0.48) * 0.008,
-          1
-        )
+      controls.update()
+      cameraDirection.copy(camera.position).sub(controls.target).normalize()
+
+      if (focusedSelection !== selectedIdRef.current) {
+        focusFromQuaternion.copy(graph.quaternion)
+        updateFocusTarget(selectedIdRef.current)
+        focusStartedAt = elapsed
+        focusedSelection = selectedIdRef.current
       }
 
-      controls.update()
+      const focusProgress = reducedMotion
+        ? 1
+        : easeOutCubic(clamp01((elapsed - focusStartedAt) / 0.58))
+      focusQuaternion.slerpQuaternions(
+        focusFromQuaternion,
+        focusTargetQuaternion,
+        focusProgress
+      )
+
+      // A tiny roll keeps the globe alive without pulling the selected node
+      // away from the camera axis (and therefore away from the canvas center).
+      const roll = reducedMotion ? 0 : Math.sin(elapsed * 0.31) * 0.006
+      rollQuaternion.setFromAxisAngle(cameraDirection, roll)
+      graph.quaternion.copy(rollQuaternion).multiply(focusQuaternion)
+      const globeScale = reducedMotion
+        ? 1
+        : 1 + Math.sin(elapsed * 0.54) * 0.006
+      graph.scale.setScalar(globeScale)
+
       graph.updateMatrixWorld(true)
-      cameraDirection.copy(camera.position).normalize()
 
       const relatedIds = getRelatedNodeIds(selectedIdRef.current)
       nodeVisuals.forEach(({ mesh, label, delay }, nodeId) => {
