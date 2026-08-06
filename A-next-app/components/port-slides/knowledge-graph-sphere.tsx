@@ -30,6 +30,7 @@ type ScreenBox = ScreenPoint & { width: number; height: number }
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
 const easeOutCubic = (value: number) => 1 - Math.pow(1 - value, 3)
+const GRID_LINE_OPACITY = 0.3
 const pointKey = (point: THREE.Vector3) =>
   `${point.x.toFixed(4)},${point.y.toFixed(4)},${point.z.toFixed(4)}`
 
@@ -137,9 +138,9 @@ export default function KnowledgeGraphSphere({
     const gridGeometry = new THREE.WireframeGeometry(latticeGeometry)
     latticeGeometry.dispose()
     const gridMaterial = new THREE.LineBasicMaterial({
-      color: 0xc4c9d0,
+      color: 0xb0b6bf,
       transparent: true,
-      opacity: reducedMotion ? 0.18 : 0,
+      opacity: reducedMotion ? GRID_LINE_OPACITY : 0,
       depthWrite: false,
       depthTest: false,
     })
@@ -521,7 +522,7 @@ export default function KnowledgeGraphSphere({
       const globeProgress = reducedMotion
         ? 1
         : easeOutCubic(clamp01(elapsed / 0.78))
-      gridMaterial.opacity = 0.18 * globeProgress
+      gridMaterial.opacity = GRID_LINE_OPACITY * globeProgress
 
       if (highlightedSelection !== selectedIdRef.current)
         rebuildHighlightedGridPaths(selectedIdRef.current, elapsed)

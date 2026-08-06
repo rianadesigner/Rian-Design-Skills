@@ -210,12 +210,14 @@ export default function SlidePage0b() {
           role="group"
           aria-label="版本界面切换"
           style={{
-            minWidth: 310,
-            height: 38,
-            padding: "0 9px 0 8px",
+            width: "fit-content",
+            height: 34,
+            padding: "0 7px",
+            boxSizing: "border-box",
             display: "flex",
             alignItems: "center",
-            gap: 8,
+            justifyContent: "center",
+            gap: 6,
             border: "1px solid rgba(255,255,255,0.12)",
             borderRadius: 9,
             background: "rgba(24,25,28,0.88)",
@@ -240,7 +242,7 @@ export default function SlidePage0b() {
             style={{
               color: "#e7eaff",
               fontFamily: "Impact, sans-serif",
-              fontSize: 16,
+              fontSize: 14,
               whiteSpace: "nowrap",
             }}
           >
@@ -249,34 +251,53 @@ export default function SlidePage0b() {
           <span style={{
             color: "rgba(255,255,255,0.78)",
             fontFamily: "'PingFang SC', sans-serif",
-            fontSize: 9,
+            fontSize: 8.5,
             fontWeight: 600,
             whiteSpace: "nowrap",
           }}>
             {activeVersion.description}
           </span>
-          <span aria-hidden style={{ width: 1, height: 16, marginLeft: 3, background: "rgba(255,255,255,0.14)" }} />
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            {[0, 1].map(i => (
-              <button
-                key={i}
-                type="button"
-                onClick={() => setActive(i)}
-                aria-label={i === 0 ? "显示 V1.0" : "显示 V2.0"}
-                aria-pressed={i === active}
-                style={{
-                  width: i === active ? 18 : 6,
-                  height: 6,
-                  borderRadius: 3,
-                  background: i === active ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.28)",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: 0,
-                  transition: "width 0.3s ease, background 0.3s ease",
-                  flexShrink: 0,
-                }}
-              />
-            ))}
+          <span aria-hidden style={{ width: 1, height: 14, marginLeft: 1, background: "rgba(255,255,255,0.14)" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+            {[
+              { direction: -1, label: "显示上一版本" },
+              { direction: 1, label: "显示下一版本" },
+            ].map(({ direction, label }) => {
+              const disabled = direction < 0 ? active === 0 : active === 1;
+              return (
+                <button
+                  key={direction}
+                  type="button"
+                  onClick={() => setActive(active + direction)}
+                  aria-label={label}
+                  disabled={disabled}
+                  style={{
+                    width: 16,
+                    height: 20,
+                    padding: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: disabled ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.9)",
+                    background: "transparent",
+                    border: "none",
+                    cursor: disabled ? "default" : "pointer",
+                    transition: "color 160ms ease",
+                    flexShrink: 0,
+                  }}
+                >
+                  <svg aria-hidden="true" width="8" height="12" viewBox="0 0 8 12" fill="none">
+                    <path
+                      d={direction < 0 ? "M6.5 1.5L2 6L6.5 10.5" : "M1.5 1.5L6 6L1.5 10.5"}
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
