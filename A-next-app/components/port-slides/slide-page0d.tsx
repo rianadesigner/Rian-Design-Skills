@@ -72,6 +72,23 @@ const LIGHT_SPOTLIGHT_TOKENS = {
   "--border": "oklch(0.9 0 0)",
   "--ring": "oklch(0.55 0 0)",
 } as CSSProperties;
+
+export function KnowledgeBaseSpotlight() {
+  return (
+    <div style={{ width: "100%", ...LIGHT_SPOTLIGHT_TOKENS }}>
+      <AppleSpotlight
+        shortcuts={SOURCE_SHORTCUTS}
+        placeholder="输入你的研究内容"
+        viewTabs={[
+          { label: "资料", value: "materials" },
+          { label: "图谱", value: "graph" },
+        ]}
+        defaultView="materials"
+      />
+    </div>
+  );
+}
+
 const PREVIEW_SCREENSHOT_CARDS = [
   { left: 78, top: 72.75 },
   { left: 244.5, top: 72.75 },
@@ -1038,18 +1055,9 @@ export default function SlidePage0d() {
                 zIndex: 4,
                 width: 600,
                 pointerEvents: "auto",
-                ...LIGHT_SPOTLIGHT_TOKENS,
               }}
             >
-              <AppleSpotlight
-                shortcuts={SOURCE_SHORTCUTS}
-                placeholder="输入你的研究内容"
-                viewTabs={[
-                  { label: "资料", value: "materials" },
-                  { label: "图谱", value: "graph" },
-                ]}
-                defaultView="materials"
-              />
+              <KnowledgeBaseSpotlight />
             </div>
 
             {/* Hide the static Figma view switcher; its state now lives inside

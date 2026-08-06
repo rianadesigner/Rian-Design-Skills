@@ -288,7 +288,7 @@ function WikiSidebar() {
   )
 }
 
-export default function SlidePage0e() {
+export default function SlidePage0e({ embedded = false }: { embedded?: boolean } = {}) {
   const [selectedId, setSelectedId] = useState("framework")
   const [researchQuery, setResearchQuery] = useState("")
   const [folderOpen, setFolderOpen] = useState(false)
@@ -321,99 +321,107 @@ export default function SlidePage0e() {
   return (
     <div
       className="relative h-full w-full overflow-hidden"
-      style={{ background: "#070707", color: "#ffffff", fontFamily: BODY_FONT }}
+      style={{
+        background: embedded ? "#ffffff" : "#070707",
+        color: "#ffffff",
+        fontFamily: BODY_FONT,
+      }}
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at 0% 55%, rgba(181,0,0,0.2), transparent 26%), radial-gradient(ellipse at 100% 52%, rgba(181,0,0,0.18), transparent 24%)",
-        }}
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-20"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
-          backgroundSize: "72px 72px",
-        }}
-      />
-
-      <header
-        className="absolute z-20"
-        style={{ left: 54, right: 54, top: 38 }}
-      >
-        <div className="flex items-center gap-3">
-          <span
+      {!embedded && (
+        <>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0"
             style={{
-              color: "#f23a46",
-              fontFamily: "Impact, 'Arial Black', sans-serif",
-              fontSize: 11,
-              letterSpacing: 1.8,
-            }}
-          >
-            05
-          </span>
-          <span
-            style={{
-              width: 28,
-              height: 1,
-              background: "rgba(255,255,255,0.2)",
+              background:
+                "radial-gradient(ellipse at 0% 55%, rgba(181,0,0,0.2), transparent 26%), radial-gradient(ellipse at 100% 52%, rgba(181,0,0,0.18), transparent 24%)",
             }}
           />
-          <span
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-20"
             style={{
-              color: "rgba(255,255,255,0.38)",
-              fontSize: 10,
-              letterSpacing: 2.4,
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
+              backgroundSize: "72px 72px",
             }}
+          />
+
+          <header
+            className="absolute z-20"
+            style={{ left: 54, right: 54, top: 38 }}
           >
-            LLM WIKI · PRODUCT METHOD
-          </span>
-        </div>
-        <div className="mt-2.5 flex items-end justify-between">
-          <h1
-            style={{
-              margin: 0,
-              fontFamily: DISPLAY_FONT,
-              fontSize: 40,
-              fontWeight: 400,
-              letterSpacing: 0.5,
-              lineHeight: 1.18,
-              color: "#ffffff",
-            }}
-          >
-            2. Wiki图谱编译
-          </h1>
-          <p
-            style={{
-              margin: "0 0 3px",
-              color: "rgba(255,255,255,0.48)",
-              fontSize: 12,
-              lineHeight: 1.7,
-              textAlign: "right",
-            }}
-          >
-            从散落资料到可检索、可互链、可溯源的 Wiki 节点，
-            <br />
-            图谱是编译后的知识界面，而不是一张静态结果图。
-          </p>
-        </div>
-      </header>
+            <div className="flex items-center gap-3">
+              <span
+                style={{
+                  color: "#f23a46",
+                  fontFamily: "Impact, 'Arial Black', sans-serif",
+                  fontSize: 11,
+                  letterSpacing: 1.8,
+                }}
+              >
+                05
+              </span>
+              <span
+                style={{
+                  width: 28,
+                  height: 1,
+                  background: "rgba(255,255,255,0.2)",
+                }}
+              />
+              <span
+                style={{
+                  color: "rgba(255,255,255,0.38)",
+                  fontSize: 10,
+                  letterSpacing: 2.4,
+                }}
+              >
+                LLM WIKI · PRODUCT METHOD
+              </span>
+            </div>
+            <div className="mt-2.5 flex items-end justify-between">
+              <h1
+                style={{
+                  margin: 0,
+                  fontFamily: DISPLAY_FONT,
+                  fontSize: 40,
+                  fontWeight: 400,
+                  letterSpacing: 0.5,
+                  lineHeight: 1.18,
+                  color: "#ffffff",
+                }}
+              >
+                2. Wiki图谱编译
+              </h1>
+              <p
+                style={{
+                  margin: "0 0 3px",
+                  color: "rgba(255,255,255,0.48)",
+                  fontSize: 12,
+                  lineHeight: 1.7,
+                  textAlign: "right",
+                }}
+              >
+                从散落资料到可检索、可互链、可溯源的 Wiki 节点，
+                <br />
+                图谱是编译后的知识界面，而不是一张静态结果图。
+              </p>
+            </div>
+          </header>
+        </>
+      )}
 
       <main
         className="absolute z-20 overflow-hidden"
         style={{
-          left: 54,
-          right: 54,
-          top: 137,
-          height: 674,
-          borderRadius: 18,
+          left: embedded ? 0 : 54,
+          right: embedded ? 0 : 54,
+          top: embedded ? 0 : 137,
+          height: embedded ? 900 : 674,
+          borderRadius: embedded ? 0 : 18,
           background: "#ffffff",
-          border: "1px solid rgba(255,255,255,0.18)",
-          boxShadow: "0 30px 90px rgba(0,0,0,0.5)",
+          border: embedded ? 0 : "1px solid rgba(255,255,255,0.18)",
+          boxShadow: embedded ? "none" : "0 30px 90px rgba(0,0,0,0.5)",
         }}
       >
         <div
@@ -429,15 +437,15 @@ export default function SlidePage0e() {
           style={{
             left: 0,
             top: 0,
-            width: 942,
-            height: 674,
+            width: embedded ? 1018 : 942,
+            height: embedded ? 900 : 674,
             background: "#f8f8f8",
           }}
         >
           <div
             className="absolute overflow-hidden"
             style={{
-              left: 66,
+              left: embedded ? 71 : 66,
               right: 0,
               top: 0,
               bottom: 0,
@@ -454,7 +462,13 @@ export default function SlidePage0e() {
           <WikiSidebar />
           <div
             className="pointer-events-none absolute flex items-center"
-            style={{ left: 82, right: 17, top: 16, zIndex: 30, height: 34 }}
+            style={{
+              left: embedded ? 89 : 82,
+              right: embedded ? 18 : 17,
+              top: embedded ? 21 : 16,
+              zIndex: 30,
+              height: 34,
+            }}
           >
             <div className="pointer-events-auto relative" style={{ zIndex: 2 }}>
               <button
@@ -584,10 +598,10 @@ export default function SlidePage0e() {
             className="pointer-events-auto absolute"
             onPointerDown={(event) => event.stopPropagation()}
             style={{
-              left: 200,
-              bottom: 16,
+              left: embedded ? 216 : 200,
+              bottom: embedded ? 22 : 16,
               zIndex: 41,
-              width: 610,
+              width: embedded ? 659 : 610,
               ...LIGHT_SPOTLIGHT_TOKENS,
             }}
           >
@@ -610,9 +624,9 @@ export default function SlidePage0e() {
           style={{
             right: 0,
             top: 0,
-            width: 350,
-            height: 674,
-            padding: "21px 21px 18px",
+            width: embedded ? 378 : 350,
+            height: embedded ? 900 : 674,
+            padding: embedded ? "23px 23px 20px" : "21px 21px 18px",
             background: "linear-gradient(180deg, #ffffff 0%, #fcfcfd 100%)",
             borderLeft: "1px solid #e7e9ed",
             boxSizing: "border-box",
