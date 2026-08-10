@@ -1,5 +1,48 @@
 const imageDecodeCache = new Map<string, Promise<void>>()
-const ADJACENT_PRELOAD_LIMIT = 3
+const ADJACENT_PRELOAD_LIMIT = 2
+
+type NavigatorWithPerformanceHints = Navigator & {
+  connection?: { saveData?: boolean; effectiveType?: string }
+  deviceMemory?: number
+}
+
+export type SlidePreloadPolicy = {
+  assetLimit: number
+  decodeAssets: boolean
+  allowJumpPrefetch: boolean
+}
+
+/**
+ * Keep background work from competing with the visible slide on mobile,
+ * low-memory devices and data-saving/slow connections.
+ */
+export function getSlidePreloadPolicy(): SlidePreloadPolicy {
+  if (typeof window === "undefined") {
+    return {
+      assetLimit: ADJACENT_PRELOAD_LIMIT,
+      decodeAssets: false,
+      allowJumpPrefetch: false,
+    }
+  }
+
+  const nav = navigator as NavigatorWithPerformanceHints
+  const slowConnection =
+    nav.connection?.saveData ||
+    /(^|-)2g$/.test(nav.connection?.effectiveType ?? "")
+  const lowMemory =
+    typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4
+  const coarsePointer = window.matchMedia("(pointer: coarse)").matches
+
+  if (slowConnection) {
+    return { assetLimit: 0, decodeAssets: false, allowJumpPrefetch: false }
+  }
+
+  return {
+    assetLimit: lowMemory ? 1 : ADJACENT_PRELOAD_LIMIT,
+    decodeAssets: !coarsePointer && !lowMemory,
+    allowJumpPrefetch: !lowMemory,
+  }
+}
 
 const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   content0: [
@@ -217,6 +260,7 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/page30/progress.webp",
     "/images/page27/result.webp",
   ],
+  "video-future": ["/images/video/ifs-workflow-canvas.webp"],
   page28: [
     "/images/page27/remix.webp",
     "/images/page27/result.webp",
@@ -267,17 +311,18 @@ function decodeImage(src: string, shouldDecode: boolean) {
     image.fetchPriority = "low"
 
     const finish = () => resolve()
-    image.onload = () => {
+    const handleLoad = () => {
       if (shouldDecode && typeof image.decode === "function") {
         image.decode().then(finish, finish)
         return
       }
       finish()
     }
+    image.onload = handleLoad
     image.onerror = finish
     image.src = src
 
-    if (image.complete) finish()
+    if (image.complete) handleLoad()
   })
 
   imageDecodeCache.set(cacheKey, task)
@@ -288,12 +333,12 @@ export async function predecodeSlideImages(slideId: string) {
   const assets = SLIDE_IMAGE_ASSETS[slideId]
   if (!assets?.length) return
 
-  // iPad and other touch devices are more sensitive to decoded bitmap memory.
-  // Fetch only the first visible assets there and let Safari decode on demand.
-  const shouldDecode = !window.matchMedia("(pointer: coarse)").matches
-  await Promise.all(
-    assets
-      .slice(0, ADJACENT_PRELOAD_LIMIT)
-      .map((src) => decodeImage(src, shouldDecode))
-  )
+  const policy = getSlidePreloadPolicy()
+  if (policy.assetLimit === 0) return
+
+  // Decode one image at a time. Concurrent bitmap decoding can block slide
+  // transitions even when the network requests themselves are low priority.
+  for (const src of assets.slice(0, policy.assetLimit)) {
+    await decodeImage(src, policy.decodeAssets)
+  }
 }

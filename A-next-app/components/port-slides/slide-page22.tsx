@@ -27,7 +27,7 @@ export default function SlidePage22() {
           letterSpacing: "1.08px",
         }}
       >
-        对内应用
+        内部业务应用
       </span>
 
       {/* ── Decorative wavy line ─────────────────────────────────── */}

@@ -144,9 +144,9 @@ export default function SlideOtherCreativeProjects() {
               }}
               className="relative flex cursor-pointer items-center text-left"
               style={{
-                height: "40px",
-                minWidth: "116px",
-                padding: "0 16px",
+                height: "34px",
+                minWidth: "102px",
+                padding: "0 12px",
                 border: 0,
                 borderRight:
                   index < projects.length - 1
@@ -169,7 +169,7 @@ export default function SlideOtherCreativeProjects() {
             >
               <span
                 style={{
-                  marginRight: "9px",
+                  marginRight: "7px",
                   color: active ? "#fff" : "#e2444e",
                   fontFamily: "'LogoSC Unbounded Sans', sans-serif",
                   fontSize: "9px",
@@ -181,7 +181,7 @@ export default function SlideOtherCreativeProjects() {
               <span
                 style={{
                   fontFamily: "'PingFang SC', sans-serif",
-                  fontSize: "12px",
+                  fontSize: "11px",
                   fontWeight: 650,
                   whiteSpace: "nowrap",
                 }}

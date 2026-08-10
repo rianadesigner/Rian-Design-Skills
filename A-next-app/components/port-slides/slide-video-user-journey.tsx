@@ -20,12 +20,12 @@ const stages: Array<{
   friction: string
   design: string
 }> = [
-  { Icon: Sparkles, stage: "发现", goal: "先判断能否做", friction: "产品能力抽象", design: "用结果和模板先建立预期" },
+  { Icon: Sparkles, stage: "发现", goal: "先判断能做什么", friction: "产品能力抽象", design: "用推荐和模板先建立预期" },
   { Icon: Clapperboard, stage: "开始", goal: "快速描述想法", friction: "空白输入压力", design: "素材、模板、描述三种起点" },
   { Icon: WandSparkles, stage: "编辑", goal: "说清想改哪里", friction: "专业工具难学", design: "语言指令绑定画面对象" },
   { Icon: MessageSquareText, stage: "生成", goal: "知道系统在做什么", friction: "等待不可控", design: "任务阶段、进度和预计时间" },
   { Icon: BellRing, stage: "回流", goal: "离开后继续任务", friction: "中断即丢失", design: "后台运行、通知、原位恢复" },
-  { Icon: ArrowDownToLine, stage: "交付", goal: "确认并下载成片", friction: "版本难比较", design: "对比、回退、导出与资产沉淀" },
+  { Icon: ArrowDownToLine, stage: "交付", goal: "确认并下载成片", friction: "版本难比较", design: "对比、导出与资产沉淀" },
 ]
 
 export default function SlideVideoUserJourney() {

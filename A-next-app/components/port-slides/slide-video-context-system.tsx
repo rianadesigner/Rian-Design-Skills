@@ -71,32 +71,28 @@ export default function SlideVideoContextSystem() {
         当前展示第 {active.index} 步：{active.title}
       </div>
 
-      <header className="absolute left-[62px] right-[62px] top-[24px] flex items-end justify-between border-b border-white/10 pb-[16px]">
+      <header className="absolute left-[62px] right-[62px] top-[64px] flex items-end justify-between border-b border-white/10 pb-[16px]">
         <div>
           <div className="mb-[7px] font-mono text-[10px] font-bold tracking-[1.4px] text-[#b8ff35]">
             05 / ACTION CLONING
           </div>
-          <div className="flex items-end gap-[24px]">
-            <h1
-              className="m-0 text-[46px] font-normal leading-none tracking-[1px]"
-              style={{ fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif" }}
-            >
-              动作克隆
-            </h1>
-            <p className="m-0 mb-[2px] text-[15px] leading-none text-white/48">
-              从参考动作到目标人物，再到生成克隆效果
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-[12px] text-[11px] tracking-[1.4px] text-white/34">
-          <span>SKETCH INTERACTION FLOW</span>
-          <span className="font-mono text-[#b8ff35]">{active.index} / 04</span>
+          <h1
+            className="m-0 whitespace-nowrap text-[42px] leading-[1.22] tracking-[0]"
+            style={{
+              fontFamily: "'Alimama ShuHeiTi', 'PingFang SC', sans-serif",
+              fontWeight: 700,
+            }}
+          >
+            海量玩法库
+            <span className="ml-[12px] text-[#b8ff35]">
+              支持风格、运镜、合拍、动作克隆
+            </span>
+          </h1>
         </div>
       </header>
 
       <main
-        className="absolute left-[62px] right-[62px] top-[126px] flex items-start justify-between"
+        className="absolute left-[62px] right-[62px] top-[184px] flex items-start justify-between"
         aria-label="动作克隆 Sketch 交互流程"
       >
         {sketchFlow.map((item, index) => {
@@ -104,7 +100,7 @@ export default function SlideVideoContextSystem() {
           const completed = index < activeStep
 
           return (
-            <div key={item.index} className="relative flex w-[286px] items-start justify-between">
+            <div key={item.index} className="relative flex w-[270px] items-start justify-between">
               <button
                 type="button"
                 aria-pressed={selected}
@@ -114,10 +110,10 @@ export default function SlideVideoContextSystem() {
                   if (event.key === "ArrowLeft") goPrevious()
                   if (event.key === "ArrowRight") goNext()
                 }}
-                className="group w-[254px] cursor-pointer text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b8ff35]"
+                className="group w-[236px] cursor-pointer text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#b8ff35]"
               >
                 <div
-                  className="relative h-[550px] w-[254px] overflow-hidden border bg-black transition-[border-color,transform,box-shadow,opacity] duration-300"
+                  className="relative h-[511px] w-[236px] overflow-hidden border bg-black transition-[border-color,transform,box-shadow,opacity] duration-300"
                   style={{
                     borderColor: selected ? "rgba(184,255,53,.82)" : "rgba(255,255,255,.12)",
                     boxShadow: selected ? "0 0 0 1px rgba(184,255,53,.15), 0 24px 54px rgba(0,0,0,.46)" : "0 18px 42px rgba(0,0,0,.34)",
@@ -158,7 +154,7 @@ export default function SlideVideoContextSystem() {
               {index < sketchFlow.length - 1 ? (
                 <ArrowRight
                   size={18}
-                  className="absolute -right-[18px] top-[267px] text-white/22"
+                  className="absolute -right-[18px] top-[248px] text-white/22"
                   aria-hidden="true"
                 />
               ) : null}

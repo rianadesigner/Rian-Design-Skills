@@ -84,7 +84,7 @@ export default function SlideVideoTemplateRemix() {
         <div className="absolute left-[26px] right-[26px] top-[22px] flex items-start justify-between">
           {screens.map((screen, index) => (
             <article key={screen.index} className="relative w-[174px] shrink-0">
-              <div className="mb-[8px] flex h-[22px] items-center justify-between border-b border-white/10">
+              <div className="mb-[8px] flex h-[22px] items-center justify-between">
                 <span className="font-mono text-[9px] font-bold tracking-[1.1px] text-[#ef5057]">
                   {screen.phase}
                 </span>

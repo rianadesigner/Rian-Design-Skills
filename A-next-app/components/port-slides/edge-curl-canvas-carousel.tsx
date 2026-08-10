@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { toCanvas } from "html-to-image";
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design";
 import SlidePage0 from "./slide-page0";
+import { KnowledgeBaseSpotlight } from "./slide-page0d";
+import SlidePage0e from "./slide-page0e";
 
 const DESIGN_W = SLIDE_DESIGN_WIDTH;
 const DESIGN_H = SLIDE_DESIGN_HEIGHT;
@@ -16,6 +18,7 @@ const EDGE_MAX = 96;
 const EDGE_RATIO = 0.055;
 const CAROUSEL_DOWN = 72;
 const SIDE_REVEAL_RATIO = 0.20;
+const KNOWLEDGE_BASE_SCREEN = "/images/page0d/knowledge-base-full.png";
 
 type PanelDef = {
   view: "landing" | "library" | "graph" | "agent";
@@ -66,6 +69,83 @@ const PANELS: PanelDef[] = [
     deco: "apps",
   },
 ];
+
+function CarouselPanelContent({ view }: { view: PanelDef["view"] }) {
+  if (view === "library") {
+    return (
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          width: DESIGN_W,
+          height: DESIGN_H,
+          overflow: "hidden",
+          background: "#f8f8f8",
+        }}
+      >
+        <img
+          src={KNOWLEDGE_BASE_SCREEN}
+          alt=""
+          draggable={false}
+          loading="eager"
+          decoding="async"
+          fetchPriority="high"
+          style={{
+            display: "block",
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            userSelect: "none",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            left: 340,
+            top: 756,
+            zIndex: 2,
+            width: 840,
+            height: 144,
+            background: "#f8f8f8",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          style={{
+            position: "absolute",
+            right: 0,
+            top: 820,
+            zIndex: 2,
+            width: 164,
+            height: 80,
+            background: "#f8f8f8",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            left: 360,
+            top: 799,
+            zIndex: 3,
+            width: 800,
+            pointerEvents: "auto",
+          }}
+        >
+          <KnowledgeBaseSpotlight />
+        </div>
+      </div>
+    );
+  }
+
+  if (view === "graph") {
+    return <SlidePage0e embedded />;
+  }
+
+  return <SlidePage0 initialView={view} />;
+}
 
 type RuntimePanel = {
   x: number;
@@ -565,7 +645,7 @@ function StableCarouselFallback() {
                   transformOrigin: "top left",
                 }}
               >
-                <SlidePage0 initialView={panel.view} />
+                <CarouselPanelContent view={panel.view} />
               </div>
             </div>
           );
@@ -1042,7 +1122,7 @@ export function EdgeCurlCanvasCarousel() {
                 >
                   {/* Center panel (index 0) mounts immediately; others wait 800ms */}
                   {(index === 0 || allPanelsMounted) && (
-                    <SlidePage0 initialView={panel.view} />
+                    <CarouselPanelContent view={panel.view} />
                   )}
                 </div>
               </div>

@@ -18,8 +18,12 @@ import {
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design"
 import { computeSlideFitScale, measureFitStage } from "./slide-fit"
 import { preloadPage0dImages } from "./slide-page0d-assets"
-import { predecodeSlideImages } from "./slide-image-preload"
+import {
+  getSlidePreloadPolicy,
+  predecodeSlideImages,
+} from "./slide-image-preload"
 import { SlideCornerMarks } from "./slide-corner-marks"
+import { allSlideIds, HIDDEN_SLIDE_IDS } from "./slide-registry"
 
 // 每个数字路由只加载当前幻灯片，其他页面按需获取以缩减初始 bundle。
 const ObservatoryCover = lazy(() =>
@@ -83,36 +87,19 @@ const SlidePage29 = lazy(() => import("./slide-page29"))
 const SlidePage30 = lazy(() => import("./slide-page30"))
 const SlidePage31 = lazy(() => import("./slide-page31"))
 const SlidePage32 = lazy(() => import("./slide-page32"))
-const SlideVideoFuture = lazy(() => import("./slide-video-future"))
-
-/** 暂时隐藏的幻灯片（保留源码，取消 id 即可恢复） */
-const HIDDEN_SLIDE_IDS = new Set<string>([
-  "page0",
-  "page14",
-  "page15",
-  "page16",
-  "page17",
-  "page18",
-  "page19",
-  "page20",
-  "video-entry-experience",
-  "video-async-loop",
-  "page9",
-  "page29",
-  "page30",
-])
+const SlideVideoFuture = lazy(() => import("./slide-video-workflow"))
 
 const allSlideComponents = [
   ObservatoryCover,
   SlideContent0,
   SlidePage0a,
   SlidePage0b,
-  SlidePage4b,
   SlidePage0c,
   SlidePage0d,
   SlidePage0e,
   SlidePage0f,
   SlidePage0g,
+  SlidePage4b,
   SlidePage27,
   SlideVideoUserJourney,
   SlideVideoRecommendationUpload,
@@ -156,61 +143,6 @@ const allSlideComponents = [
   SlideOtherAgentProjects,
   SlideOtherSearchProjects,
 ]
-const allSlideIds = [
-  "cover",
-  "content0",
-  "page0a",
-  "page0b",
-  "page4b",
-  "page0c",
-  "page0d",
-  "page0e",
-  "page0f",
-  "page0g",
-  "page27",
-  "video-user-journey",
-  "video-recommendation-upload",
-  "video-concurrent-tasks",
-  "video-context-system",
-  "video-template-remix",
-  "video-entry-experience",
-  "video-async-loop",
-  "page31",
-  "page28",
-  "page29",
-  "page30",
-  "video-future",
-  "page32",
-  "page0",
-  "page1",
-  "page2",
-  "page3",
-  "page4",
-  "page5",
-  "page6",
-  "page7",
-  "page8",
-  "page9",
-  "page10",
-  "page11",
-  "page12",
-  "page13",
-  "ai-platform-overview",
-  "page14",
-  "page15",
-  "page16",
-  "page17",
-  "page18",
-  "page19",
-  "page20",
-  "page21",
-  "page22",
-  "if-studio",
-  "other-creative-projects",
-  "other-agent-projects",
-  "other-search-projects",
-]
-
 /** 懒加载 fallback：与幻灯片背景色一致的纯黑占位，避免白闪 */
 function SlideFallback() {
   return (
@@ -920,20 +852,22 @@ export default function SlideContainer({
   }, [current])
 
   useEffect(() => {
-    const adjacent = [current - 1, current + 1]
+    const adjacent = [current + 1, current - 1]
       .filter((index) => index >= 0 && index < slideIds.length)
       .map((index) => slideIds[index])
 
-    const decode = () => {
-      void Promise.all(adjacent.map(predecodeSlideImages))
+    const decode = async () => {
+      for (const slideId of adjacent) {
+        await predecodeSlideImages(slideId)
+      }
     }
 
     if (typeof requestIdleCallback !== "undefined") {
-      const idleId = requestIdleCallback(decode, { timeout: 700 })
+      const idleId = requestIdleCallback(() => void decode(), { timeout: 1200 })
       return () => cancelIdleCallback(idleId)
     }
 
-    const timer = window.setTimeout(decode, 80)
+    const timer = window.setTimeout(() => void decode(), 160)
     return () => window.clearTimeout(timer)
   }, [current])
 
@@ -964,18 +898,20 @@ export default function SlideContainer({
 
   // ——— 轻量预取策略：只预热当前附近页面，避免外部冷启动时解析完整作品集 ———
   useEffect(() => {
+    const preloadPolicy = getSlidePreloadPolicy()
+
     // 与 allSlideIds 一一对应，避免隐藏页面导致可见序号与资源序号错位。
     const allImports: Array<() => Promise<unknown>> = [
       () => import("../observatory-cover"),
       () => import("./slide-content0"),
       () => import("./slide-page0a"),
       () => import("./slide-page0b"),
-      () => import("./slide-page4b"),
       () => import("./slide-page0c"),
       () => import("./slide-page0d"),
       () => import("./slide-page0e"),
       () => import("./slide-page0f"),
       () => import("./slide-page0g"),
+      () => import("./slide-page4b"),
       () => import("./slide-page27"),
       () => import("./slide-video-user-journey"),
       () => import("./slide-video-recommendation-upload"),
@@ -988,7 +924,7 @@ export default function SlideContainer({
       () => import("./slide-page28"),
       () => import("./slide-page29"),
       () => import("./slide-page30"),
-      () => import("./slide-video-future"),
+      () => import("./slide-video-workflow"),
       () => import("./slide-page32"),
       () => import("./slide-page0"),
       () => import("./slide-page1"),
@@ -1070,7 +1006,10 @@ export default function SlideContainer({
     }
 
     // 只预取当前前后 1 页；用户确实进入封面/content0 后，再延后预热可点击跳转目标。
-    const near = Array.from(new Set([current - 1, current, current + 1]))
+    const nearVisibleIndices = preloadPolicy.assetLimit === 0
+      ? [current + 1]
+      : [current + 1, current - 1]
+    const near = Array.from(new Set(nearVisibleIndices))
       .filter((visibleIndex) =>
         visibleIndex >= 0 && visibleIndex < slideIds.length
       )
@@ -1078,7 +1017,7 @@ export default function SlideContainer({
       .filter((index) => index >= 0 && index < allImports.length)
     runSequential(near, 0, 900)
 
-    if (current === 1) {
+    if (current === 1 && preloadPolicy.allowJumpPrefetch) {
       runSequential(JUMP_TARGETS, 2400, 1200)
     }
 
