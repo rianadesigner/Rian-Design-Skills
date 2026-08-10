@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, type PanInfo } from "motion/react";
 import SlidePage0 from "./slide-page0";
 import { SLIDE_DESIGN_WIDTH } from "./slide-design";
@@ -11,11 +11,11 @@ const imgAi1 = `${P}/ai1-bg.webp`;
 
 // Design canvas dimensions
 const DESIGN_W = SLIDE_DESIGN_WIDTH; // 1440
-const SLIDE_H = 900;
+const SLIDE_H = 1000;
 
 // V2 inner component (SlidePage0) native size
 const INNER_W = 1440;
-const INNER_H = 900;
+const INNER_H = 1000;
 
 // Carousel panel geometry
 const PANEL_L = 120;
@@ -23,41 +23,28 @@ const PANEL_T = 267;       // carousel top (below header)
 const PANEL_W = 1200;
 const PANEL_H = SLIDE_H - PANEL_T; // 633 — remaining height
 
-// Scale SlidePage0 (1440×900) → fit panel width (1200px)
+// Scale SlidePage0 (1440×1000) → fit panel width (1200px)
 const SCALE = PANEL_W / INNER_W; // ≈ 0.8333
 
-const VERSION_LABEL_STYLE: React.CSSProperties = {
-  position: "absolute",
-  left: 8,
-  top: 10,
-  zIndex: 10,
-  background: "#202124",
-  borderRadius: 6,
-  padding: "4px 12px",
-  display: "flex",
-  alignItems: "center",
-  gap: 8,
-  filter: "drop-shadow(0 0 6px rgba(0,0,0,0.35))",
-};
-
-const VERSION_BADGE_STYLE: React.CSSProperties = {
-  background: "#34363a",
-  borderRadius: 4,
-  padding: "2px 4px",
-  flexShrink: 0,
-};
+const VERSION_META = [
+  {
+    badge: "BEFORE",
+    version: "V 1.0",
+    description: "旧版界面 · 心流 AI 搜索",
+  },
+  {
+    badge: "NEW",
+    version: "V 2.0",
+    description: "全新界面 · AI 工作台",
+  },
+] as const;
 
 // Snap threshold for manual drag (px)
 const SNAP_THRESHOLD = 60;
 
 export default function SlidePage0b() {
-  const [active, setActive] = useState(0); // 0 = V1.0, 1 = V2.0
-
-  // Auto-advance to V2.0 after 1 second
-  useEffect(() => {
-    const t = setTimeout(() => setActive(1), 2500);
-    return () => clearTimeout(t);
-  }, []);
+  const [active, setActive] = useState(1); // 0 = V1.0, 1 = V2.0
+  const activeVersion = VERSION_META[active];
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     if (info.offset.y < -SNAP_THRESHOLD && active < 1) setActive(1);
@@ -123,7 +110,7 @@ export default function SlidePage0b() {
           fontFamily: "'标小智无界黑', sans-serif", fontWeight: 400,
           fontSize: 44, lineHeight: "47.25px", color: "#fff",
           letterSpacing: "1.5px", whiteSpace: "nowrap",
-        }}>心流2.0升级：LLM Wiki</p>
+        }}>心流2.0升级： LLM Wiki</p>
 
         <div style={{
           fontFamily: "'PingFang SC', sans-serif", fontWeight: 400,
@@ -179,33 +166,13 @@ export default function SlidePage0b() {
                 pointerEvents: "none",
               }}
             />
-            {/* BEFORE / V1.0 label */}
-            <div style={VERSION_LABEL_STYLE}>
-              <div style={VERSION_BADGE_STYLE}>
-                <span style={{ fontFamily: "Impact", fontSize: 8, color: "#fff", lineHeight: "10px", display: "block" }}>BEFORE</span>
-              </div>
-              <span style={{ fontFamily: "Impact", fontSize: 20, color: "#e0e7ff" }}>V 1.0</span>
-              <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "#ffffff", whiteSpace: "nowrap" }}>
-                旧版界面 · 心流 AI 搜索
-              </span>
-            </div>
-            {/* 向下箭头提示 */}
-            <div style={{
-              position: "absolute", bottom: 14, left: "50%", transform: "translateX(-50%)",
-              display: "flex", flexDirection: "column", alignItems: "center", gap: 4, zIndex: 10,
-            }}>
-              <span style={{ fontFamily: "'PingFang SC'", fontSize: 9, color: "rgba(255,255,255,0.35)", letterSpacing: "1px" }}>上滑查看 V 2.0</span>
-              <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
-                <path d="M1 1L8 8L15 1" stroke="rgba(255,255,255,0.3)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
           </div>
 
           {/* ── Panel 1: V2.0 新版 LandingView ── */}
           <div style={{ width: PANEL_W, height: PANEL_H, flexShrink: 0, position: "relative", overflow: "hidden", background: "#f8f8f8" }}>
             {/*
-              SlidePage0 内部设计尺寸 1440×900，缩放至面板宽度 1200px (scale=0.8333)。
-              缩放后高度 750px，在 633px 容器中显示顶部内容，底部由背景填充。
+              SlidePage0 内部设计尺寸 1440×1000，缩放至面板宽度 1200px (scale=0.8333)。
+              缩放后高度约 833px，在 733px 容器中显示顶部内容。
             */}
             <div style={{
               position: "absolute",
@@ -214,62 +181,120 @@ export default function SlidePage0b() {
               height: INNER_H,
               transformOrigin: "top left",
               transform: `scale(${SCALE})`,
-              pointerEvents: "none",
+              pointerEvents: "auto",
             }}>
-              <SlidePage0 initialView="landing" />
-            </div>
-            {/* NEW / V2.0 label */}
-            <div style={VERSION_LABEL_STYLE}>
-              <div style={VERSION_BADGE_STYLE}>
-                <span style={{ fontFamily: "Impact", fontSize: 8, color: "#fff", lineHeight: "10px", display: "block" }}>NEW</span>
-              </div>
-              <span style={{ fontFamily: "Impact", fontSize: 20, color: "#e0e7ff" }}>V 2.0</span>
-              <span style={{ fontFamily: "'PingFang SC'", fontWeight: 600, fontSize: 10, color: "#ffffff", whiteSpace: "nowrap" }}>
-                全新界面 · AI 工作台
-              </span>
+              <SlidePage0 initialView="landing" canvasHeight={1000} />
             </div>
           </div>
         </motion.div>
       </div>
 
-      {/* ── 轮播指示点 ── */}
+      {/* ── 版本标签 + 轮播切换 ── */}
       <div style={{
         position: "absolute",
         left: PANEL_L,
-        top: PANEL_T + PANEL_H - 30,
+        bottom: 16,
         width: PANEL_W,
         display: "flex",
         justifyContent: "center",
-        gap: 7,
         zIndex: 22,
         pointerEvents: "auto",
       }}>
-        {[0, 1].map(i => (
-          <button
-            key={i}
-            onClick={() => setActive(i)}
-            aria-label={i === 0 ? "显示 V1.0" : "显示 V2.0"}
+        <div
+          role="group"
+          aria-label="版本界面切换"
+          style={{
+            width: "fit-content",
+            height: 34,
+            padding: "0 7px",
+            boxSizing: "border-box",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 6,
+            border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: 9,
+            background: "rgba(24,25,28,0.88)",
+            boxShadow: "0 8px 24px rgba(0,0,0,0.34)",
+            backdropFilter: "blur(14px)",
+          }}
+        >
+          <span style={{
+            padding: "2px 4px",
+            borderRadius: 3,
+            color: "#fff",
+            background: "#3a3c41",
+            fontFamily: "Impact, sans-serif",
+            fontSize: 7,
+            lineHeight: "9px",
+            letterSpacing: "0.2px",
+          }}>
+            {activeVersion.badge}
+          </span>
+          <span
+            aria-live="polite"
             style={{
-              width: i === active ? 18 : 6,
-              height: 6,
-              borderRadius: 3,
-              background: i === active ? "rgba(255,255,255,0.85)" : "rgba(255,255,255,0.28)",
-              border: "none",
-              cursor: "pointer",
-              padding: 0,
-              transition: "width 0.3s ease, background 0.3s ease",
-              flexShrink: 0,
+              color: "#e7eaff",
+              fontFamily: "Impact, sans-serif",
+              fontSize: 14,
+              whiteSpace: "nowrap",
             }}
-          />
-        ))}
+          >
+            {activeVersion.version}
+          </span>
+          <span style={{
+            color: "rgba(255,255,255,0.78)",
+            fontFamily: "'PingFang SC', sans-serif",
+            fontSize: 8.5,
+            fontWeight: 600,
+            whiteSpace: "nowrap",
+          }}>
+            {activeVersion.description}
+          </span>
+          <span aria-hidden style={{ width: 1, height: 14, marginLeft: 1, background: "rgba(255,255,255,0.14)" }} />
+          <div style={{ display: "flex", alignItems: "center", gap: 2 }}>
+            {[
+              { direction: -1, label: "显示上一版本" },
+              { direction: 1, label: "显示下一版本" },
+            ].map(({ direction, label }) => {
+              const disabled = direction < 0 ? active === 0 : active === 1;
+              return (
+                <button
+                  key={direction}
+                  type="button"
+                  onClick={() => setActive(active + direction)}
+                  aria-label={label}
+                  disabled={disabled}
+                  style={{
+                    width: 16,
+                    height: 20,
+                    padding: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: disabled ? "rgba(255,255,255,0.22)" : "rgba(255,255,255,0.9)",
+                    background: "transparent",
+                    border: "none",
+                    cursor: disabled ? "default" : "pointer",
+                    transition: "color 160ms ease",
+                    flexShrink: 0,
+                  }}
+                >
+                  <svg aria-hidden="true" width="8" height="12" viewBox="0 0 8 12" fill="none">
+                    <path
+                      d={direction < 0 ? "M6.5 1.5L2 6L6.5 10.5" : "M1.5 1.5L6 6L1.5 10.5"}
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              );
+            })}
+          </div>
+        </div>
       </div>
-
-      {/* ── Bottom gradient fade ── */}
-      <div aria-hidden style={{
-        position: "absolute", bottom: 0, left: 0, right: 0, height: "8%",
-        background: "linear-gradient(transparent, #070707)",
-        zIndex: 18, pointerEvents: "none",
-      }} />
     </div>
   );
 }
