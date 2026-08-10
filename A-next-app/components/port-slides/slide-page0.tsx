@@ -2,9 +2,11 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, useSpring, useMotionValue } from "motion/react";
+import KnowledgeGraphSphere from "./knowledge-graph-sphere";
 
 const P0 = "/images/page0";
 const PL = "/images/page0-landing";
+const KNOWLEDGE_WORKSPACE_BG = "#f8f8f8";
 
 /* ═══════════════════════════════════════════════════════════════
    Shared Icon Components (inline SVG from Figma exports)
@@ -186,87 +188,86 @@ type FeatureCardData = {
   title: string; desc: string; screenshot: string; gradient: string;
   rotation: number; left: string; top: string; zIndex: number;
   decoSrc: string; decoStyle: React.CSSProperties;
-  screenshotStyle?: React.CSSProperties;
+  overlay?: string;
   hasColorDodge?: boolean;
 };
 
 const featureCards: FeatureCardData[] = [
   {
     title: "海量的学术资料", desc: "3000w+公开论文与自有知识库数据",
-    screenshot: "card-academic.webp", decoSrc: "deco-academic.svg",
+    screenshot: "v2-card-academic.png", decoSrc: "deco-academic.svg",
     gradient: "linear-gradient(152deg, #f9b552 0%, #ffd777 50%, #f9b552 100%)",
+    overlay: "linear-gradient(170deg, rgba(249,181,82,0.96) 0%, rgba(255,215,119,0.5) 24.7%, rgba(249,181,82,0) 49.4%)",
     rotation: -10, left: "12%", top: "632px", zIndex: 1,
     decoStyle: { position: "absolute", top: "2%", right: "3.47%", bottom: "57.15%", left: "30.63%" },
-    screenshotStyle: { height: "108.97%", left: "-0.11%", top: "-4.4%", width: "104.2%" },
   },
   {
     title: "多格式文件上传", desc: "文档/图片/视频/表格/git仓库等格式导入",
-    screenshot: "card-upload.webp", decoSrc: "deco-upload.svg",
+    screenshot: "v2-card-upload.png", decoSrc: "deco-upload.svg",
     gradient: "linear-gradient(152deg, #408c33 0%, #66b226 50%, #26664d 100%)",
+    overlay: "linear-gradient(170deg, rgba(64,140,51,0.95) 0%, rgba(102,178,38,0.5) 22%, rgba(38,102,77,0) 44%)",
     rotation: -5, left: "31%", top: "582px", zIndex: 2,
     decoStyle: { position: "absolute", top: "-19%", right: "-36%", bottom: "67%", left: "57.6%", transform: "rotate(-15.47deg)" },
-    screenshotStyle: { height: "111%", left: "-3.07%", top: "-3.16%", width: "106.14%" },
   },
   {
     title: "Wiki图谱知识编译", desc: "基于LLM Wiki架构构建结构化知识",
-    screenshot: "card-wiki.webp", decoSrc: "deco-wiki-shape.svg",
+    screenshot: "v2-card-wiki.png", decoSrc: "deco-wiki-shape.svg",
     gradient: "linear-gradient(152deg, #2699e5 0%, #33e5d9 47%, #2699e5 100%)",
+    overlay: "linear-gradient(179deg, rgba(38,153,229,0.96) 0%, rgba(51,229,217,0.5) 18.2%, rgba(38,153,229,0) 38.6%)",
     rotation: 0, left: "50%", top: "562px", zIndex: 3,
     decoStyle: { position: "absolute", left: 196.5, top: 1.5, width: 160, height: 149 },
-    screenshotStyle: { height: "103.27%", left: "-0.31%", top: "-1.31%", width: "98.75%" },
   },
   {
     title: "第三方应用集成", desc: "已支持网盘、飞书、钉钉、语雀文档",
-    screenshot: "card-apps.webp", decoSrc: "deco-apps.svg",
+    screenshot: "v2-card-apps.png", decoSrc: "deco-apps.svg",
     gradient: "linear-gradient(152deg, #8c59bf 0%, #b273d9 50%, #59338c 100%)",
+    overlay: "linear-gradient(165deg, rgba(140,89,191,0.7) 0%, rgba(178,115,217,0.26) 25%, rgba(89,51,140,0) 48%)",
     rotation: 5, left: "69%", top: "582px", zIndex: 2,
     decoStyle: { position: "absolute", left: 189.5, top: -0.5, width: 156, height: 186 },
   },
   {
     title: "多模态结果输出", desc: "视频、图像、报告、脑图等结果生成",
-    screenshot: "card-multimodal.webp", decoSrc: "deco-multimodal.svg",
+    screenshot: "v2-card-multimodal.png", decoSrc: "deco-multimodal.svg",
     gradient: "linear-gradient(90deg, #0f1117 0%, #0f1117 100%)",
     rotation: 10, left: "88%", top: "632px", zIndex: 1,
     decoStyle: { position: "absolute", top: "-8.25%", right: "-21.56%", bottom: "59%", left: "55.63%" },
-    screenshotStyle: { height: "100.3%", left: "2.05%", top: "-0.3%", width: "95.91%" },
     hasColorDodge: true,
   },
 ];
 
-function FeatureCard({ title, desc, screenshot, gradient, decoSrc, decoStyle, screenshotStyle, hasColorDodge, isHovered }: FeatureCardData & { isHovered?: boolean }) {
+function FeatureCard({ title, desc, screenshot, gradient, decoSrc, decoStyle, overlay, hasColorDodge, isHovered }: FeatureCardData & { isHovered?: boolean }) {
   return (
     <div
-      className="relative h-[400px] w-[320px] overflow-hidden rounded-xl"
+      className="relative h-[400px] w-[320px] overflow-hidden rounded-[18px] border border-white/90"
       style={{
-        border: "0.5px solid rgba(0,0,0,0.08)",
         boxShadow: "3px 3px 6px 0px rgba(0,0,0,0.08), -2.25px -2.25px 4.5px 0px rgba(255,255,255,0.6)",
       }}
     >
-      <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ background: gradient }} />
+      <div className="pointer-events-none absolute inset-0 rounded-[18px]" style={{ background: gradient }} />
+      <img
+        src={`${PL}/${screenshot}`}
+        alt=""
+        draggable={false}
+        className="pointer-events-none absolute inset-0 size-full object-cover"
+        style={{
+          transform: isHovered ? "translateY(-4px) scale(1.025)" : "translateY(0) scale(1)",
+          transition: "transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)",
+          willChange: "transform",
+        }}
+      />
+      {overlay && <div className="pointer-events-none absolute inset-0 z-[1]" style={{ background: overlay }} />}
       {hasColorDodge && (
-        <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ mixBlendMode: "color-dodge", background: "linear-gradient(152deg, #59338c 0%, #b273d9 50%, #59338c 100%)" }} />
+        <div className="pointer-events-none absolute inset-0 z-[1] rounded-[18px]" style={{ mixBlendMode: "color-dodge", background: "linear-gradient(152deg, rgba(89,51,140,0.32) 0%, rgba(178,115,217,0.2) 50%, rgba(89,51,140,0.12) 100%)" }} />
       )}
-      <div style={decoStyle} className="pointer-events-none">
+      <div style={decoStyle} className="pointer-events-none z-[2]">
         <img  src={`${PL}/${decoSrc}`} alt="" className="absolute inset-0 block size-full" style={{ maxWidth: "none" }} draggable={false} />
       </div>
-      <p className="absolute left-[23.5px] top-[23.5px] whitespace-nowrap text-[22px] font-bold leading-[24px] text-white" style={{ fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif" }}>{title}</p>
-      <p className="absolute left-[23.5px] top-[65.5px] w-[272px] text-[12px] leading-[20px] text-[rgba(255,255,255,0.78)]">{desc}</p>
-      <div className="absolute -left-[0.5px] top-[93.5px] h-[306px] w-[320px] overflow-hidden">
-        <img
-          src={`${PL}/${screenshot}`} alt="" draggable={false}
-          className="absolute pointer-events-none"
-          style={{
-            ...(screenshotStyle ?? { inset: 0, width: "100%", height: "100%", objectFit: "cover" }),
-            transform: isHovered ? "translateY(-10px) scale(1.03)" : "translateY(0px) scale(1)",
-            transition: "transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
-            willChange: "transform",
-          }}
-        />
-      </div>
-      <div className="absolute inset-0 pointer-events-none rounded-xl" style={{ boxShadow: "inset 1.5px 1.5px 3px 0px rgba(0,0,0,0.05), inset -1.5px -1.5px 3px 0px rgba(255,255,255,0.5)" }} />
+      <p className="absolute left-[23.5px] top-[23.5px] z-[3] whitespace-nowrap text-[22px] font-bold leading-[24px] text-white" style={{ fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif" }}>{title}</p>
+      <p className="absolute left-[23.5px] top-[65.5px] z-[3] w-[272px] text-[12px] leading-[20px] text-[rgba(255,255,255,0.78)]">{desc}</p>
+      <div className="pointer-events-none absolute inset-0 z-[4] rounded-[18px]" style={{ boxShadow: "inset 1.5px 1.5px 3px 0px rgba(0,0,0,0.05), inset -1.5px -1.5px 3px 0px rgba(255,255,255,0.5)" }} />
       {isHovered && (
         <div
-          className="absolute inset-0 pointer-events-none rounded-xl"
+          className="pointer-events-none absolute inset-0 rounded-[18px]"
           style={{
             background: "linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.25) 45%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0.25) 55%, transparent 65%)",
             backgroundSize: "250% 100%",
@@ -465,7 +466,233 @@ function LibraryView({ onSwitchView }: { onSwitchView: (v: "library" | "graph" |
    Landing View
    ═══════════════════════════════════════════════════════════════ */
 
-function LandingView({ onNavigate }: { onNavigate?: () => void }) {
+const landingFeatures = [
+  {
+    number: "01",
+    title: "海量的学术资料",
+    description: "3000w+公开论文与自有知识数据",
+    tint: "#fff1d3",
+    orb: "#ff781f",
+  },
+  {
+    number: "02",
+    title: "多格式文件上传",
+    description: "文档 / 图片 / 视频 / 表格 / Git 仓库",
+    tint: "#e1f4e5",
+    orb: "#25ae63",
+  },
+  {
+    number: "03",
+    title: "Wiki图谱知识编译",
+    description: "基于 LLM Wiki 架构构建结构化知识",
+    tint: "#e1f1ff",
+    orb: "#238ee8",
+  },
+  {
+    number: "04",
+    title: "第三方应用集成",
+    description: "已支持钉钉、飞书、语雀文档",
+    tint: "#eee4ff",
+    orb: "#8247f5",
+  },
+  {
+    number: "05",
+    title: "多模态结果输出",
+    description: "视频、图像、报告、脑图等结果生成",
+    tint: "#e5e9ff",
+    orb: "#273fc1",
+  },
+] as const;
+
+function LandingFeatureCard({
+  feature,
+  onClick,
+}: {
+  feature: (typeof landingFeatures)[number];
+  onClick?: () => void;
+}) {
+  return (
+    <motion.button
+      type="button"
+      onClick={(event) => {
+        event.stopPropagation();
+        onClick?.();
+      }}
+      whileHover={{ y: -8, scale: 1.015 }}
+      whileTap={{ scale: 0.99 }}
+      transition={{ type: "spring", stiffness: 360, damping: 24 }}
+      className="group relative h-[170px] w-[244px] overflow-hidden rounded-[18px] border border-[#e5e6ec] bg-white text-left outline-none focus-visible:ring-2 focus-visible:ring-[#7d79ff] focus-visible:ring-offset-2"
+      style={{ boxShadow: "0 10px 30px rgba(35, 36, 52, 0.075)" }}
+    >
+      <span
+        aria-hidden
+        className="absolute left-[18px] top-[18px] size-[56px] overflow-hidden rounded-[15px]"
+        style={{ background: feature.tint }}
+      >
+        <span
+          className="absolute left-[10px] top-[9px] size-7 rounded-full opacity-30 transition-transform duration-300 group-hover:-translate-y-0.5"
+          style={{ background: feature.orb }}
+        />
+        <span
+          className="absolute left-[22px] top-[18px] size-[25px] rounded-full opacity-55 transition-transform duration-300 group-hover:translate-x-0.5"
+          style={{ background: feature.orb }}
+        />
+        <span
+          className="absolute left-[13px] top-[27px] size-6 rounded-full transition-transform duration-300 group-hover:-translate-y-1"
+          style={{
+            background: feature.orb,
+            boxShadow: "0 5px 12px color-mix(in srgb, var(--orb-shadow, #202030) 18%, transparent)",
+          }}
+        />
+      </span>
+
+      <span className="absolute left-[88px] top-[18px] text-[12px] font-medium tracking-[1.1px] text-[#9496a5]">
+        {feature.number}
+      </span>
+      <span className="absolute left-[88px] top-[42px] text-[16px] font-bold leading-6 text-[#141419]">
+        {feature.title}
+      </span>
+      <span className="absolute left-[18px] top-[104px] w-[208px] text-[13px] leading-[21px] text-[#757781]">
+        {feature.description}
+      </span>
+    </motion.button>
+  );
+}
+
+function LandingView({ onNavigate, tall = false }: { onNavigate?: () => void; tall?: boolean }) {
+  return (
+    <div
+      className="absolute inset-0 z-0 overflow-hidden rounded-[34px]"
+      style={{ backgroundColor: KNOWLEDGE_WORKSPACE_BG }}
+    >
+      <style>{`
+        .landing-knowledge-sphere button {
+          font-size: 10px !important;
+          padding: 3px 7px 3px 5px !important;
+          color: #5f6671 !important;
+          border-color: rgba(174, 180, 192, 0.72) !important;
+          background: rgba(255, 255, 255, 0.88) !important;
+          box-shadow: 0 5px 16px rgba(44, 45, 68, 0.065) !important;
+        }
+      `}</style>
+
+      <img
+        src={`${PL}/bg-grid.svg`}
+        alt=""
+        className="pointer-events-none absolute left-0 top-0 z-0 w-[1344px] opacity-55"
+        style={{ height: tall ? 860 : 770 }}
+        draggable={false}
+      />
+
+      <div
+        aria-hidden
+        className="absolute inset-x-0 top-0 z-0 h-[680px]"
+        style={{
+          background:
+            "radial-gradient(ellipse 34% 34% at 50% 45%, rgba(152,145,255,0.09), transparent 70%), radial-gradient(ellipse 22% 28% at 29% 43%, rgba(112,210,255,0.065), transparent 72%)",
+        }}
+      />
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-[560px]"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(190,196,211,0.28) 0%, rgba(216,220,231,0.16) 36%, rgba(239,240,245,0.06) 72%, transparent 100%)",
+        }}
+      />
+
+      <div
+        className="landing-knowledge-sphere absolute left-[120px] right-[120px] z-[1] opacity-[0.82]"
+        style={{
+          top: tall ? -82 : -104,
+          height: tall ? 760 : 716,
+          filter: "drop-shadow(0 28px 34px rgba(67,74,102,0.12)) contrast(1.06)",
+          maskImage:
+            "radial-gradient(ellipse 63% 58% at 50% 50%, black 34%, rgba(0,0,0,.78) 64%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 63% 58% at 50% 50%, black 34%, rgba(0,0,0,.78) 64%, transparent 100%)",
+        }}
+      >
+        <KnowledgeGraphSphere
+          selectedId=""
+          interactionMode="scroll"
+        />
+      </div>
+
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 z-[2] h-[440px] w-[720px] -translate-x-1/2"
+        style={{
+          top: tall ? 104 : 92,
+          background:
+            "radial-gradient(ellipse at center, rgba(248,248,248,.99) 0%, rgba(248,248,248,.95) 34%, rgba(248,248,248,.7) 55%, transparent 76%)",
+        }}
+      />
+
+      <main
+        className="pointer-events-none absolute inset-0 z-[3]"
+        style={{ transform: tall ? "translateY(-40px)" : undefined }}
+      >
+        <h1
+          className="absolute left-1/2 w-[640px] -translate-x-1/2 bg-clip-text text-center text-[60px] font-bold leading-[72px] tracking-[1.8px] text-transparent"
+          style={{
+            top: tall ? 236 : 222,
+            fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif",
+            backgroundImage: "linear-gradient(173deg, #171a25 0%, #353d75 71%)",
+          }}
+        >
+          你的专属AI知识库
+        </h1>
+        <p
+          className="absolute left-1/2 w-[520px] -translate-x-1/2 text-center text-[16px] leading-6 text-[#5f616c]"
+          style={{ top: tall ? 338 : 322 }}
+        >
+          上传文件、编译结构化知识、连接第三方应用，
+          <br />
+          并生成视频、报告与脑图。
+        </p>
+
+        <motion.button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            onNavigate?.();
+          }}
+          whileHover={{
+            backgroundColor: "#111111",
+            color: "#ffffff",
+            boxShadow:
+              "0 10px 24px rgba(17,17,17,0.22), inset 0 1px 0 rgba(255,255,255,0.08)",
+          }}
+          whileTap={{ scale: 0.985 }}
+          transition={{ duration: 0.24, ease: [0.22, 0.7, 0.25, 1] }}
+          className="knowledge-cta pointer-events-auto absolute left-1/2 flex h-[66px] w-[310px] -translate-x-1/2 items-center justify-center overflow-hidden rounded-full border-0 text-[17px] font-medium tracking-[0.1px] text-[#262833] outline-none focus-visible:ring-2 focus-visible:ring-[#7d79ff] focus-visible:ring-offset-2"
+          style={{
+            top: tall ? 422 : 410,
+            backgroundColor: "#ffffff",
+            boxShadow:
+              "0 2px 8px rgba(35,38,55,0.04), inset 0 1px 0 rgba(255,255,255,1), inset 0 -1px 0 rgba(215,217,225,0.35)",
+          }}
+        >
+          <span
+            aria-hidden
+            className="knowledge-cta-shine pointer-events-none absolute -bottom-3 -top-3 left-0 w-[24%]"
+            style={{
+              transform: "translateX(-190%) skewX(-18deg)",
+              background:
+                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 22%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.2) 78%, transparent 100%)",
+              filter: "blur(0.5px)",
+            }}
+          />
+          <span className="relative z-10">创建您的首个知识库</span>
+        </motion.button>
+      </main>
+    </div>
+  );
+}
+
+function LandingViewLegacy({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <div className="absolute inset-0 overflow-clip rounded-[34px]">
       {/* Grid background */}
@@ -1525,87 +1752,49 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
    Main Component
    ═══════════════════════════════════════════════════════════════ */
 
-export default function SlidePage0({ initialView = "landing" }: { initialView?: ViewType } = {}) {
+export default function SlidePage0({ initialView = "landing", canvasHeight = 900 }: { initialView?: ViewType; canvasHeight?: 900 | 1000 } = {}) {
   const [view, setView] = useState<ViewType>(initialView);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
+  const isTallLanding = canvasHeight === 1000;
 
   return (
     <div
-      className="relative h-full w-full overflow-hidden bg-[#f8f8f8]"
-      style={{ fontFamily: "'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif" }}
+      className="relative h-full w-full overflow-hidden"
+      style={{
+        backgroundColor: KNOWLEDGE_WORKSPACE_BG,
+        fontFamily: "'PingFang SC', -apple-system, BlinkMacSystemFont, sans-serif",
+      }}
     >
-      <style>{`@keyframes card-shine{0%{background-position:200% 0}100%{background-position:-100% 0}}`}</style>
+      <style>{`
+        @keyframes card-shine{0%{background-position:200% 0}100%{background-position:-100% 0}}
+        @keyframes knowledge-cta-sweep{
+          0%{transform:translateX(-190%) skewX(-18deg);opacity:0}
+          18%{opacity:.85}
+          78%{opacity:.72}
+          100%{transform:translateX(430%) skewX(-18deg);opacity:0}
+        }
+        .knowledge-cta:hover .knowledge-cta-shine{animation:knowledge-cta-sweep .82s cubic-bezier(.22,.7,.25,1) forwards}
+      `}</style>
       {view !== "agent" && <Navigation view={view} onSwitch={setView} />}
       {view === "agent" ? <AgentView onBack={() => setView("graph")} onHome={() => setView("library")} /> : view === "graph" ? <GraphView onSwitchView={(v) => setView(v)} /> : view === "library" ? <LibraryView onSwitchView={(v) => setView(v)} /> : (
-        <div className="absolute left-[80px] right-0 top-0 bottom-0">
+        <div
+          className="absolute left-[80px] right-0 top-0 bottom-0"
+          style={{ backgroundColor: KNOWLEDGE_WORKSPACE_BG }}
+        >
           <div className="relative h-full w-full">
-            <LandingView onNavigate={() => setView("library")} />
-          {/* Pink glow right */}
-          <div className="absolute left-[80.29%] top-[18.9%] flex h-[114px] w-[131px] items-center justify-center pointer-events-none">
-            <div className="rotate-[15deg]">
-              <div className="relative h-[88px] w-[112px]">
-                <img  src={`${PL}/glow-pink-right.svg`} alt="" className="absolute block" style={{ inset: "-56.82% -44.64%", maxWidth: "none", width: "189%", height: "214%" }} draggable={false} />
-              </div>
-            </div>
-          </div>
-          {/* Video card right (rotated 10°) */}
-          <div className="absolute left-[83.09%] top-[5.9%] flex h-[224.75px] w-[192.3px] items-center justify-center">
-            <div className="rotate-[10deg]">
-              <div className="relative h-[200px] w-[160px] overflow-hidden rounded-2xl">
-                <div className="absolute inset-0 pointer-events-none rounded-2xl">
-                  <div className="absolute inset-0 overflow-hidden rounded-2xl">
-                    <img  src={`${PL}/video-card-right-bg.webp`} alt="" className="absolute" style={{ height: "164%", left: "-12.35%", top: "-0.2%", width: "153.75%", maxWidth: "none" }} draggable={false} />
-                  </div>
-                  <div className="absolute inset-0 rounded-2xl" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.1), rgba(0,0,0,0.02) 55%, rgba(0,0,0,0))" }} />
-                </div>
-                <div className="absolute left-[129.24px] top-[7.89px] flex size-[24px] items-center justify-center">
-                  <div className="flex size-[24px] items-center justify-center rounded-full bg-[rgba(0,0,0,0.1)]">
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 1L8 5L2 9V1Z" fill="white"/></svg>
-                  </div>
-                </div>
-                <div className="absolute left-0 top-[154px] flex w-[160px] items-center justify-center px-5 py-3">
-                  <span className="whitespace-nowrap text-[14px] font-semibold leading-[22px] text-[#111]">心流2.0正式上线</span>
-                </div>
-                <div className="absolute inset-0 pointer-events-none rounded-2xl" style={{ boxShadow: "inset 1.413px 1.413px 2.826px 0px rgba(0,0,0,0.05), inset -1.413px -1.413px 2.826px 0px rgba(255,255,255,0.5)" }} />
-              </div>
-            </div>
-          </div>
-          {/* News card "知识简报" */}
-          <div className="absolute left-[calc(75%-25px)] top-[43.7%] flex h-[103.32px] w-[297.94px] items-center justify-center">
-            <div style={{ transform: "rotate(3.82deg)" }}>
-              <div className="relative flex items-center gap-2 rounded-2xl bg-white p-3" style={{ width: 274 }}>
-                <img  src={`${PL}/news-card-img.webp`} alt="" className="size-[60px] shrink-0 rounded object-cover" draggable={false} />
-                <div className="flex w-[201px] shrink-0 flex-col gap-2">
-                  <div className="flex items-center gap-1">
-                    <span className="shrink-0 rounded-[5px] bg-[rgba(255,115,89,0.12)] px-2 py-1 text-[10px] font-medium text-[#ff7359]">热点</span>
-                    <span className="whitespace-nowrap text-[14px] font-semibold leading-[22px] text-[#26262e]">2026高考作文题目全汇总</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="shrink-0 rounded-[5px] bg-[rgba(77,178,115,0.12)] px-2 py-1 text-[10px] font-medium text-[#4db273]">政策</span>
-                    <span className="whitespace-nowrap text-[14px] font-semibold leading-[22px] text-[#26262e]">教育部发布新录取规则</span>
-                  </div>
-                </div>
-                <div className="absolute inset-0 pointer-events-none rounded-2xl" style={{ boxShadow: "inset 1.413px 1.413px 2.826px 0px rgba(0,0,0,0.05), inset -1.413px -1.413px 2.826px 0px rgba(255,255,255,0.5)" }} />
-              </div>
-            </div>
-          </div>
-          {/* Pink glow for news card */}
-          <div className="absolute left-[87.65%] top-[46.2%] flex h-[114px] w-[131px] items-center justify-center pointer-events-none">
-            <div className="rotate-[15deg]">
-              <div className="relative h-[88px] w-[112px]">
-                <img  src={`${PL}/glow-pink-right.svg`} alt="" className="absolute block" style={{ inset: "-56.82% -44.64%", maxWidth: "none", width: "189%", height: "214%" }} draggable={false} />
-            </div>
-          </div>
-          </div>
+            <LandingView onNavigate={() => setView("library")} tall={isTallLanding} />
           {/* Feature cards — fan spread on hover, lives inside the same landing container */}
           <div className="absolute inset-0 pointer-events-none">
             {featureCards.map((card, i) => {
               const isHov = hoveredCard === i;
               const anyHov = hoveredCard !== null;
+              const restingLift = isTallLanding ? 28 : 0;
 
               const diff = hoveredCard !== null ? i - hoveredCard : 0;
               const dx = anyHov && !isHov ? diff * 52 : 0;
-              const dy = isHov ? -178 : anyHov ? -105 : 0;
+              // Resting cards sit higher on the 1000px board. Compensate by the
+              // same amount during hover so every animated end position is unchanged.
+              const dy = isHov ? -178 + restingLift : anyHov ? -105 + restingLift : 0;
               const rot = isHov ? 0 : card.rotation;
               const sc = isHov ? 1.1 : anyHov ? 0.96 : 1;
 
@@ -1615,7 +1804,7 @@ export default function SlidePage0({ initialView = "landing" }: { initialView?: 
                   className="absolute pointer-events-auto"
                   style={{
                     left: card.left,
-                    top: card.top,
+                    top: isTallLanding ? `${Number.parseFloat(card.top) + 76 - restingLift}px` : card.top,
                     zIndex: isHov ? 50 : card.zIndex,
                     transform: `translateX(calc(-50% + ${dx}px)) translateY(${dy}px)`,
                     transition: "transform 0.5s cubic-bezier(0.34, 1.45, 0.64, 1)",

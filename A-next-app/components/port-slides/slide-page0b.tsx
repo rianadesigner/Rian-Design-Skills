@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, type PanInfo } from "motion/react";
 import SlidePage0 from "./slide-page0";
 import { SLIDE_DESIGN_WIDTH } from "./slide-design";
@@ -11,11 +11,11 @@ const imgAi1 = `${P}/ai1-bg.webp`;
 
 // Design canvas dimensions
 const DESIGN_W = SLIDE_DESIGN_WIDTH; // 1440
-const SLIDE_H = 900;
+const SLIDE_H = 1000;
 
 // V2 inner component (SlidePage0) native size
 const INNER_W = 1440;
-const INNER_H = 900;
+const INNER_H = 1000;
 
 // Carousel panel geometry
 const PANEL_L = 120;
@@ -23,7 +23,7 @@ const PANEL_T = 267;       // carousel top (below header)
 const PANEL_W = 1200;
 const PANEL_H = SLIDE_H - PANEL_T; // 633 — remaining height
 
-// Scale SlidePage0 (1440×900) → fit panel width (1200px)
+// Scale SlidePage0 (1440×1000) → fit panel width (1200px)
 const SCALE = PANEL_W / INNER_W; // ≈ 0.8333
 
 const VERSION_META = [
@@ -43,14 +43,8 @@ const VERSION_META = [
 const SNAP_THRESHOLD = 60;
 
 export default function SlidePage0b() {
-  const [active, setActive] = useState(0); // 0 = V1.0, 1 = V2.0
+  const [active, setActive] = useState(1); // 0 = V1.0, 1 = V2.0
   const activeVersion = VERSION_META[active];
-
-  // Auto-advance to V2.0 after 1 second
-  useEffect(() => {
-    const t = setTimeout(() => setActive(1), 2500);
-    return () => clearTimeout(t);
-  }, []);
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     if (info.offset.y < -SNAP_THRESHOLD && active < 1) setActive(1);
@@ -177,8 +171,8 @@ export default function SlidePage0b() {
           {/* ── Panel 1: V2.0 新版 LandingView ── */}
           <div style={{ width: PANEL_W, height: PANEL_H, flexShrink: 0, position: "relative", overflow: "hidden", background: "#f8f8f8" }}>
             {/*
-              SlidePage0 内部设计尺寸 1440×900，缩放至面板宽度 1200px (scale=0.8333)。
-              缩放后高度 750px，在 633px 容器中显示顶部内容，底部由背景填充。
+              SlidePage0 内部设计尺寸 1440×1000，缩放至面板宽度 1200px (scale=0.8333)。
+              缩放后高度约 833px，在 733px 容器中显示顶部内容。
             */}
             <div style={{
               position: "absolute",
@@ -187,9 +181,9 @@ export default function SlidePage0b() {
               height: INNER_H,
               transformOrigin: "top left",
               transform: `scale(${SCALE})`,
-              pointerEvents: "none",
+              pointerEvents: "auto",
             }}>
-              <SlidePage0 initialView="landing" />
+              <SlidePage0 initialView="landing" canvasHeight={1000} />
             </div>
           </div>
         </motion.div>
@@ -301,13 +295,6 @@ export default function SlidePage0b() {
           </div>
         </div>
       </div>
-
-      {/* ── Bottom gradient fade ── */}
-      <div aria-hidden style={{
-        position: "absolute", bottom: 0, left: 0, right: 0, height: "8%",
-        background: "linear-gradient(transparent, #070707)",
-        zIndex: 18, pointerEvents: "none",
-      }} />
     </div>
   );
 }

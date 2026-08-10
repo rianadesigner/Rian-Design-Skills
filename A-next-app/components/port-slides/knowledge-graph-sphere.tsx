@@ -30,7 +30,7 @@ type ScreenBox = ScreenPoint & { width: number; height: number }
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
 const easeOutCubic = (value: number) => 1 - Math.pow(1 - value, 3)
-const GRID_LINE_OPACITY = 0.3
+const GRID_LINE_OPACITY = 0.54
 const pointKey = (point: THREE.Vector3) =>
   `${point.x.toFixed(4)},${point.y.toFixed(4)},${point.z.toFixed(4)}`
 
@@ -38,11 +38,14 @@ export default function KnowledgeGraphSphere({
   selectedId,
   onSelect,
   onOpen,
+  interactionMode = "select",
 }: {
   selectedId: string
-  onSelect: (id: string) => void
-  onOpen: (id: string) => void
+  onSelect?: (id: string) => void
+  onOpen?: (id: string) => void
+  interactionMode?: "select" | "scroll"
 }) {
+  const scrollOnly = interactionMode === "scroll"
   const hostRef = useRef<HTMLDivElement>(null)
   const nodeVisualsRef = useRef(new Map<string, NodeVisual>())
   const selectedIdRef = useRef(selectedId)
@@ -62,7 +65,7 @@ export default function KnowledgeGraphSphere({
     scene.background = null
 
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 50)
-    camera.position.set(0, 0.08, 8.55)
+    camera.position.set(0, 0.08, 8.18)
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
     renderer.setClearColor(0xffffff, 0)
@@ -72,7 +75,9 @@ export default function KnowledgeGraphSphere({
     renderer.domElement.style.inset = "0"
     renderer.domElement.style.width = "100%"
     renderer.domElement.style.height = "100%"
-    renderer.domElement.style.cursor = "grab"
+    renderer.domElement.style.cursor = scrollOnly ? "ns-resize" : "grab"
+    renderer.domElement.style.userSelect = "none"
+    renderer.domElement.style.touchAction = scrollOnly ? "pan-y" : "none"
     renderer.domElement.style.zIndex = "1"
     host.appendChild(renderer.domElement)
 
@@ -109,6 +114,7 @@ export default function KnowledgeGraphSphere({
     controls.maxDistance = 11.5
     controls.rotateSpeed = 0.42
     controls.zoomSpeed = 0.58
+    controls.enabled = !scrollOnly
 
     const graph = new THREE.Group()
     graph.rotation.set(-0.08, -0.12, 0.025)
@@ -138,7 +144,7 @@ export default function KnowledgeGraphSphere({
     const gridGeometry = new THREE.WireframeGeometry(latticeGeometry)
     latticeGeometry.dispose()
     const gridMaterial = new THREE.LineBasicMaterial({
-      color: 0xb0b6bf,
+      color: 0x858d99,
       transparent: true,
       opacity: reducedMotion ? GRID_LINE_OPACITY : 0,
       depthWrite: false,
@@ -274,8 +280,9 @@ export default function KnowledgeGraphSphere({
         "600 8.3px 'PingFang SC', 'Noto Sans SC', sans-serif"
       labelElement.style.letterSpacing = "0.01em"
       labelElement.style.whiteSpace = "nowrap"
-      labelElement.style.cursor = "pointer"
-      labelElement.style.pointerEvents = "auto"
+      labelElement.style.cursor = scrollOnly ? "default" : "pointer"
+      labelElement.style.pointerEvents = scrollOnly ? "none" : "auto"
+      labelElement.style.userSelect = "none"
       labelElement.style.outline = "none"
       labelElement.style.opacity = "0"
       labelElement.style.transformOrigin = "center"
@@ -298,18 +305,24 @@ export default function KnowledgeGraphSphere({
       labelText.textContent = node.label
       labelElement.append(labelText)
 
-      labelElement.addEventListener("pointerdown", (event) => {
-        event.stopPropagation()
-      })
-      labelElement.addEventListener("click", (event) => {
-        event.stopPropagation()
-        onSelect(node.id)
-      })
-      labelElement.addEventListener("dblclick", (event) => {
-        event.preventDefault()
-        event.stopPropagation()
-        onOpen(node.id)
-      })
+      if (scrollOnly) {
+        labelElement.tabIndex = -1
+        labelElement.setAttribute("aria-hidden", "true")
+        labelElement.removeAttribute("title")
+      } else {
+        labelElement.addEventListener("pointerdown", (event) => {
+          event.stopPropagation()
+        })
+        labelElement.addEventListener("click", (event) => {
+          event.stopPropagation()
+          onSelect?.(node.id)
+        })
+        labelElement.addEventListener("dblclick", (event) => {
+          event.preventDefault()
+          event.stopPropagation()
+          onOpen?.(node.id)
+        })
+      }
 
       // CSS2DRenderer owns the anchor's transform for screen positioning. The
       // visual button is nested inside it so enlarging an active label never
@@ -365,19 +378,47 @@ export default function KnowledgeGraphSphere({
       raycaster.setFromCamera(pointer, camera)
       const hit = raycaster.intersectObjects(nodeMeshes, false)[0]
       const nodeId = hit?.object.userData.nodeId as string | undefined
-      if (nodeId) onSelect(nodeId)
+      if (nodeId) onSelect?.(nodeId)
     }
     const onDoubleClick = (event: MouseEvent) => {
       updatePointer(event)
       raycaster.setFromCamera(pointer, camera)
       const hit = raycaster.intersectObjects(nodeMeshes, false)[0]
       const nodeId = hit?.object.userData.nodeId as string | undefined
-      if (nodeId) onOpen(nodeId)
+      if (nodeId) onOpen?.(nodeId)
     }
-    renderer.domElement.addEventListener("pointerdown", onPointerDown)
-    renderer.domElement.addEventListener("pointermove", onPointerMove)
-    renderer.domElement.addEventListener("pointerup", onPointerUp)
-    renderer.domElement.addEventListener("dblclick", onDoubleClick)
+    let scrollRotationTargetX = 0
+    let scrollRotationTargetY = 0
+    let scrollRotationX = 0
+    let scrollRotationY = 0
+    const onWheelRotate = (event: WheelEvent) => {
+      event.preventDefault()
+      event.stopPropagation()
+      scrollRotationTargetY += event.deltaY * 0.0015
+      scrollRotationTargetX = THREE.MathUtils.clamp(
+        scrollRotationTargetX + event.deltaX * 0.001,
+        -0.42,
+        0.42
+      )
+    }
+    const blockPointerInteraction = (event: PointerEvent) => {
+      event.stopPropagation()
+    }
+
+    if (scrollOnly) {
+      renderer.domElement.addEventListener("wheel", onWheelRotate, {
+        passive: false,
+      })
+      renderer.domElement.addEventListener(
+        "pointerdown",
+        blockPointerInteraction
+      )
+    } else {
+      renderer.domElement.addEventListener("pointerdown", onPointerDown)
+      renderer.domElement.addEventListener("pointermove", onPointerMove)
+      renderer.domElement.addEventListener("pointerup", onPointerUp)
+      renderer.domElement.addEventListener("dblclick", onDoubleClick)
+    }
 
     const resize = () => {
       // The slide is uniformly scaled by its viewport wrapper. Using
@@ -407,6 +448,8 @@ export default function KnowledgeGraphSphere({
     const focusTargetQuaternion = new THREE.Quaternion()
     const focusQuaternion = new THREE.Quaternion()
     const rollQuaternion = new THREE.Quaternion()
+    const scrollQuaternion = new THREE.Quaternion()
+    const scrollEuler = new THREE.Euler(0, 0, 0, "YXZ")
     let focusedSelection = selectedIdRef.current
     let focusStartedAt = Number.NEGATIVE_INFINITY
     let animationFrame = 0
@@ -425,7 +468,8 @@ export default function KnowledgeGraphSphere({
     // Start with the default node facing the camera so its label is centered
     // from the first visible frame rather than drifting in from the sphere edge.
     controls.update()
-    updateFocusTarget(focusedSelection)
+    if (focusedSelection) updateFocusTarget(focusedSelection)
+    else focusTargetQuaternion.copy(graph.quaternion)
     focusFromQuaternion.copy(focusTargetQuaternion)
     focusQuaternion.copy(focusTargetQuaternion)
     graph.quaternion.copy(focusTargetQuaternion)
@@ -550,7 +594,31 @@ export default function KnowledgeGraphSphere({
       // away from the camera axis (and therefore away from the canvas center).
       const roll = reducedMotion ? 0 : Math.sin(elapsed * 0.31) * 0.006
       rollQuaternion.setFromAxisAngle(cameraDirection, roll)
-      graph.quaternion.copy(rollQuaternion).multiply(focusQuaternion)
+      if (scrollOnly) {
+        scrollRotationX = THREE.MathUtils.lerp(
+          scrollRotationX,
+          scrollRotationTargetX,
+          0.08
+        )
+        scrollRotationY = THREE.MathUtils.lerp(
+          scrollRotationY,
+          scrollRotationTargetY,
+          0.08
+        )
+        // Slow ambient spin is always active; wheel input accumulates on top.
+        scrollEuler.set(
+          scrollRotationX + Math.sin(elapsed * 0.22) * 0.055,
+          scrollRotationY + elapsed * 0.068,
+          Math.sin(elapsed * 0.17) * 0.012
+        )
+        scrollQuaternion.setFromEuler(scrollEuler)
+        graph.quaternion
+          .copy(scrollQuaternion)
+          .multiply(rollQuaternion)
+          .multiply(focusQuaternion)
+      } else {
+        graph.quaternion.copy(rollQuaternion).multiply(focusQuaternion)
+      }
       const globeScale = reducedMotion
         ? 1
         : 1 + Math.sin(elapsed * 0.54) * 0.006
@@ -558,6 +626,7 @@ export default function KnowledgeGraphSphere({
 
       graph.updateMatrixWorld(true)
 
+      const hasSelection = Boolean(selectedIdRef.current)
       const relatedIds = getRelatedNodeIds(selectedIdRef.current)
       nodeVisuals.forEach(({ mesh, label, delay }, nodeId) => {
         const entrance = reducedMotion
@@ -572,15 +641,22 @@ export default function KnowledgeGraphSphere({
           .normalize()
           .dot(cameraDirection)
         const depthVisibility = clamp01((facing + 0.5) / 1.25)
-        const depthAdjusted = active
-          ? Math.max(0.78, depthVisibility)
-          : related
-            ? Math.max(0.68, depthVisibility)
-            : 0.07 + depthVisibility * 0.93
-        const stateOpacity = active ? 1 : related ? 0.96 : 0.34
+        const depthAdjusted = !hasSelection
+          ? 0.16 + depthVisibility * 0.84
+          : active
+            ? Math.max(0.78, depthVisibility)
+            : related
+              ? Math.max(0.68, depthVisibility)
+              : 0.07 + depthVisibility * 0.93
+        const stateOpacity = !hasSelection ? 0.88 : active ? 1 : related ? 0.96 : 0.34
         label.style.opacity = String(entrance * stateOpacity * depthAdjusted)
-        label.style.pointerEvents =
-          active || related || depthVisibility > 0.22 ? "auto" : "none"
+        if (!hasSelection)
+          label.style.transform = `scale(${0.88 + depthVisibility * 0.18})`
+        label.style.pointerEvents = scrollOnly
+          ? "none"
+          : active || related || depthVisibility > 0.22
+            ? "auto"
+            : "none"
       })
 
       renderer.render(scene, camera)
@@ -593,10 +669,18 @@ export default function KnowledgeGraphSphere({
     return () => {
       cancelAnimationFrame(animationFrame)
       resizeObserver.disconnect()
-      renderer.domElement.removeEventListener("pointerdown", onPointerDown)
-      renderer.domElement.removeEventListener("pointermove", onPointerMove)
-      renderer.domElement.removeEventListener("pointerup", onPointerUp)
-      renderer.domElement.removeEventListener("dblclick", onDoubleClick)
+      if (scrollOnly) {
+        renderer.domElement.removeEventListener("wheel", onWheelRotate)
+        renderer.domElement.removeEventListener(
+          "pointerdown",
+          blockPointerInteraction
+        )
+      } else {
+        renderer.domElement.removeEventListener("pointerdown", onPointerDown)
+        renderer.domElement.removeEventListener("pointermove", onPointerMove)
+        renderer.domElement.removeEventListener("pointerup", onPointerUp)
+        renderer.domElement.removeEventListener("dblclick", onDoubleClick)
+      }
       controls.dispose()
       scene.traverse((object) => {
         if (
@@ -617,31 +701,38 @@ export default function KnowledgeGraphSphere({
       labelRenderer.domElement.remove()
       nodeVisualsRef.current.clear()
     }
-  }, [onOpen, onSelect])
+  }, [interactionMode, onOpen, onSelect, scrollOnly])
 
   useEffect(() => {
     const relatedIds = getRelatedNodeIds(selectedId)
+    const ambient = !selectedId
 
     nodeVisualsRef.current.forEach(({ mesh, label, dot }, nodeId) => {
       const active = nodeId === selectedId
       const related = relatedIds.has(nodeId)
       mesh.scale.setScalar(active ? 1.22 : related ? 1.08 : 1)
-      label.style.color = active ? "#ffffff" : related ? "#4646bd" : "#69717c"
+      label.style.color = ambient ? "#555d68" : active ? "#ffffff" : related ? "#4646bd" : "#69717c"
       label.style.background = active
         ? "#5c5cff"
         : related
           ? "rgba(244,244,255,0.96)"
-          : "rgba(255,255,255,0.84)"
+          : ambient
+            ? "rgba(255,255,255,0.92)"
+            : "rgba(255,255,255,0.84)"
       label.style.borderColor = active
         ? "#5c5cff"
         : related
           ? "rgba(92,92,255,0.34)"
-          : "rgba(218,222,228,0.52)"
+          : ambient
+            ? "rgba(174,180,192,0.72)"
+            : "rgba(218,222,228,0.52)"
       label.style.boxShadow = active
         ? "0 8px 22px rgba(92,92,255,0.26)"
         : related
           ? "0 6px 16px rgba(92,92,255,0.11)"
-          : "0 5px 14px rgba(24,29,37,0.055)"
+          : ambient
+            ? "0 5px 14px rgba(24,29,37,0.075)"
+            : "0 5px 14px rgba(24,29,37,0.055)"
       label.style.transform = active
         ? "scale(1.3)"
         : related
@@ -651,7 +742,9 @@ export default function KnowledgeGraphSphere({
         ? "#ffffff"
         : related
           ? "#5c5cff"
-          : "#24282e"
+          : ambient
+            ? "#737b86"
+            : "#24282e"
       dot.style.boxShadow = active
         ? "0 0 0 2px rgba(255,255,255,0.18)"
         : related
