@@ -843,7 +843,6 @@ export function ResumePlanner() {
                   originY:        0.5,
                   rotateY,
                   transformStyle: "preserve-3d" as const,
-                  z:              0.5,
                   zIndex:         2,
                   cursor:         isAnimating ? "default" : "pointer",
                 }}
@@ -1041,7 +1040,10 @@ export function ResumePlanner() {
               </motion.div>
 
               {/* ── 装订环（最上层） ─────────────────────────────────────── */}
-              <div className="pointer-events-none absolute left-[485px] top-0 z-[3] h-[700px] w-[30px]">
+              <div
+                className="pointer-events-none absolute left-[485px] top-0 h-[700px] w-[30px]"
+                style={{ zIndex: isAnimating ? 1 : 3 }}
+              >
                 {["108px", "200px", "292px", "384px", "476px", "568px"].map((top) => (
                   <SpineRing key={top} top={top} />
                 ))}
