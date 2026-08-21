@@ -21,6 +21,7 @@ export const allSlideIds = [
   "page0a",
   "page0b",
   "page0c",
+  "page4b",
   "page0d",
   "page0e",
   "page0f",
