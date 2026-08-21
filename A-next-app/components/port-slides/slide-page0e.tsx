@@ -457,6 +457,8 @@ export default function SlidePage0e({ embedded = false }: { embedded?: boolean }
               selectedId={selectedId}
               onSelect={handleNodeSelect}
               onOpen={handleNodeOpen}
+              lineIntensity={0.56}
+              ambientIntensity={0.72}
             />
           </div>
           <WikiSidebar />

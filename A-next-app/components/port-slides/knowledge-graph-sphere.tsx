@@ -39,13 +39,23 @@ export default function KnowledgeGraphSphere({
   onSelect,
   onOpen,
   interactionMode = "select",
+  lineIntensity = 1,
+  ambientIntensity = 1,
 }: {
   selectedId: string
   onSelect?: (id: string) => void
   onOpen?: (id: string) => void
   interactionMode?: "select" | "scroll"
+  lineIntensity?: number
+  ambientIntensity?: number
 }) {
   const scrollOnly = interactionMode === "scroll"
+  const resolvedLineIntensity = THREE.MathUtils.clamp(lineIntensity, 0, 1)
+  const resolvedAmbientIntensity = THREE.MathUtils.clamp(
+    ambientIntensity,
+    0,
+    1
+  )
   const hostRef = useRef<HTMLDivElement>(null)
   const nodeVisualsRef = useRef(new Map<string, NodeVisual>())
   const selectedIdRef = useRef(selectedId)
@@ -61,15 +71,28 @@ export default function KnowledgeGraphSphere({
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches
+    const coarsePointer = window.matchMedia("(pointer: coarse)").matches
+    const isIPad =
+      navigator.maxTouchPoints > 1 && /Macintosh|iPad/i.test(navigator.userAgent)
+    const constrainedDevice = coarsePointer || isIPad
+    const targetFrameInterval = constrainedDevice ? 1000 / 30 : 1000 / 60
+    const gridLineOpacity =
+      GRID_LINE_OPACITY * resolvedLineIntensity * resolvedAmbientIntensity
     const scene = new THREE.Scene()
     scene.background = null
 
     const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 50)
     camera.position.set(0, 0.08, 8.18)
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    const renderer = new THREE.WebGLRenderer({
+      antialias: !constrainedDevice,
+      alpha: true,
+      powerPreference: constrainedDevice ? "low-power" : "high-performance",
+    })
     renderer.setClearColor(0xffffff, 0)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.65))
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio, constrainedDevice ? 1 : 1.5)
+    )
     renderer.outputColorSpace = THREE.SRGBColorSpace
     renderer.domElement.style.position = "absolute"
     renderer.domElement.style.inset = "0"
@@ -146,7 +169,7 @@ export default function KnowledgeGraphSphere({
     const gridMaterial = new THREE.LineBasicMaterial({
       color: 0x858d99,
       transparent: true,
-      opacity: reducedMotion ? GRID_LINE_OPACITY : 0,
+      opacity: reducedMotion ? gridLineOpacity : 0,
       depthWrite: false,
       depthTest: false,
     })
@@ -225,7 +248,9 @@ export default function KnowledgeGraphSphere({
           line.setAttribute("pathLength", "1")
           line.setAttribute("stroke-dasharray", "1")
           line.setAttribute("stroke-dashoffset", reducedMotion ? "0" : "1")
-          line.style.opacity = reducedMotion ? "0.8" : "0"
+          line.style.opacity = reducedMotion
+            ? String(0.82 * resolvedLineIntensity)
+            : "0"
           relationLayer.appendChild(line)
 
           relationPaths.push({
@@ -252,7 +277,11 @@ export default function KnowledgeGraphSphere({
         depthWrite: false,
       })
       const mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(0.075, 22, 18),
+        new THREE.SphereGeometry(
+          0.075,
+          constrainedDevice ? 12 : 18,
+          constrainedDevice ? 8 : 14
+        ),
         material
       )
       mesh.position.copy(positionMap.get(node.id)!)
@@ -438,6 +467,20 @@ export default function KnowledgeGraphSphere({
     resizeObserver.observe(host)
     resize()
 
+    let isInViewport = true
+    let isDocumentVisible = !document.hidden
+    const intersectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        isInViewport = entry.isIntersecting
+      },
+      { rootMargin: "120px", threshold: 0.01 }
+    )
+    intersectionObserver.observe(host)
+    const onVisibilityChange = () => {
+      isDocumentVisible = !document.hidden
+    }
+    document.addEventListener("visibilitychange", onVisibilityChange)
+
     const clock = new THREE.Clock()
     const worldPosition = new THREE.Vector3()
     const surfaceNormal = new THREE.Vector3()
@@ -510,6 +553,7 @@ export default function KnowledgeGraphSphere({
     }
 
     const updateRelationPathGeometry = (elapsed: number) => {
+      if (relationPaths.length === 0) return
       const width = host.clientWidth
       const height = host.clientHeight
       const hostBounds = host.getBoundingClientRect()
@@ -557,16 +601,24 @@ export default function KnowledgeGraphSphere({
           ? 1
           : easeOutCubic(clamp01((elapsed - highlightStartedAt - delay) / 0.58))
         line.setAttribute("stroke-dashoffset", String(1 - progress))
-        line.style.opacity = String(0.82 * progress)
+        line.style.opacity = String(
+          0.82 * resolvedLineIntensity * progress
+        )
       })
     }
 
-    const animate = () => {
+    let lastFrameAt = Number.NEGATIVE_INFINITY
+    const animate = (frameTime = performance.now()) => {
+      animationFrame = requestAnimationFrame(animate)
+      if (!isInViewport || !isDocumentVisible) return
+      if (frameTime - lastFrameAt < targetFrameInterval) return
+      lastFrameAt = frameTime
+
       const elapsed = clock.getElapsedTime()
       const globeProgress = reducedMotion
         ? 1
         : easeOutCubic(clamp01(elapsed / 0.78))
-      gridMaterial.opacity = GRID_LINE_OPACITY * globeProgress
+      gridMaterial.opacity = gridLineOpacity * globeProgress
 
       if (highlightedSelection !== selectedIdRef.current)
         rebuildHighlightedGridPaths(selectedIdRef.current, elapsed)
@@ -648,7 +700,13 @@ export default function KnowledgeGraphSphere({
             : related
               ? Math.max(0.68, depthVisibility)
               : 0.07 + depthVisibility * 0.93
-        const stateOpacity = !hasSelection ? 0.88 : active ? 1 : related ? 0.96 : 0.34
+        const stateOpacity = !hasSelection
+          ? 0.88 * resolvedAmbientIntensity
+          : active
+            ? 1
+            : related
+              ? 0.96
+              : 0.34 * resolvedAmbientIntensity
         label.style.opacity = String(entrance * stateOpacity * depthAdjusted)
         if (!hasSelection)
           label.style.transform = `scale(${0.88 + depthVisibility * 0.18})`
@@ -662,13 +720,14 @@ export default function KnowledgeGraphSphere({
       renderer.render(scene, camera)
       labelRenderer.render(scene, camera)
       updateRelationPathGeometry(elapsed)
-      animationFrame = requestAnimationFrame(animate)
     }
     animate()
 
     return () => {
       cancelAnimationFrame(animationFrame)
       resizeObserver.disconnect()
+      intersectionObserver.disconnect()
+      document.removeEventListener("visibilitychange", onVisibilityChange)
       if (scrollOnly) {
         renderer.domElement.removeEventListener("wheel", onWheelRotate)
         renderer.domElement.removeEventListener(
@@ -701,7 +760,14 @@ export default function KnowledgeGraphSphere({
       labelRenderer.domElement.remove()
       nodeVisualsRef.current.clear()
     }
-  }, [interactionMode, onOpen, onSelect, scrollOnly])
+  }, [
+    interactionMode,
+    onOpen,
+    onSelect,
+    resolvedAmbientIntensity,
+    resolvedLineIntensity,
+    scrollOnly,
+  ])
 
   useEffect(() => {
     const relatedIds = getRelatedNodeIds(selectedId)

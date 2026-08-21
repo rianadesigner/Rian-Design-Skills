@@ -1,5 +1,5 @@
-import { ResumePlanner } from "@/components/resume-planner";
+import { ResumeExperience } from "@/components/resume-experience";
 
 export default function Page() {
-  return <ResumePlanner />;
+  return <ResumeExperience />;
 }
