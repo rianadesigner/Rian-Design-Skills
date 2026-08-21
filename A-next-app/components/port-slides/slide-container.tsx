@@ -54,7 +54,9 @@ const SlidePage10 = lazy(() => import("./slide-page10"))
 const SlidePage11 = lazy(() => import("./slide-page11"))
 const SlidePage12 = lazy(() => import("./slide-page12"))
 const SlidePage13 = lazy(() => import("./slide-page13"))
-const SlideAiPlatformOverview = lazy(() => import("./slide-ai-platform-overview"))
+const SlideAiPlatformOverview = lazy(
+  () => import("./slide-ai-platform-overview")
+)
 const SlidePage14 = lazy(() => import("./slide-page14"))
 const SlidePage15 = lazy(() => import("./slide-page15"))
 const SlidePage16 = lazy(() => import("./slide-page16"))
@@ -76,11 +78,21 @@ const SlideOtherSearchProjects = lazy(
 )
 const SlidePage27 = lazy(() => import("./slide-page27"))
 const SlideVideoUserJourney = lazy(() => import("./slide-video-user-journey"))
-const SlideVideoRecommendationUpload = lazy(() => import("./slide-video-recommendation-upload"))
-const SlideVideoConcurrentTasks = lazy(() => import("./slide-video-concurrent-tasks"))
-const SlideVideoContextSystem = lazy(() => import("./slide-video-context-system"))
-const SlideVideoTemplateRemix = lazy(() => import("./slide-video-template-remix"))
-const SlideVideoEntryExperience = lazy(() => import("./slide-video-entry-experience"))
+const SlideVideoRecommendationUpload = lazy(
+  () => import("./slide-video-recommendation-upload")
+)
+const SlideVideoConcurrentTasks = lazy(
+  () => import("./slide-video-concurrent-tasks")
+)
+const SlideVideoContextSystem = lazy(
+  () => import("./slide-video-context-system")
+)
+const SlideVideoTemplateRemix = lazy(
+  () => import("./slide-video-template-remix")
+)
+const SlideVideoEntryExperience = lazy(
+  () => import("./slide-video-entry-experience")
+)
 const SlideVideoAsyncLoop = lazy(() => import("./slide-video-async-loop"))
 const SlidePage28 = lazy(() => import("./slide-page28"))
 const SlidePage29 = lazy(() => import("./slide-page29"))
@@ -1006,12 +1018,13 @@ export default function SlideContainer({
     }
 
     // 只预取当前前后 1 页；用户确实进入封面/content0 后，再延后预热可点击跳转目标。
-    const nearVisibleIndices = preloadPolicy.assetLimit === 0
-      ? [current + 1]
-      : [current + 1, current - 1]
+    const nearVisibleIndices =
+      preloadPolicy.assetLimit === 0
+        ? [current + 1]
+        : [current + 1, current - 1]
     const near = Array.from(new Set(nearVisibleIndices))
-      .filter((visibleIndex) =>
-        visibleIndex >= 0 && visibleIndex < slideIds.length
+      .filter(
+        (visibleIndex) => visibleIndex >= 0 && visibleIndex < slideIds.length
       )
       .map((visibleIndex) => allSlideIds.indexOf(slideIds[visibleIndex]))
       .filter((index) => index >= 0 && index < allImports.length)
@@ -1249,9 +1262,7 @@ export default function SlideContainer({
                           <Slide {...slideProps} />
                         </Suspense>
                       </div>
-                      {current > 0 && (
-                        <SlideCornerMarks />
-                      )}
+                      {current > 0 && <SlideCornerMarks />}
                     </motion.div>
                   </AnimatePresence>
                 )

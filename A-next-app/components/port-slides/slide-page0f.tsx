@@ -729,7 +729,7 @@ export default function SlidePage0f() {
         .demo-viewport .interaction-overlay-enter {
           transition: opacity 160ms ease-out, visibility 160ms ease-out;
         }
-        @media (hover: hover) and (pointer: fine) {
+        @media (any-hover: hover) and (any-pointer: fine) {
           .demo-viewport:hover .interaction-overlay-enter {
             opacity: 0 !important;
             visibility: hidden;

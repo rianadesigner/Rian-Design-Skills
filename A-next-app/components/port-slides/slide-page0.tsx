@@ -2,11 +2,15 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, useSpring, useMotionValue } from "motion/react";
-import KnowledgeGraphSphere from "./knowledge-graph-sphere";
+import dynamic from "next/dynamic";
 
 const P0 = "/images/page0";
 const PL = "/images/page0-landing";
 const KNOWLEDGE_WORKSPACE_BG = "#f8f8f8";
+const KnowledgeGraphSphere = dynamic(
+  () => import("./knowledge-graph-sphere"),
+  { ssr: false, loading: () => null }
+);
 
 /* ═══════════════════════════════════════════════════════════════
    Shared Icon Components (inline SVG from Figma exports)
@@ -311,7 +315,7 @@ function Navigation({ view, onSwitch }: { view: ViewType; onSwitch: (v: ViewType
   const isLanding = view === "landing";
   return (
     <div
-      className="absolute left-4 top-4 z-50 flex flex-col items-center justify-between rounded-2xl px-3 py-4"
+      className={`absolute left-4 top-4 z-50 flex flex-col items-center justify-between rounded-2xl px-3 py-4 ${isLanding ? "landing-nav-glass" : ""}`}
       style={{
         width: 64,
         height: "calc(100% - 32px)",
@@ -607,7 +611,6 @@ function LandingView({ onNavigate, tall = false }: { onNavigate?: () => void; ta
         style={{
           top: tall ? -82 : -104,
           height: tall ? 760 : 716,
-          filter: "drop-shadow(0 28px 34px rgba(67,74,102,0.12)) contrast(1.06)",
           maskImage:
             "radial-gradient(ellipse 63% 58% at 50% 50%, black 34%, rgba(0,0,0,.78) 64%, transparent 100%)",
           WebkitMaskImage:
@@ -1774,6 +1777,13 @@ export default function SlidePage0({ initialView = "landing", canvasHeight = 900
           100%{transform:translateX(430%) skewX(-18deg);opacity:0}
         }
         .knowledge-cta:hover .knowledge-cta-shine{animation:knowledge-cta-sweep .82s cubic-bezier(.22,.7,.25,1) forwards}
+        @media (hover: none) and (pointer: coarse) {
+          .landing-nav-glass {
+            background: rgba(255,255,255,.62) !important;
+            -webkit-backdrop-filter: blur(10px) saturate(1.12) !important;
+            backdrop-filter: blur(10px) saturate(1.12) !important;
+          }
+        }
       `}</style>
       {view !== "agent" && <Navigation view={view} onSwitch={setView} />}
       {view === "agent" ? <AgentView onBack={() => setView("graph")} onHome={() => setView("library")} /> : view === "graph" ? <GraphView onSwitchView={(v) => setView(v)} /> : view === "library" ? <LibraryView onSwitchView={(v) => setView(v)} /> : (

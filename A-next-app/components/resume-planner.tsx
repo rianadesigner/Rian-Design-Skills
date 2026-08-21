@@ -28,9 +28,9 @@ const CURL_MAX_PX = 92
 // 仅悬停时卷边强度（相对 pageCurl 0–1，略低于翻页峰值以区分）
 const HOVER_CURL = 0.82
 
-type SkillDockItem = { label: string; src: string }
+export type SkillDockItem = { label: string; src: string }
 
-const skillDockItems: SkillDockItem[] = [
+export const skillDockItems: SkillDockItem[] = [
   { label: "Vibe Coding",  src: iconAiCoding },
   { label: "Vibe Design",  src: iconFigma },
   { label: "Design Skill", src: iconDesignSkill },
@@ -93,7 +93,7 @@ function CornerDecorDots({ variant }: { variant: "swapped" | "normal" }) {
 }
 
 /** Highlights 卡片：与 Figma 65:478 顺序与文案一致；截图为导出资源 */
-type HighlightCardData = {
+export type HighlightCardData = {
   title: string
   description: string
   period: string
@@ -108,7 +108,17 @@ type HighlightCardData = {
   imgClassName: string
 }
 
-const highlightCards: readonly HighlightCardData[] = [
+export const highlightCards: readonly HighlightCardData[] = [
+  {
+    title:       "if Studio Design Agent",
+    description: "Skill孵化/案例上新/对外宣推",
+    period:      "2026",
+    image:       "/resume/highlights/if-studio-design-agent.png",
+    outerRadius: "rounded-[8px]",
+    frameRadius: "rounded-lg",
+    frameTint:   "mist",
+    imgClassName: "absolute inset-0 h-full w-full max-w-none object-cover object-top",
+  },
   {
     title:       "IFlow LLM Wiki",
     description: "本地文件/项目文资料/云端仓库接入",
@@ -138,16 +148,6 @@ const highlightCards: readonly HighlightCardData[] = [
     frameRadius: "rounded",
     frameTint:   "mist",
     imgClassName: "absolute left-0 top-[0.19%] h-[88.54%] w-full max-w-none object-cover",
-  },
-  {
-    title:       "iFlow CLI",
-    description: "UNIX美学范式下的开源编程AI助手",
-    period:      "2025",
-    image:       "/resume/highlights/cli.png",
-    outerRadius: "rounded-[4px]",
-    frameRadius: "rounded",
-    frameTint:   "mist",
-    imgClassName: "absolute left-0 top-[-7.52%] h-[142.43%] w-full max-w-none object-cover object-top",
   },
   {
     title:       "iFlow AI搜索",
@@ -191,16 +191,24 @@ const highlightCards: readonly HighlightCardData[] = [
   },
 ] as const
 
-const topTags    = ["Multi-Agent 规划&执行", "AIGC 图视频创意生成", "项目/本地/云端知识库搭建"] as const
-const bottomTags = ["Vibe Coding", "APP & Web Builder", "Design Skills", "Cursor Vibe Design"] as const
+export const topTags    = ["Multi-Agent 规划&执行", "AIGC 图视频创意生成", "项目/本地/云端知识库搭建"] as const
+export const bottomTags = ["Vibe Coding", "APP & Web Builder", "Design Skills", "Cursor Vibe Design"] as const
 
-type CareerBody  = { type: "text"; text: string } | { type: "paragraphs"; paragraphs: string[] }
-type CareerEntry = { period: string; title: string; body: CareerBody }
+export type CareerBody  = { type: "text"; text: string } | { type: "paragraphs"; paragraphs: string[] }
+export type CareerEntry = { period: string; title: string; body: CareerBody }
 
 const careerEntries: CareerEntry[] = [
   {
-    period: "2024.04 - now",
-    title:  "淘天集团·高级体验设计师（心流产品角色）",
+    period: "2026.04-now",
+    title:  "if Studio：产品运营&UX设计",
+    body: {
+      type: "text",
+      text: "围绕 Skill 全生命周期开展能力建设：完善 Skill 从开发验证到上线运营的机制，推动高价值 Skill 持续产出；建设并运营技能广场，持续丰富优质内容与应用场景；提炼平台能力与标杆案例，通过内容包装、演示传播和场景化方案加强能力外宣；探索技能商品化与售卖模式，逐步形成可持续的 Skill 内容生态与商业闭环。",
+    },
+  },
+  {
+    period: "2024.04-2026.04",
+    title:  "iFlow 心流：用户产品&UX设计",
     body: {
       type: "paragraphs",
       paragraphs: [
@@ -211,7 +219,7 @@ const careerEntries: CareerEntry[] = [
   },
   {
     period: "2022.01 - 2024.03",
-    title:  "淘天集团 · 体验设计师",
+    title:  "星链&万相营造：UX设计",
     body: {
       type: "paragraphs",
       paragraphs: [
@@ -247,12 +255,12 @@ const careerEntries: CareerEntry[] = [
   },
 ]
 
-const workEntries = careerEntries.slice(0, 4)
-const eduEntries  = careerEntries.slice(4)
+export const workEntries = careerEntries.slice(0, 5)
+export const eduEntries  = careerEntries.slice(5)
 
 const bodyFont = "font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif]"
 
-const PROFILE_BIO_LINES = [
+export const PROFILE_BIO_LINES = [
   "同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验",
   "经验驱动，独当一面：负责AI原生产品与电商创意能力研发及应用",
   "视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系",
@@ -334,13 +342,114 @@ const RESUME_MOBILE_PAGE_H = 700
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+/** Career 页的稳定内容层，同时用于落地底页与翻动纸张背面。 */
+function CareerPageContent() {
+  return (
+    <>
+      <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+        <span className={cn(bodyFont, "text-[12px] leading-5")}>Career</span>
+        <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+        <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>3/4</span>
+      </div>
+
+      <div className="absolute left-[56px] top-[76px] w-[388px]">
+        <div className="mb-4 flex items-baseline gap-x-2">
+          <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Career</h2>
+          <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>从学习到实习到正式工作的设计生涯</p>
+        </div>
+        <CareerList entries={workEntries} compact />
+      </div>
+    </>
+  )
+}
+
+/** Highlights 页的稳定内容层，用于反向翻页时的右侧落地页。 */
+function HighlightsPageContent() {
+  return (
+    <>
+      <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
+        <div className="-rotate-[5deg] size-[400px]">
+          <PlannerBotanicalWatermark />
+        </div>
+      </div>
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-6" style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
+      <CornerDecorDots variant="normal" />
+
+      <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+        <span className={cn(bodyFont, "text-[12px] leading-5")}>Highlights</span>
+        <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+        <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>2/4</span>
+      </div>
+
+      <div className="absolute left-[56px] right-[56px] top-[76px] flex items-baseline gap-x-3">
+        <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Highlights</h2>
+        <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>AI 核心工作项目</p>
+      </div>
+
+      <div className="absolute left-[56px] top-[111px] w-[388px]">
+        <div className="grid w-[388px] grid-cols-2 gap-2">
+          {highlightCards.map((card) => (
+            <article
+              key={card.title}
+              className={cn(
+                bodyFont,
+                "relative h-[134px] w-[190px] shrink-0 overflow-hidden border border-[rgba(23,23,23,0.08)]",
+                card.outerRadius,
+              )}
+              style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}
+            >
+              <h3 className="absolute left-[9px] right-[36px] top-[7px] overflow-hidden whitespace-nowrap text-[11px] font-semibold leading-5 tracking-[0.02em] text-[#171717]">
+                {card.title}
+              </h3>
+              <p className="absolute left-[9px] top-[29px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">
+                {card.description}
+              </p>
+              <span className="absolute right-[9px] top-[8px] text-right text-[10px] leading-[18px] text-[#ba6d73]">
+                {card.period}
+              </span>
+              <div
+                className={cn(
+                  "absolute left-[9px] top-[52px] h-[120px] w-[170px] overflow-hidden border-[0.5px] border-[#f2f3f5]",
+                  card.frameRadius,
+                )}
+              >
+                <div
+                  aria-hidden
+                  className={cn(
+                    "pointer-events-none absolute inset-0",
+                    card.frameRadius,
+                    card.frameTint === "white" ? "bg-white" : "bg-[rgba(255,255,255,0.5)]",
+                  )}
+                />
+                <div className={cn("absolute inset-0 overflow-hidden", card.frameRadius)}>
+                  <img
+                    alt=""
+                    src={card.image}
+                    width={340}
+                    height={240}
+                    draggable={false}
+                    className={cn(card.imgClassName)}
+                  />
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+
 export function ResumePlanner() {
   const wrapperRef  = useRef<HTMLDivElement>(null)
   const [scale, setScale]         = useState(1)
   const [avatarSrc, setAvatarSrc] = useState(AVATAR_FROM_DEMO2)
-  const [isFlipped,   setIsFlipped]   = useState(false)
-  const [hasFlipped,  setHasFlipped]  = useState(false)
-  const [isAnimating, setIsAnimating] = useState(false)
+  // 翻页方向与播放锁只参与交互控制，不参与渲染；使用 ref 避免动画收尾时
+  // React 重新提交整棵 3D 纸页，造成短暂的空白合成帧。
+  const isFlippedRef  = useRef(false)
+  const isAnimatingRef = useRef(false)
 
   // MotionValue 驱动 3D 翻页：角度 0 → -180
   const rotateY    = useMotionValue<number>(0)
@@ -359,13 +468,21 @@ export function ResumePlanner() {
   const frontFaceVisible = useTransform(rotateY, (r): number => (r > -89 ? 1 : 0))
   const backFaceVisible  = useTransform(rotateY, (r): number => (r <= -89 ? 1 : 0))
   /**
-   * Layer0 右页（Education/Skills）：不按角度隐藏。
-   * 第四页始终在纸片下层完整渲染，靠上层不透明版面挡住；掀开时再露出，避免临近竖页时突然闪现。
-   *
-   * 左页 Profile：须在纸片**物理盖住**之后再淡出（见 layer0LeftOpacity）。
-   * 仅在 rotateY 接近落页末尾（背面即将铺满左半屏）时 1→0；其余区间保持可见。
+   * 反向翻页时，目标跨页（Profile + Highlights）必须同步接管。
+   * 在 -104° → -92° 的短区间内完成交接，避免 Profile 已露出而右侧仍是 Education。
+   * 正向翻页仍保留原来的物理揭页逻辑：Profile 仅在 Career 即将落稳时淡出。
    */
-  const layer0LeftOpacity = useTransform(rotateY, [-178, -165], [0, 1])
+  const layer0LeftOpacity = useTransform([rotateY, curlDir], ([r, d]): number => {
+    const angle = Number(r)
+    if (Number(d) === -1) return Math.min(1, Math.max(0, (angle + 104) / 12))
+    if (angle <= -178) return 0
+    if (angle >= -165) return 1
+    return (angle + 178) / 13
+  })
+  const settledHighlightsOpacity = useTransform([rotateY, curlDir], ([r, d]): number => {
+    if (Number(d) !== -1) return 0
+    return Math.min(1, Math.max(0, (Number(r) + 104) / 12))
+  })
   /** 切掉被卷起的页角，避免出现「直角底层 + 卷边」双层一角 */
   const clipPathFront = useTransform(brCurlSize, (s) =>
     s < 1
@@ -426,10 +543,10 @@ export function ResumePlanner() {
    * pageCurl + curlSize：翻起前期右下角/左下角短暂卷起，过 90° 前收回，与 foldShadow / edgeGlow 衔接。
    */
   const doFlip = () => {
-    if (isAnimating) return
-    setIsAnimating(true)
+    if (isAnimatingRef.current) return
+    isAnimatingRef.current = true
 
-    const forward   = !isFlipped
+    const forward   = !isFlippedRef.current
     const cur       = rotateY.get()
     const target    = forward ? -180 : 0
     const over      = forward ? target - OVERSHOOT : target + OVERSHOOT
@@ -463,20 +580,19 @@ export function ResumePlanner() {
       times:    [0, 0.38, 0.87, 1.0],
       ease:     ["easeIn", "easeOut", "easeInOut"] as const,
     }).then(() => {
-      setIsFlipped((v) => !v)
-      setHasFlipped(true)
-      setIsAnimating(false)
+      isFlippedRef.current = forward
+      isAnimatingRef.current = false
     })
   }
 
   /** 悬停：不抬页，仅用页脚卷边提示可交互（正面右下 / 背面左下） */
   const handleHoverStart = () => {
-    if (isAnimating) return
-    curlDir.set(isFlipped ? -1 : 1)
+    if (isAnimatingRef.current) return
+    curlDir.set(isFlippedRef.current ? -1 : 1)
     animate(pageCurl, HOVER_CURL, { duration: 0.32, ease: "easeOut" })
   }
   const handleHoverEnd = () => {
-    if (isAnimating) return
+    if (isAnimatingRef.current) return
     animate(pageCurl, 0, { duration: 0.26, ease: "easeOut" })
   }
 
@@ -561,8 +677,8 @@ export function ResumePlanner() {
                 <div className="grid w-[388px] grid-cols-2 gap-2">
                   {highlightCards.map((card) => (
                     <article key={card.title} className={cn(bodyFont, "relative h-[134px] w-[190px] shrink-0 overflow-hidden border border-[rgba(23,23,23,0.08)]", card.outerRadius)} style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}>
-                      <h3 className="absolute left-[9px] top-[7px] pr-12 text-[12px] font-semibold leading-5 tracking-[-0.02em] text-[#171717]">{card.title}</h3>
-                      <p className="absolute left-[9px] top-[31px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">{card.description}</p>
+                      <h3 className="absolute left-[9px] right-[36px] top-[7px] overflow-hidden whitespace-nowrap text-[11px] font-semibold leading-5 tracking-[0.02em] text-[#171717]">{card.title}</h3>
+                      <p className="absolute left-[9px] top-[29px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">{card.description}</p>
                       <span className="absolute right-[9px] top-[8px] text-right text-[10px] leading-[18px] text-[#ba6d73]">{card.period}</span>
                       <div className={cn("absolute left-[9px] top-[52px] h-[120px] w-[170px] overflow-hidden border-[0.5px] border-[#f2f3f5]", card.frameRadius)}>
                         <div aria-hidden className={cn("pointer-events-none absolute inset-0", card.frameRadius, card.frameTint === "white" ? "bg-white" : "bg-[rgba(255,255,255,0.5)]")} />
@@ -588,7 +704,7 @@ export function ResumePlanner() {
                   <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Career</h2>
                   <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>从学习到实习到正式工作的设计生涯</p>
                 </div>
-                <CareerList entries={workEntries} />
+                <CareerList entries={workEntries} compact />
               </div>
             </div>
 
@@ -667,15 +783,15 @@ export function ResumePlanner() {
       </div>
 
       {/* ── 桌面端双页展开（≥ sm） ────────────────────────────────────────────── */}
-      <div ref={wrapperRef} className="hidden sm:flex flex-1 w-full min-h-0 items-center justify-center overflow-hidden">
+      <div ref={wrapperRef} className="hidden sm:flex flex-1 w-full min-h-0 items-center justify-center overflow-visible">
         <div className="relative mx-auto shrink-0 overflow-visible" style={{ width: `${RESUME_DESIGN_W * scale}px`, height: `${RESUME_DESIGN_H * scale}px` }}>
           <div
             className="absolute left-0 top-0 h-[700px] w-[1000px] origin-top-left"
             style={{ transform: `scale(${scale})` }}
           >
-              {/* ── 透视舞台 ──────────────────────────────────────────────── */}
+            {/* ── 透视舞台：不做整书裁切，翻动页可按真实透视越出静态书页 ── */}
             <div
-              className="absolute inset-0"
+              className="absolute inset-0 overflow-visible"
               style={{
                 perspective: "1400px",
                 perspectiveOrigin: "50% 48%",
@@ -694,8 +810,23 @@ export function ResumePlanner() {
                 style={{ background: GRAD_R }}
               />
 
+              {/*
+               * Career 的稳定落地页始终存在于左页底层。
+               * 翻动纸张只负责 3D 遮挡；当 Profile 被纸张盖住并淡出后，
+               * Career 会立即从其下方露出，避免落到 -180° 时依赖背面合成而闪白。
+               */}
+              <div
+                className="absolute inset-y-0 left-0 w-[500px] overflow-hidden rounded-l-[12px]"
+                style={{ background: GRAD_L }}
+              >
+                <CareerPageContent />
+              </div>
+
               {/* ── Layer 0：Profile 页（左半，永远在底部） ──────────────── */}
-              <motion.div className="absolute inset-y-0 left-0 w-[500px] overflow-hidden" style={{ opacity: layer0LeftOpacity }}>
+              <motion.div
+                className="absolute inset-y-0 left-0 w-[500px] overflow-hidden rounded-l-[12px]"
+                style={{ opacity: layer0LeftOpacity, background: GRAD_L }}
+              >
                 {/* 页眉 */}
                 <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
                   <span className={cn(bodyFont, "text-[12px] leading-5")}>2022-2026</span>
@@ -755,7 +886,7 @@ export function ResumePlanner() {
               </motion.div>
 
               {/* ── Layer 0：Education+Skills 页（右半，永远在底部） ──────── */}
-              <div className="absolute inset-y-0 right-0 z-0 w-[500px] overflow-hidden bg-transparent">
+              <div className="absolute inset-y-0 right-0 z-0 w-[500px] overflow-hidden rounded-r-[12px] bg-transparent">
                 {/* 水印 */}
                 <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
                   <div className="-rotate-[5deg] size-[400px]">
@@ -824,6 +955,14 @@ export function ResumePlanner() {
                 </div>
               </div>
 
+              {/* 反向翻页的目标右页：仅在跨越中线前淡入，与 Profile 同步形成 1/2 跨页。 */}
+              <motion.div
+                className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-[500px] overflow-hidden rounded-r-[12px]"
+                style={{ opacity: settledHighlightsOpacity, background: GRAD_R }}
+              >
+                <HighlightsPageContent />
+              </motion.div>
+
               {/* ── Layer 2：3D 翻页（motion.div 绑定 MotionValue） ────── */}
               {/*
                * 正面 (Highlights) = spread 0 右页；背面 (Career Work) = spread 1 左页
@@ -843,8 +982,9 @@ export function ResumePlanner() {
                   originY:        0.5,
                   rotateY,
                   transformStyle: "preserve-3d" as const,
+                  willChange:     "transform",
                   zIndex:         2,
-                  cursor:         isAnimating ? "default" : "pointer",
+                  cursor:         "pointer",
                 }}
                 onClick={doFlip}
                 onHoverStart={handleHoverStart}
@@ -909,10 +1049,10 @@ export function ResumePlanner() {
                             )}
                             style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}
                           >
-                            <h3 className="absolute left-[9px] top-[7px] pr-12 text-[12px] font-semibold leading-5 tracking-[-0.02em] text-[#171717]">
+                            <h3 className="absolute left-[9px] right-[36px] top-[7px] overflow-hidden whitespace-nowrap text-[11px] font-semibold leading-5 tracking-[0.02em] text-[#171717]">
                               {card.title}
                             </h3>
-                            <p className="absolute left-[9px] top-[31px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">
+                            <p className="absolute left-[9px] top-[29px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">
                               {card.description}
                             </p>
                             <span className="absolute right-[9px] top-[8px] text-right text-[10px] leading-[18px] text-[#ba6d73]">
@@ -987,32 +1127,18 @@ export function ResumePlanner() {
                   <motion.div
                     className="absolute inset-0 overflow-hidden"
                     style={{
-                      borderRadius: "4px 0 0 4px",
+                      borderRadius: "12px 0 0 12px",
                       clipPath:     clipPathBack,
                     }}
                   >
                     <div
-                      className="absolute inset-0 rounded-bl-[4px] rounded-tl-[4px]"
+                      className="absolute inset-0 rounded-l-[12px]"
                       style={{ background: GRAD_L }}
                     />
                     {/* 脊柱阴影（右侧为书脊） */}
                     <div className="pointer-events-none absolute inset-y-0 right-0 w-6" style={{ background: "linear-gradient(270deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
 
-                    {/* 页眉：页面名称 + 页码 */}
-                    <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-                      <span className={cn(bodyFont, "text-[12px] leading-5")}>Career</span>
-                      <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-                      <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>3/4</span>
-                    </div>
-
-                    {/* 内容 */}
-                    <div className="absolute left-[56px] top-[76px] w-[388px]">
-                      <div className="mb-4 flex items-baseline gap-x-2">
-                        <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Career</h2>
-                        <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>从学习到实习到正式工作的设计生涯</p>
-                      </div>
-                      <CareerList entries={workEntries} />
-                    </div>
+                    <CareerPageContent />
 
                     {/* 折痕暗部（背面，从右侧书脊向左渐隐） */}
                     <motion.div
@@ -1042,7 +1168,11 @@ export function ResumePlanner() {
               {/* ── 装订环（最上层） ─────────────────────────────────────── */}
               <div
                 className="pointer-events-none absolute left-[485px] top-0 h-[700px] w-[30px]"
-                style={{ zIndex: isAnimating ? 1 : 3 }}
+                style={{
+                  zIndex: 4,
+                  transform: "translateZ(16px)",
+                  transformStyle: "preserve-3d",
+                }}
               >
                 {["108px", "200px", "292px", "384px", "476px", "568px"].map((top) => (
                   <SpineRing key={top} top={top} />
@@ -1144,13 +1274,13 @@ function PageCurlStack({
 }
 
 // ── 通用：时间轴列表 ──────────────────────────────────────────────────────────
-function CareerList({ entries }: { entries: CareerEntry[] }) {
+function CareerList({ entries, compact = false }: { entries: CareerEntry[]; compact?: boolean }) {
   return (
     <div className="pl-1">
       {entries.map((item, index) => {
         const isLast = index === entries.length - 1
         return (
-          <div key={index} className="relative pb-2">
+          <div key={index} className={cn("relative", compact ? "pb-1.5" : "pb-2")}>
             {!isLast && (
               <div
                 className="absolute bottom-0 left-1 top-[14px] w-px"
@@ -1159,9 +1289,9 @@ function CareerList({ entries }: { entries: CareerEntry[] }) {
             )}
             <div className="absolute left-0 top-1 h-[9px] w-[9px] rounded-[4.5px] bg-[#ba6d73]" />
             <div className="pl-[19px]">
-              <p className={cn(bodyFont, "text-[10px] font-semibold leading-[18px] text-[#ba6d73]")}>{item.period}</p>
-              <p className={cn(bodyFont, "mt-0.5 text-[12px] font-semibold leading-5 text-[#171717]")}>{item.title}</p>
-              <div className={cn(bodyFont, "mt-1 space-y-1.5 text-[10px] leading-[18px] text-[#5a5652]")}>
+              <p className={cn(bodyFont, compact ? "text-[9px] font-semibold leading-[15px] text-[#ba6d73]" : "text-[10px] font-semibold leading-[18px] text-[#ba6d73]")}>{item.period}</p>
+              <p className={cn(bodyFont, compact ? "mt-px text-[11px] font-semibold leading-[17px] text-[#171717]" : "mt-0.5 text-[12px] font-semibold leading-5 text-[#171717]")}>{item.title}</p>
+              <div className={cn(bodyFont, compact ? "mt-0.5 space-y-1 text-[9px] leading-[15px] text-[#5a5652]" : "mt-1 space-y-1.5 text-[10px] leading-[18px] text-[#5a5652]")}>
                 {item.body.type === "text" ? (
                   <p>{item.body.text}</p>
                 ) : (
