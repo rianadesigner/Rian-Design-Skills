@@ -1,7 +1,6 @@
 "use client";
 
-import { Maximize2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const P_IF_STUDIO = "/images/if-studio";
 
@@ -10,7 +9,7 @@ const panels = [
     index: "01",
     title: "首页",
     detail: "任务输入 · 专家 Agent · 灵感发现",
-    image: `${P_IF_STUDIO}/home-full-hd.webp`,
+    image: `${P_IF_STUDIO}/home-full-2026.webp`,
     accent: "#ff694a",
     position: "center top",
   },
@@ -18,11 +17,28 @@ const panels = [
     index: "02",
     title: "技能广场",
     detail: "",
-    image: `${P_IF_STUDIO}/skills-full.webp`,
+    image: `${P_IF_STUDIO}/skills-plaza-2026.png`,
     accent: "#c7ff33",
     position: "center top",
   },
 ];
+
+const skillScreens = [
+  {
+    id: "plaza",
+    label: "广场",
+    image: `${P_IF_STUDIO}/skills-plaza-2026.png`,
+    alt: "技能广场全量技能列表",
+  },
+  {
+    id: "detail",
+    label: "详情",
+    image: `${P_IF_STUDIO}/skill-detail-2026.png`,
+    alt: "试穿套图技能详情",
+  },
+] as const;
+
+type SkillScreen = (typeof skillScreens)[number];
 
 function CornerMarks() {
   const marks = [
@@ -56,30 +72,25 @@ function CornerMarks() {
 function InterfacePanel({
   panel,
   className,
-  onActivate,
+  skillScreen,
+  onSkillScreenChange,
 }: {
   panel: (typeof panels)[number];
   className: string;
-  onActivate?: () => void;
+  skillScreen?: SkillScreen;
+  onSkillScreenChange?: (screen: SkillScreen) => void;
 }) {
+  const isSkillPanel = panel.index === "02" && skillScreen;
+
   return (
     <section
-      className={`absolute z-10 overflow-hidden ${panel.index === "01" ? "if-studio-home-panel" : ""} ${onActivate ? "if-studio-skills-panel" : ""} ${className}`}
+      className={`absolute z-10 overflow-hidden ${panel.index === "01" ? "if-studio-home-panel" : ""} ${isSkillPanel ? "if-studio-skills-panel" : ""} ${className}`}
       style={{
         background: "#101010",
         border: "1px solid rgba(255,255,255,0.18)",
         borderRadius: "10px",
         boxShadow: "0 18px 55px rgba(0,0,0,0.42)",
-        cursor: onActivate ? "zoom-in" : panel.index === "01" ? "ns-resize" : undefined,
-      }}
-      role={onActivate ? "button" : undefined}
-      tabIndex={onActivate ? 0 : undefined}
-      aria-label={onActivate ? "查看完整设计能力网络" : undefined}
-      onClick={onActivate}
-      onKeyDown={(event) => {
-        if (!onActivate || (event.key !== "Enter" && event.key !== " ")) return;
-        event.preventDefault();
-        onActivate();
+        cursor: panel.index === "01" ? "ns-resize" : undefined,
       }}
     >
       <header
@@ -141,44 +152,70 @@ function InterfacePanel({
               {panel.detail}
             </p>
           ) : null}
-          {onActivate ? (
-            <span
+          {isSkillPanel ? (
+            <div
               className="flex items-center"
+              role="group"
+              aria-label="切换技能广场展示"
               style={{
-                gap: "6px",
-                padding: "6px 9px",
-                border: "1px solid rgba(199,255,51,0.34)",
+                gap: "3px",
+                padding: "3px",
+                border: "1px solid rgba(255,255,255,0.12)",
                 borderRadius: "999px",
-                background: "rgba(199,255,51,0.08)",
-                color: "#c7ff33",
-                fontFamily: "'PingFang SC', sans-serif",
-                fontSize: "11px",
-                fontWeight: 600,
+                background: "rgba(255,255,255,0.06)",
               }}
             >
-              <Maximize2 size={12} strokeWidth={1.8} aria-hidden="true" />
-              完整网络
-            </span>
+              {skillScreens.map((screen) => {
+                const selected = screen.id === skillScreen.id;
+                return (
+                  <button
+                    key={screen.id}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => onSkillScreenChange?.(screen)}
+                    style={{
+                      height: "24px",
+                      minWidth: "44px",
+                      padding: "0 10px",
+                      border: 0,
+                      borderRadius: "999px",
+                      background: selected ? "#c7ff33" : "transparent",
+                      color: selected ? "#111" : "rgba(255,255,255,0.62)",
+                      cursor: "pointer",
+                      fontFamily: "'PingFang SC', sans-serif",
+                      fontSize: "11px",
+                      fontWeight: 650,
+                    }}
+                  >
+                    {screen.label}
+                  </button>
+                );
+              })}
+            </div>
           ) : null}
         </div>
       </header>
 
-      <div className="absolute inset-x-0 bottom-0 overflow-hidden" style={{ top: "54px" }}>
+      <div
+        className={`absolute inset-x-0 bottom-0 overflow-hidden ${isSkillPanel ? "if-studio-skills-viewport" : ""}`}
+        style={{ top: "54px", cursor: isSkillPanel ? "ns-resize" : undefined }}
+      >
         <img
-          src={panel.image}
-          alt={`${panel.title}界面`}
+          key={isSkillPanel ? skillScreen.id : panel.index}
+          src={isSkillPanel ? skillScreen.image : panel.image}
+          alt={isSkillPanel ? skillScreen.alt : `${panel.title}界面`}
           loading="lazy"
           decoding="async"
           draggable={false}
           className={
             panel.index === "01"
               ? "if-studio-home-image absolute left-0 w-full"
-              : "absolute inset-0 h-full w-full"
+              : "if-studio-skills-image absolute left-0 top-0 w-full"
           }
           style={
             panel.index === "01"
               ? { height: "auto", minHeight: "100%", objectFit: "contain", objectPosition: "center top" }
-              : { objectFit: "cover", objectPosition: panel.position }
+              : { height: "auto", minHeight: "100%", objectFit: "contain", objectPosition: panel.position }
           }
         />
       </div>
@@ -186,44 +223,8 @@ function InterfacePanel({
   );
 }
 
-function CapabilityNetworkOverlay({ onClose }: { onClose: () => void }) {
-  useEffect(() => {
-    const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== window.location.origin) return;
-      if (event.data?.type === "close-design-capability-map") onClose();
-    };
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
-    };
-
-    window.addEventListener("message", handleMessage);
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("message", handleMessage);
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [onClose]);
-
-  return (
-    <div className="absolute inset-0 z-[80]" style={{ background: "#f8f8fa" }}>
-      <div
-        className="absolute inset-0 grid place-items-center"
-        style={{ color: "#71717a", fontFamily: "'PingFang SC', sans-serif", fontSize: "14px" }}
-      >
-        正在加载完整能力网络…
-      </div>
-      <iframe
-        className="absolute inset-0 h-full w-full border-0"
-                src="/design-capability-map.html?network=1&canvas=1&v=4"
-        title="完整设计能力网络"
-        loading="eager"
-      />
-    </div>
-  );
-}
-
 export default function SlideIfStudio() {
-  const [showCapabilityNetwork, setShowCapabilityNetwork] = useState(false);
+  const [skillScreen, setSkillScreen] = useState<SkillScreen>(skillScreens[0]);
 
   return (
     <div className="relative h-full w-full overflow-hidden" style={{ background: "#070707" }}>
@@ -239,11 +240,22 @@ export default function SlideIfStudio() {
           transition: border-color 180ms ease-out, box-shadow 180ms ease-out;
         }
 
-        .if-studio-skills-panel:hover,
-        .if-studio-skills-panel:focus-visible {
+        .if-studio-skills-panel:hover {
           border-color: rgba(199,255,51,0.58) !important;
           box-shadow: 0 18px 55px rgba(0,0,0,0.42), 0 0 0 1px rgba(199,255,51,0.16) inset !important;
-          outline: none;
+        }
+
+        .if-studio-skills-image {
+          top: 0;
+          transform: translateY(0);
+          transition: top 1.2s ease-out, transform 1.2s ease-out;
+          will-change: top, transform;
+          animation: if-studio-screen-enter 260ms ease-out both;
+        }
+
+        @keyframes if-studio-screen-enter {
+          from { opacity: 0; }
+          to { opacity: 1; }
         }
 
         @media (hover: hover) and (pointer: fine) {
@@ -253,14 +265,24 @@ export default function SlideIfStudio() {
             transition-duration: 18s;
             transition-timing-function: linear;
           }
+
+          .if-studio-skills-viewport:hover .if-studio-skills-image {
+            top: 100%;
+            transform: translateY(-100%);
+            transition-duration: 14s;
+            transition-timing-function: linear;
+          }
         }
 
         @media (prefers-reduced-motion: reduce) {
           .if-studio-home-image,
-          .if-studio-home-panel:hover .if-studio-home-image {
+          .if-studio-home-panel:hover .if-studio-home-image,
+          .if-studio-skills-image,
+          .if-studio-skills-viewport:hover .if-studio-skills-image {
             top: 0;
             transform: translateY(0);
             transition: none;
+            animation: none;
           }
         }
       `}</style>
@@ -405,7 +427,8 @@ export default function SlideIfStudio() {
       <InterfacePanel
         panel={panels[1]}
         className="left-[56.6%] top-[18.9%] h-[74.4%] w-[39.2%]"
-        onActivate={() => setShowCapabilityNetwork(true)}
+        skillScreen={skillScreen}
+        onSkillScreenChange={setSkillScreen}
       />
 
       <div
@@ -424,10 +447,6 @@ export default function SlideIfStudio() {
           灵感输入 → Agent 创作 → Skill 沉淀与复用
         </span>
       </div>
-
-      {showCapabilityNetwork ? (
-        <CapabilityNetworkOverlay onClose={() => setShowCapabilityNetwork(false)} />
-      ) : null}
     </div>
   );
 }

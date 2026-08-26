@@ -270,7 +270,6 @@ function FilmCard({
     </motion.div>
   );
 }
-
 /* ── Live clock ───────────────────────────────────────────────── */
 function useClock() {
   const [time, setTime] = useState("--:--:--");

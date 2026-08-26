@@ -67,6 +67,9 @@ const SlidePage20 = lazy(() => import("./slide-page20"))
 const SlidePage21 = lazy(() => import("./slide-page21"))
 const SlidePage22 = lazy(() => import("./slide-page22"))
 const SlideIfStudio = lazy(() => import("./slide-if-studio"))
+const SlideIfStudioCapabilities = lazy(
+  () => import("./slide-if-studio-capabilities")
+)
 const SlideOtherCreativeProjects = lazy(
   () => import("./slide-other-creative-projects")
 )
@@ -151,6 +154,7 @@ const allSlideComponents = [
   SlidePage21,
   SlidePage22,
   SlideIfStudio,
+  SlideIfStudioCapabilities,
   SlideOtherCreativeProjects,
   SlideOtherAgentProjects,
   SlideOtherSearchProjects,
@@ -202,6 +206,7 @@ const NO_DRAG_SLIDES = new Set([
   "page0e",
   "page0f",
   "ai-platform-overview",
+  "if-studio-capabilities",
   ...SCROLL_SLIDES,
 ])
 const DESIGN_WIDTH = SLIDE_DESIGN_WIDTH
@@ -306,9 +311,6 @@ export default function SlideContainer({
   initialSlide?: number
 }) {
   const [[current, direction], setCurrent] = useState(() => [initialSlide, 0])
-  // page0b (/04) follows its source board ratio: 1440 × 1000.
-  // Other slides keep the existing 1440 × 900 stage.
-  const currentDesignHeight = slideIds[current] === "page0b" ? 1000 : DESIGN_HEIGHT
   const [isMobilePortrait, setIsMobilePortrait] = useState(false)
   /** iPad / 手机等以触屏为主的设备：不用 Framer drag，改由 touch 手势翻页 */
   const [isTouchPrimary, setIsTouchPrimary] = useState(false)
@@ -408,7 +410,7 @@ export default function SlideContainer({
       )
       document.documentElement.style.setProperty(
         "--slide-design-h",
-        `${currentDesignHeight}px`
+        `${DESIGN_HEIGHT}px`
       )
 
       const viewportWidth = window.visualViewport?.width ?? window.innerWidth
@@ -424,7 +426,7 @@ export default function SlideContainer({
 
       if (matches) {
         const { width, height } = measureFitStage(root)
-        zoomRef.current = Math.min(height / DESIGN_WIDTH, width / currentDesignHeight)
+        zoomRef.current = Math.min(height / DESIGN_WIDTH, width / DESIGN_HEIGHT)
         const offsetX = Math.max(
           (height - DESIGN_WIDTH * zoomRef.current) / 2,
           0
@@ -441,7 +443,7 @@ export default function SlideContainer({
         const { width, height } = measureFitStage(root)
         document.documentElement.style.setProperty(
           "--slide-fit-scale",
-          String(computeSlideFitScale(width, height, DESIGN_WIDTH, currentDesignHeight))
+          String(computeSlideFitScale(width, height))
         )
         zoomRef.current = 1
         document.documentElement.style.removeProperty("--slide-zoom")
@@ -479,7 +481,7 @@ export default function SlideContainer({
       document.documentElement.style.removeProperty("--slide-vw")
       document.documentElement.style.removeProperty("--slide-vh")
     }
-  }, [currentDesignHeight])
+  }, [])
 
   useEffect(() => {
     const root = rootRef.current
@@ -963,6 +965,7 @@ export default function SlideContainer({
       () => import("./slide-page21"),
       () => import("./slide-page22"),
       () => import("./slide-if-studio"),
+      () => import("./slide-if-studio-capabilities"),
       () => import("./slide-other-creative-projects"),
       () => import("./slide-other-agent-projects"),
       () => import("./slide-other-search-projects"),
@@ -1092,14 +1095,14 @@ export default function SlideContainer({
             overflow: hidden;
             container-type: size;
             --slide-design-w: ${DESIGN_WIDTH}px;
-            --slide-design-h: ${currentDesignHeight}px;
+            --slide-design-h: ${DESIGN_HEIGHT}px;
           }
           .slide-fit-box {
             position: relative;
             flex-shrink: 0;
             overflow: hidden;
             width: ${DESIGN_WIDTH}px;
-            height: ${currentDesignHeight}px;
+            height: ${DESIGN_HEIGHT}px;
             transform-origin: center center;
             will-change: transform;
             /* JS measures the actual visual viewport and writes a unitless scale.
@@ -1112,7 +1115,7 @@ export default function SlideContainer({
           .slide-canvas {
             position: relative;
             width: ${DESIGN_WIDTH}px;
-            height: ${currentDesignHeight}px;
+            height: ${DESIGN_HEIGHT}px;
             overflow: hidden;
           }
           .slide-canvas .slide-scroll > * {
@@ -1171,8 +1174,8 @@ export default function SlideContainer({
           }
           .slide-scroll > * {
             width: 1440px !important;
-            height: ${currentDesignHeight}px !important;
-            min-height: ${currentDesignHeight}px !important;
+            height: ${DESIGN_HEIGHT}px !important;
+            min-height: ${DESIGN_HEIGHT}px !important;
             transform: translateX(var(--slide-offset-x, 0px)) scale(var(--slide-zoom, 1)) !important;
             transform-origin: top left !important;
           }

@@ -178,6 +178,21 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/page22/card3-right.webp",
     "/images/page22/dark-card-bg.webp",
   ],
+  "if-studio": [
+    "/images/if-studio/home-full-hd.webp",
+    "/images/if-studio/skills-plaza-2026.png",
+    "/images/if-studio/skill-detail-2026.png",
+  ],
+  "if-studio-capabilities": [
+    "/images/if-studio/capabilities/brand.webp",
+    "/images/if-studio/capabilities/illustration.webp",
+    "/images/if-studio/capabilities/video.webp",
+    "/images/if-studio/capabilities/creative.webp",
+    "/images/if-studio/capabilities/social.webp",
+    "/images/if-studio/capabilities/commerce.webp",
+    "/images/if-studio/capabilities/fashion.webp",
+    "/images/if-studio/capabilities/space.webp",
+  ],
   page23: [
     "/images/page23/05.webp",
     "/images/page23/06.webp",

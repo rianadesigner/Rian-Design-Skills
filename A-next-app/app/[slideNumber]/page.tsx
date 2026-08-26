@@ -18,7 +18,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slideNumber } = await params;
   return {
-    title: `作品集 ${slideNumber} | Rian Design`,
+    title: `${slideNumber} | Rian Design`,
     description: `Rian Design 作品集第 ${slideNumber} 页`,
   };
 }
