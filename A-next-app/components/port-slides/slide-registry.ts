@@ -63,6 +63,7 @@ export const allSlideIds = [
   "page19",
   "page20",
   "page21",
+  "storyboard-video-skill",
   "page22",
   "if-studio",
   "if-studio-capabilities",

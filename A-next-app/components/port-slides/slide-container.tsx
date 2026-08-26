@@ -65,6 +65,9 @@ const SlidePage18 = lazy(() => import("./slide-page18"))
 const SlidePage19 = lazy(() => import("./slide-page19"))
 const SlidePage20 = lazy(() => import("./slide-page20"))
 const SlidePage21 = lazy(() => import("./slide-page21"))
+const SlideStoryboardVideoSkill = lazy(
+  () => import("./slide-storyboard-video-skill")
+)
 const SlidePage22 = lazy(() => import("./slide-page22"))
 const SlideIfStudio = lazy(() => import("./slide-if-studio"))
 const SlideIfStudioCapabilities = lazy(
@@ -152,6 +155,7 @@ const allSlideComponents = [
   SlidePage19,
   SlidePage20,
   SlidePage21,
+  SlideStoryboardVideoSkill,
   SlidePage22,
   SlideIfStudio,
   SlideIfStudioCapabilities,
@@ -206,6 +210,7 @@ const NO_DRAG_SLIDES = new Set([
   "page0e",
   "page0f",
   "ai-platform-overview",
+  "storyboard-video-skill",
   "if-studio-capabilities",
   ...SCROLL_SLIDES,
 ])
