@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+import { motion } from "motion/react";
 import { DarkPillTag } from "./dark-pill-tag";
 
 const P21 = "/images/page21";
@@ -10,6 +14,165 @@ const steps = [
   { num: "05", label: "工作流运行", img: "step5.webp" },
   { num: "06", label: "完成运行后输出", img: "step6.webp" },
 ];
+
+function WorkflowPreview() {
+  const [zoom, setZoom] = useState(1);
+  const [locked, setLocked] = useState(false);
+  const [resetToken, setResetToken] = useState(0);
+
+  const fitCanvas = () => {
+    setZoom(1);
+    setResetToken((value) => value + 1);
+  };
+
+  return (
+    <div
+      className="absolute z-10 overflow-hidden"
+      style={{
+        left: "50%",
+        top: "16.67%",
+        width: "50%",
+        height: "46.57%",
+        background: "#eef2f7",
+        border: "2px solid rgba(255,255,255,0.12)",
+        borderRadius: "18px",
+        boxShadow: "0px 3.83px 7.66px rgba(0,0,0,0.4)",
+      }}
+    >
+      <motion.div
+        key={resetToken}
+        drag={locked ? false : true}
+        dragConstraints={{ left: -180, right: 180, top: -110, bottom: 110 }}
+        dragElastic={0.04}
+        dragMomentum={false}
+        animate={{ scale: zoom }}
+        transition={{ type: "spring", stiffness: 280, damping: 28 }}
+        className="absolute inset-0"
+        style={{
+          cursor: locked ? "default" : "grab",
+          touchAction: "none",
+          transformOrigin: "center",
+        }}
+        whileDrag={locked ? undefined : { cursor: "grabbing" }}
+      >
+        <img
+          src={`${P21}/top-right.webp`}
+          alt="生成后的工作流画布"
+          className="h-full w-full select-none object-cover"
+          style={{ objectPosition: "center top", pointerEvents: "none" }}
+          draggable={false}
+        />
+      </motion.div>
+
+      <div
+        className="absolute right-[12px] top-[12px] z-30 flex items-center"
+        style={{
+          height: 32,
+          padding: 3,
+          gap: 2,
+          border: "1px solid rgba(18,32,58,.14)",
+          borderRadius: 999,
+          background: "rgba(255,255,255,.9)",
+          boxShadow: "0 8px 22px rgba(30,48,78,.13), inset 0 1px 0 rgba(255,255,255,.9)",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+        }}
+        onPointerDown={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          onClick={fitCanvas}
+          className="h-[24px] rounded-full border-0 bg-transparent px-[9px] text-[10px] font-medium text-[#536174] hover:bg-[#edf3ff]"
+        >
+          适配
+        </button>
+        <span className="h-[14px] w-px bg-[#dce2eb]" />
+        <button
+          type="button"
+          aria-label="缩小工作流"
+          onClick={() => setZoom((value) => Math.max(0.8, Number((value - 0.1).toFixed(1))))}
+          className="flex size-[24px] items-center justify-center rounded-full border-0 bg-transparent text-[16px] leading-none text-[#536174] hover:bg-[#edf3ff]"
+        >
+          −
+        </button>
+        <button
+          type="button"
+          onClick={fitCanvas}
+          aria-label="恢复为百分之百"
+          className="h-[24px] min-w-[42px] rounded-full border-0 bg-transparent px-[5px] text-[10px] font-semibold text-[#27364d] hover:bg-[#edf3ff]"
+        >
+          {Math.round(zoom * 100)}%
+        </button>
+        <button
+          type="button"
+          aria-label="放大工作流"
+          onClick={() => setZoom((value) => Math.min(1.4, Number((value + 0.1).toFixed(1))))}
+          className="flex size-[24px] items-center justify-center rounded-full border-0 bg-transparent text-[16px] leading-none text-[#536174] hover:bg-[#edf3ff]"
+        >
+          +
+        </button>
+        <span className="h-[14px] w-px bg-[#dce2eb]" />
+        <button
+          type="button"
+          aria-pressed={locked}
+          onClick={() => setLocked((value) => !value)}
+          className="h-[24px] rounded-full border-0 px-[9px] text-[10px] font-semibold"
+          style={{
+            color: locked ? "#fff" : "#536174",
+            background: locked ? "#3f7ee8" : "transparent",
+          }}
+        >
+          {locked ? "已锁" : "锁定"}
+        </button>
+      </div>
+
+      <div
+        className="pointer-events-none absolute bottom-[82px] left-[12px] z-30 flex items-center gap-[6px] rounded-full px-[10px] py-[6px]"
+        style={{
+          color: "rgba(36,52,77,.72)",
+          background: "rgba(255,255,255,.84)",
+          border: "1px solid rgba(35,55,84,.1)",
+          boxShadow: "0 6px 18px rgba(30,48,78,.1)",
+          backdropFilter: "blur(8px)",
+          WebkitBackdropFilter: "blur(8px)",
+          fontSize: 9,
+          fontWeight: 600,
+        }}
+      >
+        <span className="size-[5px] rounded-full bg-[#36c879] shadow-[0_0_8px_rgba(54,200,121,.8)]" />
+        {locked ? "画布已锁定" : "拖动画布查看节点"}
+      </div>
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-[82px] right-[12px] z-30 h-[48px] w-[92px] overflow-hidden rounded-[7px]"
+        style={{
+          background: "rgba(255,255,255,.86)",
+          border: "1px solid rgba(35,55,84,.12)",
+          boxShadow: "0 6px 18px rgba(30,48,78,.1)",
+        }}
+      >
+        <svg className="absolute inset-0 size-full" viewBox="0 0 92 48" fill="none">
+          <path d="M11 26C22 26 22 17 33 17S44 29 55 29 66 20 81 20" stroke="#7a8fe7" strokeWidth="1.5" />
+          <rect x="7" y="21" width="15" height="10" rx="2" fill="#dce8ff" stroke="#7da1ec" />
+          <rect x="29" y="12" width="16" height="10" rx="2" fill="#e4defe" stroke="#8b7be8" />
+          <rect x="52" y="24" width="16" height="10" rx="2" fill="#e1f5ea" stroke="#69c693" />
+          <rect x="74" y="15" width="12" height="10" rx="2" fill="#e4edff" stroke="#7da1ec" />
+        </svg>
+        <span
+          className="absolute rounded-[3px] border border-[#3f7ee8] bg-[#3f7ee8]/5"
+          style={{
+            left: `${14 + (zoom - 1) * 16}%`,
+            top: `${13 + (zoom - 1) * 12}%`,
+            width: `${72 / zoom}%`,
+            height: `${72 / zoom}%`,
+            transition: "all 240ms ease",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
 
 export default function SlidePage21() {
   return (
@@ -133,22 +296,7 @@ export default function SlidePage21() {
           boxShadow: "0px 3.83px 7.66px rgba(0,0,0,0.4)",
         }}
       />
-      <img
-        src={`${P21}/top-right.webp`}
-        alt=""
-        className="absolute z-10"
-        style={{
-          left: "50%",
-          top: "16.67%",
-          width: "50%",
-          height: "46.57%",
-          objectFit: "cover",
-          objectPosition: "center top",
-          border: "2px solid rgba(255,255,255,0.12)",
-          borderRadius: "18px",
-          boxShadow: "0px 3.83px 7.66px rgba(0,0,0,0.4)",
-        }}
-      />
+      <WorkflowPreview />
 
       {/* ── Floating emoji badges ────────────────────────────────── */}
       <div
