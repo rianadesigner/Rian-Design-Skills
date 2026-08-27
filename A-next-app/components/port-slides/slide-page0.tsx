@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
-import { motion, useSpring, useMotionValue } from "motion/react";
+import { useState, useRef, useEffect, useCallback, type CSSProperties } from "react";
+import { motion, useSpring, useMotionValue, useReducedMotion } from "motion/react";
 import dynamic from "next/dynamic";
 
 const P0 = "/images/page0";
@@ -239,12 +239,77 @@ const featureCards: FeatureCardData[] = [
   },
 ];
 
-function FeatureCard({ title, desc, screenshot, gradient, decoSrc, decoStyle, overlay, hasColorDodge, isHovered }: FeatureCardData & { isHovered?: boolean }) {
+const editorialCapabilityPills = [
+  {
+    label: "海量学术资料",
+    image: "v2-card-academic.png",
+    left: "22%",
+    top: 104,
+    rotate: -6,
+    imageRotate: 7,
+    height: 42,
+    color: "#80510f",
+    background: "linear-gradient(145deg, rgba(255,235,192,0.96), rgba(255,199,91,0.88))",
+    shadow: "rgba(218,139,23,0.17)",
+  },
+  {
+    label: "多格式文件导入",
+    image: "v2-card-upload.png",
+    left: "78%",
+    top: 86,
+    rotate: 5,
+    imageRotate: -8,
+    height: 42,
+    color: "#326627",
+    background: "linear-gradient(145deg, rgba(224,244,197,0.96), rgba(144,205,91,0.88))",
+    shadow: "rgba(75,145,54,0.16)",
+  },
+  {
+    label: "图谱知识编译",
+    image: "v2-card-wiki.png",
+    left: "20%",
+    top: 392,
+    rotate: -5,
+    imageRotate: 4,
+    height: 42,
+    color: "#176b87",
+    background: "linear-gradient(145deg, rgba(210,247,251,0.96), rgba(100,211,232,0.88))",
+    shadow: "rgba(35,157,193,0.16)",
+  },
+  {
+    label: "第三方应用连接",
+    image: "v2-card-apps.png",
+    left: "80%",
+    top: 404,
+    rotate: 6,
+    imageRotate: -6,
+    height: 42,
+    color: "#673f91",
+    background: "linear-gradient(145deg, rgba(239,221,255,0.96), rgba(190,139,232,0.88))",
+    shadow: "rgba(128,73,174,0.17)",
+  },
+  {
+    label: "多模态结果输出",
+    image: "v2-card-multimodal.png",
+    left: "50%",
+    top: 622,
+    rotate: -2,
+    imageRotate: 9,
+    height: 42,
+    color: "#26356f",
+    background: "linear-gradient(145deg, rgba(222,226,255,0.96), rgba(155,169,232,0.88))",
+    shadow: "rgba(31,46,112,0.18)",
+  },
+] as const;
+
+function FeatureCard({ title, desc, screenshot, gradient, decoSrc, decoStyle, overlay, hasColorDodge, isHovered, compact = false }: FeatureCardData & { isHovered?: boolean; compact?: boolean }) {
   return (
     <div
-      className="relative h-[400px] w-[320px] overflow-hidden rounded-[18px] border border-white/90"
+      className={`relative overflow-hidden ${compact ? "h-[270px] w-[218px] rounded-[18px] border-0" : "h-[400px] w-[320px] rounded-[18px] border border-white/90"}`}
       style={{
-        boxShadow: "3px 3px 6px 0px rgba(0,0,0,0.08), -2.25px -2.25px 4.5px 0px rgba(255,255,255,0.6)",
+        boxShadow: compact
+          ? "0 18px 40px rgba(52,63,83,0.16), 0 3px 8px rgba(52,63,83,0.08)"
+          : "3px 3px 6px 0px rgba(0,0,0,0.08), -2.25px -2.25px 4.5px 0px rgba(255,255,255,0.6)",
       }}
     >
       <div className="pointer-events-none absolute inset-0 rounded-[18px]" style={{ background: gradient }} />
@@ -266,9 +331,21 @@ function FeatureCard({ title, desc, screenshot, gradient, decoSrc, decoStyle, ov
       <div style={decoStyle} className="pointer-events-none z-[2]">
         <img  src={`${PL}/${decoSrc}`} alt="" className="absolute inset-0 block size-full" style={{ maxWidth: "none" }} draggable={false} />
       </div>
-      <p className="absolute left-[23.5px] top-[23.5px] z-[3] whitespace-nowrap text-[22px] font-bold leading-[24px] text-white" style={{ fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif" }}>{title}</p>
-      <p className="absolute left-[23.5px] top-[65.5px] z-[3] w-[272px] text-[12px] leading-[20px] text-[rgba(255,255,255,0.78)]">{desc}</p>
-      <div className="pointer-events-none absolute inset-0 z-[4] rounded-[18px]" style={{ boxShadow: "inset 1.5px 1.5px 3px 0px rgba(0,0,0,0.05), inset -1.5px -1.5px 3px 0px rgba(255,255,255,0.5)" }} />
+      <p
+        className={`absolute z-[3] whitespace-nowrap font-bold text-white ${compact ? "left-[15px] top-[15px] text-[17px] leading-[21px]" : "left-[23.5px] top-[23.5px] text-[22px] leading-[24px]"}`}
+        style={{ fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif" }}
+      >
+        {title}
+      </p>
+      <p
+        className={`absolute z-[3] text-[rgba(255,255,255,0.78)] ${compact ? "left-[15px] top-[48px] w-[176px] text-[9px] leading-[15px]" : "left-[23.5px] top-[65.5px] w-[272px] text-[12px] leading-[20px]"}`}
+      >
+        {desc}
+      </p>
+      <div
+        className="pointer-events-none absolute inset-0 z-[4] rounded-[18px]"
+        style={{ boxShadow: "inset 1.5px 1.5px 3px 0px rgba(0,0,0,0.05), inset -1.5px -1.5px 3px 0px rgba(255,255,255,0.5)" }}
+      />
       {isHovered && (
         <div
           className="pointer-events-none absolute inset-0 rounded-[18px]"
@@ -363,9 +440,6 @@ function Navigation({ view, onSwitch }: { view: ViewType; onSwitch: (v: ViewType
             <NavBtn src={`${P0}/nav-btn-user.png`} size="h-[36px] w-[40px]" />
             <div className="relative flex h-[36px] w-[40px] cursor-pointer items-center justify-center">
               <NavBtn src={`${P0}/nav-btn-bell.png`} size="h-[36px] w-[40px]" />
-              <div className="absolute -right-[2px] -top-[2px] flex size-[12px] items-center justify-center rounded-full bg-[#ff2d46]">
-                <span className="text-[8px] font-medium leading-none text-white">5</span>
-              </div>
             </div>
             <NavBtn src={`${P0}/nav-btn-settings.png`} size="h-[36px] w-[40px]" />
           </div>
@@ -563,10 +637,27 @@ function LandingFeatureCard({
   );
 }
 
-function LandingView({ onNavigate, tall = false }: { onNavigate?: () => void; tall?: boolean }) {
+function LandingView({ onNavigate, tall = false, editorial = false }: { onNavigate?: () => void; tall?: boolean; editorial?: boolean }) {
+  const [isCreating, setIsCreating] = useState(false);
+  const createTimerRef = useRef<number | null>(null);
+  const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    return () => {
+      if (createTimerRef.current !== null) window.clearTimeout(createTimerRef.current);
+    };
+  }, []);
+
+  const handleCreate = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    if (isCreating) return;
+    setIsCreating(true);
+    createTimerRef.current = window.setTimeout(() => onNavigate?.(), 1050);
+  };
+
   return (
     <div
-      className="absolute inset-0 z-0 overflow-hidden rounded-[34px]"
+      className={`absolute inset-0 z-0 overflow-hidden rounded-[34px] ${editorial ? "landing-editorial" : ""}`}
       style={{ backgroundColor: KNOWLEDGE_WORKSPACE_BG }}
     >
       <style>{`
@@ -601,94 +692,222 @@ function LandingView({ onNavigate, tall = false }: { onNavigate?: () => void; ta
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-[560px]"
         style={{
-          background:
-            "linear-gradient(180deg, rgba(190,196,211,0.28) 0%, rgba(216,220,231,0.16) 36%, rgba(239,240,245,0.06) 72%, transparent 100%)",
+          height: editorial ? 650 : 560,
+          background: editorial
+            ? "linear-gradient(180deg, rgba(239,237,229,0.2) 0%, rgba(248,247,242,0.1) 58%, transparent 100%)"
+            : "linear-gradient(180deg, rgba(190,196,211,0.28) 0%, rgba(216,220,231,0.16) 36%, rgba(239,240,245,0.06) 72%, transparent 100%)",
         }}
       />
 
-      <div
-        className="landing-knowledge-sphere absolute left-[120px] right-[120px] z-[1] opacity-[0.82]"
-        style={{
-          top: tall ? -82 : -104,
-          height: tall ? 760 : 716,
-          maskImage:
-            "radial-gradient(ellipse 63% 58% at 50% 50%, black 34%, rgba(0,0,0,.78) 64%, transparent 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 63% 58% at 50% 50%, black 34%, rgba(0,0,0,.78) 64%, transparent 100%)",
-        }}
+      <motion.div
+        className="landing-knowledge-sphere absolute inset-0 z-[1]"
+        initial={editorial && !reduceMotion ? { opacity: 0, scale: 0.92, filter: "blur(8px)" } : false}
+        animate={editorial ? { opacity: 0.82, scale: 1, filter: "blur(0px)" } : { opacity: 0.82 }}
+        transition={editorial && !reduceMotion ? { duration: 0.78, delay: 0.72, ease: [0.22, 1, 0.36, 1] } : { duration: 0 }}
+        style={{ transformOrigin: "50% 52%" }}
       >
         <KnowledgeGraphSphere
           selectedId=""
           interactionMode="scroll"
         />
-      </div>
+      </motion.div>
 
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 z-[2] h-[440px] w-[720px] -translate-x-1/2"
+        className="pointer-events-none absolute left-1/2 z-[2] h-[520px] w-[960px] -translate-x-1/2"
         style={{
-          top: tall ? 104 : 92,
-          background:
-            "radial-gradient(ellipse at center, rgba(248,248,248,.99) 0%, rgba(248,248,248,.95) 34%, rgba(248,248,248,.7) 55%, transparent 76%)",
+          top: tall ? 68 : 56,
+          background: editorial
+            ? "radial-gradient(ellipse 48% 33% at 50% 35%, rgba(250,249,245,.94) 0%, rgba(250,249,245,.72) 42%, rgba(250,249,245,.28) 72%, transparent 100%), radial-gradient(ellipse 34% 22% at 50% 73%, rgba(250,249,245,.7) 0%, rgba(250,249,245,.26) 58%, transparent 100%)"
+            : "radial-gradient(ellipse 58% 32% at 50% 34%, rgba(248,248,248,.78) 0%, rgba(248,248,248,.56) 42%, rgba(248,248,248,.22) 70%, transparent 100%), radial-gradient(ellipse 42% 24% at 50% 72%, rgba(248,248,248,.56) 0%, rgba(248,248,248,.28) 48%, rgba(248,248,248,.08) 74%, transparent 100%)",
         }}
       />
 
+      {editorial ? (
+        <div aria-hidden className="pointer-events-none absolute inset-0 z-[2]">
+          {editorialCapabilityPills.map((pill, index) => (
+            <motion.span
+              key={pill.label}
+              className="absolute flex items-center overflow-visible rounded-full"
+              initial={!reduceMotion ? { opacity: 0, x: "-50%", y: 12, scale: 0.82, rotate: pill.rotate } : false}
+              animate={{ opacity: 1, x: "-50%", y: 0, scale: 1, rotate: pill.rotate }}
+              transition={!reduceMotion ? { duration: 0.48, delay: 1.48 + index * 0.1, ease: [0.22, 1, 0.36, 1] } : { duration: 0 }}
+              style={{
+                left: pill.left,
+                top: pill.top,
+                width: "max-content",
+                height: pill.height,
+                padding: "0 16px 0 58px",
+                color: pill.color,
+                background: pill.background,
+                boxShadow: `0 8px 20px ${pill.shadow}, inset 0 1px rgba(255,255,255,0.56)`,
+                fontFamily: "'PingFang SC', sans-serif",
+                fontSize: index === 1 || index === 3 ? 14 : 13,
+                fontWeight: 600,
+                letterSpacing: "0.02em",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <img
+                src={`${PL}/${pill.image}`}
+                alt=""
+                draggable={false}
+                className="absolute left-[12px] top-[-22px] z-[2] h-[40px] w-[40px] rounded-[4px] object-cover"
+                style={{
+                  objectPosition: "center 72%",
+                  transform: `rotate(${pill.imageRotate}deg)`,
+                  boxShadow: "0 8px 18px rgba(30,44,75,0.2), 0 2px 5px rgba(30,44,75,0.12)",
+                }}
+              />
+              <span className="relative z-[1]">{pill.label}</span>
+            </motion.span>
+          ))}
+        </div>
+      ) : null}
+
       <main
         className="pointer-events-none absolute inset-0 z-[3]"
-        style={{ transform: tall ? "translateY(-40px)" : undefined }}
+        style={{ transform: editorial ? "translateY(-24px)" : tall ? "translateY(-64px)" : "translateY(-40px)" }}
       >
-        <h1
-          className="absolute left-1/2 w-[640px] -translate-x-1/2 bg-clip-text text-center text-[60px] font-bold leading-[72px] tracking-[1.8px] text-transparent"
-          style={{
-            top: tall ? 236 : 222,
-            fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif",
-            backgroundImage: "linear-gradient(173deg, #171a25 0%, #353d75 71%)",
-          }}
-        >
-          你的专属AI知识库
-        </h1>
-        <p
-          className="absolute left-1/2 w-[520px] -translate-x-1/2 text-center text-[16px] leading-6 text-[#5f616c]"
-          style={{ top: tall ? 338 : 322 }}
-        >
-          上传文件、编译结构化知识、连接第三方应用，
-          <br />
-          并生成视频、报告与脑图。
-        </p>
+        {editorial ? (
+          <motion.h1
+            className="absolute left-1/2 w-[760px] text-center"
+            initial={!reduceMotion ? { opacity: 0, x: "-50%", y: 14 } : false}
+            animate={{ opacity: 1, x: "-50%", y: 0 }}
+            transition={!reduceMotion ? { duration: 0.58, delay: 0.16, ease: [0.22, 1, 0.36, 1] } : { duration: 0 }}
+            style={{ top: 184, color: "#111827" }}
+          >
+            <span className="flex items-center justify-center gap-[10px]">
+              <span
+                className="text-[68px] font-normal italic leading-[64px] tracking-[-2.8px]"
+                style={{
+                  fontFamily: "'Bodoni 72', Didot, 'Times New Roman', serif",
+                  fontFeatureSettings: '"liga" 1, "kern" 1',
+                  textRendering: "geometricPrecision",
+                }}
+              >
+                iFlow
+              </span>
+              <span
+                aria-hidden
+                className="relative flex h-[46px] w-[46px] shrink-0 items-center justify-center overflow-hidden rounded-[13px] border border-white/55 text-white"
+                style={{
+                  transform: "translateY(-3px) rotate(8deg)",
+                  background: "linear-gradient(145deg, #20283a 0%, #3b465c 58%, #667189 100%)",
+                  boxShadow: "0 10px 20px rgba(31,40,58,.2), inset 0 1px 1px rgba(255,255,255,.28)",
+                }}
+              >
+                <span className="absolute left-[6px] top-[5px] text-[8px] leading-none text-white/90">✦</span>
+                <span className="absolute left-[12px] top-[10px] text-[6px] leading-none text-white/65">✦</span>
+                <span
+                  className="relative z-[1] mt-[4px] text-[16px] font-bold leading-none tracking-[-0.8px]"
+                  style={{ fontFamily: "'LogoSC Unbounded Sans', sans-serif" }}
+                >
+                  2.0
+                </span>
+                <span className="absolute bottom-[-8px] right-[-6px] h-[22px] w-[22px] rounded-full bg-white/22 blur-[4px]" />
+              </span>
+            </span>
+            <span
+              className="block text-[66px] font-normal italic leading-[60px] tracking-[-3px]"
+              style={{
+                fontFamily: "'Bodoni 72', Didot, 'Times New Roman', serif",
+                fontFeatureSettings: '"liga" 1, "kern" 1',
+                textRendering: "geometricPrecision",
+              }}
+            >
+              Knowledge Wiki
+            </span>
+          </motion.h1>
+        ) : (
+          <h1
+            className="absolute left-1/2 w-[720px] -translate-x-1/2 text-center"
+            style={{
+              top: tall ? 204 : 190,
+              fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif",
+            }}
+          >
+            <span
+              className="mx-auto block w-fit bg-clip-text text-[34px] font-normal leading-[42px] tracking-[-0.6px] text-transparent"
+              style={{
+                backgroundImage: "linear-gradient(90deg, #3159a7 0%, #1eb6d0 58%, #58cfc7 100%)",
+                filter: "drop-shadow(0 5px 14px rgba(38,153,190,.14))",
+              }}
+            >
+              你的专属
+            </span>
+            <span className="flex items-baseline justify-center gap-[20px] whitespace-nowrap">
+              <span className="text-[66px] font-bold leading-[72px] tracking-[-2px] text-[#171d45]">
+                AI 知识库
+              </span>
+              <span
+                className="text-[31px] font-light italic leading-[40px] tracking-[-1px] text-[#858a96]"
+                style={{ fontFamily: "Arial, 'PingFang SC', sans-serif" }}
+              >
+                Workspace
+              </span>
+            </span>
+          </h1>
+        )}
+        {!editorial ? (
+          <motion.p
+            className="absolute left-1/2 w-[720px] text-center text-[16px] font-light leading-[27px] tracking-[0.1px] text-[#666b78]"
+            initial={{ x: "-50%" }}
+            animate={{ opacity: 1, x: "-50%", y: 0 }}
+            transition={{ duration: 0 }}
+            style={{ top: tall ? 340 : 326 }}
+          >
+            <>
+              汇聚个人资料与专业知识，让 AI 为你检索、总结与创作，
+              <br />
+              更快进入心流，让知识随心流动。
+            </>
+          </motion.p>
+        ) : null}
 
         <motion.button
           type="button"
-          onClick={(event) => {
-            event.stopPropagation();
-            onNavigate?.();
-          }}
-          whileHover={{
-            backgroundColor: "#111111",
-            color: "#ffffff",
-            boxShadow:
-              "0 10px 24px rgba(17,17,17,0.22), inset 0 1px 0 rgba(255,255,255,0.08)",
-          }}
-          whileTap={{ scale: 0.985 }}
-          transition={{ duration: 0.24, ease: [0.22, 0.7, 0.25, 1] }}
-          className="knowledge-cta pointer-events-auto absolute left-1/2 flex h-[66px] w-[310px] -translate-x-1/2 items-center justify-center overflow-hidden rounded-full border-0 text-[17px] font-medium tracking-[0.1px] text-[#262833] outline-none focus-visible:ring-2 focus-visible:ring-[#7d79ff] focus-visible:ring-offset-2"
+          onClick={handleCreate}
+          aria-busy={isCreating}
+          data-loading={isCreating ? "true" : "false"}
+          initial={editorial && !reduceMotion ? { opacity: 0, x: "-50%", y: 14, scale: 0.96 } : { x: "-50%" }}
+          animate={{ opacity: 1, x: "-50%", y: 0, scale: 1 }}
+          whileTap={isCreating ? undefined : { scale: 0.955, rotateX: 5 }}
+          transition={editorial && !reduceMotion
+            ? { duration: 0.48, delay: 1.92, ease: [0.22, 1, 0.36, 1] }
+            : { duration: 0.36, ease: [0.22, 0.78, 0.22, 1] }}
+          className={`knowledge-cta pointer-events-auto absolute left-1/2 flex items-center justify-center rounded-full tracking-[-0.1px] text-[#30313a] outline-none focus-visible:ring-2 focus-visible:ring-[#353743]/55 focus-visible:ring-offset-2 ${editorial ? "h-[64px] w-[304px] text-[19px] font-bold" : "h-[66px] w-[310px] text-[17px] font-normal"}`}
           style={{
-            top: tall ? 422 : 410,
-            backgroundColor: "#ffffff",
+            top: editorial ? 372 : tall ? 422 : 410,
+            border: "1px solid rgba(255,255,255,.92)",
+            background:
+              "linear-gradient(-74deg, rgba(255,255,255,.18), rgba(255,255,255,.5), rgba(255,255,255,.16)), rgba(255,255,255,.82)",
             boxShadow:
-              "0 2px 8px rgba(35,38,55,0.04), inset 0 1px 0 rgba(255,255,255,1), inset 0 -1px 0 rgba(215,217,225,0.35)",
+              "inset 0 1px 3px rgba(255,255,255,.94), inset 0 -3px 5px rgba(231,233,239,.62), inset 0 0 12px rgba(223,226,234,.34), 0 8px 18px rgba(35,38,55,.09), 0 2px 5px rgba(35,38,55,.05)",
+            isolation: "isolate",
           }}
         >
-          <span
-            aria-hidden
-            className="knowledge-cta-shine pointer-events-none absolute -bottom-3 -top-3 left-0 w-[24%]"
-            style={{
-              transform: "translateX(-190%) skewX(-18deg)",
-              background:
-                "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.2) 22%, rgba(255,255,255,0.95) 50%, rgba(255,255,255,0.2) 78%, transparent 100%)",
-              filter: "blur(0.5px)",
-            }}
-          />
-          <span className="relative z-10">创建您的首个知识库</span>
+          <span aria-hidden className="knowledge-cta-rim pointer-events-none absolute" />
+          <span aria-hidden className="knowledge-cta-sheen pointer-events-none absolute" />
+          <span className="relative z-[2] flex h-full w-full items-center justify-center gap-[12px] px-[22px]">
+            <span aria-hidden className="knowledge-loader relative block h-[30px] w-[30px] shrink-0">
+              {Array.from({ length: 24 }, (_, index) => (
+                <i
+                  key={index}
+                  className="knowledge-loader-bead absolute rounded-full"
+                  style={{
+                    "--bead-angle": `${index * 137.5}deg`,
+                    "--bead-radius": `${4.5 + (index / 23) * 8}px`,
+                    "--bead-delay": `${-index * 54}ms`,
+                    "--bead-size": `${2 + (index % 4) * 0.38}px`,
+                  } as CSSProperties}
+                />
+              ))}
+            </span>
+            <span className="min-w-0 whitespace-nowrap">
+              {isCreating ? "正在创建知识库…" : "创建您的首个知识库"}
+            </span>
+          </span>
         </motion.button>
       </main>
     </div>
@@ -1755,10 +1974,11 @@ function AgentView({ onBack, onHome }: { onBack: () => void; onHome: () => void 
    Main Component
    ═══════════════════════════════════════════════════════════════ */
 
-export default function SlidePage0({ initialView = "landing", canvasHeight = 900 }: { initialView?: ViewType; canvasHeight?: 900 | 1000 } = {}) {
+export default function SlidePage0({ initialView = "landing", canvasHeight = 900, cardDeckOffsetY = 0, landingStyle = "default" }: { initialView?: ViewType; canvasHeight?: 900 | 1000; cardDeckOffsetY?: number; landingStyle?: "default" | "editorial" } = {}) {
   const [view, setView] = useState<ViewType>(initialView);
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const isTallLanding = canvasHeight === 1000;
+  const isEditorialLanding = landingStyle === "editorial";
 
   return (
     <div
@@ -1770,13 +1990,67 @@ export default function SlidePage0({ initialView = "landing", canvasHeight = 900
     >
       <style>{`
         @keyframes card-shine{0%{background-position:200% 0}100%{background-position:-100% 0}}
-        @keyframes knowledge-cta-sweep{
-          0%{transform:translateX(-190%) skewX(-18deg);opacity:0}
-          18%{opacity:.85}
-          78%{opacity:.72}
-          100%{transform:translateX(430%) skewX(-18deg);opacity:0}
+        @property --knowledge-rim-angle{
+          syntax:"<angle>";
+          inherits:false;
+          initial-value:-75deg;
         }
-        .knowledge-cta:hover .knowledge-cta-shine{animation:knowledge-cta-sweep .82s cubic-bezier(.22,.7,.25,1) forwards}
+        @keyframes knowledge-bead-breathe{
+          0%,100%{opacity:.3;filter:blur(.15px);transform:rotate(var(--bead-angle)) translateY(calc(var(--bead-radius) * -1)) scale(.72)}
+          42%{opacity:.96;filter:blur(0);transform:rotate(var(--bead-angle)) translateY(calc((var(--bead-radius) + 1.5px) * -1)) scale(1.12)}
+          68%{opacity:.56;transform:rotate(var(--bead-angle)) translateY(calc((var(--bead-radius) - .5px) * -1)) scale(.86)}
+        }
+        @keyframes knowledge-rim-orbit{
+          to{--knowledge-rim-angle:285deg}
+        }
+        @keyframes knowledge-sheen-sweep{
+          from{background-position:0% 50%}
+          to{background-position:38% 50%}
+        }
+        .knowledge-cta{cursor:pointer;transform-style:preserve-3d;-webkit-tap-highlight-color:transparent}
+        .knowledge-cta[data-loading="true"]{cursor:wait}
+        .knowledge-cta-rim{
+          --knowledge-rim-angle:-75deg;
+          z-index:1;
+          inset:-.5px;
+          padding:1px;
+          border-radius:inherit;
+          background:conic-gradient(from var(--knowledge-rim-angle),rgba(35,38,55,.56),transparent 6%,transparent 42%,rgba(35,38,55,.5) 51%,transparent 61%,transparent 95%,rgba(35,38,55,.56)),linear-gradient(rgba(255,255,255,.58),rgba(255,255,255,.58));
+          box-shadow:inset 0 0 0 .5px rgba(255,255,255,.44);
+          -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+          -webkit-mask-composite:xor;
+          mask-composite:exclude;
+          transition:--knowledge-rim-angle .5s cubic-bezier(.22,.78,.22,1);
+        }
+        .knowledge-cta-sheen{
+          z-index:3;
+          inset:.6px;
+          border-radius:inherit;
+          background:linear-gradient(-45deg,transparent 0%,rgba(255,255,255,.54) 42%,rgba(255,255,255,.54) 50%,transparent 57%) no-repeat 0% 50% / 200% 200%;
+          mix-blend-mode:soft-light;
+        }
+        .knowledge-loader-bead{
+          left:50%;
+          top:50%;
+          width:var(--bead-size);
+          height:var(--bead-size);
+          margin-left:calc(var(--bead-size) / -2);
+          margin-top:calc(var(--bead-size) / -2);
+          background:#30323a;
+          transform-origin:center;
+          animation:knowledge-bead-breathe 3.2s cubic-bezier(.45,0,.35,1) var(--bead-delay) infinite;
+        }
+        .knowledge-cta:hover .knowledge-cta-rim{
+          --knowledge-rim-angle:-125deg;
+          background:conic-gradient(from var(--knowledge-rim-angle),rgba(255,255,255,.98),rgba(255,255,255,.22) 9%,rgba(255,255,255,.7) 44%,rgba(255,255,255,1) 54%,rgba(255,255,255,.24) 66%,rgba(255,255,255,.92)),linear-gradient(rgba(255,255,255,.82),rgba(255,255,255,.82));
+          box-shadow:inset 0 0 0 .5px rgba(255,255,255,.94),0 0 0 .5px rgba(255,255,255,.72),0 0 12px rgba(255,255,255,.42);
+        }
+        .knowledge-cta:hover .knowledge-cta-sheen{animation:knowledge-sheen-sweep .55s cubic-bezier(.22,.78,.22,1) forwards}
+        .knowledge-cta[data-loading="true"] .knowledge-cta-rim{animation:knowledge-rim-orbit 1.05s linear infinite}
+        .knowledge-cta[data-loading="true"] .knowledge-loader-bead{animation-duration:1.08s}
+        @media (prefers-reduced-motion:reduce){
+          .knowledge-loader-bead,.knowledge-cta-rim,.knowledge-cta-sheen{animation:none!important;transition:none!important}
+        }
         @media (hover: none) and (pointer: coarse) {
           .landing-nav-glass {
             background: rgba(255,255,255,.62) !important;
@@ -1788,50 +2062,55 @@ export default function SlidePage0({ initialView = "landing", canvasHeight = 900
       {view !== "agent" && <Navigation view={view} onSwitch={setView} />}
       {view === "agent" ? <AgentView onBack={() => setView("graph")} onHome={() => setView("library")} /> : view === "graph" ? <GraphView onSwitchView={(v) => setView(v)} /> : view === "library" ? <LibraryView onSwitchView={(v) => setView(v)} /> : (
         <div
-          className="absolute left-[80px] right-0 top-0 bottom-0"
+          className="absolute inset-0"
           style={{ backgroundColor: KNOWLEDGE_WORKSPACE_BG }}
         >
           <div className="relative h-full w-full">
-            <LandingView onNavigate={() => setView("library")} tall={isTallLanding} />
-          {/* Feature cards — fan spread on hover, lives inside the same landing container */}
-          <div className="absolute inset-0 pointer-events-none">
-            {featureCards.map((card, i) => {
-              const isHov = hoveredCard === i;
-              const anyHov = hoveredCard !== null;
-              const restingLift = isTallLanding ? 28 : 0;
+            <LandingView onNavigate={() => setView("library")} tall={isTallLanding} editorial={isEditorialLanding} />
+          {!isEditorialLanding ? (
+            /* Feature cards — fan spread on hover, lives inside the same landing container */
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{ transform: `translateY(${cardDeckOffsetY}px)` }}
+            >
+              {featureCards.map((card, i) => {
+                const isHov = hoveredCard === i;
+                const anyHov = hoveredCard !== null;
+                const restingLift = isTallLanding ? 28 : 0;
 
-              const diff = hoveredCard !== null ? i - hoveredCard : 0;
-              const dx = anyHov && !isHov ? diff * 52 : 0;
-              // Resting cards sit higher on the 1000px board. Compensate by the
-              // same amount during hover so every animated end position is unchanged.
-              const dy = isHov ? -178 + restingLift : anyHov ? -105 + restingLift : 0;
-              const rot = isHov ? 0 : card.rotation;
-              const sc = isHov ? 1.1 : anyHov ? 0.96 : 1;
+                const diff = hoveredCard !== null ? i - hoveredCard : 0;
+                const dx = anyHov && !isHov ? diff * 52 : 0;
+                // Resting cards sit higher on the 1000px board. Compensate by the
+                // same amount during hover so every animated end position is unchanged.
+                const dy = isHov ? -178 + restingLift : anyHov ? -105 + restingLift : 0;
+                const rot = isHov ? 0 : card.rotation;
+                const sc = isHov ? 1.1 : anyHov ? 0.96 : 1;
 
-              return (
-                <div
-                  key={card.title}
-                  className="absolute pointer-events-auto"
-                  style={{
-                    left: card.left,
-                    top: isTallLanding ? `${Number.parseFloat(card.top) + 76 - restingLift}px` : card.top,
-                    zIndex: isHov ? 50 : card.zIndex,
-                    transform: `translateX(calc(-50% + ${dx}px)) translateY(${dy}px)`,
-                    transition: "transform 0.5s cubic-bezier(0.34, 1.45, 0.64, 1)",
-                  }}
-                  onMouseEnter={() => setHoveredCard(i)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                >
-                  <div style={{
-                    transform: `rotate(${rot}deg) scale(${sc})`,
-                    transition: "transform 0.5s cubic-bezier(0.34, 1.45, 0.64, 1)",
-                  }}>
-                    <FeatureCard {...card} isHovered={isHov} />
+                return (
+                  <div
+                    key={card.title}
+                    className="absolute pointer-events-auto"
+                    style={{
+                      left: card.left,
+                      top: isTallLanding ? `${Number.parseFloat(card.top) + 76 - restingLift}px` : card.top,
+                      zIndex: isHov ? 50 : card.zIndex,
+                      transform: `translateX(calc(-50% + ${dx}px)) translateY(${dy}px)`,
+                      transition: "transform 0.5s cubic-bezier(0.34, 1.45, 0.64, 1)",
+                    }}
+                    onMouseEnter={() => setHoveredCard(i)}
+                    onMouseLeave={() => setHoveredCard(null)}
+                  >
+                    <div style={{
+                      transform: `rotate(${rot}deg) scale(${sc})`,
+                      transition: "transform 0.5s cubic-bezier(0.34, 1.45, 0.64, 1)",
+                    }}>
+                      <FeatureCard {...card} isHovered={isHov} />
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
+          ) : null}
           </div>
         </div>
       )}

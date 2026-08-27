@@ -10,17 +10,21 @@ const sketchFlow = [
     caption: "选择或上传参考动作",
     image: "/images/video/slide36-sketch/motion-clone-01-entry.webp",
     alt: "Sketch 动作克隆入口界面，底部面板显示上传动作和动作素材",
-    action: "进入「动作克隆」，从动作列表单选一段素材；也可以点击「上传动作」进入参考动作上传流程。",
-    response: "动作面板保留在原视频上方；如果前序输入框已经有内容，原提示词继续保留。",
+    action:
+      "进入「动作克隆」，从动作列表单选一段素材；也可以点击「上传动作」进入参考动作上传流程。",
+    response:
+      "动作面板保留在原视频上方；如果前序输入框已经有内容，原提示词继续保留。",
   },
   {
     index: "02",
-    title: "选中参考动作",
+    title: "拖拽参考动作",
     caption: "拖动动作到视频中",
     image: "/images/video/slide36-sketch/motion-clone-02-selected-motion.webp",
     alt: "Sketch 动作克隆已选动作界面，动作卡片浮起并提示拖动到视频中",
-    action: "点击动作卡片完成选择；选中的动作卡片浮起，并出现「拖动到视频中」的首次引导。",
-    response: "用户开始拖动后引导自动消失；如果没有操作，引导在 3 秒后收起，避免持续遮挡素材。",
+    action:
+      "点击动作卡片完成选择；选中的动作卡片浮起，并出现「拖动到视频中」的首次引导。",
+    response:
+      "用户开始拖动后引导自动消失；如果没有操作，引导在 3 秒后收起，避免持续遮挡素材。",
   },
   {
     index: "03",
@@ -28,8 +32,10 @@ const sketchFlow = [
     caption: "把动作拖到目标人物",
     image: "/images/video/slide36-sketch/motion-clone-03-selected-object.webp",
     alt: "Sketch 已选对象界面，参考动作被拖到目标人物，人物轮廓被识别高亮",
-    action: "将动作卡片拖到画面中的目标人物；多人场景里，动作与落点人物直接建立对应关系。",
-    response: "拖动时动作面板隐藏，系统识别人像轮廓并高亮目标；输入框自动写入角色与动作组合。",
+    action:
+      "将动作卡片拖到画面中的目标人物；多人场景里，动作与落点人物直接建立对应关系。",
+    response:
+      "拖动时动作面板隐藏，系统识别人像轮廓并高亮目标；输入框自动写入角色与动作组合。",
   },
   {
     index: "04",
@@ -37,7 +43,8 @@ const sketchFlow = [
     caption: "查看最终生成效果",
     image: "/images/video/slide36-sketch/motion-clone-04-clone-result.webp",
     alt: "动作克隆生成效果，多位人物在雪地峡谷中完成统一动作",
-    action: "确认参考动作、目标人物与动作方向后，点击生成，系统开始合成克隆效果。",
+    action:
+      "确认参考动作、目标人物与动作方向后，点击生成，系统开始合成克隆效果。",
     response: "生成结果保留目标人物的身份与原场景关系，并呈现统一的动作效果。",
   },
 ] as const
@@ -71,28 +78,41 @@ export default function SlideVideoContextSystem() {
         当前展示第 {active.index} 步：{active.title}
       </div>
 
-      <header className="absolute left-[62px] right-[62px] top-[64px] flex items-end justify-between border-b border-white/10 pb-[16px]">
+      <header className="absolute top-[64px] right-[62px] left-[62px] flex items-end justify-between border-b border-white/10 pb-[16px]">
         <div>
           <div className="mb-[7px] font-mono text-[10px] font-bold tracking-[1.4px] text-[#b8ff35]">
             05 / ACTION CLONING
           </div>
-          <h1
-            className="m-0 whitespace-nowrap text-[42px] leading-[1.22] tracking-[0]"
-            style={{
-              fontFamily: "'Alimama ShuHeiTi', 'PingFang SC', sans-serif",
-              fontWeight: 700,
-            }}
-          >
-            海量玩法库
+          <h1 className="ai-video-project-title m-0 leading-[1.22] tracking-[0] whitespace-nowrap">
+            {"海量"}
+            <span
+              style={{
+                fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif",
+                fontWeight: 700,
+              }}
+            >
+              玩
+            </span>
+            {"法库"}
             <span className="ml-[12px] text-[#b8ff35]">
-              支持风格、运镜、合拍、动作克隆
+              {"支持风格、运镜、合"}
+              <span
+                style={{
+                  fontFamily:
+                    "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif",
+                  fontWeight: 700,
+                }}
+              >
+                拍
+              </span>
+              {"、动作克隆"}
             </span>
           </h1>
         </div>
       </header>
 
       <main
-        className="absolute left-[62px] right-[62px] top-[184px] flex items-start justify-between"
+        className="absolute top-[184px] right-[62px] left-[62px] flex items-start justify-between"
         aria-label="动作克隆 Sketch 交互流程"
       >
         {sketchFlow.map((item, index) => {
@@ -100,7 +120,10 @@ export default function SlideVideoContextSystem() {
           const completed = index < activeStep
 
           return (
-            <div key={item.index} className="relative flex w-[270px] items-start justify-between">
+            <div
+              key={item.index}
+              className="relative flex w-[270px] items-start justify-between"
+            >
               <button
                 type="button"
                 aria-pressed={selected}
@@ -115,8 +138,12 @@ export default function SlideVideoContextSystem() {
                 <div
                   className="relative h-[511px] w-[236px] overflow-hidden border bg-black transition-[border-color,transform,box-shadow,opacity] duration-300"
                   style={{
-                    borderColor: selected ? "rgba(184,255,53,.82)" : "rgba(255,255,255,.12)",
-                    boxShadow: selected ? "0 0 0 1px rgba(184,255,53,.15), 0 24px 54px rgba(0,0,0,.46)" : "0 18px 42px rgba(0,0,0,.34)",
+                    borderColor: selected
+                      ? "rgba(184,255,53,.82)"
+                      : "rgba(255,255,255,.12)",
+                    boxShadow: selected
+                      ? "0 0 0 1px rgba(184,255,53,.15), 0 24px 54px rgba(0,0,0,.46)"
+                      : "0 18px 42px rgba(0,0,0,.34)",
                     transform: selected ? "translateY(-7px)" : "translateY(0)",
                     opacity: selected ? 1 : 0.7,
                   }}
@@ -131,10 +158,16 @@ export default function SlideVideoContextSystem() {
                   />
 
                   <div
-                    className="absolute left-[10px] top-[10px] grid h-[34px] min-w-[34px] place-items-center border px-[8px] font-mono text-[11px] font-bold backdrop-blur-md"
+                    className="absolute top-[10px] left-[10px] grid h-[34px] min-w-[34px] place-items-center border px-[8px] font-mono text-[11px] font-bold backdrop-blur-md"
                     style={{
-                      borderColor: selected || completed ? "rgba(184,255,53,.68)" : "rgba(255,255,255,.28)",
-                      background: selected || completed ? "rgba(117,166,22,.74)" : "rgba(0,0,0,.58)",
+                      borderColor:
+                        selected || completed
+                          ? "rgba(184,255,53,.68)"
+                          : "rgba(255,255,255,.28)",
+                      background:
+                        selected || completed
+                          ? "rgba(117,166,22,.74)"
+                          : "rgba(0,0,0,.58)",
                       color: "white",
                     }}
                   >
@@ -142,19 +175,32 @@ export default function SlideVideoContextSystem() {
                   </div>
                 </div>
 
-                <div className="mt-[13px] border-t pt-[11px]" style={{ borderColor: selected ? "rgba(184,255,53,.7)" : "rgba(255,255,255,.1)" }}>
+                <div
+                  className="mt-[13px] border-t pt-[11px]"
+                  style={{
+                    borderColor: selected
+                      ? "rgba(184,255,53,.7)"
+                      : "rgba(255,255,255,.1)",
+                  }}
+                >
                   <div className="flex items-center justify-between">
-                    <span className="text-[15px] font-semibold text-white/88">{item.title}</span>
-                    {selected ? <MousePointer2 size={14} className="text-[#b8ff35]" /> : null}
+                    <span className="text-[15px] font-semibold text-white/88">
+                      {item.title}
+                    </span>
+                    {selected ? (
+                      <MousePointer2 size={14} className="text-[#b8ff35]" />
+                    ) : null}
                   </div>
-                  <p className="m-0 mt-[6px] text-[12px] leading-[1.45] text-white/42">{item.caption}</p>
+                  <p className="m-0 mt-[6px] text-[12px] leading-[1.45] text-white/42">
+                    {item.caption}
+                  </p>
                 </div>
               </button>
 
               {index < sketchFlow.length - 1 ? (
                 <ArrowRight
                   size={18}
-                  className="absolute -right-[18px] top-[248px] text-white/22"
+                  className="absolute top-[248px] -right-[18px] text-white/22"
                   aria-hidden="true"
                 />
               ) : null}
@@ -164,7 +210,7 @@ export default function SlideVideoContextSystem() {
       </main>
 
       <section
-        className="absolute bottom-[27px] left-[62px] right-[62px] grid min-h-[104px] items-center border-y border-white/10 bg-black/30 px-[20px]"
+        className="absolute right-[62px] bottom-[27px] left-[62px] grid min-h-[104px] items-center border-y border-white/10 bg-black/30 px-[20px]"
         style={{ gridTemplateColumns: "250px minmax(0, 1fr) 136px" }}
         aria-label="当前步骤说明"
       >
@@ -173,19 +219,27 @@ export default function SlideVideoContextSystem() {
             {active.index}
           </span>
           <div>
-            <div className="text-[10px] font-bold tracking-[1.4px] text-white/30">CURRENT INTERACTION</div>
-            <div className="mt-[6px] text-[17px] font-semibold text-white/86">{active.title}</div>
+            <div className="text-[10px] font-bold tracking-[1.4px] text-white/30">
+              CURRENT INTERACTION
+            </div>
+            <div className="mt-[6px] text-[17px] font-semibold text-white/86">
+              {active.title}
+            </div>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-[28px] border-x border-white/10 px-[28px]">
           <div className="grid grid-cols-[58px_1fr] gap-[12px]">
             <span className="text-[11px] text-white/30">用户操作</span>
-            <p className="m-0 text-[12px] leading-[1.6] text-white/62">{active.action}</p>
+            <p className="m-0 text-[12px] leading-[1.6] text-white/62">
+              {active.action}
+            </p>
           </div>
           <div className="grid grid-cols-[58px_1fr] gap-[12px]">
             <span className="text-[11px] text-white/30">界面反馈</span>
-            <p className="m-0 text-[12px] leading-[1.6] text-white/62">{active.response}</p>
+            <p className="m-0 text-[12px] leading-[1.6] text-white/62">
+              {active.response}
+            </p>
           </div>
         </div>
 

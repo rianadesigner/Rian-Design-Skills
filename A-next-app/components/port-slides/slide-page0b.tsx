@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, type PanInfo } from "motion/react";
+import { motion, useReducedMotion, type PanInfo } from "motion/react";
 import SlidePage0 from "./slide-page0";
 import { SLIDE_DESIGN_WIDTH } from "./slide-design";
 
@@ -11,11 +11,12 @@ const imgAi1 = `${P}/ai1-bg.webp`;
 
 // Design canvas dimensions
 const DESIGN_W = SLIDE_DESIGN_WIDTH; // 1440
-const SLIDE_H = 1000;
+const SLIDE_H = 900;
 
-// V2 inner component (SlidePage0) native size
+// V2 inner component (SlidePage0) native size. The editorial landing uses a
+// 760px board so its full height maps exactly into the 633px carousel panel.
 const INNER_W = 1440;
-const INNER_H = 1000;
+const INNER_H = 760;
 
 // Carousel panel geometry
 const PANEL_L = 120;
@@ -23,7 +24,7 @@ const PANEL_T = 267;       // carousel top (below header)
 const PANEL_W = 1200;
 const PANEL_H = SLIDE_H - PANEL_T; // 633 — remaining height
 
-// Scale SlidePage0 (1440×1000) → fit panel width (1200px)
+// Scale SlidePage0 (1440×760) → fit panel width (1200px) and panel height (633px)
 const SCALE = PANEL_W / INNER_W; // ≈ 0.8333
 
 const VERSION_META = [
@@ -45,6 +46,7 @@ const SNAP_THRESHOLD = 60;
 export default function SlidePage0b() {
   const [active, setActive] = useState(1); // 0 = V1.0, 1 = V2.0
   const activeVersion = VERSION_META[active];
+  const reduceMotion = useReducedMotion();
 
   const handleDragEnd = (_: unknown, info: PanInfo) => {
     if (info.offset.y < -SNAP_THRESHOLD && active < 1) setActive(1);
@@ -86,7 +88,11 @@ export default function SlidePage0b() {
       {/* ══════════════════════════════════════════
           TOP HEADER
       ══════════════════════════════════════════ */}
-      <div style={{
+      <motion.div
+        initial={!reduceMotion ? { opacity: 0, y: -12 } : false}
+        animate={{ opacity: 1, y: 0 }}
+        transition={!reduceMotion ? { duration: 0.52, delay: 0.08, ease: [0.22, 1, 0.36, 1] } : { duration: 0 }}
+        style={{
         position: "absolute", left: 35, right: 35, top: 84,
         display: "flex", flexDirection: "column", alignItems: "center", gap: 12,
         padding: "0 76px", zIndex: 17,
@@ -121,7 +127,7 @@ export default function SlidePage0b() {
           <p style={{ margin: 0 }}>2. 产品定位升级：从&quot;AI 搜索助手&quot;变成&quot;AI IDE / AI 工作台&quot;</p>
           <p style={{ margin: 0 }}>3. 技术能力升级：从&quot;全网搜索&quot;到&quot;Agent 原生创作平台&quot;</p>
         </div>
-      </div>
+      </motion.div>
 
       {/* ══════════════════════════════════════════
           VERTICAL CAROUSEL — V1.0 ↔ V2.0
@@ -171,8 +177,8 @@ export default function SlidePage0b() {
           {/* ── Panel 1: V2.0 新版 LandingView ── */}
           <div style={{ width: PANEL_W, height: PANEL_H, flexShrink: 0, position: "relative", overflow: "hidden", background: "#f8f8f8" }}>
             {/*
-              SlidePage0 内部设计尺寸 1440×1000，缩放至面板宽度 1200px (scale=0.8333)。
-              缩放后高度约 833px，在 733px 容器中显示顶部内容。
+              SlidePage0 内部设计尺寸 1440×760，缩放至面板宽度 1200px (scale=0.8333)。
+              缩放后高度约 633px，与容器一致，因此完整页面不会被裁切。
             */}
             <div style={{
               position: "absolute",
@@ -183,7 +189,7 @@ export default function SlidePage0b() {
               transform: `scale(${SCALE})`,
               pointerEvents: "auto",
             }}>
-              <SlidePage0 initialView="landing" canvasHeight={1000} />
+              <SlidePage0 initialView="landing" landingStyle="editorial" />
             </div>
           </div>
         </motion.div>

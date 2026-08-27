@@ -316,12 +316,10 @@ export default function SlidePage29() {
             03 / CONVERSATIONAL CREATION
           </div>
           <h1
+            className="ai-video-project-title"
             style={{
               margin: "7px 0 0",
               color: "#fff",
-              fontFamily: "'LogoSC Unbounded Sans', 'PingFang SC', sans-serif",
-              fontSize: "clamp(28px, calc(3.33 * var(--u)), 48px)",
-              fontWeight: 400,
               lineHeight: 1.46,
               letterSpacing: 0,
               whiteSpace: "nowrap",

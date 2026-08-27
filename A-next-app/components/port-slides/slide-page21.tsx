@@ -1,224 +1,286 @@
-import { DarkPillTag } from "./dark-pill-tag";
+"use client"
 
-const P21 = "/images/page21";
+import Image from "next/image"
+import { AnimatePresence, motion, useReducedMotion } from "motion/react"
+import {
+  useEffect,
+  useState,
+  type FocusEvent as ReactFocusEvent,
+  type KeyboardEvent as ReactKeyboardEvent,
+} from "react"
 
-const steps = [
-  { num: "01", label: "默认页面", img: "step1.webp" },
-  { num: "02", label: "用户意图识别", img: "step2.webp" },
-  { num: "03", label: "大纲规划生成", img: "step3.webp" },
-  { num: "04", label: "工作流搭建", img: "step4.webp" },
-  { num: "05", label: "工作流运行", img: "step5.webp" },
-  { num: "06", label: "完成运行后输出", img: "step6.webp" },
-];
+const P21 = "/images/page21"
+const AUTOPLAY_MS = 5200
+
+const workflowScreens = [
+  {
+    id: "default",
+    num: "01",
+    label: "默认入口",
+    title: "从空白画布进入搭建",
+    description: "搭建助手给出常用任务建议，让用户从自然语言需求快速开始。",
+    image: `${P21}/free-canvas-01.webp`,
+    alt: "工作流空白画布与搭建助手默认入口，展示任务建议和自然语言输入框",
+  },
+  {
+    id: "intent",
+    num: "02",
+    label: "素材识别",
+    title: "根据上传素材确认方向",
+    description: "识别用户上传的图片，先澄清目标，再给出可选择的工作流方向。",
+    image: `${P21}/free-canvas-02.webp`,
+    alt: "用户上传图片后，搭建助手识别素材并给出三种图像工作流方向",
+  },
+  {
+    id: "outline",
+    num: "03",
+    label: "大纲确认",
+    title: "生成可确认的工作流大纲",
+    description: "将需求拆解为节点计划，在真正搭建前支持确认或重新生成。",
+    image: `${P21}/free-canvas-03.webp`,
+    alt: "搭建助手生成工作流节点大纲，并提供确认与重新生成操作",
+  },
+  {
+    id: "building",
+    num: "04",
+    label: "自动搭建",
+    title: "按大纲逐个创建节点",
+    description: "自动添加节点、填写参数并建立连接，同时持续展示搭建进度。",
+    image: `${P21}/free-canvas-04.webp`,
+    alt: "搭建助手正在自动创建和连接工作流节点，并显示搭建进度",
+  },
+  {
+    id: "ready",
+    num: "05",
+    label: "搭建完成",
+    title: "完整工作流已就绪",
+    description: "全部节点和连线完成后汇总检查，并将下一步收束到开始试运行。",
+    image: `${P21}/free-canvas-05.webp`,
+    alt: "工作流全部节点搭建完成，搭建助手展示检查结果和开始运行按钮",
+  },
+  {
+    id: "running",
+    num: "06",
+    label: "试运行中",
+    title: "同步反馈执行进度",
+    description: "运行时展示节点状态与生成过程，让用户始终知道系统正在做什么。",
+    image: `${P21}/free-canvas-06.webp`,
+    alt: "工作流正在试运行，画布节点显示成功状态，助手同步输出执行进度",
+  },
+  {
+    id: "output",
+    num: "07",
+    label: "结果输出",
+    title: "试运行成功并交付结果",
+    description: "完成后统一呈现文本、视频结果与运行状态，形成完整闭环。",
+    image: `${P21}/free-canvas-07.webp`,
+    alt: "工作流试运行成功，搭建助手展示生成文案和两项视频结果",
+  },
+] as const
 
 export default function SlidePage21() {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const [paused, setPaused] = useState(false)
+  const reduceMotion = useReducedMotion()
+  const activeScreen = workflowScreens[activeIndex]
+  const nextScreen = workflowScreens[(activeIndex + 1) % workflowScreens.length]
+
+  const showPrevious = () => {
+    setActiveIndex((current) =>
+      current === 0 ? workflowScreens.length - 1 : current - 1
+    )
+  }
+
+  const showNext = () => {
+    setActiveIndex((current) => (current + 1) % workflowScreens.length)
+  }
+
+  useEffect(() => {
+    if (paused || reduceMotion) return
+
+    const timer = window.setTimeout(showNext, AUTOPLAY_MS)
+    return () => window.clearTimeout(timer)
+  }, [activeIndex, paused, reduceMotion])
+
+  useEffect(() => {
+    const image = new window.Image()
+    image.src = nextScreen.image
+  }, [nextScreen.image])
+
+  const handleMainKeyDown = (event: ReactKeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === "ArrowRight") {
+      event.preventDefault()
+      event.stopPropagation()
+      showNext()
+    }
+    if (event.key === "ArrowLeft") {
+      event.preventDefault()
+      event.stopPropagation()
+      showPrevious()
+    }
+  }
+
+  const handleBlur = (event: ReactFocusEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) setPaused(false)
+  }
+
   return (
     <div
-      className="relative h-full w-full overflow-hidden"
-      style={{ background: "#070707" }}
+      className="relative h-full w-full overflow-hidden bg-[#070707] text-white"
+      onPointerEnter={() => setPaused(true)}
+      onPointerLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={handleBlur}
     >
-      {/* ── 深色底 + 红光晕 ──────────────────────────────────────── */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute" style={{ top: 0, left: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
-        <div className="absolute" style={{ top: 0, right: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
+      <div className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute inset-y-0 left-0 w-[22%]"
+          style={{
+            background:
+              "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,.28) 0%, rgba(180,0,0,.1) 45%, transparent 76%)",
+          }}
+        />
+        <div
+          className="absolute inset-y-0 right-0 w-[22%]"
+          style={{
+            background:
+              "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,.25) 0%, rgba(180,0,0,.09) 45%, transparent 76%)",
+          }}
+        />
+        <div
+          className="absolute inset-0 opacity-[.22]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px)",
+            backgroundSize: "72px 72px",
+          }}
+        />
       </div>
 
-
-
-      {/* ── Title ────────────────────────────────────────────────── */}
-      <span className="absolute z-10" style={{ left: "4.17%", top: "9.26%" }}>
-        <span
-          style={{
-            color: "#FFFFFF",
-            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
-            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
-            lineHeight: "52px",
-            letterSpacing: "1.08px",
-          }}
-        >
-          Prompt To{" "}
-        </span>
-        <span
-          style={{
-            display: "inline-block",
-            position: "relative",
-            color: "#ef3b46",
-            fontSize: "clamp(20px, calc(2.5 * var(--u)), 36px)",
-            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
-            lineHeight: "52px",
-            letterSpacing: "1.08px",
-          }}
-        >
-          Workflow
-          <svg
+      <header className="absolute top-[6.2%] right-[4.17%] left-[4.17%] z-20 flex items-end justify-between">
+        <div>
+          <div className="mb-[8px] flex items-center gap-[9px] text-[10px] font-semibold tracking-[0.18em] text-[#ef3b46]">
+            <span className="h-px w-[30px] bg-[#ef3b46]" />
+            AI WORKFLOW BUILDER · ENTRY EXPERIENCE
+          </div>
+          <h1
+            className="m-0"
             style={{
-              display: "none",
-              position: "absolute",
-              left: 0,
-              bottom: "-1px",
-              width: "100%",
-              height: "13px",
-              opacity: 0.5,
+              fontFamily:
+                "'标小智无界黑', 'LogoSC Unbounded Sans', 'PingFang SC', sans-serif",
+              fontSize: "2.5rem",
+              fontWeight: 400,
+              lineHeight: 1.18,
+              letterSpacing: "0.0625rem",
+              fontSynthesis: "none",
+              WebkitFontSmoothing: "antialiased",
             }}
-            viewBox="0 0 152 13"
-            fill="none"
-            aria-hidden="true"
           >
-            <defs>
-              <linearGradient id="p21WorkflowWave" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stopColor="#5C5CFF" />
-                <stop offset="100%" stopColor="#AE5CFF" />
-              </linearGradient>
-            </defs>
-            <path
-              d="M2 9.5C31 5 54 4.5 76 7C101 9.8 124 5.2 150 5.6"
-              stroke="url(#p21WorkflowWave)"
-              strokeWidth="4"
-              strokeLinecap="round"
-            />
-          </svg>
-        </span>
-      </span>
+            Prompt To <span className="text-[#ef3b46]">Workflow</span>
+          </h1>
+        </div>
 
-      {/* ── Decorative wavy line ─────────────────────────────────── */}
-      <svg
-        className="absolute z-10"
-        style={{ display: "none" }}
-        viewBox="0 0 152 13"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <linearGradient x1="0.0735" y1="0.129" x2="1.003" y2="0.132" id="p21wv">
-            <stop offset="0%" stopColor="#5C5CFF" />
-            <stop offset="100%" stopColor="#AE5CFF" />
-          </linearGradient>
-        </defs>
-        <path d="M67.220451,12.986349Q113.09277,7.5991349,149.95132,8.4963117L149.95134,8.4959111Q149.97566,8.4965034,150,8.4965034Q150.09824,8.4965034,150.196,8.4868746Q150.29376,8.477246300000001,150.39009,8.458081199999999Q150.48645,8.438917199999999,150.58044,8.4104013Q150.67444,8.3818855,150.7652,8.3442926Q150.85596,8.3067002,150.9426,8.2603927Q151.02924,8.2140856,151.1109,8.159509199999999Q151.1926,8.1049337,151.26852,8.0426149Q151.34447,7.9802961,151.41393,7.9108338Q151.4834,7.8413725,151.54572,7.7654362Q151.60803,7.6895003,151.6626,7.607821Q151.71716,7.5261431,151.76349,7.439508Q151.80978,7.3528733,151.84738,7.2621164Q151.88499,7.1713605,151.91351,7.0773563Q151.94203,6.9833527,151.96118,6.8870058Q151.98035,6.7906599,151.98999,6.6928988Q151.9996,6.5951376,151.9996,6.4969034Q151.99959,6.4001927,151.99025,6.3039336Q151.98093,6.207674,151.96234,6.1127653Q151.94376,6.0178561,151.91611,5.9251828Q151.88847,5.83251,151.85202,5.7429380000000005Q151.81555,5.6533656,151.7706,5.5677304Q151.72565,5.4820952,151.67267,5.4011967Q151.61966,5.3202982,151.55911,5.2448914Q151.49857,5.1694846000000005,151.43103,5.1002735999999995Q151.36346,5.0310621,151.28955,4.9686927999999995Q151.21564,4.906323,151.13605,4.8513772Q151.05646,4.796431500000001,150.97194,4.7494226Q150.88742,4.7024136,150.79878,4.6637807Q150.71011,4.6251473,150.61813,4.5952500999999994Q150.52615,4.5653532000000006,150.43173,4.5444715Q150.3373,4.5235896,150.2413,4.5119185Q150.14529,4.500247,150.04863,4.497895L150.04865,4.4974959000000005Q115.65866,3.6604067000000002,73.542511,8.2452998Q76.467125,6.1883349,76.396248,3.7974395000000003Q76.33403,1.69870716,74.156258,0.6908292Q72.621521,-0.019450200000000084,70.09156,0.004706000000000099Q50.876682,0.1881716,1.70265764,7.5810919L1.70271716,7.5814877Q1.61481601,7.5947027,1.52843422,7.6156659Q1.44205242,7.6366286,1.35787141,7.6651735Q1.2736904,7.6937184,1.19237423,7.72962Q1.11105812,7.765522,1.0332483099999998,7.8084974Q0.9554385000000001,7.8514729,0.8817489000000001,7.9011827Q0.8080592,7.9508924,0.7390711000000001,8.0069451Q0.670083,8.0629978,0.6063406,8.1249504Q0.5425982,8.186903000000001,0.48460459999999994,8.2542677Q0.4266106999999999,8.3216324,0.3748229999999999,8.393876599999999Q0.3230352000000001,8.4661217,0.2778620999999999,8.542676400000001Q0.23268909999999998,8.6192312,0.1944870999999999,8.6994925Q0.156285,8.7797537,0.1253552,8.863087700000001Q0.09442539999999999,8.9464221,0.07101209999999991,9.0321722Q0.04759880000000005,9.1179223,0.03188659999999999,9.2054114Q0.016174300000000086,9.2929006,0.008287099999999992,9.3814387Q0.0003998000000000612,9.469976899999999,0.00039989999999989756,9.5588655Q0.00039989999999989756,9.6570997,0.010028600000000054,9.7548609Q0.019657100000000094,9.852622,0.03882180000000002,9.9489679Q0.057986300000000046,10.0453148,0.08650209999999992,10.1393185Q0.1150179,10.2333221,0.15261049999999998,10.3240786Q0.1902029999999999,10.414835,0.23651029999999995,10.5014706Q0.2828174000000001,10.5881052,0.33739340000000007,10.6697836Q0.3919691999999999,10.7514629,0.4542881999999999,10.8273983Q0.5166073,10.9033346,0.5860692999999999,10.9727955Q0.6555313,11.0422573,0.7314672,11.1045771Q0.8074030999999999,11.1668959,0.8890818,11.2214718Q0.9707603,11.2760477,1.0573951,11.3223543Q1.1440298,11.3686619,1.2347862699999999,11.4062538Q1.3255426300000002,11.4438477,1.41954672,11.4723625Q1.51355088,11.5008793,1.6098974,11.5200434Q1.70624387,11.5392094,1.80400491,11.5488377Q1.901765943,11.558466,2,11.558466Q2.14947201,11.558466,2.2972829,11.5362434L2.29734236,11.5366392Q51.194672,4.1853178,70.129753,4.0045234999999995Q71.405319,3.9923444,72.121872,4.1931777Q72.072655,4.2476315,72.016205,4.30528Q71.22773,5.1105044,69.646561,5.9137699999999995Q65.591633,7.9737582,65.03178,10.5799513Q64.962162,10.904048,65.000828,11.2332764Q65.023804,11.428915,65.084507,11.6163111Q65.14520999999999,11.8037071,65.24130199999999,11.9756613Q65.337395,12.147615,65.465191,12.297517Q65.592983,12.44742,65.747562,12.56951Q65.90214900000001,12.691603,66.077583,12.78119Q66.253014,12.870777,66.442551,12.924417Q66.632095,12.97806,66.828461,12.993692Q67.024818,13.009326,67.220451,12.986349Z" fillRule="evenodd" fill="url(#p21wv)" fillOpacity="1" />
-      </svg>
-
-      {/* ── Subtitle ─────────────────────────────────────────────── */}
-      <p
-        className="absolute z-10"
-        style={{
-          right: "4.17%",
-          top: "11.11%",
-          color: "rgba(255,255,255,0.72)",
-          fontSize: "clamp(11px, calc(1.11 * var(--u)), 16px)",
-          fontFamily: "'PingFang SC', sans-serif",
-          fontWeight: 500,
-          textAlign: "right",
-          lineHeight: 1.7,
-          margin: 0,
-          maxWidth: "45%",
-        }}
-      >
-        打造基于自然语言快速搭建工作流的搭建助手
-      </p>
-
-      {/* ── Top screenshots (before / after) ─────────────────────── */}
-      <img
-        src={`${P21}/top-left.webp`}
-        alt=""
-        className="absolute z-10"
-        style={{
-          left: 0,
-          top: "16.67%",
-          width: "50%",
-          height: "46.57%",
-          objectFit: "cover",
-          objectPosition: "center top",
-          border: "2px solid rgba(255,255,255,0.12)",
-          borderRadius: "18px",
-          boxShadow: "0px 3.83px 7.66px rgba(0,0,0,0.4)",
-        }}
-      />
-      <img
-        src={`${P21}/top-right.webp`}
-        alt=""
-        className="absolute z-10"
-        style={{
-          left: "50%",
-          top: "16.67%",
-          width: "50%",
-          height: "46.57%",
-          objectFit: "cover",
-          objectPosition: "center top",
-          border: "2px solid rgba(255,255,255,0.12)",
-          borderRadius: "18px",
-          boxShadow: "0px 3.83px 7.66px rgba(0,0,0,0.4)",
-        }}
-      />
-
-      {/* ── Floating emoji badges ────────────────────────────────── */}
-      <div
-        className="absolute z-20"
-        style={{ left: "18.68%", top: "14.72%" }}
-      >
-        <DarkPillTag index="01">前：设计器空空如也</DarkPillTag>
-      </div>
-      <div
-        className="absolute z-20"
-        style={{ left: "67.71%", top: "14.81%" }}
-      >
-        <DarkPillTag index="03">后：生成结果/工作流保存</DarkPillTag>
-      </div>
-      <div
-        className="absolute z-20"
-        style={{ left: "42.99%", top: "50%" }}
-      >
-        <DarkPillTag index="02">中：自动搭建/执行/运行</DarkPillTag>
-      </div>
-
-      {/* ── Bottom glass panel with steps ────────────────────────── */}
-      <div
-        className="absolute z-10 grid"
-        style={{
-          left: "4.17%",
-          top: "55.2%",
-          width: "91.66%",
-          height: "38.6%",
-          gridTemplateColumns: "repeat(6, minmax(0, 1fr))",
-          gap: "clamp(8px, calc(0.9 * var(--u)), 13px)",
-          padding: "clamp(12px, calc(1.25 * var(--u)), 18px)",
-          background:
-            "linear-gradient(180deg, rgba(55,22,24,0.94) 0%, rgba(17,14,15,0.97) 46%, rgba(8,8,8,0.98) 100%)",
-          border: "1px solid rgba(239,59,70,0.3)",
-          borderRadius: "16px",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          boxShadow:
-            "0 18px 42px rgba(0,0,0,0.48), inset 0 1px 0 rgba(255,255,255,0.06)",
-        }}
-      >
-        {steps.map((step) => (
-          <article
-            key={step.num}
-            className="grid min-h-0 min-w-0"
-            style={{ gridTemplateRows: "auto minmax(0, 1fr)", rowGap: "10px" }}
+        <div className="flex flex-col items-end">
+          <p
+            id="workflow-step-instruction"
+            className="m-0 max-w-[580px] text-right text-[11px] leading-[1.45] font-medium text-white/52"
+            aria-live="polite"
           >
-            <div className="min-w-0">
-              <DarkPillTag index={step.num}>{step.label}</DarkPillTag>
-            </div>
-            <div
-              className="relative min-h-0 overflow-hidden"
-              style={{
-                borderRadius: "9px",
-                background: "#eef2f7",
-                border: "1px solid rgba(255,255,255,0.12)",
-                boxShadow: "0 10px 24px rgba(0,0,0,0.3)",
-              }}
-            >
-              <img
-                src={`${P21}/${step.img}`}
-                alt={`${step.num} ${step.label}`}
-                className="h-full w-full object-cover"
-                style={{ objectPosition: "left top" }}
-              />
-            </div>
-          </article>
-        ))}
-      </div>
+            <span className="text-white/76">
+              {activeScreen.num} · {activeScreen.title}
+            </span>{" "}
+            — {activeScreen.description}
+          </p>
+        </div>
+      </header>
+
+      <section
+        className="absolute top-[17.2%] right-[4.17%] bottom-[1.3%] left-[4.17%] z-10 flex items-center justify-center"
+        aria-label="工作流搭建助手七状态轮播"
+      >
+        <div
+          className="relative max-h-full w-full"
+          style={{
+            aspectRatio: "5760 / 3000",
+          }}
+        >
+          <button
+            type="button"
+            onClick={(event) => {
+              event.stopPropagation()
+              showNext()
+            }}
+            onPointerDown={(event) => event.stopPropagation()}
+            onKeyDown={handleMainKeyDown}
+            aria-describedby="workflow-step-instruction"
+            aria-label={`${activeScreen.title}。点击进入下一步：${nextScreen.label}`}
+            className="absolute inset-0 block h-full w-full cursor-pointer overflow-hidden rounded-[12px] border border-white/10 bg-[#edf2f8] p-0 text-left shadow-[0_28px_48px_rgba(0,0,0,.5),0_0_45px_rgba(185,0,0,.13)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ef3b46]"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={activeScreen.id}
+                className="absolute inset-0 bg-white"
+                initial={{ opacity: 0, x: reduceMotion ? 0 : 12 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: reduceMotion ? 0 : -10 }}
+                transition={{
+                  duration: reduceMotion ? 0 : 0.22,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <Image
+                  src={activeScreen.image}
+                  alt={activeScreen.alt}
+                  fill
+                  sizes="92vw"
+                  priority={activeIndex === 0}
+                  unoptimized
+                  className="object-contain select-none"
+                  draggable={false}
+                />
+              </motion.div>
+            </AnimatePresence>
+          </button>
+
+          <div
+            className="absolute bottom-[14px] left-1/2 z-20 flex -translate-x-1/2 items-center gap-[4px] rounded-full border border-white/12 bg-black/38 px-[10px] py-[6px] shadow-[0_8px_22px_rgba(0,0,0,.26)] backdrop-blur-[8px]"
+            role="group"
+            aria-label="工作流步骤"
+          >
+            {workflowScreens.map((screen, index) => {
+              const selected = index === activeIndex
+              return (
+                <button
+                  key={screen.id}
+                  type="button"
+                  aria-label={`展示第 ${index + 1} 步：${screen.label}`}
+                  aria-pressed={selected}
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    setActiveIndex(index)
+                  }}
+                  className="flex h-[16px] w-[30px] items-center justify-center rounded-full border-0 bg-transparent p-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef3b46]"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="h-[3px] rounded-full transition-[width,background-color,box-shadow] duration-200"
+                    style={{
+                      width: selected ? "26px" : "20px",
+                      background: selected
+                        ? "#ef3b46"
+                        : "rgba(255,255,255,.4)",
+                      boxShadow: selected
+                        ? "0 0 10px rgba(239,59,70,.72)"
+                        : "none",
+                    }}
+                  />
+                </button>
+              )
+            })}
+          </div>
+        </div>
+      </section>
     </div>
-  );
+  )
 }

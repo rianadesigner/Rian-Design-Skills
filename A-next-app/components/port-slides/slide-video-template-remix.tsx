@@ -9,21 +9,13 @@ const screens = [
   {
     index: "01",
     phase: "DISCOVER",
-    title: "首页模板入口",
-    body: "模板大卡先展示生成效果",
-    image: "/images/video/slide37-template-remix/01-home-template-entry.webp",
-    alt: "Sketch 首页模板入口，模板大卡展示官方效果并提供做同款按钮",
-  },
-  {
-    index: "02",
-    phase: "DISCOVER",
     title: "瀑布流模板入口",
     body: "海量官方模板持续可发现",
     image: "/images/video/slide37-template-remix/02-template-waterfall.webp",
     alt: "Sketch 模板瀑布流入口，多张官方模板卡片连续展示",
   },
   {
-    index: "03",
+    index: "02",
     phase: "EVALUATE",
     title: "模板详情",
     body: "效果、作者与创作入口集中呈现",
@@ -31,7 +23,7 @@ const screens = [
     alt: "Sketch 模板详情页，展示模板视频、创作信息、二次创作与做同款入口",
   },
   {
-    index: "04",
+    index: "03",
     phase: "INSPECT",
     title: "创作详情",
     body: "查看原作者的分步创作流程",
@@ -39,7 +31,7 @@ const screens = [
     alt: "Sketch 创作详情页，展示原作者的分步创作流程与每一步说明",
   },
   {
-    index: "05",
+    index: "04",
     phase: "REMIX",
     title: "二次创作",
     body: "沿用模板结果继续输入修改",
@@ -47,7 +39,7 @@ const screens = [
     alt: "Sketch 二创编辑页，保留模板视频并支持继续输入修改",
   },
   {
-    index: "06",
+    index: "05",
     phase: "REMAKE",
     title: "做同款",
     body: "复用模板生成自己的版本",
@@ -83,7 +75,7 @@ export default function SlideVideoTemplateRemix() {
       >
         <div className="absolute left-[26px] right-[26px] top-[22px] flex items-start justify-between">
           {screens.map((screen, index) => (
-            <article key={screen.index} className="relative w-[174px] shrink-0">
+            <article key={screen.index} className="relative w-[200px] shrink-0">
               <div className="mb-[8px] flex h-[22px] items-center justify-between">
                 <span className="font-mono text-[9px] font-bold tracking-[1.1px] text-[#ef5057]">
                   {screen.phase}
@@ -121,7 +113,7 @@ export default function SlideVideoTemplateRemix() {
                 <ArrowRight
                   size={15}
                   aria-hidden="true"
-                  className="absolute -right-[31px] top-[218px] text-white/20"
+                  className="absolute -right-[41px] top-[246px] text-white/20"
                 />
               ) : null}
             </article>
@@ -137,8 +129,6 @@ export default function SlideVideoTemplateRemix() {
           </div>
 
           <div className="flex items-center gap-[12px] text-[11px] text-white/52">
-            <span>看见效果</span>
-            <ArrowRight size={12} className="text-white/20" />
             <span>浏览模板</span>
             <ArrowRight size={12} className="text-white/20" />
             <span>查看详情</span>

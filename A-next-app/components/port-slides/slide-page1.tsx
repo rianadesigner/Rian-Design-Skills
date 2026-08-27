@@ -151,7 +151,7 @@ export default function SlidePage1() {
             <path d="M8.39,11.47L3.06,11.47C2.84,11.47,2.66,11.29,2.66,11.07C2.66,10.85,2.84,10.67,3.06,10.67L8.39,10.67C8.61,10.67,8.79,10.85,8.79,11.07C8.79,11.29,8.61,11.47,8.39,11.47Z" fill="#FFFFFF" />
           </svg>
         </div>
-        <span style={{ color: "#FFFFFF", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5, whiteSpace: "nowrap" }}>
+        <span style={{ color: "#111111", fontSize: "clamp(10px, calc(0.97 * var(--u)), 14px)", fontFamily: "'Alimama ShuHeiTi', sans-serif", fontWeight: 700, lineHeight: 1.5, whiteSpace: "nowrap" }}>
           Web(专业研究场景)
         </span>
       </div>

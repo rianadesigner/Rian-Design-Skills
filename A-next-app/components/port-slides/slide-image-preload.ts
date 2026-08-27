@@ -169,14 +169,43 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/page20/left-panel.jpg",
   ],
   page21: [
-    "/images/page21/top-left.webp",
-    "/images/page21/top-right.webp",
-    "/images/page21/step1.webp",
+    "/images/page21/free-canvas-01.webp",
+    "/images/page21/free-canvas-02.webp",
+    "/images/page21/free-canvas-03.webp",
+    "/images/page21/free-canvas-04.webp",
+    "/images/page21/free-canvas-05.webp",
+    "/images/page21/free-canvas-06.webp",
+    "/images/page21/free-canvas-07.webp",
   ],
   page22: [
     "/images/page22/card3-left.webp",
     "/images/page22/card3-right.webp",
     "/images/page22/dark-card-bg.webp",
+  ],
+  "if-studio": ["/images/if-studio/home-full-2026.webp"],
+  "if-studio-skills": [
+    "/images/if-studio/skills-plaza-2026.webp",
+    "/images/if-studio/skill-detail-2026.png",
+  ],
+  "storyboard-video-skill": [
+    "/images/storyboard-video-skill/workflow-full-105500.webp",
+    "/images/if-studio/skill-config-2026.webp",
+  ],
+  "if-studio-insights": [
+    "/images/if-studio/generated-covers/workflow-cover-v5.webp",
+    "/images/if-studio/generated-covers/canvas-cover-v5.webp",
+    "/images/if-studio/generated-covers/skills-cover-v5.webp",
+    "/images/if-studio/generated-covers/assets-cover-v6.webp",
+  ],
+  "if-studio-capabilities": [
+    "/images/if-studio/capabilities/brand.webp",
+    "/images/if-studio/capabilities/illustration.webp",
+    "/images/if-studio/capabilities/video.webp",
+    "/images/if-studio/capabilities/creative.webp",
+    "/images/if-studio/capabilities/social.webp",
+    "/images/if-studio/capabilities/commerce.webp",
+    "/images/if-studio/capabilities/fashion.webp",
+    "/images/if-studio/capabilities/space.webp",
   ],
   page23: [
     "/images/page23/05.webp",
@@ -231,20 +260,27 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/other-search-projects/ui-v3/09-map-zoom.webp",
     "/images/other-search-projects/ui-v3/10-recommend-entry.png",
   ],
-  page27: ["/images/page27/home.webp", "/images/page27/video-editor.webp"],
+  page27: [
+    "/images/page27/riff-home-logged-out.webp",
+    "/images/page27/riff-material-v2.webp",
+  ],
   "video-user-journey": [],
+  "video-recommendation-upload": [
+    "/images/page34/riff-home-logged-in.webp",
+    "/images/page34/upload-picker-check-centered.webp",
+    "/images/page34/material-analysis.webp",
+  ],
   "video-concurrent-tasks": [
     "/images/page35/queued-v2.webp",
     "/images/page35/generating-v2.webp",
     "/images/page35/task-history.jpg",
   ],
   "video-context-system": [
-    "/images/page27/home.webp",
+    "/images/page34/riff-home-logged-in.webp",
     "/images/page27/video-editor.webp",
     "/images/page27/result.webp",
   ],
   "video-template-remix": [
-    "/images/video/slide37-template-remix/01-home-template-entry.webp",
     "/images/video/slide37-template-remix/02-template-waterfall.webp",
     "/images/video/slide37-template-remix/03-template-detail.webp",
     "/images/video/slide37-template-remix/04-creation-detail.webp",
@@ -252,8 +288,8 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/video/slide37-template-remix/06-make-same.webp",
   ],
   "video-entry-experience": [
-    "/images/page27/delta-home.webp",
-    "/images/page27/home.webp",
+    "/images/page27/riff-home-logged-out.webp",
+    "/images/page34/riff-home-logged-in.webp",
     "/images/page27/remix.webp",
   ],
   "video-async-loop": [

@@ -34,75 +34,74 @@ export default function SlidePage13() {
         <div className="absolute" style={{ top: 0, right: 0, width: "18%", height: "100%", background: "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.26) 0%, rgba(180,0,0,0.10) 45%, transparent 75%)" }} />
       </div>
 
-      {/* ── Main Title (centered, single line) ───────────────────── */}
-      <div
-        className="absolute z-10 flex items-center justify-center"
-        style={{
-          left: "50%",
-          top: "12.87%",
-          transform: "translateX(-50%)",
-          width: "max-content",
-          maxWidth: "92%",
-          flexWrap: "nowrap",
-          whiteSpace: "nowrap",
-          gap: "calc(0.83 * var(--u))",
-        }}
+      {/* ── Project header ────────────────────────────────────────── */}
+      <header
+        className="absolute z-20 flex items-end justify-between"
+        style={{ left: "4.17%", right: "4.17%", top: "6.7%" }}
       >
-        <span
-          style={{
-            backgroundImage: "linear-gradient(90deg, #2A8BF9 0%, #D64FBB 35%, #FD3F46 58%, #FF8E0E 100%)",
-            backgroundClip: "text",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            fontSize: "clamp(28px, calc(3.33 * var(--u)), 48px)",
-            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
-            lineHeight: 1.46,
-            letterSpacing: "2.88px",
-            whiteSpace: "nowrap",
-            flexShrink: 0,
-          }}
-        >
-          万相星链
-        </span>
-        <span
-          style={{
-            color: "#FFFFFF",
-            fontSize: "clamp(28px, calc(3.33 * var(--u)), 48px)",
-            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
-            lineHeight: 1.46,
-            letterSpacing: "2.88px",
-            whiteSpace: "nowrap",
-            flexShrink: 0,
-          }}
-        >
-          让您的业务构想快速成真
-        </span>
-      </div>
+        <div style={{ maxWidth: "58%" }}>
+          <div className="mb-[12px] flex items-center" style={{ gap: "10px" }}>
+            <span
+              aria-hidden="true"
+              style={{
+                width: "7px",
+                height: "7px",
+                borderRadius: "50%",
+                background: "#ef3b46",
+                boxShadow: "0 0 14px rgba(239,59,70,0.72)",
+              }}
+            />
+            <span
+              style={{
+                color: "rgba(255,255,255,0.52)",
+                fontFamily: "'LogoSC Unbounded Sans', sans-serif",
+                fontSize: "10px",
+                fontWeight: 700,
+                letterSpacing: "0.18em",
+              }}
+            >
+              WANXIANG XINGLIAN · 01 / PLATFORM OVERVIEW
+            </span>
+          </div>
+          <h1
+            className="if-studio-project-title"
+            style={{ margin: 0, color: "#fff", whiteSpace: "nowrap" }}
+          >
+            <span
+              style={{
+                color: "#ef3b46",
+              }}
+            >
+              万相星链
+            </span>
+            <span style={{ marginLeft: "14px", color: "#fff" }}>
+              让您的业务构想快速成真
+            </span>
+          </h1>
+        </div>
 
-      {/* ── Description ──────────────────────────────────────────── */}
-      <p
-        className="absolute z-10"
-        style={{
-          left: "28.47%",
-          top: "21.57%",
-          color: "rgba(255,255,255,0.38)",
-          fontSize: "clamp(12px, calc(1.25 * var(--u)), 18px)",
-          fontFamily: "'PingFang SC', sans-serif",
-          fontWeight: 500,
-          textAlign: "center",
-          lineHeight: 1.7,
-          margin: 0,
-        }}
-      >
-        星链支持搭建工作流智能体、接入海量AI节点、批量数据运行、API接入业务，
-        <br />
-        作为开源开发平台提供稳定服务助力业务发展。
-      </p>
+        <p
+          style={{
+            width: "38%",
+            margin: "0 0 2px",
+            color: "rgba(255,255,255,0.64)",
+            fontFamily: "'PingFang SC', sans-serif",
+            fontSize: "13px",
+            fontWeight: 500,
+            lineHeight: 1.72,
+            textAlign: "right",
+          }}
+        >
+          星链支持搭建工作流智能体、接入海量 AI 节点、批量数据运行、API 接入业务，
+          <br />
+          作为开源开发平台提供稳定服务，助力业务发展。
+        </p>
+      </header>
 
       {/* ── Circular Gallery Carousel ────────────────────────────── */}
       <div
         className="absolute z-10"
-        style={{ left: 0, top: "29%", width: "100%", bottom: "23%" }}
+        style={{ left: 0, top: "20.8%", width: "100%", bottom: "23%" }}
       >
         <PerspectiveCarousel images={carouselImages} interval={3000} />
       </div>
