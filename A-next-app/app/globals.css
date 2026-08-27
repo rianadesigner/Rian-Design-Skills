@@ -178,6 +178,25 @@
  * those transitions, so the canvas keeps fitting its actual container.
  */
 @layer components {
+  .ai-video-project-title {
+    font-family: '标小智无界黑', 'LogoSC Unbounded Sans', 'PingFang SC',
+      'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    font-size: 40px;
+    font-weight: 400;
+    font-synthesis: none;
+  }
+
+  .if-studio-project-title {
+    font-family: '标小智无界黑', 'LogoSC Unbounded Sans', 'PingFang SC',
+      'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 1.18;
+    letter-spacing: 0.0625rem;
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
   .slide-fit-stage {
     --slide-design-w: 1440px;
     --slide-design-h: 900px;

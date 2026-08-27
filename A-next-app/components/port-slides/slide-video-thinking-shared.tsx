@@ -103,12 +103,10 @@ export function VideoThinkingHeader({
           {index} / {eyebrow}
         </div>
         <h1
+          className="ai-video-project-title"
           style={{
             margin: "8px 0 0",
             color: "#fff",
-            fontFamily: VIDEO_FONT,
-            fontSize: 42,
-            fontWeight: 400,
             lineHeight: 1.22,
             letterSpacing: "1.5px",
             whiteSpace: "nowrap",

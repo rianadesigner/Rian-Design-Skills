@@ -288,7 +288,9 @@ function WikiSidebar() {
   )
 }
 
-export default function SlidePage0e({ embedded = false }: { embedded?: boolean } = {}) {
+export default function SlidePage0e({
+  embedded = false,
+}: { embedded?: boolean } = {}) {
   const [selectedId, setSelectedId] = useState("framework")
   const [researchQuery, setResearchQuery] = useState("")
   const [folderOpen, setFolderOpen] = useState(false)
@@ -442,8 +444,29 @@ export default function SlidePage0e({ embedded = false }: { embedded?: boolean }
             background: "#f8f8f8",
           }}
         >
+          <style>{`
+            .wiki-graph-flat button,
+            .wiki-graph-flat button > span {
+              box-shadow: none !important;
+            }
+          `}</style>
           <div
-            className="absolute overflow-hidden"
+            aria-hidden
+            className="pointer-events-none absolute"
+            style={{
+              left: embedded ? 71 : 66,
+              right: 0,
+              top: 0,
+              bottom: 0,
+              backgroundImage: "url('/images/page0-landing/bg-grid.svg')",
+              backgroundPosition: "center 8%",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: embedded ? "1180px auto" : "1010px auto",
+              opacity: 0.38,
+            }}
+          />
+          <div
+            className="wiki-graph-flat absolute overflow-hidden"
             style={{
               left: embedded ? 71 : 66,
               right: 0,
@@ -457,8 +480,8 @@ export default function SlidePage0e({ embedded = false }: { embedded?: boolean }
               selectedId={selectedId}
               onSelect={handleNodeSelect}
               onOpen={handleNodeOpen}
-              lineIntensity={0.56}
-              ambientIntensity={0.72}
+              lineIntensity={0.9}
+              ambientIntensity={0.92}
             />
           </div>
           <WikiSidebar />

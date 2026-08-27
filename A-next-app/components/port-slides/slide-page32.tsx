@@ -95,12 +95,10 @@ export default function SlidePage32() {
           06 / COMPLETE PRODUCT SYSTEM
         </div>
         <h1
+          className="ai-video-project-title"
           style={{
             margin: "8px 0 0",
             color: "#fff",
-            fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
-            fontSize: "clamp(34px, calc(4.1 * var(--u)), 59px)",
-            fontWeight: 400,
             lineHeight: 1.36,
             letterSpacing: "2.8px",
             textShadow: "0 4px 18px rgba(0,0,0,0.96)",

@@ -19,8 +19,8 @@ const stages: Array<{
     index: "01",
     title: "每日推荐视频生成",
     body: "用可播放的成片建立风格、质量与能力预期。",
-    image: "/images/page34/recommendation-home.jpg",
-    alt: "推荐视频与开始创作入口",
+    image: "/images/page34/riff-home-logged-in.webp",
+    alt: "Riff 已登录首页，展示推荐灵感、视频素材与开始创作入口",
     Icon: Play,
   },
   {
@@ -145,7 +145,10 @@ export default function SlideVideoRecommendationUpload() {
       >
         <section
           className="relative"
-          style={{ padding: "29px 28px 24px 0", borderRight: "1px solid rgba(255,255,255,.12)" }}
+          style={{
+            padding: "29px 28px 24px 0",
+            borderRight: "1px solid rgba(255,255,255,.12)",
+          }}
         >
           <SectionLabel>DESIGN STRATEGY</SectionLabel>
           <h2
@@ -194,10 +197,22 @@ export default function SlideVideoRecommendationUpload() {
                 >
                   {index}
                 </span>
-                <strong style={{ color: "rgba(255,255,255,.75)", fontSize: 12, fontWeight: 600 }}>
+                <strong
+                  style={{
+                    color: "rgba(255,255,255,.75)",
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
+                >
                   {title}
                 </strong>
-                <span style={{ color: "rgba(255,255,255,.38)", fontSize: 10, lineHeight: 1.45 }}>
+                <span
+                  style={{
+                    color: "rgba(255,255,255,.38)",
+                    fontSize: 10,
+                    lineHeight: 1.45,
+                  }}
+                >
                   {body}
                 </span>
               </div>
@@ -212,13 +227,26 @@ export default function SlideVideoRecommendationUpload() {
               bottom: 22,
               padding: "12px 14px",
               borderLeft: `2px solid ${VIDEO_RED}`,
-              background: "linear-gradient(90deg, rgba(132,10,16,.24), rgba(132,10,16,.03))",
+              background:
+                "linear-gradient(90deg, rgba(132,10,16,.24), rgba(132,10,16,.03))",
             }}
           >
-            <div style={{ color: "rgba(255,255,255,.34)", fontSize: 9, letterSpacing: ".6px" }}>
+            <div
+              style={{
+                color: "rgba(255,255,255,.34)",
+                fontSize: 9,
+                letterSpacing: ".6px",
+              }}
+            >
               CORE PRINCIPLE
             </div>
-            <div style={{ marginTop: 5, color: "rgba(255,255,255,.73)", fontSize: 12 }}>
+            <div
+              style={{
+                marginTop: 5,
+                color: "rgba(255,255,255,.73)",
+                fontSize: 12,
+              }}
+            >
               先降低决策成本，再要求用户投入素材。
             </div>
           </div>
@@ -226,7 +254,10 @@ export default function SlideVideoRecommendationUpload() {
 
         <section
           className="relative grid"
-          style={{ padding: "22px 0 0 24px", gridTemplateColumns: "repeat(3, minmax(0, 1fr))" }}
+          style={{
+            padding: "22px 0 0 24px",
+            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+          }}
         >
           {stages.map((stage) => (
             <PhoneStage key={stage.index} stage={stage} />

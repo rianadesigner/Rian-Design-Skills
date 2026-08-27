@@ -1,13 +1,13 @@
-const P27 = "/images/page27";
+const P27 = "/images/page27"
 
 function PhoneFrame({
   src,
   label,
   style,
 }: {
-  src: string;
-  label: string;
-  style: React.CSSProperties;
+  src: string
+  label: string
+  style: React.CSSProperties
 }) {
   return (
     <div
@@ -18,8 +18,7 @@ function PhoneFrame({
         outline: "1px solid rgba(255,255,255,0.18)",
         borderRadius: "38px",
         background: "#111111",
-        boxShadow:
-          "0 30px 64px rgba(0,0,0,0.68), 0 0 42px rgba(176,0,0,0.12)",
+        boxShadow: "0 30px 64px rgba(0,0,0,0.68), 0 0 42px rgba(176,0,0,0.12)",
         ...style,
       }}
     >
@@ -30,7 +29,7 @@ function PhoneFrame({
         className="h-full w-full object-cover"
       />
     </div>
-  );
+  )
 }
 
 function Note({
@@ -40,11 +39,11 @@ function Note({
   style,
   align = "left",
 }: {
-  eyebrow: string;
-  title: string;
-  children: React.ReactNode;
-  style: React.CSSProperties;
-  align?: "left" | "right";
+  eyebrow: string
+  title: string
+  children: React.ReactNode
+  style: React.CSSProperties
+  align?: "left" | "right"
 }) {
   return (
     <div className="absolute z-20" style={{ textAlign: align, ...style }}>
@@ -84,7 +83,7 @@ function Note({
         {children}
       </p>
     </div>
-  );
+  )
 }
 
 export default function SlidePage27() {
@@ -99,7 +98,7 @@ export default function SlidePage27() {
         fontSynthesis: "none",
       }}
     >
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute inset-0"
           style={{
@@ -154,7 +153,6 @@ export default function SlidePage27() {
         />
       </div>
 
-
       <header
         className="absolute z-20 flex items-end justify-between"
         style={{ left: "4.17%", top: "8.1%", width: "91.66%" }}
@@ -172,12 +170,10 @@ export default function SlidePage27() {
             01 / DESIGN OUTPUT
           </div>
           <h1
+            className="ai-video-project-title"
             style={{
               margin: "7px 0 0",
               color: "#ffffff",
-              fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
-              fontSize: "clamp(28px, calc(3.33 * var(--u)), 48px)",
-              fontWeight: 400,
               lineHeight: 1.46,
               letterSpacing: "2.88px",
               whiteSpace: "nowrap",
@@ -185,7 +181,7 @@ export default function SlidePage27() {
             }}
           >
             AI视频
-            <span style={{ color: "#d2353c", marginLeft: "10px" }}>Delta</span>
+            <span style={{ color: "#d2353c", marginLeft: "10px" }}>Riff</span>
           </h1>
         </div>
         <p
@@ -225,9 +221,13 @@ export default function SlidePage27() {
         align="right"
         style={{ right: "4.17%", top: "30.5%", width: "20%" }}
       >
-        <span style={{ whiteSpace: "nowrap" }}>自动识别人像与画面对象，支持角色调用、</span>
+        <span style={{ whiteSpace: "nowrap" }}>
+          自动识别人像与画面对象，支持角色调用、
+        </span>
         <br />
-        <span style={{ whiteSpace: "nowrap" }}>动作克隆和局部编辑，减少手动选择成本。</span>
+        <span style={{ whiteSpace: "nowrap" }}>
+          动作克隆和局部编辑，减少手动选择成本。
+        </span>
       </Note>
       <Note
         eyebrow="04 / VISIBLE FEEDBACK"
@@ -235,9 +235,13 @@ export default function SlidePage27() {
         align="right"
         style={{ right: "4.17%", top: "59%", width: "20%" }}
       >
-        <span style={{ whiteSpace: "nowrap" }}>生成状态、版本结果与导出动作靠近</span>
+        <span style={{ whiteSpace: "nowrap" }}>
+          生成状态、版本结果与导出动作靠近
+        </span>
         <br />
-        <span style={{ whiteSpace: "nowrap" }}>创作上下文，让用户始终知道系统正在做什么。</span>
+        <span style={{ whiteSpace: "nowrap" }}>
+          创作上下文，让用户始终知道系统正在做什么。
+        </span>
       </Note>
 
       <div
@@ -273,22 +277,46 @@ export default function SlidePage27() {
         />
         <div
           className="absolute rounded-full"
-          style={{ left: "16.5%", top: "calc(19% - 3px)", width: 7, height: 7, background: "#d32c33" }}
+          style={{
+            left: "16.5%",
+            top: "calc(19% - 3px)",
+            width: 7,
+            height: 7,
+            background: "#d32c33",
+          }}
         />
         <div
           className="absolute rounded-full"
-          style={{ right: "16.5%", top: "calc(19% - 3px)", width: 7, height: 7, background: "#d32c33" }}
+          style={{
+            right: "16.5%",
+            top: "calc(19% - 3px)",
+            width: 7,
+            height: 7,
+            background: "#d32c33",
+          }}
         />
 
         <PhoneFrame
-          src={`${P27}/delta-home.webp`}
-          label="Delta AI 视频创作首页"
-          style={{ left: "17%", top: "1%", height: "97%", transform: "rotate(-1deg)", zIndex: 2 }}
+          src={`${P27}/riff-home-logged-out.webp`}
+          label="Riff AI 视频创作未登录首页"
+          style={{
+            left: "17%",
+            top: "1%",
+            height: "97%",
+            transform: "rotate(-1deg)",
+            zIndex: 2,
+          }}
         />
         <PhoneFrame
-          src={`${P27}/delta-material-v2.webp`}
-          label="Delta AI 视频素材编辑界面"
-          style={{ right: "17%", top: "8%", height: "90%", transform: "rotate(1deg)", zIndex: 3 }}
+          src={`${P27}/riff-material-v2.webp`}
+          label="Riff AI 视频素材编辑界面"
+          style={{
+            right: "17%",
+            top: "8%",
+            height: "90%",
+            transform: "rotate(1deg)",
+            zIndex: 3,
+          }}
         />
 
         <div
@@ -331,5 +359,5 @@ export default function SlidePage27() {
         </span>
       </footer>
     </div>
-  );
+  )
 }

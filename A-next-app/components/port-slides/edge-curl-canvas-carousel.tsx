@@ -144,7 +144,12 @@ function CarouselPanelContent({ view }: { view: PanelDef["view"] }) {
     return <SlidePage0e embedded />;
   }
 
-  return <SlidePage0 initialView={view} />;
+  return (
+    <SlidePage0
+      initialView={view}
+      landingStyle={view === "landing" ? "editorial" : "default"}
+    />
+  );
 }
 
 type RuntimePanel = {

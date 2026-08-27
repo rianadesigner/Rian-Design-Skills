@@ -298,19 +298,14 @@ export default function SlideIfStudioCapabilities() {
                 letterSpacing: "0.18em",
               }}
             >
-              IF STUDIO · CAPABILITY MAP
+              IF STUDIO · 03 / CAPABILITY MAP
             </span>
           </div>
           <h1
+            className="if-studio-project-title"
             style={{
               margin: 0,
               color: "#fff",
-              fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
-              fontSize: "38px",
-              fontWeight: 400,
-              lineHeight: 1.18,
-              letterSpacing: "1px",
-              fontSynthesis: "none",
             }}
           >
             <span style={{ color: "#ef3b46" }}>if Studio </span>

@@ -7,13 +7,18 @@ import {
   CSS2DObject,
   CSS2DRenderer,
 } from "three/examples/jsm/renderers/CSS2DRenderer.js"
-import { getRelatedNodeIds, KNOWLEDGE_NODES } from "./knowledge-graph-data"
+import {
+  getRelatedNodeIds,
+  KNOWLEDGE_EDGES,
+  KNOWLEDGE_NODES,
+} from "./knowledge-graph-data"
 
 type NodeVisual = {
   mesh: THREE.Mesh<THREE.SphereGeometry, THREE.MeshBasicMaterial>
   label: HTMLButtonElement
   dot: HTMLSpanElement
   delay: number
+  degreeScale: number
   gridIndex: number
 }
 
@@ -21,7 +26,9 @@ type RelationPathVisual = {
   fromId: string
   toId: string
   gridPath: number[]
+  halo?: SVGPolylineElement
   line: SVGPolylineElement
+  flow?: SVGPolylineElement
   delay: number
 }
 
@@ -41,6 +48,7 @@ export default function KnowledgeGraphSphere({
   interactionMode = "select",
   lineIntensity = 1,
   ambientIntensity = 1,
+  detailLevel = "standard",
 }: {
   selectedId: string
   onSelect?: (id: string) => void
@@ -48,14 +56,12 @@ export default function KnowledgeGraphSphere({
   interactionMode?: "select" | "scroll"
   lineIntensity?: number
   ambientIntensity?: number
+  detailLevel?: "standard" | "rich"
 }) {
   const scrollOnly = interactionMode === "scroll"
+  const richDetail = detailLevel === "rich"
   const resolvedLineIntensity = THREE.MathUtils.clamp(lineIntensity, 0, 1)
-  const resolvedAmbientIntensity = THREE.MathUtils.clamp(
-    ambientIntensity,
-    0,
-    1
-  )
+  const resolvedAmbientIntensity = THREE.MathUtils.clamp(ambientIntensity, 0, 1)
   const hostRef = useRef<HTMLDivElement>(null)
   const nodeVisualsRef = useRef(new Map<string, NodeVisual>())
   const selectedIdRef = useRef(selectedId)
@@ -73,11 +79,17 @@ export default function KnowledgeGraphSphere({
     ).matches
     const coarsePointer = window.matchMedia("(pointer: coarse)").matches
     const isIPad =
-      navigator.maxTouchPoints > 1 && /Macintosh|iPad/i.test(navigator.userAgent)
+      navigator.maxTouchPoints > 1 &&
+      /Macintosh|iPad/i.test(navigator.userAgent)
     const constrainedDevice = coarsePointer || isIPad
     const targetFrameInterval = constrainedDevice ? 1000 / 30 : 1000 / 60
-    const gridLineOpacity =
-      GRID_LINE_OPACITY * resolvedLineIntensity * resolvedAmbientIntensity
+    const gridLineOpacity = Math.min(
+      0.68,
+      GRID_LINE_OPACITY *
+        resolvedLineIntensity *
+        resolvedAmbientIntensity *
+        (richDetail ? 1.08 : 1)
+    )
     const scene = new THREE.Scene()
     scene.background = null
 
@@ -163,6 +175,11 @@ export default function KnowledgeGraphSphere({
       nodeGridIndexById.set(node.id, index)
       positionMap.set(node.id, gridPoints[index].clone())
     })
+    const nodeDegreeById = new Map(KNOWLEDGE_NODES.map((node) => [node.id, 0]))
+    KNOWLEDGE_EDGES.forEach(([fromId, toId]) => {
+      nodeDegreeById.set(fromId, (nodeDegreeById.get(fromId) ?? 0) + 1)
+      nodeDegreeById.set(toId, (nodeDegreeById.get(toId) ?? 0) + 1)
+    })
 
     const gridGeometry = new THREE.WireframeGeometry(latticeGeometry)
     latticeGeometry.dispose()
@@ -175,6 +192,38 @@ export default function KnowledgeGraphSphere({
     })
     const sphereGrid = new THREE.LineSegments(gridGeometry, gridMaterial)
     graph.add(sphereGrid)
+
+    // Rich compiler views add a quiet semantic chord layer. Unlike the
+    // icosahedron lattice, these lines represent the authored knowledge edges,
+    // which gives the globe more internal structure without competing with the
+    // selected purple routes drawn above in SVG.
+    let semanticEdgeMaterial: THREE.LineBasicMaterial | null = null
+    if (richDetail) {
+      const semanticPositions: number[] = []
+      KNOWLEDGE_EDGES.forEach(([fromId, toId]) => {
+        const from = positionMap.get(fromId)
+        const to = positionMap.get(toId)
+        if (!from || !to) return
+        semanticPositions.push(from.x, from.y, from.z, to.x, to.y, to.z)
+      })
+      const semanticGeometry = new THREE.BufferGeometry()
+      semanticGeometry.setAttribute(
+        "position",
+        new THREE.Float32BufferAttribute(semanticPositions, 3)
+      )
+      semanticEdgeMaterial = new THREE.LineBasicMaterial({
+        color: 0x8d93be,
+        transparent: true,
+        opacity: reducedMotion ? 0.15 * resolvedAmbientIntensity : 0,
+        depthWrite: false,
+        depthTest: false,
+      })
+      const semanticEdges = new THREE.LineSegments(
+        semanticGeometry,
+        semanticEdgeMaterial
+      )
+      graph.add(semanticEdges)
+    }
 
     const gridIndexByKey = new Map(
       gridPoints.map((point, index) => [pointKey(point), index])
@@ -223,7 +272,11 @@ export default function KnowledgeGraphSphere({
     let highlightStartedAt = 0
     let relationPaths: RelationPathVisual[] = []
     const rebuildHighlightedGridPaths = (nodeId: string, elapsed: number) => {
-      relationPaths.forEach(({ line }) => line.remove())
+      relationPaths.forEach(({ halo, line, flow }) => {
+        halo?.remove()
+        line.remove()
+        flow?.remove()
+      })
       relationPaths = []
 
       const startIndex = nodeGridIndexById.get(nodeId)
@@ -242,7 +295,7 @@ export default function KnowledgeGraphSphere({
           )
           line.setAttribute("fill", "none")
           line.setAttribute("stroke", "#5C5CFF")
-          line.setAttribute("stroke-width", "1.35")
+          line.setAttribute("stroke-width", richDetail ? "1.55" : "1.35")
           line.setAttribute("stroke-linecap", "round")
           line.setAttribute("stroke-linejoin", "round")
           line.setAttribute("pathLength", "1")
@@ -251,13 +304,55 @@ export default function KnowledgeGraphSphere({
           line.style.opacity = reducedMotion
             ? String(0.82 * resolvedLineIntensity)
             : "0"
+
+          let halo: SVGPolylineElement | undefined
+          let flow: SVGPolylineElement | undefined
+          if (richDetail) {
+            halo = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "polyline"
+            )
+            halo.setAttribute("fill", "none")
+            halo.setAttribute("stroke", "#7777ff")
+            halo.setAttribute("stroke-width", "6")
+            halo.setAttribute("stroke-linecap", "round")
+            halo.setAttribute("stroke-linejoin", "round")
+            halo.setAttribute("pathLength", "1")
+            halo.setAttribute("stroke-dasharray", "1")
+            halo.setAttribute("stroke-dashoffset", reducedMotion ? "0" : "1")
+            halo.style.filter = "blur(3px)"
+            halo.style.opacity = reducedMotion
+              ? String(0.12 * resolvedLineIntensity)
+              : "0"
+            relationLayer.appendChild(halo)
+          }
           relationLayer.appendChild(line)
+
+          if (richDetail) {
+            flow = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "polyline"
+            )
+            flow.setAttribute("fill", "none")
+            flow.setAttribute("stroke", "#ffffff")
+            flow.setAttribute("stroke-width", "0.72")
+            flow.setAttribute("stroke-linecap", "round")
+            flow.setAttribute("stroke-linejoin", "round")
+            flow.setAttribute("pathLength", "1")
+            flow.setAttribute("stroke-dasharray", "0.022 0.078")
+            flow.style.opacity = reducedMotion
+              ? String(0.54 * resolvedLineIntensity)
+              : "0"
+            relationLayer.appendChild(flow)
+          }
 
           relationPaths.push({
             fromId: nodeId,
             toId: relatedId,
             gridPath,
+            halo,
             line,
+            flow,
             delay: relatedIndex * 0.045,
           })
         }
@@ -271,10 +366,11 @@ export default function KnowledgeGraphSphere({
     const nodeMeshes: THREE.Mesh[] = []
     KNOWLEDGE_NODES.forEach((node, index) => {
       const material = new THREE.MeshBasicMaterial({
-        color: 0xffffff,
+        color: richDetail ? 0x737b91 : 0xffffff,
         transparent: true,
         opacity: 0,
         depthWrite: false,
+        depthTest: false,
       })
       const mesh = new THREE.Mesh(
         new THREE.SphereGeometry(
@@ -298,15 +394,16 @@ export default function KnowledgeGraphSphere({
       labelElement.style.display = "inline-flex"
       labelElement.style.alignItems = "center"
       labelElement.style.justifyContent = "center"
-      labelElement.style.gap = "4px"
-      labelElement.style.padding = "4px 7px 4px 5px"
+      labelElement.style.gap = richDetail ? "4.5px" : "4px"
+      labelElement.style.padding = richDetail
+        ? "4.5px 8px 4.5px 5.5px"
+        : "4px 7px 4px 5px"
       labelElement.style.border = "1px solid rgba(218,222,228,0.86)"
       labelElement.style.borderRadius = "999px"
       labelElement.style.color = "#505761"
       labelElement.style.background = "rgba(255,255,255,0.9)"
       labelElement.style.boxShadow = "0 5px 14px rgba(24,29,37,0.055)"
-      labelElement.style.font =
-        "600 8.3px 'PingFang SC', 'Noto Sans SC', sans-serif"
+      labelElement.style.font = `600 ${richDetail ? 9 : 8.3}px 'PingFang SC', 'Noto Sans SC', sans-serif`
       labelElement.style.letterSpacing = "0.01em"
       labelElement.style.whiteSpace = "nowrap"
       labelElement.style.cursor = scrollOnly ? "default" : "pointer"
@@ -321,8 +418,8 @@ export default function KnowledgeGraphSphere({
 
       const labelDot = document.createElement("span")
       labelDot.setAttribute("aria-hidden", "true")
-      labelDot.style.width = "4px"
-      labelDot.style.height = "4px"
+      labelDot.style.width = richDetail ? "5px" : "4px"
+      labelDot.style.height = richDetail ? "5px" : "4px"
       labelDot.style.borderRadius = "50%"
       labelDot.style.background = "#1f2227"
       labelDot.style.boxShadow = "0 0 0 2px rgba(31,34,39,0.05)"
@@ -368,6 +465,8 @@ export default function KnowledgeGraphSphere({
         label: labelElement,
         dot: labelDot,
         delay: 0.18 + index * 0.022,
+        degreeScale:
+          0.84 + Math.min(1, (nodeDegreeById.get(node.id) ?? 0) / 8) * 0.34,
         gridIndex: index,
       })
     })
@@ -579,32 +678,48 @@ export default function KnowledgeGraphSphere({
         return box
       }
 
-      relationPaths.forEach(({ fromId, toId, gridPath, line, delay }) => {
-        const points = gridPath.map((gridIndex) =>
-          projectGridPoint(gridIndex, width, height)
-        )
-        const fromBox = getLabelBox(fromId)
-        const toBox = getLabelBox(toId)
-        if (fromBox && points.length > 1)
-          points[0] = clipToLabelEdge(fromBox, points[1])
-        if (toBox && points.length > 1)
-          points[points.length - 1] = clipToLabelEdge(
-            toBox,
-            points[points.length - 2]
+      relationPaths.forEach(
+        ({ fromId, toId, gridPath, halo, line, flow, delay }) => {
+          const points = gridPath.map((gridIndex) =>
+            projectGridPoint(gridIndex, width, height)
           )
+          const fromBox = getLabelBox(fromId)
+          const toBox = getLabelBox(toId)
+          if (fromBox && points.length > 1)
+            points[0] = clipToLabelEdge(fromBox, points[1])
+          if (toBox && points.length > 1)
+            points[points.length - 1] = clipToLabelEdge(
+              toBox,
+              points[points.length - 2]
+            )
 
-        line.setAttribute(
-          "points",
-          points.map(({ x, y }) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" ")
-        )
-        const progress = reducedMotion
-          ? 1
-          : easeOutCubic(clamp01((elapsed - highlightStartedAt - delay) / 0.58))
-        line.setAttribute("stroke-dashoffset", String(1 - progress))
-        line.style.opacity = String(
-          0.82 * resolvedLineIntensity * progress
-        )
-      })
+          const pointString = points
+            .map(({ x, y }) => `${x.toFixed(2)},${y.toFixed(2)}`)
+            .join(" ")
+          halo?.setAttribute("points", pointString)
+          line.setAttribute("points", pointString)
+          flow?.setAttribute("points", pointString)
+          const progress = reducedMotion
+            ? 1
+            : easeOutCubic(
+                clamp01((elapsed - highlightStartedAt - delay) / 0.58)
+              )
+          halo?.setAttribute("stroke-dashoffset", String(1 - progress))
+          line.setAttribute("stroke-dashoffset", String(1 - progress))
+          if (flow) {
+            flow.setAttribute(
+              "stroke-dashoffset",
+              reducedMotion ? "0" : String(-((elapsed - delay) * 0.16) % 1)
+            )
+            flow.style.opacity = String(0.54 * resolvedLineIntensity * progress)
+          }
+          if (halo)
+            halo.style.opacity = String(0.12 * resolvedLineIntensity * progress)
+          line.style.opacity = String(
+            (richDetail ? 0.9 : 0.82) * resolvedLineIntensity * progress
+          )
+        }
+      )
     }
 
     let lastFrameAt = Number.NEGATIVE_INFINITY
@@ -619,6 +734,9 @@ export default function KnowledgeGraphSphere({
         ? 1
         : easeOutCubic(clamp01(elapsed / 0.78))
       gridMaterial.opacity = gridLineOpacity * globeProgress
+      if (semanticEdgeMaterial)
+        semanticEdgeMaterial.opacity =
+          0.15 * resolvedAmbientIntensity * globeProgress
 
       if (highlightedSelection !== selectedIdRef.current)
         rebuildHighlightedGridPaths(selectedIdRef.current, elapsed)
@@ -680,13 +798,17 @@ export default function KnowledgeGraphSphere({
 
       const hasSelection = Boolean(selectedIdRef.current)
       const relatedIds = getRelatedNodeIds(selectedIdRef.current)
-      nodeVisuals.forEach(({ mesh, label, delay }, nodeId) => {
+      nodeVisuals.forEach(({ mesh, label, delay, degreeScale }, nodeId) => {
         const entrance = reducedMotion
           ? 1
           : easeOutCubic(clamp01((elapsed - delay) / 0.42))
         const active = nodeId === selectedIdRef.current
         const related = relatedIds.has(nodeId)
-        mesh.scale.setScalar(entrance * (active ? 1.22 : related ? 1.08 : 1))
+        mesh.scale.setScalar(
+          entrance *
+            (active ? 1.22 : related ? 1.08 : 1) *
+            (richDetail ? degreeScale : 1)
+        )
         mesh.getWorldPosition(worldPosition)
         const facing = surfaceNormal
           .copy(worldPosition)
@@ -699,15 +821,22 @@ export default function KnowledgeGraphSphere({
             ? Math.max(0.78, depthVisibility)
             : related
               ? Math.max(0.68, depthVisibility)
-              : 0.07 + depthVisibility * 0.93
+              : richDetail
+                ? 0.18 + depthVisibility * 0.82
+                : 0.07 + depthVisibility * 0.93
         const stateOpacity = !hasSelection
           ? 0.88 * resolvedAmbientIntensity
           : active
             ? 1
             : related
               ? 0.96
-              : 0.34 * resolvedAmbientIntensity
+              : (richDetail ? 0.54 : 0.34) * resolvedAmbientIntensity
         label.style.opacity = String(entrance * stateOpacity * depthAdjusted)
+        mesh.material.opacity = richDetail
+          ? entrance *
+            depthAdjusted *
+            (active ? 0.92 : related ? 0.68 : 0.22 * resolvedAmbientIntensity)
+          : 0
         if (!hasSelection)
           label.style.transform = `scale(${0.88 + depthVisibility * 0.18})`
         label.style.pointerEvents = scrollOnly
@@ -766,6 +895,7 @@ export default function KnowledgeGraphSphere({
     onSelect,
     resolvedAmbientIntensity,
     resolvedLineIntensity,
+    richDetail,
     scrollOnly,
   ])
 
@@ -777,28 +907,48 @@ export default function KnowledgeGraphSphere({
       const active = nodeId === selectedId
       const related = relatedIds.has(nodeId)
       mesh.scale.setScalar(active ? 1.22 : related ? 1.08 : 1)
-      label.style.color = ambient ? "#555d68" : active ? "#ffffff" : related ? "#4646bd" : "#69717c"
+      if (richDetail)
+        mesh.material.color.setHex(
+          active ? 0xffffff : related ? 0x5c5cff : 0x737b91
+        )
+      label.style.color = ambient
+        ? "#555d68"
+        : active
+          ? "#ffffff"
+          : related
+            ? "#4646bd"
+            : "#69717c"
       label.style.background = active
         ? "#5c5cff"
         : related
           ? "rgba(244,244,255,0.96)"
           : ambient
             ? "rgba(255,255,255,0.92)"
-            : "rgba(255,255,255,0.84)"
+            : richDetail
+              ? "rgba(255,255,255,0.92)"
+              : "rgba(255,255,255,0.84)"
       label.style.borderColor = active
         ? "#5c5cff"
         : related
           ? "rgba(92,92,255,0.34)"
           : ambient
             ? "rgba(174,180,192,0.72)"
-            : "rgba(218,222,228,0.52)"
+            : richDetail
+              ? "rgba(188,194,205,0.72)"
+              : "rgba(218,222,228,0.52)"
       label.style.boxShadow = active
-        ? "0 8px 22px rgba(92,92,255,0.26)"
+        ? richDetail
+          ? "0 0 0 1px rgba(255,255,255,0.28) inset, 0 10px 28px rgba(92,92,255,0.34), 0 0 28px rgba(92,92,255,0.16)"
+          : "0 8px 22px rgba(92,92,255,0.26)"
         : related
-          ? "0 6px 16px rgba(92,92,255,0.11)"
+          ? richDetail
+            ? "0 0 0 1px rgba(255,255,255,0.5) inset, 0 7px 18px rgba(92,92,255,0.14)"
+            : "0 6px 16px rgba(92,92,255,0.11)"
           : ambient
             ? "0 5px 14px rgba(24,29,37,0.075)"
-            : "0 5px 14px rgba(24,29,37,0.055)"
+            : richDetail
+              ? "0 0 0 1px rgba(255,255,255,0.5) inset, 0 5px 15px rgba(24,29,37,0.07)"
+              : "0 5px 14px rgba(24,29,37,0.055)"
       label.style.transform = active
         ? "scale(1.3)"
         : related
@@ -812,12 +962,16 @@ export default function KnowledgeGraphSphere({
             ? "#737b86"
             : "#24282e"
       dot.style.boxShadow = active
-        ? "0 0 0 2px rgba(255,255,255,0.18)"
+        ? richDetail
+          ? "0 0 0 2px rgba(255,255,255,0.2), 0 0 8px rgba(255,255,255,0.72)"
+          : "0 0 0 2px rgba(255,255,255,0.18)"
         : related
-          ? "0 0 0 2px rgba(92,92,255,0.1)"
+          ? richDetail
+            ? "0 0 0 2px rgba(92,92,255,0.12), 0 0 7px rgba(92,92,255,0.28)"
+            : "0 0 0 2px rgba(92,92,255,0.1)"
           : "0 0 0 2px rgba(31,34,39,0.05)"
     })
-  }, [selectedId])
+  }, [richDetail, selectedId])
 
   return <div ref={hostRef} className="absolute inset-0 overflow-hidden" />
 }

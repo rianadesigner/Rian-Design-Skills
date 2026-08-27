@@ -1,92 +1,93 @@
-"use client";
-import { useRef, useState, useEffect } from "react";
-import { motion } from "motion/react";
+"use client"
+import { useRef, useState, useEffect } from "react"
+import { motion } from "motion/react"
 
 /* ── Strip constants (landscape, match cover 1024×711) ───────── */
-const COVER_ASPECT = 1024 / 711; // width / height ≈ 1.44
-const CARD_W = 432; // +20% for stronger visual impact
-const CARD_H = Math.round(CARD_W / COVER_ASPECT); // 300 – full image, no crop
-const STRIP_GAP = 12;
-const STRIP_PAD = 64;
-const STRIP_LOOPS = 3;
+const COVER_ASPECT = 1024 / 711 // width / height ≈ 1.44
+const CARD_W = 432 // +20% for stronger visual impact
+const CARD_H = Math.round(CARD_W / COVER_ASPECT) // 300 – full image, no crop
+const STRIP_GAP = 12
+const STRIP_PAD = 64
+const STRIP_LOOPS = 3
 
 /* ── Project data ─────────────────────────────────────────────── */
 // slideIndex = index in allSlideIds array defined in slide-container.tsx
-// cover(0) content0(1) page0a(2)…page0g(9)，AI 视频项目(10…23)，page0(24)，page1(25)…
+// cover(0) content0(1)，if Studio(2…5)，星链(6…17)，Riff(18…31)，
+// LLM Wiki(32…40)，iFlow 1.0(41…52)，其他项目(53…55)。
 const PROJECTS = [
   {
-    id: "kb",
+    id: "if-studio",
     num: "01",
-    name: "LLM Wiki",
-    subtitle: "大模型知识体系与产品方法沉淀",
-    cover: "/images/page0/content0-card-kb.webp",
+    name: "if Studio",
+    subtitle: "专家级 AI 智能体工作台与创作 Skill",
+    cover: "/images/page0/content0-card-xingliu.webp",
     aspect: COVER_ASPECT,
-    accent: "#818cf8",
-    pages: "0a · 0",
-    slideIndex: 2, // page0a
-  },
-  {
-    id: "xinliu",
-    num: "02",
-    name: "IFlow心流",
-    subtitle: "AI 原生搜索与多端产品体验",
-    cover: "/images/page0/content0-card-xinliu.webp",
-    aspect: COVER_ASPECT,
-    accent: "#60a5fa",
-    pages: "1 – 14",
-    slideIndex: 25, // page1
+    accent: "#22d3ee",
+    pages: "03 – 06",
+    slideIndex: 2,
   },
   {
     id: "wanxiang",
-    num: "03",
+    num: "02",
     name: "万相·星链",
     subtitle: "AI 应用开发平台与能力编排",
     cover: "/images/page0/content0-card-wanxiang.webp",
     aspect: COVER_ASPECT,
     accent: "#c084fc",
-    pages: "13 – 22",
-    slideIndex: 37, // page13
+    pages: "07 – 10",
+    slideIndex: 6,
   },
   {
-    id: "xingliu",
-    num: "04",
-    name: "万相·营造",
-    subtitle: "电商 AIGC 创意生产与投放提效",
-    cover: "/images/page0/content0-card-xingliu.webp",
-    aspect: COVER_ASPECT,
-    accent: "#22d3ee",
-    pages: "23 – 26",
-    slideIndex: 48, // if-studio
-  },
-  {
-    id: "delta-video",
-    num: "05",
-    name: "Delta 视频编辑",
+    id: "riff-video",
+    num: "03",
+    name: "Riff 视频编辑",
     subtitle: "高可控 AI 视频创作与编辑体验",
-    cover: "/images/page0/content0-card-delta.png",
+    cover: "/images/page0/content0-card-riff.webp",
     aspect: COVER_ASPECT,
     accent: "#ef3b46",
-    pages: "11 – 20",
-    slideIndex: 10, // page27 → 当前 /11
+    pages: "11 – 19",
+    slideIndex: 18,
   },
-];
+  {
+    id: "kb",
+    num: "04",
+    name: "LLM Wiki",
+    subtitle: "大模型知识体系与产品方法沉淀",
+    cover: "/images/page0/content0-card-kb.webp",
+    aspect: COVER_ASPECT,
+    accent: "#818cf8",
+    pages: "20 – 27",
+    slideIndex: 32,
+  },
+  {
+    id: "xinliu",
+    num: "05",
+    name: "iFlow 1.0",
+    subtitle: "AI 原生搜索与多端产品体验",
+    cover: "/images/page0/content0-card-xinliu.webp",
+    aspect: COVER_ASPECT,
+    accent: "#60a5fa",
+    pages: "28 – 38",
+    slideIndex: 41,
+  },
+]
 
-const NAV = PROJECTS.map((project) => project.name);
+const NAV = PROJECTS.map((project) => project.name)
 
 const SEGMENT_CARD_W =
-  PROJECTS.length * CARD_W + (PROJECTS.length - 1) * STRIP_GAP;
-const SEGMENT_WIDTH = SEGMENT_CARD_W + STRIP_PAD * 2;
-const STRIP_ARC_MAX_TY = Math.pow((PROJECTS.length - 1) / 2, 2) * 13;
+  PROJECTS.length * CARD_W + (PROJECTS.length - 1) * STRIP_GAP
+const SEGMENT_WIDTH = SEGMENT_CARD_W + STRIP_PAD * 2
+const STRIP_ARC_MAX_TY = Math.pow((PROJECTS.length - 1) / 2, 2) * 13
 // 高度需容纳：卡片本体 + hover 上浮/缩放 + 弧线下沉 + 阴影扩散（30px shadow blur offset）+ 余量
-const STRIP_HOVER_SAFE_TOP = 36;
-const STRIP_CONTAINER_H = CARD_H + STRIP_HOVER_SAFE_TOP + STRIP_ARC_MAX_TY + 112;
+const STRIP_HOVER_SAFE_TOP = 36
+const STRIP_CONTAINER_H = CARD_H + STRIP_HOVER_SAFE_TOP + STRIP_ARC_MAX_TY + 112
 
 const STRIP_ITEMS = Array.from({ length: STRIP_LOOPS }, (_, loop) =>
   PROJECTS.map((project) => ({
     ...project,
     stripKey: `${project.id}-${loop}`,
-  })),
-).flat();
+  }))
+).flat()
 
 /* ── Film card (pure image slice, no UI chrome) ──────────────── */
 function FilmCard({
@@ -96,15 +97,15 @@ function FilmCard({
   ty,
   onNavigate,
 }: {
-  project: (typeof PROJECTS)[0];
-  delay: number;
-  rotate: number;
-  ty: number;
-  onNavigate?: (logicalIndex: number) => void;
+  project: (typeof PROJECTS)[0]
+  delay: number
+  rotate: number
+  ty: number
+  onNavigate?: (logicalIndex: number) => void
 }) {
-  const cardH = Math.round(CARD_W / project.aspect);
+  const cardH = Math.round(CARD_W / project.aspect)
 
-  const canNavigate = !!onNavigate;
+  const canNavigate = !!onNavigate
 
   return (
     <motion.div
@@ -268,199 +269,213 @@ function FilmCard({
         </div>
       </div>
     </motion.div>
-  );
+  )
 }
 /* ── Live clock ───────────────────────────────────────────────── */
 function useClock() {
-  const [time, setTime] = useState("--:--:--");
+  const [time, setTime] = useState("--:--:--")
   useEffect(() => {
     const tick = () => {
-      const d = new Date();
-      const p = (n: number) => String(n).padStart(2, "0");
-      setTime(`${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`);
-    };
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-  return time;
+      const d = new Date()
+      const p = (n: number) => String(n).padStart(2, "0")
+      setTime(`${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`)
+    }
+    tick()
+    const id = setInterval(tick, 1000)
+    return () => clearInterval(id)
+  }, [])
+  return time
 }
 
 /* ── Main slide ───────────────────────────────────────────────── */
-export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalIndex: number) => void } = {}) {
-  const clock = useClock();
+export default function SlideContent0({
+  onNavigate,
+}: { onNavigate?: (logicalIndex: number) => void } = {}) {
+  const clock = useClock()
 
   /* ── Inertia drag-to-scroll (cinematic film-reel feel) ───── */
-  const stripRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const dragStartX = useRef(0);
-  const dragStartScroll = useRef(0);
-  const lastPointerX = useRef(0);
-  const lastPointerT = useRef(0);
-  const velocityRef = useRef(0); // px / ms
-  const inertiaRaf = useRef<number | null>(null);
-  const autoRaf = useRef<number | null>(null);
-  const pressedSlideIndexRef = useRef<number | null>(null);
+  const stripRef = useRef<HTMLDivElement>(null)
+  const [isDragging, setIsDragging] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
+  const dragStartX = useRef(0)
+  const dragStartScroll = useRef(0)
+  const lastPointerX = useRef(0)
+  const lastPointerT = useRef(0)
+  const velocityRef = useRef(0) // px / ms
+  const inertiaRaf = useRef<number | null>(null)
+  const autoRaf = useRef<number | null>(null)
+  const pressedSlideIndexRef = useRef<number | null>(null)
 
   /* ── Zoom drag (drag counter axis left/right) ───────────── */
-  const ZOOM_MIN = 0.68;
-  const ZOOM_MAX = 1.38;
-  const [zoom, setZoom] = useState(1.0);
-  const isDraggingZoom = useRef(false);
-  const zoomAtDragStart = useRef(1.0);
-  const dragZoomStartX = useRef(0);
+  const ZOOM_MIN = 0.68
+  const ZOOM_MAX = 1.38
+  const [zoom, setZoom] = useState(1.0)
+  const isDraggingZoom = useRef(false)
+  const zoomAtDragStart = useRef(1.0)
+  const dragZoomStartX = useRef(0)
 
   const onZoomPointerDown = (e: React.PointerEvent) => {
-    e.stopPropagation();
-    isDraggingZoom.current = true;
-    zoomAtDragStart.current = zoom;
-    dragZoomStartX.current = e.clientX;
-    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
-  };
+    e.stopPropagation()
+    isDraggingZoom.current = true
+    zoomAtDragStart.current = zoom
+    dragZoomStartX.current = e.clientX
+    ;(e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId)
+  }
   const onZoomPointerMove = (e: React.PointerEvent) => {
-    if (!isDraggingZoom.current) return;
-    e.stopPropagation();
-    const dx = e.clientX - dragZoomStartX.current;
-    setZoom(Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, zoomAtDragStart.current + dx / 180)));
-  };
+    if (!isDraggingZoom.current) return
+    e.stopPropagation()
+    const dx = e.clientX - dragZoomStartX.current
+    setZoom(
+      Math.max(ZOOM_MIN, Math.min(ZOOM_MAX, zoomAtDragStart.current + dx / 180))
+    )
+  }
   const onZoomPointerUp = (e: React.PointerEvent) => {
-    isDraggingZoom.current = false;
-    try { (e.currentTarget as HTMLDivElement).releasePointerCapture(e.pointerId); } catch { /* ok */ }
-  };
+    isDraggingZoom.current = false
+    try {
+      ;(e.currentTarget as HTMLDivElement).releasePointerCapture(e.pointerId)
+    } catch {
+      /* ok */
+    }
+  }
 
   const cancelInertia = () => {
     if (inertiaRaf.current !== null) {
-      cancelAnimationFrame(inertiaRaf.current);
-      inertiaRaf.current = null;
+      cancelAnimationFrame(inertiaRaf.current)
+      inertiaRaf.current = null
     }
-  };
+  }
 
   const cancelAuto = () => {
     if (autoRaf.current !== null) {
-      cancelAnimationFrame(autoRaf.current);
-      autoRaf.current = null;
+      cancelAnimationFrame(autoRaf.current)
+      autoRaf.current = null
     }
-  };
+  }
 
   // Seamless loop: jump scroll position when crossing segment boundaries
   const normalizeLoopScroll = () => {
-    const el = stripRef.current;
-    if (!el) return;
+    const el = stripRef.current
+    if (!el) return
     if (el.scrollLeft >= SEGMENT_WIDTH * 2) {
-      el.scrollLeft -= SEGMENT_WIDTH;
+      el.scrollLeft -= SEGMENT_WIDTH
     } else if (el.scrollLeft <= 0) {
-      el.scrollLeft += SEGMENT_WIDTH;
+      el.scrollLeft += SEGMENT_WIDTH
     }
-  };
+  }
 
   const applyStripDelta = (delta: number) => {
-    const el = stripRef.current;
-    if (!el) return;
-    el.scrollLeft += delta;
-    normalizeLoopScroll();
-  };
+    const el = stripRef.current
+    if (!el) return
+    el.scrollLeft += delta
+    normalizeLoopScroll()
+  }
 
   // After release: scroll continues with friction (like film unreeling)
   const startInertia = (initialVel: number) => {
-    cancelInertia();
-    let v = initialVel; // px per frame @ 60 fps
+    cancelInertia()
+    let v = initialVel // px per frame @ 60 fps
     const tick = () => {
-      if (!stripRef.current || Math.abs(v) < 0.3) return;
-      applyStripDelta(-v);
-      v *= 0.91;
-      inertiaRaf.current = requestAnimationFrame(tick);
-    };
-    inertiaRaf.current = requestAnimationFrame(tick);
-  };
+      if (!stripRef.current || Math.abs(v) < 0.3) return
+      applyStripDelta(-v)
+      v *= 0.91
+      inertiaRaf.current = requestAnimationFrame(tick)
+    }
+    inertiaRaf.current = requestAnimationFrame(tick)
+  }
 
-  const dragDistanceRef = useRef(0);
+  const dragDistanceRef = useRef(0)
 
   const onStripPointerDown = (e: React.PointerEvent) => {
     // Prevent parent slide-inner drag from stealing horizontal gesture
-    e.stopPropagation();
-    cancelInertia();
-    setIsDragging(true);
-    const card = (e.target as HTMLElement).closest<HTMLElement>("[data-slide-index]");
-    pressedSlideIndexRef.current = card?.dataset.slideIndex ? Number(card.dataset.slideIndex) : null;
-    dragStartX.current = e.pageX;
-    dragDistanceRef.current = 0;
-    dragStartScroll.current = stripRef.current?.scrollLeft ?? 0;
-    lastPointerX.current = e.pageX;
-    lastPointerT.current = performance.now();
-    velocityRef.current = 0;
-    (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
-  };
+    e.stopPropagation()
+    cancelInertia()
+    setIsDragging(true)
+    const card = (e.target as HTMLElement).closest<HTMLElement>(
+      "[data-slide-index]"
+    )
+    pressedSlideIndexRef.current = card?.dataset.slideIndex
+      ? Number(card.dataset.slideIndex)
+      : null
+    dragStartX.current = e.pageX
+    dragDistanceRef.current = 0
+    dragStartScroll.current = stripRef.current?.scrollLeft ?? 0
+    lastPointerX.current = e.pageX
+    lastPointerT.current = performance.now()
+    velocityRef.current = 0
+    ;(e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId)
+  }
 
   const onStripPointerMove = (e: React.PointerEvent) => {
-    if (!isDragging || !stripRef.current) return;
-    e.stopPropagation();
-    e.preventDefault();
-    const now = performance.now();
-    const dt = now - lastPointerT.current;
-    const dx = e.pageX - dragStartX.current;
-    dragDistanceRef.current = Math.abs(dx);
+    if (!isDragging || !stripRef.current) return
+    e.stopPropagation()
+    e.preventDefault()
+    const now = performance.now()
+    const dt = now - lastPointerT.current
+    const dx = e.pageX - dragStartX.current
+    dragDistanceRef.current = Math.abs(dx)
     if (dt > 0) {
-      velocityRef.current = ((e.pageX - lastPointerX.current) / dt) * 16;
+      velocityRef.current = ((e.pageX - lastPointerX.current) / dt) * 16
     }
-    lastPointerX.current = e.pageX;
-    lastPointerT.current = now;
-    stripRef.current.scrollLeft = dragStartScroll.current - dx;
-    normalizeLoopScroll();
-  };
+    lastPointerX.current = e.pageX
+    lastPointerT.current = now
+    stripRef.current.scrollLeft = dragStartScroll.current - dx
+    normalizeLoopScroll()
+  }
 
   const onStripPointerUp = (e: React.PointerEvent) => {
-    e.stopPropagation();
-    if (!isDragging) return;
-    setIsDragging(false);
+    e.stopPropagation()
+    if (!isDragging) return
+    setIsDragging(false)
     try {
-      (e.currentTarget as HTMLDivElement).releasePointerCapture(e.pointerId);
+      ;(e.currentTarget as HTMLDivElement).releasePointerCapture(e.pointerId)
     } catch {
       /* already released */
     }
     if (dragDistanceRef.current <= 6 && pressedSlideIndexRef.current !== null) {
-      const target = pressedSlideIndexRef.current;
-      pressedSlideIndexRef.current = null;
-      dragDistanceRef.current = 0;
-      onNavigate?.(target);
-      return;
+      const target = pressedSlideIndexRef.current
+      pressedSlideIndexRef.current = null
+      dragDistanceRef.current = 0
+      onNavigate?.(target)
+      return
     }
-    pressedSlideIndexRef.current = null;
-    startInertia(velocityRef.current);
-  };
+    pressedSlideIndexRef.current = null
+    startInertia(velocityRef.current)
+  }
 
   const onWheel = (e: React.WheelEvent) => {
-    e.stopPropagation();
-    e.preventDefault();
-    cancelInertia();
-    const delta =
-      Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-    applyStripDelta(delta * 0.85);
-  };
+    e.stopPropagation()
+    e.preventDefault()
+    cancelInertia()
+    const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+    applyStripDelta(delta * 0.85)
+  }
 
   // Start at middle segment; enable loop scroll range
   useEffect(() => {
-    const el = stripRef.current;
-    if (!el) return;
-    el.scrollLeft = SEGMENT_WIDTH;
-  }, []);
+    const el = stripRef.current
+    if (!el) return
+    el.scrollLeft = SEGMENT_WIDTH
+  }, [])
 
   // Slow auto-drift when idle — film projector feel (no hover required)
   useEffect(() => {
     const tick = () => {
       if (!isDragging && !isHovered && stripRef.current) {
-        applyStripDelta(0.32);
+        applyStripDelta(0.32)
       }
-      autoRaf.current = requestAnimationFrame(tick);
-    };
-    autoRaf.current = requestAnimationFrame(tick);
-    return () => cancelAuto();
-  }, [isDragging, isHovered]);
+      autoRaf.current = requestAnimationFrame(tick)
+    }
+    autoRaf.current = requestAnimationFrame(tick)
+    return () => cancelAuto()
+  }, [isDragging, isHovered])
 
-  useEffect(() => () => {
-    cancelInertia();
-    cancelAuto();
-  }, []);
+  useEffect(
+    () => () => {
+      cancelInertia()
+      cancelAuto()
+    },
+    []
+  )
 
   return (
     <div
@@ -470,354 +485,372 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
       <style>{`.c0-strip::-webkit-scrollbar{display:none}`}</style>
 
       {/* ── Zoomable content wrapper ────────────────────────── */}
-      <div style={{
-        position: "absolute", inset: 0,
-        transform: `scale(${zoom})`,
-        transformOrigin: "center center",
-        willChange: "transform",
-      }}>
-
-      <div aria-hidden style={{
-        position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "overlay",
-        opacity: 0.15, zIndex: 1, backgroundImage: "url('/images/film-grain.png')",
-        backgroundRepeat: "repeat", backgroundSize: "128px 128px",
-      }} />
-
-      {/* ── Film scratches ────────────────────────────────── */}
       <div
         style={{
           position: "absolute",
           inset: 0,
-          pointerEvents: "none",
-          zIndex: 1,
-          backgroundImage: [
-            "linear-gradient(to bottom, transparent 5%, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.11) 52%, rgba(255,255,255,0.06) 72%, transparent 95%)",
-            "linear-gradient(to bottom, transparent 8%, rgba(255,255,255,0.045) 25%, rgba(255,255,255,0.08) 58%, rgba(255,255,255,0.045) 78%, transparent 95%)",
-            "linear-gradient(to bottom, transparent 12%, rgba(255,255,255,0.035) 40%, rgba(255,255,255,0.06) 62%, rgba(255,255,255,0.035) 82%, transparent 95%)",
-          ].join(","),
-          backgroundPosition: "300px 0, 740px 0, 1120px 0",
-          backgroundSize: "1px 100%, 1px 100%, 1px 100%",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
-
-      {/* ── Scanlines ─────────────────────────────────────── */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          pointerEvents: "none",
-          zIndex: 1,
-          backgroundImage:
-            "repeating-linear-gradient(to bottom, transparent, transparent 3px, rgba(0,0,0,0.05) 3px, rgba(0,0,0,0.05) 4px)",
-        }}
-      />
-
-      {/* ── Left red curtain ──────────────────────────────── */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          bottom: 0,
-          width: 380,
-          pointerEvents: "none",
-          zIndex: 4,
-          background:
-            "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.55) 0%, rgba(150,0,0,0.26) 32%, transparent 62%)",
-        }}
-      />
-
-      {/* ── Right red curtain ─────────────────────────────── */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: 380,
-          pointerEvents: "none",
-          zIndex: 4,
-          background:
-            "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.55) 0%, rgba(150,0,0,0.26) 32%, transparent 62%)",
-        }}
-      />
-
-      {/* ── Top vignette ──────────────────────────────────── */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          height: 200,
-          pointerEvents: "none",
-          zIndex: 2,
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.82) 0%, transparent 100%)",
-        }}
-      />
-
-      {/* ── Bottom vignette ───────────────────────────────── */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: 200,
-          pointerEvents: "none",
-          zIndex: 2,
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.86) 0%, transparent 100%)",
-        }}
-      />
-
-
-      {/* ── Top nav bar (DGC ceremony) ────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.05 }}
-        style={{
-          position: "absolute",
-          top: 30,
-          left: 78,
-          right: 78,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          zIndex: 11,
-          pointerEvents: "auto",
+          transform: `scale(${zoom})`,
+          transformOrigin: "center center",
+          willChange: "transform",
         }}
       >
-        {/* bracket logo */}
+        <div
+          aria-hidden
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            mixBlendMode: "overlay",
+            opacity: 0.15,
+            zIndex: 1,
+            backgroundImage: "url('/images/film-grain.png')",
+            backgroundRepeat: "repeat",
+            backgroundSize: "128px 128px",
+          }}
+        />
+
+        {/* ── Film scratches ────────────────────────────────── */}
         <div
           style={{
-            fontSize: 14,
-            fontWeight: 800,
-            letterSpacing: "0.12em",
-            color: "rgba(255,255,255,0.92)",
-            fontFamily: "var(--font-syne, system-ui), sans-serif",
-            display: "flex",
-            alignItems: "center",
-            gap: 4,
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 1,
+            backgroundImage: [
+              "linear-gradient(to bottom, transparent 5%, rgba(255,255,255,0.06) 30%, rgba(255,255,255,0.11) 52%, rgba(255,255,255,0.06) 72%, transparent 95%)",
+              "linear-gradient(to bottom, transparent 8%, rgba(255,255,255,0.045) 25%, rgba(255,255,255,0.08) 58%, rgba(255,255,255,0.045) 78%, transparent 95%)",
+              "linear-gradient(to bottom, transparent 12%, rgba(255,255,255,0.035) 40%, rgba(255,255,255,0.06) 62%, rgba(255,255,255,0.035) 82%, transparent 95%)",
+            ].join(","),
+            backgroundPosition: "300px 0, 740px 0, 1120px 0",
+            backgroundSize: "1px 100%, 1px 100%, 1px 100%",
+            backgroundRepeat: "no-repeat",
           }}
-        >
-          <span style={{ color: "rgba(255,255,255,0.3)" }}>[</span>
-          RIAN
-          <span style={{ color: "#e0322f", fontSize: 9 }}>●</span>
-          <span style={{ color: "rgba(255,255,255,0.3)" }}>]</span>
-        </div>
+        />
 
-        {/* nav items */}
+        {/* ── Scanlines ─────────────────────────────────────── */}
         <div
           style={{
-            display: "flex",
-            gap: 46,
-            fontSize: 11,
-            letterSpacing: "0.16em",
-            color: "rgba(255,255,255,0.42)",
-            fontFamily: "'PingFang SC', system-ui, sans-serif",
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            zIndex: 1,
+            backgroundImage:
+              "repeating-linear-gradient(to bottom, transparent, transparent 3px, rgba(0,0,0,0.05) 3px, rgba(0,0,0,0.05) 4px)",
           }}
-        >
-          {NAV.map((n, i) => (
-            <span
-              key={n}
-              onClick={() => onNavigate?.(PROJECTS[i].slideIndex)}
-              style={{
-                cursor: onNavigate ? "pointer" : "default",
-                transition: "color 0.18s",
-              }}
-              onMouseEnter={(e) => { if (onNavigate) (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.78)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "rgba(255,255,255,0.42)"; }}
-            >
-              {n}
-            </span>
-          ))}
-        </div>
+        />
 
-        {/* contact */}
+        {/* ── Left red curtain ──────────────────────────────── */}
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 7,
-            fontSize: 11,
-            letterSpacing: "0.08em",
-            color: "rgba(255,255,255,0.55)",
-            fontFamily: "'PingFang SC', system-ui, sans-serif",
-          }}
-        >
-          <span style={{ color: "#e0322f", fontSize: 8 }}>●</span>
-          作品集目录
-        </div>
-      </motion.div>
-
-      {/* ── BIG HEADING – metallic, upper third ───────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-        style={{
-          position: "absolute",
-          top: 200,
-          left: 0,
-          right: 0,
-          textAlign: "center",
-          pointerEvents: "none",
-          zIndex: 3,
-        }}
-      >
-        <h1
-          style={{
-            margin: 0,
-            fontSize: 102,
-            fontWeight: 900,
-            lineHeight: 1.0,
-            letterSpacing: "2px",
-            fontFamily: `var(--font-syne, 'Impact', 'Arial Black', sans-serif)`,
-            textTransform: "uppercase",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            bottom: 0,
+            width: 380,
+            pointerEvents: "none",
+            zIndex: 4,
             background:
-              "linear-gradient(to bottom, #f2f2f2 0%, #d8d8d8 32%, #b0b0b0 68%, #8a8a8a 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            filter: "drop-shadow(0 2px 14px rgba(0,0,0,0.5))",
+              "radial-gradient(ellipse at 0% 50%, rgba(200,8,8,0.55) 0%, rgba(150,0,0,0.26) 32%, transparent 62%)",
           }}
-        >
-          AI{" "}
-          <span style={{ textTransform: "none" }}>x</span>
-          {" "}DESIGN PROJECTS
-        </h1>
-      </motion.div>
+        />
 
-      {/* ── Scrollable film strip (overlaps title bottom) ─── */}
-      <div
-        ref={stripRef}
-        className="c0-strip"
-        onPointerDown={onStripPointerDown}
-        onPointerMove={onStripPointerMove}
-        onPointerUp={onStripPointerUp}
-        onPointerCancel={onStripPointerUp}
-        onWheel={onWheel}
-        onClick={(e) => {
-          // Suppress click-navigation when user was dragging (> 6px movement)
-          if (dragDistanceRef.current > 6) {
-            e.stopPropagation();
-            dragDistanceRef.current = 0;
-          }
-        }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => {
-          setIsHovered(false);
-          if (isDragging) {
-            setIsDragging(false);
-            startInertia(velocityRef.current);
-          }
-        }}
-        style={{
-          position: "absolute",
-          top: "calc(53% + 92px)",
-          transform: "translateY(-50%)",
-          left: 0,
-          right: 0,
-          height: STRIP_CONTAINER_H,
-          overflowX: "auto",
-          overflowY: "hidden",
-          zIndex: 5,
-          cursor: isDragging ? "grabbing" : "grab",
-          scrollbarWidth: "none",
-          touchAction: "pan-x",
-        } as React.CSSProperties}
-      >
+        {/* ── Right red curtain ─────────────────────────────── */}
         <div
           style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            bottom: 0,
+            width: 380,
+            pointerEvents: "none",
+            zIndex: 4,
+            background:
+              "radial-gradient(ellipse at 100% 50%, rgba(200,8,8,0.55) 0%, rgba(150,0,0,0.26) 32%, transparent 62%)",
+          }}
+        />
+
+        {/* ── Top vignette ──────────────────────────────────── */}
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 200,
+            pointerEvents: "none",
+            zIndex: 2,
+            background:
+              "linear-gradient(to bottom, rgba(0,0,0,0.82) 0%, transparent 100%)",
+          }}
+        />
+
+        {/* ── Bottom vignette ───────────────────────────────── */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 200,
+            pointerEvents: "none",
+            zIndex: 2,
+            background:
+              "linear-gradient(to top, rgba(0,0,0,0.86) 0%, transparent 100%)",
+          }}
+        />
+
+        {/* ── Top nav bar (DGC ceremony) ────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.05 }}
+          style={{
+            position: "absolute",
+            top: 30,
+            left: 78,
+            right: 78,
             display: "flex",
-            flexDirection: "row",
-            gap: STRIP_GAP,
-          padding: `${STRIP_HOVER_SAFE_TOP}px ${STRIP_PAD}px 28px`,
-            width: "max-content",
-          alignItems: "flex-start",
-            userSelect: "none",
+            alignItems: "center",
+            justifyContent: "space-between",
+            zIndex: 11,
+            pointerEvents: "auto",
           }}
         >
-          {STRIP_ITEMS.map((project, i) => {
-            const localIndex = i % PROJECTS.length;
-            const center = (PROJECTS.length - 1) / 2;
-            const d = localIndex - center;
-            const rotate = d * 3.4;
-            const ty = Math.abs(d) * Math.abs(d) * 13;
-            return (
-              <FilmCard
-                key={project.stripKey}
-                project={project}
-                delay={0.34 + (i % PROJECTS.length) * 0.08}
-                rotate={rotate}
-                ty={ty}
-                onNavigate={onNavigate}
-              />
-            );
-          })}
-        </div>
-      </div>
+          {/* bracket logo */}
+          <div
+            style={{
+              fontSize: 14,
+              fontWeight: 800,
+              letterSpacing: "0.12em",
+              color: "rgba(255,255,255,0.92)",
+              fontFamily: "var(--font-syne, system-ui), sans-serif",
+              display: "flex",
+              alignItems: "center",
+              gap: 4,
+            }}
+          >
+            <span style={{ color: "rgba(255,255,255,0.3)" }}>[</span>
+            RIAN
+            <span style={{ color: "#e0322f", fontSize: 9 }}>●</span>
+            <span style={{ color: "rgba(255,255,255,0.3)" }}>]</span>
+          </div>
 
-      {/* ── Scroll hint ───────────────────────────────────── */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-        style={{
-          position: "absolute",
-          top: "50%",
-          right: 22,
-          fontSize: 10,
-          color: "rgba(255,255,255,0.18)",
-          fontFamily: "system-ui, sans-serif",
-          letterSpacing: "0.12em",
-          textTransform: "uppercase",
-          pointerEvents: "none",
-          zIndex: 10,
-          display: "flex",
-          alignItems: "center",
-          gap: 5,
-        }}
-      >
-        <span>scroll</span>
-        <span style={{ opacity: 0.7, fontSize: 12 }}>›</span>
-      </motion.div>
+          {/* nav items */}
+          <div
+            style={{
+              display: "flex",
+              gap: 46,
+              fontSize: 11,
+              letterSpacing: "0.16em",
+              color: "rgba(255,255,255,0.42)",
+              fontFamily: "'PingFang SC', system-ui, sans-serif",
+            }}
+          >
+            {NAV.map((n, i) => (
+              <span
+                key={n}
+                onClick={() => onNavigate?.(PROJECTS[i].slideIndex)}
+                style={{
+                  cursor: onNavigate ? "pointer" : "default",
+                  transition: "color 0.18s",
+                }}
+                onMouseEnter={(e) => {
+                  if (onNavigate)
+                    (e.currentTarget as HTMLElement).style.color =
+                      "rgba(255,255,255,0.78)"
+                }}
+                onMouseLeave={(e) => {
+                  ;(e.currentTarget as HTMLElement).style.color =
+                    "rgba(255,255,255,0.42)"
+                }}
+              >
+                {n}
+              </span>
+            ))}
+          </div>
 
-      {/* ── Caption (3-line block, moved up) ──────────────── */}
-      <motion.div
-        initial={{ opacity: 0, y: 6 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.66 }}
-        style={{
-          position: "absolute",
-          bottom: "10%",
-          left: 0,
-          right: 0,
-          textAlign: "center",
-          pointerEvents: "none",
-          zIndex: 10,
-        }}
-      >
-        <div
+          {/* contact */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 7,
+              fontSize: 11,
+              letterSpacing: "0.08em",
+              color: "rgba(255,255,255,0.55)",
+              fontFamily: "'PingFang SC', system-ui, sans-serif",
+            }}
+          >
+            <span style={{ color: "#e0322f", fontSize: 8 }}>●</span>
+            作品集目录
+          </div>
+        </motion.div>
+
+        {/* ── BIG HEADING – metallic, upper third ───────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
           style={{
-            fontSize: 12.5,
-            color: "rgba(255,255,255,0.4)",
-            fontFamily: "'PingFang SC', system-ui, sans-serif",
-            letterSpacing: "0.05em",
-            lineHeight: 1.6,
-            margin: "0 auto",
-            whiteSpace: "nowrap",
+            position: "absolute",
+            top: 200,
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            pointerEvents: "none",
+            zIndex: 3,
           }}
         >
-          设计 AI 产品全链路体验，覆盖 LLM Wiki / IFlow心流 / 万相·星链 / 万相·营造 / Delta 视频编辑等场景的产品化探索与落地
-        </div>
-      </motion.div>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: 102,
+              fontWeight: 900,
+              lineHeight: 1.0,
+              letterSpacing: "2px",
+              fontFamily: `var(--font-syne, 'Impact', 'Arial Black', sans-serif)`,
+              textTransform: "uppercase",
+              background:
+                "linear-gradient(to bottom, #f2f2f2 0%, #d8d8d8 32%, #b0b0b0 68%, #8a8a8a 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              filter: "drop-shadow(0 2px 14px rgba(0,0,0,0.5))",
+            }}
+          >
+            AI <span style={{ textTransform: "none" }}>x</span> DESIGN PROJECTS
+          </h1>
+        </motion.div>
 
-      </div>{/* end zoomable content wrapper */}
+        {/* ── Scrollable film strip (overlaps title bottom) ─── */}
+        <div
+          ref={stripRef}
+          className="c0-strip"
+          onPointerDown={onStripPointerDown}
+          onPointerMove={onStripPointerMove}
+          onPointerUp={onStripPointerUp}
+          onPointerCancel={onStripPointerUp}
+          onWheel={onWheel}
+          onClick={(e) => {
+            // Suppress click-navigation when user was dragging (> 6px movement)
+            if (dragDistanceRef.current > 6) {
+              e.stopPropagation()
+              dragDistanceRef.current = 0
+            }
+          }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => {
+            setIsHovered(false)
+            if (isDragging) {
+              setIsDragging(false)
+              startInertia(velocityRef.current)
+            }
+          }}
+          style={
+            {
+              position: "absolute",
+              top: "calc(53% + 92px)",
+              transform: "translateY(-50%)",
+              left: 0,
+              right: 0,
+              height: STRIP_CONTAINER_H,
+              overflowX: "auto",
+              overflowY: "hidden",
+              zIndex: 5,
+              cursor: isDragging ? "grabbing" : "grab",
+              scrollbarWidth: "none",
+              touchAction: "pan-x",
+            } as React.CSSProperties
+          }
+        >
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              gap: STRIP_GAP,
+              padding: `${STRIP_HOVER_SAFE_TOP}px ${STRIP_PAD}px 28px`,
+              width: "max-content",
+              alignItems: "flex-start",
+              userSelect: "none",
+            }}
+          >
+            {STRIP_ITEMS.map((project, i) => {
+              const localIndex = i % PROJECTS.length
+              const center = (PROJECTS.length - 1) / 2
+              const d = localIndex - center
+              const rotate = d * 3.4
+              const ty = Math.abs(d) * Math.abs(d) * 13
+              return (
+                <FilmCard
+                  key={project.stripKey}
+                  project={project}
+                  delay={0.34 + (i % PROJECTS.length) * 0.08}
+                  rotate={rotate}
+                  ty={ty}
+                  onNavigate={onNavigate}
+                />
+              )
+            })}
+          </div>
+        </div>
+
+        {/* ── Scroll hint ───────────────────────────────────── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+          style={{
+            position: "absolute",
+            top: "50%",
+            right: 22,
+            fontSize: 10,
+            color: "rgba(255,255,255,0.18)",
+            fontFamily: "system-ui, sans-serif",
+            letterSpacing: "0.12em",
+            textTransform: "uppercase",
+            pointerEvents: "none",
+            zIndex: 10,
+            display: "flex",
+            alignItems: "center",
+            gap: 5,
+          }}
+        >
+          <span>scroll</span>
+          <span style={{ opacity: 0.7, fontSize: 12 }}>›</span>
+        </motion.div>
+
+        {/* ── Caption (3-line block, moved up) ──────────────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.66 }}
+          style={{
+            position: "absolute",
+            bottom: "10%",
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            pointerEvents: "none",
+            zIndex: 10,
+          }}
+        >
+          <div
+            style={{
+              fontSize: 12.5,
+              color: "rgba(255,255,255,0.4)",
+              fontFamily: "'PingFang SC', system-ui, sans-serif",
+              letterSpacing: "0.05em",
+              lineHeight: 1.6,
+              margin: "0 auto",
+              whiteSpace: "nowrap",
+            }}
+          >
+            设计 AI 产品全链路体验，覆盖 if Studio / 万相·星链 / Riff 视频编辑 /
+            LLM Wiki / iFlow 1.0 等场景的产品化探索与落地
+          </div>
+        </motion.div>
+      </div>
+      {/* end zoomable content wrapper */}
 
       {/* ── Counter (drag left/right to zoom whole screen) ── */}
       <motion.div
@@ -886,5 +919,5 @@ export default function SlideContent0({ onNavigate }: { onNavigate?: (logicalInd
         {clock}
       </motion.div>
     </div>
-  );
+  )
 }

@@ -2015,8 +2015,8 @@ export default function SlidePage0({ initialView = "landing", canvasHeight = 900
           inset:-.5px;
           padding:1px;
           border-radius:inherit;
-          background:conic-gradient(from var(--knowledge-rim-angle),rgba(76,81,94,.2),transparent 8%,transparent 42%,rgba(76,81,94,.16) 51%,transparent 62%,transparent 94%,rgba(76,81,94,.2)),linear-gradient(rgba(255,255,255,.7),rgba(255,255,255,.7));
-          box-shadow:inset 0 0 0 .5px rgba(255,255,255,.62);
+          background:conic-gradient(from var(--knowledge-rim-angle),rgba(35,38,55,.56),transparent 6%,transparent 42%,rgba(35,38,55,.5) 51%,transparent 61%,transparent 95%,rgba(35,38,55,.56)),linear-gradient(rgba(255,255,255,.58),rgba(255,255,255,.58));
+          box-shadow:inset 0 0 0 .5px rgba(255,255,255,.44);
           -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
           -webkit-mask-composite:xor;
           mask-composite:exclude;
