@@ -438,16 +438,16 @@ export default function SlidePage0e({
           className="absolute overflow-hidden"
           style={{
             left: 0,
+            right: embedded ? 378 : 350,
             top: 0,
-            width: embedded ? 1018 : 942,
             height: embedded ? 900 : 674,
             background: "#f8f8f8",
           }}
         >
           <style>{`
-            .wiki-graph-flat button,
-            .wiki-graph-flat button > span {
-              box-shadow: none !important;
+            .wiki-graph-flat button {
+              font-size: 10px !important;
+              padding: 3px 7px 3px 5px !important;
             }
           `}</style>
           <div
@@ -462,7 +462,7 @@ export default function SlidePage0e({
               backgroundPosition: "center 8%",
               backgroundRepeat: "no-repeat",
               backgroundSize: embedded ? "1180px auto" : "1010px auto",
-              opacity: 0.38,
+              opacity: 0.55,
             }}
           />
           <div
@@ -480,8 +480,9 @@ export default function SlidePage0e({
               selectedId={selectedId}
               onSelect={handleNodeSelect}
               onOpen={handleNodeOpen}
-              lineIntensity={0.9}
-              ambientIntensity={0.92}
+              detailLevel="rich"
+              lineIntensity={1}
+              ambientIntensity={1}
             />
           </div>
           <WikiSidebar />
