@@ -13,6 +13,8 @@ const skillScreens = [
     title: "技能广场",
     caption: "发现适合创作场景的 Skill",
     image: `${P_IF_STUDIO}/skills-plaza-2026.webp`,
+    width: 1920,
+    height: 2675,
     alt: "if Studio 技能广场全量技能列表",
   },
   {
@@ -20,7 +22,9 @@ const skillScreens = [
     label: "详情",
     title: "技能详情",
     caption: "理解能力、输入要求与使用示例",
-    image: `${P_IF_STUDIO}/skill-detail-2026.png`,
+    image: `${P_IF_STUDIO}/skill-detail-2026.webp`,
+    width: 1920,
+    height: 2801,
     alt: "if Studio 试穿套图技能详情",
   },
 ] as const
@@ -40,11 +44,15 @@ export default function SlideIfStudioSkills() {
           transition: border-color 180ms ease-out, box-shadow 180ms ease-out;
         }
 
+        .if-studio-skills-viewport {
+          contain: layout paint style size;
+          container-type: size;
+        }
+
         .if-studio-skills-image {
           top: 0;
-          transform: translateY(0);
-          transition: top 1.2s ease-out, transform 1.2s ease-out;
-          will-change: top, transform;
+          transform: translate3d(0, 0, 0);
+          transition: transform 1.2s ease-out;
           animation: if-studio-skills-enter 260ms ease-out both;
         }
 
@@ -60,8 +68,9 @@ export default function SlideIfStudioSkills() {
           }
 
           .if-studio-skills-viewport[data-scroll="true"]:hover .if-studio-skills-image {
-            top: 100%;
-            transform: translateY(-100%);
+            /* Fixed-size fallback, then the exact viewport-relative distance. */
+            transform: translate3d(0, calc(601.2px - 100%), 0);
+            transform: translate3d(0, calc(100cqh - 100%), 0);
             transition-duration: 16s;
             transition-timing-function: linear;
           }
@@ -71,7 +80,7 @@ export default function SlideIfStudioSkills() {
           .if-studio-skills-image,
           .if-studio-skills-viewport[data-scroll="true"]:hover .if-studio-skills-image {
             top: 0;
-            transform: translateY(0);
+            transform: translate3d(0, 0, 0);
             transition: none;
             animation: none;
           }
@@ -191,14 +200,12 @@ export default function SlideIfStudioSkills() {
         }}
       >
         <div
-          className="absolute inset-x-0 top-0 z-10 flex items-center justify-between"
+          className="if-studio-skills-toolbar absolute inset-x-0 top-0 z-10 flex items-center justify-between"
           style={{
             height: "54px",
             padding: "0 18px",
-            background: "rgba(10,10,10,0.94)",
+            background: "#0a0a0a",
             borderBottom: "1px solid rgba(255,255,255,0.12)",
-            backdropFilter: "blur(12px)",
-            WebkitBackdropFilter: "blur(12px)",
           }}
         >
           <div className="flex items-center" style={{ gap: "12px" }}>
@@ -295,8 +302,11 @@ export default function SlideIfStudioSkills() {
             key={skillScreen.id}
             src={skillScreen.image}
             alt={skillScreen.alt}
-            loading="lazy"
+            width={skillScreen.width}
+            height={skillScreen.height}
+            loading="eager"
             decoding="async"
+            fetchPriority="high"
             draggable={false}
             className="if-studio-skills-image absolute left-0 w-full"
             style={{

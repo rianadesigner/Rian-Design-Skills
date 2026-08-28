@@ -32,15 +32,16 @@ export function getSlidePreloadPolicy(): SlidePreloadPolicy {
   const lowMemory =
     typeof nav.deviceMemory === "number" && nav.deviceMemory <= 4
   const coarsePointer = window.matchMedia("(pointer: coarse)").matches
+  const constrainedDevice = lowMemory || coarsePointer
 
   if (slowConnection) {
     return { assetLimit: 0, decodeAssets: false, allowJumpPrefetch: false }
   }
 
   return {
-    assetLimit: lowMemory ? 1 : ADJACENT_PRELOAD_LIMIT,
-    decodeAssets: !coarsePointer && !lowMemory,
-    allowJumpPrefetch: !lowMemory,
+    assetLimit: constrainedDevice ? 1 : ADJACENT_PRELOAD_LIMIT,
+    decodeAssets: !constrainedDevice,
+    allowJumpPrefetch: !constrainedDevice,
   }
 }
 
@@ -185,7 +186,7 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   "if-studio": ["/images/if-studio/home-full-2026.webp"],
   "if-studio-skills": [
     "/images/if-studio/skills-plaza-2026.webp",
-    "/images/if-studio/skill-detail-2026.png",
+    "/images/if-studio/skill-detail-2026.webp",
   ],
   "storyboard-video-skill": [
     "/images/storyboard-video-skill/workflow-full-105500.webp",

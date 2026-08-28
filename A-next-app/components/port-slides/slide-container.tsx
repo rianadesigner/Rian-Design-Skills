@@ -405,91 +405,79 @@ export default function SlideContainer({
     const root = rootRef.current
     if (!root) return
 
-    const updateTouchPrimary = () => {
-      setIsTouchPrimary(coarseMq.matches || noHoverMq.matches)
+    let layoutFrame: number | null = null
+
+    const setRootProperty = (name: string, value: string) => {
+      if (root.style.getPropertyValue(name) !== value) {
+        root.style.setProperty(name, value)
+      }
     }
 
     const update = () => {
+      layoutFrame = null
       const matches = portraitMq.matches
-      setIsMobilePortrait(matches)
-      updateTouchPrimary()
-
-      document.documentElement.style.setProperty(
-        "--slide-design-w",
-        `${DESIGN_WIDTH}px`
-      )
-      document.documentElement.style.setProperty(
-        "--slide-design-h",
-        `${DESIGN_HEIGHT}px`
-      )
-
       const viewportWidth = window.visualViewport?.width ?? window.innerWidth
       const viewportHeight = window.visualViewport?.height ?? window.innerHeight
-      document.documentElement.style.setProperty(
-        "--slide-vw",
-        `${viewportWidth}px`
-      )
-      document.documentElement.style.setProperty(
-        "--slide-vh",
-        `${viewportHeight}px`
-      )
+      const { width, height } = measureFitStage(root)
+
+      // Read first, then commit state and CSS variables together. ResizeObserver,
+      // window resize and visualViewport resize can all fire for one iPad event.
+      setIsMobilePortrait(matches)
+      setIsTouchPrimary(coarseMq.matches || noHoverMq.matches)
+      setRootProperty("--slide-design-w", `${DESIGN_WIDTH}px`)
+      setRootProperty("--slide-design-h", `${DESIGN_HEIGHT}px`)
+      setRootProperty("--slide-vw", `${viewportWidth}px`)
+      setRootProperty("--slide-vh", `${viewportHeight}px`)
 
       if (matches) {
-        const { width, height } = measureFitStage(root)
         zoomRef.current = Math.min(height / DESIGN_WIDTH, width / DESIGN_HEIGHT)
         const offsetX = Math.max(
           (height - DESIGN_WIDTH * zoomRef.current) / 2,
           0
         )
-        document.documentElement.style.setProperty(
-          "--slide-zoom",
-          String(zoomRef.current)
-        )
-        document.documentElement.style.setProperty(
-          "--slide-offset-x",
-          `${offsetX}px`
-        )
+        setRootProperty("--slide-zoom", String(zoomRef.current))
+        setRootProperty("--slide-offset-x", `${offsetX}px`)
+        root.style.removeProperty("--slide-fit-scale")
       } else {
-        const { width, height } = measureFitStage(root)
-        document.documentElement.style.setProperty(
+        setRootProperty(
           "--slide-fit-scale",
           String(computeSlideFitScale(width, height))
         )
         zoomRef.current = 1
-        document.documentElement.style.removeProperty("--slide-zoom")
-        document.documentElement.style.removeProperty("--slide-offset-x")
+        root.style.removeProperty("--slide-zoom")
+        root.style.removeProperty("--slide-offset-x")
       }
     }
 
+    const scheduleUpdate = () => {
+      if (layoutFrame !== null) return
+      layoutFrame = requestAnimationFrame(update)
+    }
+
     update()
-    updateTouchPrimary()
-    const initialRaf = requestAnimationFrame(update)
-    const ro = new ResizeObserver(update)
+    const ro = new ResizeObserver(scheduleUpdate)
     ro.observe(root)
-    if (root.parentElement) ro.observe(root.parentElement)
-    portraitMq.addEventListener("change", update)
-    coarseMq.addEventListener("change", updateTouchPrimary)
-    noHoverMq.addEventListener("change", updateTouchPrimary)
-    window.addEventListener("resize", update)
-    window.visualViewport?.addEventListener("resize", update)
-    window.visualViewport?.addEventListener("scroll", update)
+    portraitMq.addEventListener("change", scheduleUpdate)
+    coarseMq.addEventListener("change", scheduleUpdate)
+    noHoverMq.addEventListener("change", scheduleUpdate)
+    window.addEventListener("resize", scheduleUpdate)
+    window.visualViewport?.addEventListener("resize", scheduleUpdate)
 
     return () => {
       ro.disconnect()
-      cancelAnimationFrame(initialRaf)
-      portraitMq.removeEventListener("change", update)
-      coarseMq.removeEventListener("change", updateTouchPrimary)
-      noHoverMq.removeEventListener("change", updateTouchPrimary)
-      window.removeEventListener("resize", update)
-      window.visualViewport?.removeEventListener("resize", update)
-      window.visualViewport?.removeEventListener("scroll", update)
-      document.documentElement.style.removeProperty("--slide-zoom")
-      document.documentElement.style.removeProperty("--slide-offset-x")
-      document.documentElement.style.removeProperty("--slide-design-w")
-      document.documentElement.style.removeProperty("--slide-design-h")
-      document.documentElement.style.removeProperty("--slide-fit-scale")
-      document.documentElement.style.removeProperty("--slide-vw")
-      document.documentElement.style.removeProperty("--slide-vh")
+      if (layoutFrame !== null) cancelAnimationFrame(layoutFrame)
+      portraitMq.removeEventListener("change", scheduleUpdate)
+      coarseMq.removeEventListener("change", scheduleUpdate)
+      noHoverMq.removeEventListener("change", scheduleUpdate)
+      window.removeEventListener("resize", scheduleUpdate)
+      window.visualViewport?.removeEventListener("resize", scheduleUpdate)
+      root.style.removeProperty("--slide-zoom")
+      root.style.removeProperty("--slide-offset-x")
+      root.style.removeProperty("--slide-design-w")
+      root.style.removeProperty("--slide-design-h")
+      root.style.removeProperty("--slide-fit-scale")
+      root.style.removeProperty("--slide-vw")
+      root.style.removeProperty("--slide-vh")
     }
   }, [])
 
@@ -891,7 +879,9 @@ export default function SlideContainer({
       return () => cancelIdleCallback(idleId)
     }
 
-    const timer = window.setTimeout(() => void decode(), 160)
+    // Safari lacks requestIdleCallback on many iPadOS versions. Keep image
+    // fetching out of the 340ms slide transition when the fallback is used.
+    const timer = window.setTimeout(() => void decode(), 600)
     return () => window.clearTimeout(timer)
   }, [current])
 
