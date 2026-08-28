@@ -1,33 +1,58 @@
-import { Check, Clock3, ListChecks } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import {
-  SectionLabel,
   VIDEO_RED,
   VideoThinkingFrame,
   VideoThinkingHeader,
 } from "./slide-video-thinking-shared"
 
-const SCREEN_WIDTH = 180
-type TaskState = "done" | "generating" | "queued"
+const SCREEN_WIDTH = 212
 
-function SketchScreen({
-  src,
-  alt,
-  fluid = false,
-}: {
-  src: string
-  alt: string
-  fluid?: boolean
-}) {
+const stages = [
+  {
+    index: "01",
+    label: "QUEUE",
+    title: "新任务自动排队",
+    description: "连续发起的创作自动进入队列，无需停留等待。",
+    src: "/images/page35/queued.webp",
+    alt: "新创作任务已进入排队，界面展示预计等待十分钟",
+  },
+  {
+    index: "02",
+    label: "GENERATE",
+    title: "任务在后台生成",
+    description: "离开当前页面仍持续推进，进度独立更新。",
+    src: "/images/page35/generating.webp",
+    alt: "创作任务正在生成，界面展示百分之三十进度和预计耗时",
+  },
+  {
+    index: "03",
+    label: "COMPLETE",
+    title: "完成后主动通知",
+    description: "结果就绪即可返回，继续编辑或再次生成。",
+    src: "/images/page35/completed.webp",
+    alt: "已完成的海边旅拍创作结果和后续编辑操作界面",
+  },
+  {
+    index: "04",
+    label: "TASK CENTER",
+    title: "任务上下文留存",
+    description: "全部状态与结果集中查看，随时返回继续。",
+    src: "/images/page35/task-history.jpg",
+    alt: "任务中心中同时展示已完成任务和生成中任务",
+  },
+] as const
+
+function InterfaceScreen({ src, alt }: { src: string; alt: string }) {
   return (
     <div
       className="relative shrink-0 overflow-hidden"
       style={{
-        width: fluid ? "100%" : SCREEN_WIDTH,
+        width: SCREEN_WIDTH,
         aspectRatio: "675 / 1461",
-        borderRadius: 24,
+        borderRadius: 23,
         border: "1px solid rgba(255,255,255,.2)",
         background: "#0c0c0c",
-        boxShadow: "0 24px 56px rgba(0,0,0,.58)",
+        boxShadow: "0 24px 54px rgba(0,0,0,.62)",
       }}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -37,208 +62,75 @@ function SketchScreen({
         draggable={false}
         loading="eager"
         decoding="async"
-        className="block h-full w-full object-cover"
+        className="block h-full w-full object-cover object-top"
       />
     </div>
   )
 }
 
-function ScreenWithStatus({
-  task,
-  status,
-  src,
-  alt,
+function FlowStage({
+  stage,
+  showArrow,
 }: {
-  task: string
-  status: string
-  src: string
-  alt: string
+  stage: (typeof stages)[number]
+  showArrow: boolean
 }) {
   return (
-    <div style={{ width: SCREEN_WIDTH }}>
-      <div className="mb-[8px] flex h-[28px] items-center justify-between border-b border-white/10 px-[2px]">
-        <span className="font-mono text-[10px] tracking-[.8px] text-white/38">
-          {task}
-        </span>
-        <span className="flex items-center gap-[5px] text-[10px] font-semibold text-[#f15a60]">
-          <span className="h-[5px] w-[5px] rounded-full bg-[#ef3f46]" />
-          {status}
-        </span>
-      </div>
-      <SketchScreen src={src} alt={alt} />
-    </div>
-  )
-}
-
-function TaskStatusTag({
-  task,
-  status,
-  state,
-}: {
-  task: string
-  status: string
-  state: TaskState
-}) {
-  return (
-    <div
-      className="pointer-events-none absolute top-[10px] left-[10px] z-10 flex h-[28px] items-center gap-[7px] rounded-full border px-[10px] backdrop-blur-md"
-      style={{
-        borderColor: "rgba(255,255,255,.2)",
-        background: "rgba(5,5,5,.76)",
-        boxShadow: "0 8px 24px rgba(0,0,0,.34)",
-      }}
+    <article
+      className="relative grid h-full min-w-0"
+      style={{ gridTemplateRows: "32px minmax(0, 1fr) 70px" }}
     >
-      <span className="font-mono text-[9px] font-bold tracking-[.8px] text-[#ef5057]">
-        {task}
-      </span>
-      <span className="h-[10px] w-px bg-white/18" />
-      <span className="flex items-center gap-[5px] text-[9px] font-semibold text-white/78">
-        {state === "done" ? (
-          <Check size={10} className="text-[#ef5057]" strokeWidth={2.4} />
-        ) : (
-          <span
-            className="h-[6px] w-[6px] rounded-full border"
-            style={{
-              borderColor: VIDEO_RED,
-              background: state === "generating" ? VIDEO_RED : "transparent",
-            }}
-          />
-        )}
-        {status}
-      </span>
-    </div>
-  )
-}
-
-function TaskScreen({
-  task,
-  status,
-  state,
-  src,
-  alt,
-}: {
-  task: string
-  status: string
-  state: TaskState
-  src: string
-  alt: string
-}) {
-  return (
-    <div className="relative min-w-0">
-      <SketchScreen src={src} alt={alt} fluid />
-      <TaskStatusTag task={task} status={status} state={state} />
-    </div>
-  )
-}
-
-function StatusSummary({ label, state }: { label: string; state: TaskState }) {
-  return (
-    <span className="flex h-[28px] items-center gap-[7px] rounded-full border border-white/12 bg-black/28 px-[10px] text-[10px] font-medium text-white/62">
-      {state === "done" ? (
-        <Check size={11} className="text-[#ef5057]" strokeWidth={2.3} />
-      ) : state === "queued" ? (
-        <Clock3 size={11} className="text-[#ef5057]" strokeWidth={1.8} />
-      ) : (
-        <span className="h-[6px] w-[6px] rounded-full bg-[#ef3f46]" />
-      )}
-      {label}
-    </span>
-  )
-}
-
-function TaskListRow({
-  task,
-  title,
-  status,
-  detail,
-  state,
-  progress,
-}: {
-  task: string
-  title: string
-  status: string
-  detail: string
-  state: TaskState
-  progress?: number
-}) {
-  return (
-    <div className="grid min-h-0 flex-1 grid-cols-[32px_minmax(0,1fr)_auto] items-center gap-[11px] border-t border-white/10 px-[2px]">
-      <span className="grid h-[32px] w-[32px] place-items-center border border-[#ef3f46]/32 bg-[#7c1116]/18 text-[#ef5057]">
-        {state === "done" ? (
-          <Check size={14} strokeWidth={2.2} />
-        ) : state === "queued" ? (
-          <Clock3 size={14} strokeWidth={1.7} />
-        ) : (
-          <span className="h-[7px] w-[7px] rounded-full bg-[#ef3f46]" />
-        )}
-      </span>
-      <div className="min-w-0">
-        <div className="flex items-center gap-[8px]">
-          <span className="font-mono text-[9px] tracking-[.7px] text-[#ef5057]">
-            {task}
-          </span>
-          <h3 className="m-0 truncate text-[12px] font-semibold text-white/82">
-            {title}
-          </h3>
-        </div>
-        <p className="m-0 mt-[5px] text-[10px] text-white/38">{detail}</p>
-        {progress !== undefined ? (
-          <div className="mt-[8px] h-[2px] overflow-hidden bg-white/10">
-            <span
-              className="block h-full bg-[#ef3f46]"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
-        ) : null}
-      </div>
-      <span className="rounded-full border border-[#ef3f46]/32 bg-[#7c1116]/20 px-[9px] py-[5px] text-[9px] font-semibold whitespace-nowrap text-[#f06a70]">
-        {status}
-      </span>
-    </div>
-  )
-}
-
-function TaskList() {
-  return (
-    <div className="flex h-[426px] min-w-0 flex-1 flex-col border border-white/10 bg-black/24 px-[14px]">
-      <div className="flex h-[46px] shrink-0 items-center justify-between">
-        <span className="flex items-center gap-[8px] text-[13px] font-semibold text-white/82">
-          <ListChecks size={15} className="text-[#ef5057]" strokeWidth={1.8} />
-          任务列表
+      <div className="flex items-start justify-between border-b border-white/8">
+        <span
+          style={{
+            color: VIDEO_RED,
+            fontFamily: "'LogoSC Unbounded Sans', sans-serif",
+            fontSize: 10,
+            fontWeight: 650,
+            letterSpacing: "1.2px",
+          }}
+        >
+          {stage.label}
         </span>
-        <span className="rounded-full bg-[#7c1116]/26 px-[9px] py-[5px] text-[9px] font-semibold text-[#ef656b]">
-          2 项进行中
+        <span className="font-mono text-[10px] tracking-[.8px] text-white/22">
+          {stage.index}
         </span>
       </div>
 
-      <TaskListRow
-        task="TASK A"
-        title="海边旅拍合拍"
-        status="已完成"
-        detail="结果已就绪，可继续编辑"
-        state="done"
-      />
-      <TaskListRow
-        task="TASK B"
-        title="白雪山背景生成"
-        status="生成中 30%"
-        detail="预计约 1 分钟"
-        state="generating"
-        progress={30}
-      />
-      <TaskListRow
-        task="TASK C"
-        title="红色连衣裙变体"
-        status="排队中"
-        detail="预计等待 10 分钟"
-        state="queued"
-      />
-
-      <div className="flex h-[40px] shrink-0 items-center gap-[7px] border-t border-white/10 text-[9px] text-white/32">
-        <Clock3 size={11} className="text-[#ef5057]" strokeWidth={1.7} />
-        离开页面任务仍继续，完成后主动通知
+      <div className="relative grid min-h-0 place-items-center">
+        <div
+          className="pointer-events-none absolute"
+          style={{
+            width: 226,
+            height: 226,
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(146,11,18,.18), transparent 68%)",
+            filter: "blur(8px)",
+          }}
+        />
+        <InterfaceScreen src={stage.src} alt={stage.alt} />
       </div>
-    </div>
+
+      {showArrow ? (
+        <span
+          className="absolute z-10 grid place-items-center text-white/24"
+          style={{ top: "43%", right: -32 }}
+          aria-hidden="true"
+        >
+          <ArrowRight size={18} strokeWidth={1.4} />
+        </span>
+      ) : null}
+
+      <div className="border-t border-white/12 pt-[11px]">
+        <h2 className="m-0 text-[18px] font-semibold tracking-[-.1px] text-white/84">
+          {stage.title}
+        </h2>
+        <p className="m-0 mt-[6px] max-w-[270px] text-[11px] leading-[1.5] text-white/38">
+          {stage.description}
+        </p>
+      </div>
+    </article>
   )
 }
 
@@ -265,68 +157,22 @@ export default function SlideVideoConcurrentTasks() {
         }}
       >
         <section
-          className="relative flex h-full min-w-0 flex-col"
+          className="grid h-full min-w-0"
           style={{
-            padding: "18px 0 12px",
+            padding: "12px 0 10px",
+            gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+            columnGap: 46,
             background:
-              "radial-gradient(circle at 28% 55%, rgba(153,9,17,.2), transparent 48%), radial-gradient(circle at 82% 55%, rgba(153,9,17,.14), transparent 48%)",
+              "radial-gradient(circle at 18% 50%, rgba(153,9,17,.12), transparent 31%), radial-gradient(circle at 82% 50%, rgba(153,9,17,.09), transparent 31%)",
           }}
         >
-          <div className="flex h-[74px] shrink-0 items-start justify-between">
-            <div>
-              <SectionLabel>CREATION WORKSPACE / LIVE TASKS</SectionLabel>
-              <h2 className="m-0 mt-[9px] text-[24px] font-semibold">
-                创作状态与任务，一处掌握
-              </h2>
-              <p className="m-0 mt-[5px] text-[11px] leading-[1.5] text-white/42">
-                继续发起创作，同时查看已完成、生成中与排队任务；离开后任务仍持续运行。
-              </p>
-            </div>
-            <div className="flex items-center gap-[8px] pt-[3px]">
-              <StatusSummary label="1 已完成" state="done" />
-              <StatusSummary label="1 生成中" state="generating" />
-              <StatusSummary label="1 排队中" state="queued" />
-            </div>
-          </div>
-
-          <div
-            className="mt-[8px] grid min-h-0 flex-1 items-start gap-[24px]"
-            style={{ gridTemplateColumns: "640px minmax(0, 1fr)" }}
-          >
-            <div className="grid min-w-0 grid-cols-3 items-start gap-[12px]">
-              <TaskScreen
-                task="TASK A"
-                status="已完成"
-                state="done"
-                src="/images/page35/completed.webp"
-                alt="任务 A 已完成的真实移动端界面"
-              />
-              <TaskScreen
-                task="TASK B"
-                status="生成中 30%"
-                state="generating"
-                src="/images/page35/generating.webp"
-                alt="任务 B 正在生成的真实移动端界面"
-              />
-              <TaskScreen
-                task="TASK C"
-                status="排队中"
-                state="queued"
-                src="/images/page35/queued.webp"
-                alt="任务 C 正在排队的真实移动端界面"
-              />
-            </div>
-
-            <div className="flex min-w-0 items-start gap-[16px] border-l border-white/10 pl-[16px]">
-              <ScreenWithStatus
-                task="TASK CENTER"
-                status="2 项运行中"
-                src="/images/page35/task-history.jpg"
-                alt="任务中心中的生成记录与多任务进度界面"
-              />
-              <TaskList />
-            </div>
-          </div>
+          {stages.map((stage, index) => (
+            <FlowStage
+              key={stage.index}
+              stage={stage}
+              showArrow={index < stages.length - 1}
+            />
+          ))}
         </section>
       </main>
     </VideoThinkingFrame>

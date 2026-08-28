@@ -33,10 +33,10 @@ const stages: Array<{
   },
   {
     index: "03",
-    title: "分析后进入创作",
+    title: "支持多素材创作",
     body: "识别人像、场景与可用片段，把原始素材变成创作上下文。",
-    image: "/images/page34/material-analysis.webp",
-    alt: "上传素材智能分析过程",
+    image: "/images/page34/multi-material-editor.webp",
+    alt: "支持同时使用六张素材进行引导编辑的多素材创作页",
     Icon: ScanSearch,
   },
 ]

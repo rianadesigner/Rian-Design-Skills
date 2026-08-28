@@ -1,7 +1,12 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
+import {
+  type KeyboardEvent as ReactKeyboardEvent,
+  type TouchEvent as ReactTouchEvent,
+  useRef,
+  useState,
+} from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -79,7 +84,47 @@ const skillViews = [
 type SkillView = (typeof skillViews)[number]
 
 export default function SlideStoryboardVideoSkill() {
-  const [activeView, setActiveView] = useState<SkillView>(skillViews[0])
+  const [activeIndex, setActiveIndex] = useState(0)
+  const swipeStartX = useRef<number | null>(null)
+  const activeView: SkillView = skillViews[activeIndex]
+
+  const showPrevious = () => {
+    setActiveIndex((current) => Math.max(0, current - 1))
+  }
+
+  const showNext = () => {
+    setActiveIndex((current) => Math.min(skillViews.length - 1, current + 1))
+  }
+
+  const handleViewKeyDown = (event: ReactKeyboardEvent<HTMLElement>) => {
+    if (event.key === "ArrowLeft") {
+      event.preventDefault()
+      event.stopPropagation()
+      showPrevious()
+    }
+    if (event.key === "ArrowRight") {
+      event.preventDefault()
+      event.stopPropagation()
+      showNext()
+    }
+  }
+
+  const handleViewTouchStart = (event: ReactTouchEvent<HTMLElement>) => {
+    swipeStartX.current = event.touches[0]?.clientX ?? null
+  }
+
+  const handleViewTouchEnd = (event: ReactTouchEvent<HTMLElement>) => {
+    const startX = swipeStartX.current
+    swipeStartX.current = null
+    if (startX === null) return
+
+    const deltaX = event.changedTouches[0].clientX - startX
+    if (Math.abs(deltaX) < 44) return
+
+    event.stopPropagation()
+    if (deltaX < 0) showNext()
+    else showPrevious()
+  }
 
   return (
     <div className="relative h-full w-full overflow-hidden bg-[#070708] text-white">
@@ -150,11 +195,11 @@ export default function SlideStoryboardVideoSkill() {
             {skillViews.map((view, index) => {
               const selected = activeView.id === view.id
               return (
-                <button
-                  key={view.id}
-                  type="button"
-                  aria-pressed={selected}
-                  onClick={() => setActiveView(view)}
+                  <button
+                    key={view.id}
+                    type="button"
+                    aria-pressed={selected}
+                    onClick={() => setActiveIndex(index)}
                   className={cn(
                     "h-[25px] rounded-full border-0 px-[12px] text-[10px] font-semibold tracking-[0.02em] whitespace-nowrap transition-colors",
                     selected
@@ -174,8 +219,16 @@ export default function SlideStoryboardVideoSkill() {
       </header>
 
       <figure
-        className="absolute top-[15.6%] right-[1.67%] left-[1.67%] m-0 overflow-visible rounded-[18px] border border-white/15 bg-white shadow-[0_28px_86px_rgba(0,0,0,.48)]"
-        aria-label={activeView.figureLabel}
+        className="absolute top-[15.6%] right-[1.67%] left-[1.67%] m-0 touch-pan-y overflow-visible rounded-[18px] border border-white/15 bg-white shadow-[0_28px_86px_rgba(0,0,0,.48)] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#ef3b46]"
+        aria-label={`${activeView.figureLabel}，第 ${activeIndex + 1} 个视图，共 ${skillViews.length} 个`}
+        aria-roledescription="轮播图"
+        tabIndex={0}
+        onKeyDown={handleViewKeyDown}
+        onTouchStart={handleViewTouchStart}
+        onTouchEnd={handleViewTouchEnd}
+        onTouchCancel={() => {
+          swipeStartX.current = null
+        }}
       >
         <Image
           key={activeView.id}
@@ -190,6 +243,46 @@ export default function SlideStoryboardVideoSkill() {
           draggable={false}
         />
 
+        <button
+          type="button"
+          aria-label="上一个视图"
+          disabled={activeIndex === 0}
+          onPointerDown={(event) => event.stopPropagation()}
+          onClick={(event) => {
+            event.stopPropagation()
+            showPrevious()
+          }}
+          className="absolute top-1/2 left-[14px] z-30 grid h-[36px] w-[36px] -translate-y-1/2 cursor-pointer place-items-center border-0 bg-transparent p-0 opacity-90 transition-opacity hover:opacity-100 focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#ef3b46] disabled:cursor-not-allowed disabled:opacity-20"
+        >
+          <Image
+            src="/icons/arrow-circle-left.svg"
+            alt=""
+            width={30}
+            height={30}
+            aria-hidden="true"
+          />
+        </button>
+
+        <button
+          type="button"
+          aria-label="下一个视图"
+          disabled={activeIndex === skillViews.length - 1}
+          onPointerDown={(event) => event.stopPropagation()}
+          onClick={(event) => {
+            event.stopPropagation()
+            showNext()
+          }}
+          className="absolute top-1/2 right-[14px] z-30 grid h-[36px] w-[36px] -translate-y-1/2 cursor-pointer place-items-center border-0 bg-transparent p-0 opacity-90 transition-opacity hover:opacity-100 focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#ef3b46] disabled:cursor-not-allowed disabled:opacity-20"
+        >
+          <Image
+            src="/icons/arrow-circle-right.svg"
+            alt=""
+            width={30}
+            height={30}
+            aria-hidden="true"
+          />
+        </button>
+
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10"
           aria-hidden="true"
@@ -201,16 +294,16 @@ export default function SlideStoryboardVideoSkill() {
               style={{ left: note.left, width: "236px" }}
             >
               <span className="mx-auto block h-[24px] w-px bg-gradient-to-b from-transparent to-[#ef3b46]" />
-              <div className="rounded-[12px] border border-black/12 bg-[#0a0b0e]/92 px-[13px] py-[10px] shadow-[0_12px_28px_rgba(0,0,0,.2)] backdrop-blur-[6px]">
+              <div className="border-l-[3px] border-[#ef3b46] bg-[#24171a]/92 px-[15px] py-[12px] shadow-[0_12px_30px_rgba(0,0,0,.32)] backdrop-blur-[6px]">
                 <div className="flex items-center gap-[8px]">
-                  <span className="font-mono text-[9px] font-bold tracking-[0.14em] text-[#ff4d57]">
+                  <span className="font-mono text-[9px] font-semibold tracking-[0.14em] text-white/38">
                     {note.index}
                   </span>
-                  <strong className="text-[12px] leading-none font-semibold text-white">
+                  <strong className="text-[10px] leading-none font-semibold tracking-[0.12em] text-white/42">
                     {note.title}
                   </strong>
                 </div>
-                <p className="mt-[6px] mb-0 text-[9px] leading-[1.45] text-white/54">
+                <p className="mt-[8px] mb-0 text-[10px] leading-[1.5] text-white/58">
                   {note.description}
                 </p>
               </div>

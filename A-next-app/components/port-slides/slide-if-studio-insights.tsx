@@ -35,44 +35,6 @@ type CoverGraphicProps = {
   useGeneratedCover?: boolean
 }
 
-function CornerMarks() {
-  const marks = [
-    { left: "1.1%", top: "1.75%", borderLeft: true, borderTop: true },
-    { right: "1.1%", top: "1.75%", borderRight: true, borderTop: true },
-    { left: "1.1%", bottom: "1.75%", borderLeft: true, borderBottom: true },
-    { right: "1.1%", bottom: "1.75%", borderRight: true, borderBottom: true },
-  ]
-
-  return (
-    <>
-      {marks.map((mark, index) => (
-        <span
-          key={index}
-          aria-hidden="true"
-          className="pointer-events-none absolute z-50"
-          style={{
-            ...mark,
-            width: "28px",
-            height: "28px",
-            borderLeft: mark.borderLeft
-              ? "1px solid rgba(255,255,255,0.24)"
-              : undefined,
-            borderRight: mark.borderRight
-              ? "1px solid rgba(255,255,255,0.24)"
-              : undefined,
-            borderTop: mark.borderTop
-              ? "1px solid rgba(255,255,255,0.24)"
-              : undefined,
-            borderBottom: mark.borderBottom
-              ? "1px solid rgba(255,255,255,0.24)"
-              : undefined,
-          }}
-        />
-      ))}
-    </>
-  )
-}
-
 function SelectionHandles() {
   const handles = [
     { left: "-5px", top: "-5px" },
@@ -1468,8 +1430,6 @@ export default function SlideIfStudioInsights() {
           }}
         />
       </div>
-
-      <CornerMarks />
 
       <header
         className="absolute z-20 flex items-end justify-between"

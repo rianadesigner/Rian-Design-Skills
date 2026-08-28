@@ -84,28 +84,9 @@ export default function SlideVideoContextSystem() {
             05 / ACTION CLONING
           </div>
           <h1 className="ai-video-project-title m-0 leading-[1.22] tracking-[0] whitespace-nowrap">
-            {"海量"}
-            <span
-              style={{
-                fontFamily: "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif",
-                fontWeight: 700,
-              }}
-            >
-              玩
-            </span>
-            {"法库"}
+            {"海量玩法库"}
             <span className="ml-[12px] text-[#b8ff35]">
-              {"支持风格、运镜、合"}
-              <span
-                style={{
-                  fontFamily:
-                    "'Alimama ShuZhiTi VF', 'PingFang SC', sans-serif",
-                  fontWeight: 700,
-                }}
-              >
-                拍
-              </span>
-              {"、动作克隆"}
+              {"支持风格、运镜、合拍、动作克隆"}
             </span>
           </h1>
         </div>
