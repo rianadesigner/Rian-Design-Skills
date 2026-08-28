@@ -271,8 +271,9 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/page34/material-analysis.webp",
   ],
   "video-concurrent-tasks": [
-    "/images/page35/queued-v2.webp",
-    "/images/page35/generating-v2.webp",
+    "/images/page35/completed.webp",
+    "/images/page35/generating.webp",
+    "/images/page35/queued.webp",
     "/images/page35/task-history.jpg",
   ],
   "video-context-system": [
