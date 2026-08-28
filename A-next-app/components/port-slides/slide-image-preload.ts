@@ -268,7 +268,7 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   "video-recommendation-upload": [
     "/images/page34/riff-home-logged-in.webp",
     "/images/page34/upload-picker-check-centered.webp",
-    "/images/page34/material-analysis.webp",
+    "/images/page34/multi-material-editor.webp",
   ],
   "video-concurrent-tasks": [
     "/images/page35/completed.webp",

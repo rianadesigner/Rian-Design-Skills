@@ -86,19 +86,21 @@ export default function SlidePage21() {
   const nextScreen = workflowScreens[(activeIndex + 1) % workflowScreens.length]
 
   const showPrevious = () => {
-    setActiveIndex((current) =>
-      current === 0 ? workflowScreens.length - 1 : current - 1
-    )
+    setActiveIndex((current) => Math.max(0, current - 1))
   }
 
   const showNext = () => {
-    setActiveIndex((current) => (current + 1) % workflowScreens.length)
+    setActiveIndex((current) =>
+      Math.min(workflowScreens.length - 1, current + 1)
+    )
   }
 
   useEffect(() => {
     if (paused || reduceMotion) return
 
-    const timer = window.setTimeout(showNext, AUTOPLAY_MS)
+    const timer = window.setTimeout(() => {
+      setActiveIndex((current) => (current + 1) % workflowScreens.length)
+    }, AUTOPLAY_MS)
     return () => window.clearTimeout(timer)
   }, [activeIndex, paused, reduceMotion])
 
@@ -243,41 +245,49 @@ export default function SlidePage21() {
           </button>
 
           <div
-            className="absolute bottom-[14px] left-1/2 z-20 flex -translate-x-1/2 items-center gap-[4px] rounded-full border border-white/12 bg-black/38 px-[10px] py-[6px] shadow-[0_8px_22px_rgba(0,0,0,.26)] backdrop-blur-[8px]"
+            className="pointer-events-none absolute inset-0 z-20"
             role="group"
             aria-label="工作流步骤"
           >
-            {workflowScreens.map((screen, index) => {
-              const selected = index === activeIndex
-              return (
-                <button
-                  key={screen.id}
-                  type="button"
-                  aria-label={`展示第 ${index + 1} 步：${screen.label}`}
-                  aria-pressed={selected}
-                  onPointerDown={(event) => event.stopPropagation()}
-                  onClick={(event) => {
-                    event.stopPropagation()
-                    setActiveIndex(index)
-                  }}
-                  className="flex h-[16px] w-[30px] items-center justify-center rounded-full border-0 bg-transparent p-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ef3b46]"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="h-[3px] rounded-full transition-[width,background-color,box-shadow] duration-200"
-                    style={{
-                      width: selected ? "26px" : "20px",
-                      background: selected
-                        ? "#ef3b46"
-                        : "rgba(255,255,255,.4)",
-                      boxShadow: selected
-                        ? "0 0 10px rgba(239,59,70,.72)"
-                        : "none",
-                    }}
-                  />
-                </button>
-              )
-            })}
+            <button
+              type="button"
+              aria-label="上一个工作流步骤"
+              disabled={activeIndex === 0}
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.stopPropagation()
+                showPrevious()
+              }}
+              className="pointer-events-auto absolute top-1/2 left-[14px] grid h-[36px] w-[36px] -translate-y-1/2 cursor-pointer place-items-center border-0 bg-transparent p-0 opacity-90 transition-opacity hover:opacity-100 focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#ef3b46] disabled:cursor-not-allowed disabled:opacity-20"
+            >
+              <Image
+                src="/icons/arrow-circle-left.svg"
+                alt=""
+                width={30}
+                height={30}
+                aria-hidden="true"
+              />
+            </button>
+
+            <button
+              type="button"
+              aria-label="下一个工作流步骤"
+              disabled={activeIndex === workflowScreens.length - 1}
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.stopPropagation()
+                showNext()
+              }}
+              className="pointer-events-auto absolute top-1/2 right-[14px] grid h-[36px] w-[36px] -translate-y-1/2 cursor-pointer place-items-center border-0 bg-transparent p-0 opacity-90 transition-opacity hover:opacity-100 focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#ef3b46] disabled:cursor-not-allowed disabled:opacity-20"
+            >
+              <Image
+                src="/icons/arrow-circle-right.svg"
+                alt=""
+                width={30}
+                height={30}
+                aria-hidden="true"
+              />
+            </button>
           </div>
         </div>
       </section>

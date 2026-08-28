@@ -74,43 +74,6 @@ const capabilities = [
 
 type Capability = (typeof capabilities)[number]
 
-function CornerMarks() {
-  const marks = [
-    { left: "1.25%", top: "2.22%", borderLeft: true, borderTop: true },
-    { right: "1.25%", top: "2.22%", borderRight: true, borderTop: true },
-    { left: "1.25%", bottom: "2.22%", borderLeft: true, borderBottom: true },
-    { right: "1.25%", bottom: "2.22%", borderRight: true, borderBottom: true },
-  ]
-
-  return (
-    <>
-      {marks.map((mark, index) => (
-        <span
-          key={index}
-          className="pointer-events-none absolute z-30"
-          style={{
-            ...mark,
-            width: "40px",
-            height: "40px",
-            borderLeft: mark.borderLeft
-              ? "1px solid rgba(255,255,255,0.28)"
-              : undefined,
-            borderRight: mark.borderRight
-              ? "1px solid rgba(255,255,255,0.28)"
-              : undefined,
-            borderTop: mark.borderTop
-              ? "1px solid rgba(255,255,255,0.28)"
-              : undefined,
-            borderBottom: mark.borderBottom
-              ? "1px solid rgba(255,255,255,0.28)"
-              : undefined,
-          }}
-        />
-      ))}
-    </>
-  )
-}
-
 function CapabilityCard({
   capability,
   active,
@@ -271,8 +234,6 @@ export default function SlideIfStudioCapabilities() {
           }}
         />
       </div>
-
-      <CornerMarks />
 
       <header
         className="absolute z-20 flex items-end justify-between"
