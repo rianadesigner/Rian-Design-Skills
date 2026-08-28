@@ -53,7 +53,7 @@ export default function SlideIfStudioSkills() {
           to { opacity: 1; }
         }
 
-        @media (hover: hover) and (pointer: fine) {
+        @media (any-hover: hover) and (any-pointer: fine) {
           .if-studio-skills-panel:hover {
             border-color: rgba(199,255,51,0.58) !important;
             box-shadow: 0 22px 70px rgba(0,0,0,0.52), 0 0 0 1px rgba(199,255,51,0.15) inset !important;
