@@ -13,6 +13,7 @@ const skillScreens = [
     title: "技能广场",
     caption: "发现适合创作场景的 Skill",
     image: `${P_IF_STUDIO}/skills-plaza-2026.webp`,
+    srcSet: `${P_IF_STUDIO}/skills-plaza-2026-960.webp 960w, ${P_IF_STUDIO}/skills-plaza-2026-1440.webp 1440w`,
     width: 1920,
     height: 2675,
     alt: "if Studio 技能广场全量技能列表",
@@ -23,6 +24,7 @@ const skillScreens = [
     title: "技能详情",
     caption: "理解能力、输入要求与使用示例",
     image: `${P_IF_STUDIO}/skill-detail-2026.webp`,
+    srcSet: `${P_IF_STUDIO}/skill-detail-2026-960.webp 960w, ${P_IF_STUDIO}/skill-detail-2026-1440.webp 1440w`,
     width: 1920,
     height: 2801,
     alt: "if Studio 试穿套图技能详情",
@@ -41,18 +43,32 @@ export default function SlideIfStudioSkills() {
     >
       <style>{`
         .if-studio-skills-panel {
-          transition: border-color 180ms ease-out, box-shadow 180ms ease-out;
+          isolation: isolate;
+        }
+
+        .if-studio-skills-panel::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          z-index: 20;
+          pointer-events: none;
+          border: 1px solid rgba(199,255,51,0.58);
+          border-radius: inherit;
+          box-shadow: 0 0 0 1px rgba(199,255,51,0.15) inset;
+          opacity: 0;
+          transition: opacity 180ms ease-out;
         }
 
         .if-studio-skills-viewport {
-          contain: layout paint style size;
-          container-type: size;
+          contain: layout paint;
+          isolation: isolate;
         }
 
         .if-studio-skills-image {
           top: 0;
           transform: translate3d(0, 0, 0);
           transition: transform 1.2s ease-out;
+          backface-visibility: hidden;
           animation: if-studio-skills-enter 260ms ease-out both;
         }
 
@@ -62,15 +78,15 @@ export default function SlideIfStudioSkills() {
         }
 
         @media (any-hover: hover) and (any-pointer: fine) {
-          .if-studio-skills-panel:hover {
-            border-color: rgba(199,255,51,0.58) !important;
-            box-shadow: 0 22px 70px rgba(0,0,0,0.52), 0 0 0 1px rgba(199,255,51,0.15) inset !important;
+          .if-studio-skills-panel:hover::after {
+            opacity: 1;
           }
 
           .if-studio-skills-viewport[data-scroll="true"]:hover .if-studio-skills-image {
-            /* Fixed-size fallback, then the exact viewport-relative distance. */
+            /* The slide canvas is always 1440 x 900, so the viewport is 601.2px
+               before the shared outer scale. Avoid container-unit resolution
+               during Chrome's long-running compositor animation. */
             transform: translate3d(0, calc(601.2px - 100%), 0);
-            transform: translate3d(0, calc(100cqh - 100%), 0);
             transition-duration: 16s;
             transition-timing-function: linear;
           }
@@ -301,6 +317,8 @@ export default function SlideIfStudioSkills() {
           <img
             key={skillScreen.id}
             src={skillScreen.image}
+            srcSet={skillScreen.srcSet}
+            sizes="min(91.67vw, 146.67vh)"
             alt={skillScreen.alt}
             width={skillScreen.width}
             height={skillScreen.height}

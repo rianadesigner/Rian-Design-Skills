@@ -1,55 +1,46 @@
-import { RemovalCardStrip } from "./removal-card-strip";
-
-const P28 = "/images/page27";
-
 const creationFlow = [
   {
-    src: "remix.webp",
+    src: "/images/page28/video-character-library.webp",
     step: "01",
-    stage: "DISCOVER",
-    title: "灵感二创",
-    description: "从社区内容或已有作品触发二创，建立清晰的创作起点。",
+    stage: "CAST",
+    title: "视频角色库",
+    description: "通过 @ 快速唤起已保存角色，让人物素材随时复用。",
+    alt: "视频角色选择界面，主画面为穿红色西装的女性，底部展示可通过 @ 唤起的角色列表和已选角色",
   },
   {
-    src: "action-clone.webp",
+    src: "/images/page28/style-filter.webp",
     step: "02",
-    stage: "DIRECT",
-    title: "动作克隆",
-    description: "识别画面角色并调用目标动作，把创作意图转换为可执行指令。",
-  },
-  {
-    src: "remove.webp",
-    step: "03",
-    stage: "REFINE",
-    title: "主体消除",
-    description: "通过涂抹和对象识别完成局部修改，保留画面上下文。",
-  },
-  {
-    src: "filter.webp",
-    step: "04",
     stage: "STYLE",
     title: "风格滤镜",
-    description: "在可视化风格库中统一画面方向，并即时预览变化。",
+    description: "一键套用不同影调，让同一素材快速切换视觉氛围。",
+    alt: "风格滤镜界面，主画面为海边徒步合照，底部展示电影胶片、暖调和北欧冷调等滤镜",
   },
   {
-    src: "result.webp",
-    step: "05",
-    stage: "DELIVER",
-    title: "生成结果",
-    description: "承接生成状态、最终内容和导出动作，完成创作闭环。",
+    src: "/images/page28/co-create.webp",
+    step: "03",
+    stage: "COLLAB",
+    title: "多人合拍",
+    description: "从角色库选择搭档，让多个角色加入同一画面。",
+    alt: "多人合拍界面，主画面为海边徒步合照，底部展示可加入合拍的角色列表和已选角色",
   },
-];
+  {
+    src: "/images/page28/subject-removal.webp",
+    step: "04",
+    stage: "CLEANUP",
+    title: "主体消除",
+    description: "识别并移除主体或路人，快速清理画面干扰。",
+    alt: "主体消除界面，画面中的多人被轮廓标记，底部提供主体、路人、配饰、水印和文字等消除选项",
+  },
+]
 
 function FlowPhone({
   src,
   label,
   style,
-  removalCard,
 }: {
-  src: string;
-  label: string;
-  style: React.CSSProperties;
-  removalCard?: boolean;
+  src: string
+  label: string
+  style: React.CSSProperties
 }) {
   return (
     <div
@@ -60,20 +51,21 @@ function FlowPhone({
         outline: "1px solid rgba(255,255,255,0.18)",
         borderRadius: "28px",
         background: "#111111",
-        boxShadow:
-          "0 28px 58px rgba(0,0,0,0.62), 0 0 34px rgba(176,0,0,0.11)",
+        boxShadow: "0 28px 58px rgba(0,0,0,0.62), 0 0 34px rgba(176,0,0,0.11)",
         ...style,
       }}
     >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={src}
         alt={label}
         draggable={false}
+        loading="eager"
+        decoding="async"
         className="h-full w-full object-cover"
       />
-      {removalCard ? <RemovalCardStrip activeIndex={1} animated={false} /> : null}
     </div>
-  );
+  )
 }
 
 export default function SlidePage28() {
@@ -88,7 +80,7 @@ export default function SlidePage28() {
         fontSynthesis: "none",
       }}
     >
-      <div className="absolute inset-0 pointer-events-none">
+      <div className="pointer-events-none absolute inset-0">
         <div
           className="absolute"
           style={{
@@ -142,7 +134,6 @@ export default function SlidePage28() {
         />
       </div>
 
-
       <header
         className="absolute z-20 flex items-end justify-between"
         style={{ left: "4.17%", top: "8.1%", width: "91.66%" }}
@@ -157,7 +148,7 @@ export default function SlidePage28() {
               letterSpacing: "0.8px",
             }}
           >
-            02 / CREATION FLOW
+            02 / CREATIVE TOOLKIT
           </div>
           <h1
             className="ai-video-project-title"
@@ -171,7 +162,9 @@ export default function SlidePage28() {
             }}
           >
             AI 视频编辑
-            <span style={{ color: "#d2353c", marginLeft: "10px" }}>创作链路</span>
+            <span style={{ color: "#d2353c", marginLeft: "10px" }}>
+              更多玩法
+            </span>
           </h1>
         </div>
         <p
@@ -186,7 +179,7 @@ export default function SlidePage28() {
             whiteSpace: "nowrap",
           }}
         >
-          以一次完整任务组织界面：触发二创、调用动作、局部精修、统一风格，最后生成并交付结果。
+          调用角色、套用风格、加入合拍、消除主体，把复杂编辑能力变成直观、可组合的创作玩法。
         </p>
       </header>
 
@@ -197,8 +190,8 @@ export default function SlidePage28() {
         <div
           className="absolute"
           style={{
-            left: "7.9%",
-            right: "7.9%",
+            left: "10%",
+            right: "10%",
             top: "4.5%",
             height: 1,
             background:
@@ -210,7 +203,7 @@ export default function SlidePage28() {
           <div
             key={page.src}
             className="absolute h-full"
-            style={{ left: `${index * 21}%`, width: "16%" }}
+            style={{ left: `${index * 26.6667}%`, width: "20%" }}
           >
             <div
               className="absolute z-20 flex items-center justify-center rounded-full"
@@ -247,10 +240,9 @@ export default function SlidePage28() {
               {page.stage}
             </div>
             <FlowPhone
-              src={`${P28}/${page.src}`}
-              label={`胡椒${page.title}页面`}
-              style={{ left: "3%", top: "16%", width: "94%" }}
-              removalCard={page.stage === "REFINE"}
+              src={page.src}
+              label={page.alt}
+              style={{ left: "8%", top: "14%", width: "84%" }}
             />
           </div>
         ))}
@@ -264,7 +256,7 @@ export default function SlidePage28() {
           <div
             key={page.title}
             className="absolute"
-            style={{ left: `${index * 21}%`, width: "16%" }}
+            style={{ left: `${index * 26.6667}%`, width: "20%" }}
           >
             <div className="flex items-center" style={{ gap: "9px" }}>
               <span
@@ -293,7 +285,8 @@ export default function SlidePage28() {
               style={{
                 margin: "8px 0 0",
                 color: "#ffffff",
-                fontFamily: "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
+                fontFamily:
+                  "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif",
                 fontSize: "clamp(14px, calc(1.45 * var(--u)), 21px)",
                 fontWeight: 400,
                 lineHeight: 1.4,
@@ -328,7 +321,7 @@ export default function SlidePage28() {
             fontSize: "clamp(7px, calc(0.7 * var(--u)), 10px)",
           }}
         >
-          DISCOVER → DIRECT → REFINE → STYLE → DELIVER
+          CAST · STYLE · COLLAB · CLEANUP
         </span>
         <span
           style={{
@@ -341,5 +334,5 @@ export default function SlidePage28() {
         </span>
       </footer>
     </div>
-  );
+  )
 }

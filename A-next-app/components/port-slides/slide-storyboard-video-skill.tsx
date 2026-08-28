@@ -243,46 +243,6 @@ export default function SlideStoryboardVideoSkill() {
           draggable={false}
         />
 
-        <button
-          type="button"
-          aria-label="上一个视图"
-          disabled={activeIndex === 0}
-          onPointerDown={(event) => event.stopPropagation()}
-          onClick={(event) => {
-            event.stopPropagation()
-            showPrevious()
-          }}
-          className="absolute top-1/2 left-[14px] z-30 grid h-[36px] w-[36px] -translate-y-1/2 cursor-pointer place-items-center border-0 bg-transparent p-0 opacity-90 transition-opacity hover:opacity-100 focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#ef3b46] disabled:cursor-not-allowed disabled:opacity-20"
-        >
-          <Image
-            src="/icons/arrow-circle-left.svg"
-            alt=""
-            width={30}
-            height={30}
-            aria-hidden="true"
-          />
-        </button>
-
-        <button
-          type="button"
-          aria-label="下一个视图"
-          disabled={activeIndex === skillViews.length - 1}
-          onPointerDown={(event) => event.stopPropagation()}
-          onClick={(event) => {
-            event.stopPropagation()
-            showNext()
-          }}
-          className="absolute top-1/2 right-[14px] z-30 grid h-[36px] w-[36px] -translate-y-1/2 cursor-pointer place-items-center border-0 bg-transparent p-0 opacity-90 transition-opacity hover:opacity-100 focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#ef3b46] disabled:cursor-not-allowed disabled:opacity-20"
-        >
-          <Image
-            src="/icons/arrow-circle-right.svg"
-            alt=""
-            width={30}
-            height={30}
-            aria-hidden="true"
-          />
-        </button>
-
         <div
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10"
           aria-hidden="true"

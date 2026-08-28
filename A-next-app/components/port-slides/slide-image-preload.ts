@@ -185,8 +185,8 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   ],
   "if-studio": ["/images/if-studio/home-full-2026.webp"],
   "if-studio-skills": [
-    "/images/if-studio/skills-plaza-2026.webp",
-    "/images/if-studio/skill-detail-2026.webp",
+    "/images/if-studio/skills-plaza-2026-1440.webp",
+    "/images/if-studio/skill-detail-2026-1440.webp",
   ],
   "storyboard-video-skill": [
     "/images/storyboard-video-skill/workflow-full-105500.webp",
@@ -300,16 +300,10 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   ],
   "video-future": ["/images/video/ifs-workflow-canvas.webp"],
   page28: [
-    "/images/page27/remix.webp",
-    "/images/page27/result.webp",
-    "/images/page27/action-clone.webp",
-    "/images/page27/remove.webp",
-    "/images/page27/filter.webp",
-    "/images/page27/remove-brush-card.png",
-    "/images/page27/remove-person-card.png",
-    "/images/page27/remove-watermark-card.png",
-    "/images/page27/remove-text-card.png",
-    "/images/page27/remove-glasses-card.png",
+    "/images/page28/video-character-library.webp",
+    "/images/page28/style-filter.webp",
+    "/images/page28/co-create.webp",
+    "/images/page28/subject-removal.webp",
   ],
   page29: [
     "/images/page39/sketch-home.webp",
@@ -374,9 +368,16 @@ export async function predecodeSlideImages(slideId: string) {
   const policy = getSlidePreloadPolicy()
   if (policy.assetLimit === 0) return
 
+  // /06 contains tall screenshots that each expand to roughly 11-20 MiB when
+  // decoded. Warm only its first responsive asset and leave decoding to the
+  // visible <img>, so Chrome does not upload both textures in the background.
+  const isLongImageSlide = slideId === "if-studio-skills"
+  const assetLimit = isLongImageSlide ? 1 : policy.assetLimit
+  const shouldDecode = isLongImageSlide ? false : policy.decodeAssets
+
   // Decode one image at a time. Concurrent bitmap decoding can block slide
   // transitions even when the network requests themselves are low priority.
-  for (const src of assets.slice(0, policy.assetLimit)) {
-    await decodeImage(src, policy.decodeAssets)
+  for (const src of assets.slice(0, assetLimit)) {
+    await decodeImage(src, shouldDecode)
   }
 }

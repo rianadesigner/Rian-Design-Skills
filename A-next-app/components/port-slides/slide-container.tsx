@@ -809,7 +809,12 @@ export default function SlideContainer({
       }
 
       // 优先让内部可滚动区域（如截图区）消费滚轮
-      let node = e.target as HTMLElement | null
+      // /06 has no native scroll region. Skip the expensive ancestor style and
+      // layout scan for every high-frequency Chrome trackpad event.
+      let node =
+        curId === "if-studio-skills"
+          ? null
+          : (e.target as HTMLElement | null)
       while (node && node !== document.body) {
         const { overflowY } = getComputedStyle(node)
         const scrollable =
@@ -864,6 +869,10 @@ export default function SlideContainer({
   }, [current])
 
   useEffect(() => {
+    // Keep Chrome's idle time free while the long /06 texture is animating.
+    // Adjacent images still load normally when their slide becomes visible.
+    if (slideIds[current] === "if-studio-skills") return
+
     const adjacent = [current + 1, current - 1]
       .filter((index) => index >= 0 && index < slideIds.length)
       .map((index) => slideIds[index])
