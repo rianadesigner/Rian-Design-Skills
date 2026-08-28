@@ -17,7 +17,7 @@ const stages: Array<{
 }> = [
   {
     index: "01",
-    title: "每日推荐视频生成",
+    title: "推荐视频 & 开始创作",
     body: "用可播放的成片建立风格、质量与能力预期。",
     image: "/images/page34/riff-home-logged-in.webp",
     alt: "Riff 已登录首页，展示推荐灵感、视频素材与开始创作入口",
@@ -25,7 +25,7 @@ const stages: Array<{
   },
   {
     index: "02",
-    title: "再上传自己的素材",
+    title: "主动开始创作",
     body: "确认想做的方向后，从相册或近期项目选择素材。",
     image: "/images/page34/upload-picker-check-centered.webp",
     alt: "视频与照片素材上传选择页",
