@@ -481,8 +481,8 @@ export default function SlidePage0e({
               onSelect={handleNodeSelect}
               onOpen={handleNodeOpen}
               detailLevel="rich"
-              lineIntensity={1}
-              ambientIntensity={1}
+              lineIntensity={0.56}
+              ambientIntensity={0.72}
             />
           </div>
           <WikiSidebar />
