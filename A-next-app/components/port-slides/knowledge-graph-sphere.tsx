@@ -49,6 +49,8 @@ export default function KnowledgeGraphSphere({
   lineIntensity = 1,
   ambientIntensity = 1,
   detailLevel = "standard",
+  filterToRelated = false,
+  clearSelectionOnBackground = false,
 }: {
   selectedId: string
   onSelect?: (id: string) => void
@@ -57,6 +59,8 @@ export default function KnowledgeGraphSphere({
   lineIntensity?: number
   ambientIntensity?: number
   detailLevel?: "standard" | "rich"
+  filterToRelated?: boolean
+  clearSelectionOnBackground?: boolean
 }) {
   const scrollOnly = interactionMode === "scroll"
   const richDetail = detailLevel === "rich"
@@ -153,6 +157,7 @@ export default function KnowledgeGraphSphere({
 
     const graph = new THREE.Group()
     graph.rotation.set(-0.08, -0.12, 0.025)
+    const defaultGraphQuaternion = graph.quaternion.clone()
     scene.add(graph)
 
     const latticeGeometry = new THREE.IcosahedronGeometry(2.63, 1)
@@ -278,6 +283,7 @@ export default function KnowledgeGraphSphere({
         flow?.remove()
       })
       relationPaths = []
+      highlightedSelection = nodeId
 
       const startIndex = nodeGridIndexById.get(nodeId)
       if (startIndex === undefined) return
@@ -482,6 +488,24 @@ export default function KnowledgeGraphSphere({
       pointer.x = ((event.clientX - bounds.left) / bounds.width) * 2 - 1
       pointer.y = -((event.clientY - bounds.top) / bounds.height) * 2 + 1
     }
+    const getVisibleHit = () => {
+      const currentId = selectedIdRef.current
+      const relatedIds =
+        filterToRelated && currentId ? getRelatedNodeIds(currentId) : null
+
+      return raycaster
+        .intersectObjects(nodeMeshes, false)
+        .find(({ object }) => {
+          const nodeId = object.userData.nodeId as string | undefined
+          return Boolean(
+            nodeId &&
+            (!filterToRelated ||
+              !currentId ||
+              nodeId === currentId ||
+              relatedIds?.has(nodeId))
+          )
+        })
+    }
     const onPointerDown = (event: PointerEvent) => {
       pointerDown = { x: event.clientX, y: event.clientY }
       renderer.domElement.style.cursor = "grabbing"
@@ -489,7 +513,7 @@ export default function KnowledgeGraphSphere({
     const onPointerMove = (event: PointerEvent) => {
       updatePointer(event)
       raycaster.setFromCamera(pointer, camera)
-      const hit = raycaster.intersectObjects(nodeMeshes, false)[0]
+      const hit = getVisibleHit()
       if (renderer.domElement.style.cursor !== "grabbing")
         renderer.domElement.style.cursor = hit ? "pointer" : "grab"
     }
@@ -504,14 +528,15 @@ export default function KnowledgeGraphSphere({
         return
       updatePointer(event)
       raycaster.setFromCamera(pointer, camera)
-      const hit = raycaster.intersectObjects(nodeMeshes, false)[0]
+      const hit = getVisibleHit()
       const nodeId = hit?.object.userData.nodeId as string | undefined
       if (nodeId) onSelect?.(nodeId)
+      else if (clearSelectionOnBackground) onSelect?.("")
     }
     const onDoubleClick = (event: MouseEvent) => {
       updatePointer(event)
       raycaster.setFromCamera(pointer, camera)
-      const hit = raycaster.intersectObjects(nodeMeshes, false)[0]
+      const hit = getVisibleHit()
       const nodeId = hit?.object.userData.nodeId as string | undefined
       if (nodeId) onOpen?.(nodeId)
     }
@@ -598,7 +623,10 @@ export default function KnowledgeGraphSphere({
 
     const updateFocusTarget = (nodeId: string) => {
       const position = positionMap.get(nodeId)
-      if (!position) return
+      if (!position) {
+        focusTargetQuaternion.copy(defaultGraphQuaternion)
+        return
+      }
       selectedDirection.copy(position).normalize()
       cameraDirection.copy(camera.position).sub(controls.target).normalize()
       focusTargetQuaternion.setFromUnitVectors(
@@ -736,7 +764,9 @@ export default function KnowledgeGraphSphere({
       gridMaterial.opacity = gridLineOpacity * globeProgress
       if (semanticEdgeMaterial)
         semanticEdgeMaterial.opacity =
-          0.15 * resolvedAmbientIntensity * globeProgress
+          (filterToRelated && selectedIdRef.current ? 0 : 0.15) *
+          resolvedAmbientIntensity *
+          globeProgress
 
       if (highlightedSelection !== selectedIdRef.current)
         rebuildHighlightedGridPaths(selectedIdRef.current, elapsed)
@@ -804,6 +834,7 @@ export default function KnowledgeGraphSphere({
           : easeOutCubic(clamp01((elapsed - delay) / 0.42))
         const active = nodeId === selectedIdRef.current
         const related = relatedIds.has(nodeId)
+        const visible = !filterToRelated || !hasSelection || active || related
         mesh.scale.setScalar(
           entrance *
             (active ? 1.22 : related ? 1.08 : 1) *
@@ -824,26 +855,36 @@ export default function KnowledgeGraphSphere({
               : richDetail
                 ? 0.18 + depthVisibility * 0.82
                 : 0.07 + depthVisibility * 0.93
-        const stateOpacity = !hasSelection
-          ? 0.88 * resolvedAmbientIntensity
-          : active
-            ? 1
-            : related
-              ? 0.96
-              : (richDetail ? 0.54 : 0.34) * resolvedAmbientIntensity
+        const stateOpacity = !visible
+          ? 0
+          : !hasSelection
+            ? 0.88 * resolvedAmbientIntensity
+            : active
+              ? 1
+              : related
+                ? 0.96
+                : (richDetail ? 0.54 : 0.34) * resolvedAmbientIntensity
+        label.style.visibility = visible ? "visible" : "hidden"
         label.style.opacity = String(entrance * stateOpacity * depthAdjusted)
         mesh.material.opacity = richDetail
           ? entrance *
             depthAdjusted *
-            (active ? 0.92 : related ? 0.68 : 0.22 * resolvedAmbientIntensity)
+            (!visible
+              ? 0
+              : active
+                ? 0.92
+                : related
+                  ? 0.68
+                  : 0.22 * resolvedAmbientIntensity)
           : 0
         if (!hasSelection)
           label.style.transform = `scale(${0.88 + depthVisibility * 0.18})`
-        label.style.pointerEvents = scrollOnly
-          ? "none"
-          : active || related || depthVisibility > 0.22
-            ? "auto"
-            : "none"
+        label.style.pointerEvents =
+          scrollOnly || !visible
+            ? "none"
+            : active || related || depthVisibility > 0.22
+              ? "auto"
+              : "none"
       })
 
       renderer.render(scene, camera)
@@ -890,6 +931,8 @@ export default function KnowledgeGraphSphere({
       nodeVisualsRef.current.clear()
     }
   }, [
+    clearSelectionOnBackground,
+    filterToRelated,
     interactionMode,
     onOpen,
     onSelect,

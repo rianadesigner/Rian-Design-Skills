@@ -8,7 +8,11 @@ import {
   AppleSpotlight,
   type SpotlightShortcut,
 } from "@/components/ui/apple-spotlight"
-import { getRelatedNodeIds, KNOWLEDGE_NODES } from "./knowledge-graph-data"
+import {
+  getRelatedNodeIds,
+  KNOWLEDGE_EDGES,
+  KNOWLEDGE_NODES,
+} from "./knowledge-graph-data"
 
 const KnowledgeGraphSphere = dynamic(() => import("./knowledge-graph-sphere"), {
   ssr: false,
@@ -16,6 +20,12 @@ const KnowledgeGraphSphere = dynamic(() => import("./knowledge-graph-sphere"), {
 
 const DISPLAY_FONT = "'标小智无界黑', 'LogoSC Unbounded Sans', sans-serif"
 const BODY_FONT = "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif"
+const PRESENTATION_UI_FRAME = {
+  horizontalInset: 180,
+  top: 174,
+  height: 645,
+  borderRadius: 14,
+} as const
 const NAV_ASSET_BASE = "/images/page08/navigation"
 const LIGHT_SPOTLIGHT_TOKENS = {
   "--background": "oklch(1 0 0)",
@@ -26,6 +36,14 @@ const LIGHT_SPOTLIGHT_TOKENS = {
   "--border": "oklch(0.9 0 0)",
   "--ring": "oklch(0.55 0 0)",
 } as CSSProperties
+const GRAPH_SPOTLIGHT_SURFACE_STYLE = {
+  background:
+    "linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.70) 48%, rgba(255,255,255,0.52) 100%)",
+  backdropFilter: "blur(32px) saturate(1.22)",
+  WebkitBackdropFilter: "blur(32px) saturate(1.22)",
+  boxShadow:
+    "inset 0 1.5px 1px rgba(255,255,255,1), inset 0 -1px 1px rgba(255,255,255,0.5), 0 2px 6px rgba(15,23,42,0.06), 0 16px 36px rgba(15,23,42,0.12)",
+} satisfies CSSProperties
 
 const SOURCE_SHORTCUTS: SpotlightShortcut[] = [
   {
@@ -291,16 +309,21 @@ function WikiSidebar() {
 export default function SlidePage0e({
   embedded = false,
 }: { embedded?: boolean } = {}) {
-  const [selectedId, setSelectedId] = useState("framework")
+  const [selectedId, setSelectedId] = useState(() =>
+    embedded ? "framework" : ""
+  )
   const [researchQuery, setResearchQuery] = useState("")
   const [folderOpen, setFolderOpen] = useState(false)
   const [selectedFolderId, setSelectedFolderId] = useState(FOLDER_OPTIONS[0].id)
-  const selected =
-    KNOWLEDGE_NODES.find((node) => node.id === selectedId) ?? KNOWLEDGE_NODES[0]
-  const selectedRelations = Array.from(
-    getRelatedNodeIds(selected.id),
-    (relatedId) => KNOWLEDGE_NODES.find((node) => node.id === relatedId)?.label
-  ).filter((label): label is string => Boolean(label))
+  const selectedNode = KNOWLEDGE_NODES.find((node) => node.id === selectedId)
+  const selected = selectedNode ?? KNOWLEDGE_NODES[0]
+  const selectedRelations = selectedNode
+    ? Array.from(
+        getRelatedNodeIds(selectedNode.id),
+        (relatedId) =>
+          KNOWLEDGE_NODES.find((node) => node.id === relatedId)?.label
+      ).filter((label): label is string => Boolean(label))
+    : []
   const selectedFolder =
     FOLDER_OPTIONS.find((folder) => folder.id === selectedFolderId) ??
     FOLDER_OPTIONS[0]
@@ -312,6 +335,8 @@ export default function SlidePage0e({
       setResearchQuery(
         `关于「${node.label}」，我应该重点关注哪些信息，它会如何影响我的升学决策？`
       )
+    } else {
+      setResearchQuery("")
     }
   }, [])
 
@@ -351,15 +376,25 @@ export default function SlidePage0e({
 
           <header
             className="absolute z-20"
-            style={{ left: 54, right: 54, top: 38 }}
+            style={{
+              left: "50%",
+              top: 38,
+              width: 1000,
+              transform: "translateX(-50%)",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 12,
+              whiteSpace: "nowrap",
+            }}
           >
             <div className="flex items-center gap-3">
               <span
                 style={{
                   color: "#f23a46",
                   fontFamily: "Impact, 'Arial Black', sans-serif",
-                  fontSize: 11,
-                  letterSpacing: 1.8,
+                  fontSize: 13,
+                  letterSpacing: 2,
                 }}
               >
                 05
@@ -368,47 +403,46 @@ export default function SlidePage0e({
                 style={{
                   width: 28,
                   height: 1,
+                  flexShrink: 0,
                   background: "rgba(255,255,255,0.2)",
                 }}
               />
               <span
                 style={{
                   color: "rgba(255,255,255,0.38)",
-                  fontSize: 10,
-                  letterSpacing: 2.4,
+                  fontSize: 11,
+                  letterSpacing: 3,
                 }}
               >
                 LLM WIKI · PRODUCT METHOD
               </span>
             </div>
-            <div className="mt-2.5 flex items-end justify-between">
-              <h1
-                style={{
-                  margin: 0,
-                  fontFamily: DISPLAY_FONT,
-                  fontSize: 40,
-                  fontWeight: 400,
-                  letterSpacing: 0.5,
-                  lineHeight: 1.18,
-                  color: "#ffffff",
-                }}
-              >
-                2. Wiki图谱编译
-              </h1>
-              <p
-                style={{
-                  margin: "0 0 3px",
-                  color: "rgba(255,255,255,0.48)",
-                  fontSize: 12,
-                  lineHeight: 1.7,
-                  textAlign: "right",
-                }}
-              >
-                从散落资料到可检索、可互链、可溯源的 Wiki 节点，
-                <br />
-                图谱是编译后的知识界面，而不是一张静态结果图。
-              </p>
-            </div>
+            <h1
+              style={{
+                margin: 0,
+                fontFamily: DISPLAY_FONT,
+                fontSize: 40,
+                fontWeight: 400,
+                letterSpacing: 1.5,
+                lineHeight: "51.92px",
+                color: "#ffffff",
+              }}
+            >
+              2. Wiki图谱编译
+            </h1>
+            <p
+              style={{
+                width: 778,
+                margin: 0,
+                color: "rgba(255,255,255,0.48)",
+                fontSize: 14,
+                lineHeight: "25.2px",
+                textAlign: "center",
+                whiteSpace: "normal",
+              }}
+            >
+              从散落资料到可检索、可互链、可溯源的 Wiki 节点，图谱是编译后的知识界面，而不是一张静态结果图。
+            </p>
           </header>
         </>
       )}
@@ -416,11 +450,11 @@ export default function SlidePage0e({
       <main
         className="absolute z-20 overflow-hidden"
         style={{
-          left: embedded ? 0 : 54,
-          right: embedded ? 0 : 54,
-          top: embedded ? 0 : 137,
-          height: embedded ? 900 : 674,
-          borderRadius: embedded ? 0 : 18,
+          left: embedded ? 0 : PRESENTATION_UI_FRAME.horizontalInset,
+          right: embedded ? 0 : PRESENTATION_UI_FRAME.horizontalInset,
+          top: embedded ? 0 : PRESENTATION_UI_FRAME.top,
+          height: embedded ? 900 : PRESENTATION_UI_FRAME.height,
+          borderRadius: embedded ? 0 : PRESENTATION_UI_FRAME.borderRadius,
           background: "#ffffff",
           border: embedded ? 0 : "1px solid rgba(255,255,255,0.18)",
           boxShadow: embedded ? "none" : "0 30px 90px rgba(0,0,0,0.5)",
@@ -438,10 +472,12 @@ export default function SlidePage0e({
           className="absolute overflow-hidden"
           style={{
             left: 0,
-            right: embedded ? 378 : 350,
+            right: embedded ? 378 : 0,
             top: 0,
-            height: embedded ? 900 : 674,
-            background: "#f8f8f8",
+            height: embedded ? 900 : PRESENTATION_UI_FRAME.height,
+            background: embedded
+              ? "#f8f8f8"
+              : "linear-gradient(135deg, #fbf9fd 0%, #f8f8fa 50%, #fff9f5 100%)",
           }}
         >
           <style>{`
@@ -450,6 +486,17 @@ export default function SlidePage0e({
               padding: 3px 7px 3px 5px !important;
             }
           `}</style>
+          {!embedded && (
+            <div
+              aria-hidden
+              data-testid="wiki-pastel-wash"
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  "radial-gradient(ellipse 44% 46% at 18% 2%, rgba(232,221,246,0.34) 0%, transparent 72%), radial-gradient(ellipse 48% 50% at 94% 8%, rgba(255,199,170,0.3) 0%, transparent 74%), radial-gradient(ellipse 36% 40% at 76% 100%, rgba(247,220,232,0.12) 0%, transparent 76%)",
+              }}
+            />
+          )}
           <div
             aria-hidden
             className="pointer-events-none absolute"
@@ -462,7 +509,13 @@ export default function SlidePage0e({
               backgroundPosition: "center 8%",
               backgroundRepeat: "no-repeat",
               backgroundSize: embedded ? "1180px auto" : "1010px auto",
-              opacity: 0.55,
+              opacity: embedded ? 0.55 : 0.42,
+              maskImage: embedded
+                ? undefined
+                : "radial-gradient(ellipse 76% 82% at 55% 45%, black 20%, transparent 90%)",
+              WebkitMaskImage: embedded
+                ? undefined
+                : "radial-gradient(ellipse 76% 82% at 55% 45%, black 20%, transparent 90%)",
             }}
           />
           <div
@@ -483,6 +536,8 @@ export default function SlidePage0e({
               detailLevel="rich"
               lineIntensity={0.56}
               ambientIntensity={0.72}
+              filterToRelated={!embedded}
+              clearSelectionOnBackground={!embedded}
             />
           </div>
           <WikiSidebar />
@@ -555,6 +610,7 @@ export default function SlidePage0e({
                         onClick={() => {
                           setSelectedFolderId(folder.id)
                           setFolderOpen(false)
+                          if (!embedded) handleNodeSelect("")
                         }}
                         className="block w-full text-left"
                         style={{
@@ -619,21 +675,271 @@ export default function SlidePage0e({
               )}
             </div>
           </div>
+          {!embedded && (
+            <aside
+              aria-label={
+                selectedNode
+                  ? `节点详情：${selectedNode.label}`
+                  : `知识图谱节点概览：${selectedFolder.files} 个资料、${KNOWLEDGE_NODES.length} 个节点、${KNOWLEDGE_EDGES.length} 条关系`
+              }
+              aria-live="polite"
+              data-testid={
+                selectedNode
+                  ? "knowledge-node-detail-card"
+                  : "knowledge-graph-overview-tag"
+              }
+              className={
+                selectedNode
+                  ? "absolute overflow-y-auto"
+                  : "absolute flex items-center"
+              }
+              onPointerDown={(event) => event.stopPropagation()}
+              style={
+                selectedNode
+                  ? {
+                      right: 18,
+                      top: 68,
+                      zIndex: 43,
+                      width: 296,
+                      maxHeight: 360,
+                      padding: "17px 17px 15px",
+                      boxSizing: "border-box",
+                      borderRadius: 17,
+                      color: "#202226",
+                      background: "rgba(255,255,255,0.92)",
+                      border: "1px solid rgba(220,224,230,0.94)",
+                      boxShadow:
+                        "0 18px 48px rgba(25,30,38,0.14), 0 2px 8px rgba(25,30,38,0.05)",
+                      backdropFilter: "blur(18px) saturate(1.08)",
+                    }
+                  : {
+                      right: 18,
+                      top: 18,
+                      zIndex: 43,
+                      height: 34,
+                      padding: "0 12px",
+                      boxSizing: "border-box",
+                      borderRadius: 999,
+                      color: "#525761",
+                      background: "rgba(255,255,255,0.82)",
+                      border: "1px solid rgba(220,224,230,0.9)",
+                      boxShadow:
+                        "inset 0 1px 0 rgba(255,255,255,0.9), 0 6px 18px rgba(25,30,38,0.08)",
+                      backdropFilter: "blur(16px) saturate(1.08)",
+                      WebkitBackdropFilter: "blur(16px) saturate(1.08)",
+                      pointerEvents: "none",
+                    }
+              }
+            >
+              {selectedNode && (
+                <>
+                  <span
+                    aria-hidden
+                    className="absolute"
+                    style={{
+                      left: 0,
+                      top: 18,
+                      width: 2,
+                      height: 42,
+                      borderRadius: 999,
+                      background: "#5c5cff",
+                    }}
+                  />
+
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <span
+                        style={{
+                          color: "#5c5cff",
+                          fontFamily: "'LogoSC Unbounded Sans', sans-serif",
+                          fontSize: 8,
+                          fontWeight: 700,
+                          letterSpacing: 1.15,
+                        }}
+                      >
+                        WIKI NODE
+                      </span>
+                      <h2
+                        style={{
+                          margin: "5px 0 0",
+                          color: "#181a1d",
+                          fontSize: 18,
+                          fontWeight: 700,
+                          lineHeight: 1.28,
+                          letterSpacing: -0.25,
+                        }}
+                      >
+                        {selectedNode.label}
+                      </h2>
+                    </div>
+
+                    <button
+                      type="button"
+                      aria-label="返回全部节点"
+                      onClick={() => handleNodeSelect("")}
+                      className="flex shrink-0 items-center justify-center"
+                      style={{
+                        width: 26,
+                        height: 26,
+                        borderRadius: 13,
+                        color: "#686e77",
+                        background: "rgba(246,247,248,0.94)",
+                        border: "1px solid #e5e7ea",
+                        fontSize: 16,
+                        lineHeight: 1,
+                        cursor: "pointer",
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
+
+                  <p
+                    style={{
+                      margin: "8px 0 0",
+                      color: "#747b85",
+                      fontSize: 10,
+                      lineHeight: 1.6,
+                    }}
+                  >
+                    {selectedNode.description}
+                  </p>
+                </>
+              )}
+
+              {selectedNode ? (
+                <>
+                  <div className="mt-3 flex items-center justify-between border-t border-[#eceef1] pt-3">
+                    <span
+                      style={{ color: "#35393f", fontSize: 9, fontWeight: 700 }}
+                    >
+                      关联节点
+                    </span>
+                    <span
+                      style={{ color: "#8f95a0", fontSize: 8, fontWeight: 650 }}
+                    >
+                      1 HOP · {selectedRelations.length}
+                    </span>
+                  </div>
+
+                  <div className="mt-2.5 flex flex-wrap gap-1.5">
+                    {selectedRelations.length ? (
+                      selectedRelations.map((relation) => (
+                        <RelationTag key={relation} accent>
+                          {relation}
+                        </RelationTag>
+                      ))
+                    ) : (
+                      <span style={{ color: "#969ca5", fontSize: 9 }}>
+                        暂无直接关联节点
+                      </span>
+                    )}
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleNodeSelect("")}
+                    className="mt-3 flex w-full items-center justify-between"
+                    style={{
+                      padding: "9px 10px",
+                      borderRadius: 10,
+                      color: "#525761",
+                      background: "#f7f7f9",
+                      border: "1px solid #e8e9ed",
+                      fontSize: 9,
+                      fontWeight: 650,
+                      cursor: "pointer",
+                    }}
+                  >
+                    <span>显示全部节点</span>
+                    <span aria-hidden style={{ color: "#5c5cff" }}>
+                      ↗
+                    </span>
+                  </button>
+                </>
+              ) : (
+                <>
+                  <span
+                    aria-hidden
+                    style={{
+                      width: 4,
+                      height: 4,
+                      flexShrink: 0,
+                      borderRadius: "50%",
+                      background: "#d92339",
+                    }}
+                  />
+                  <span
+                    style={{
+                      marginLeft: 6,
+                      color: "#676d76",
+                      fontSize: 8.5,
+                      fontWeight: 650,
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    图谱概览
+                  </span>
+                  <span
+                    aria-hidden
+                    style={{
+                      width: 1,
+                      height: 14,
+                      margin: "0 10px",
+                      background: "#e3e6ea",
+                    }}
+                  />
+                  <span className="flex items-center gap-2.5">
+                    {[
+                      [selectedFolder.files, "资料"],
+                      [KNOWLEDGE_NODES.length, "节点"],
+                      [KNOWLEDGE_EDGES.length, "关系"],
+                    ].map(([value, label]) => (
+                      <span key={label} className="flex items-baseline">
+                        <span
+                          style={{
+                            color: "#25282d",
+                            fontSize: 10.5,
+                            fontWeight: 750,
+                            fontVariantNumeric: "tabular-nums",
+                          }}
+                        >
+                          {value}
+                        </span>
+                        <span
+                          style={{
+                            marginLeft: 3,
+                            color: "#959ba5",
+                            fontSize: 7.5,
+                            fontWeight: 550,
+                          }}
+                        >
+                          {label}
+                        </span>
+                      </span>
+                    ))}
+                  </span>
+                </>
+              )}
+            </aside>
+          )}
           <div
             data-testid="graph-spotlight"
             className="pointer-events-auto absolute"
             onPointerDown={(event) => event.stopPropagation()}
             style={{
-              left: embedded ? 216 : 200,
+              left: embedded ? 216 : "50%",
               bottom: embedded ? 22 : 16,
               zIndex: 41,
               width: embedded ? 659 : 610,
+              transform: embedded ? undefined : "translateX(-50%)",
               ...LIGHT_SPOTLIGHT_TOKENS,
             }}
           >
             <AppleSpotlight
               shortcuts={SOURCE_SHORTCUTS}
               placeholder="输入你的研究内容"
+              surfaceStyle={GRAPH_SPOTLIGHT_SURFACE_STYLE}
               viewTabs={[
                 { label: "资料", value: "materials" },
                 { label: "图谱", value: "graph" },
@@ -645,257 +951,271 @@ export default function SlidePage0e({
           </div>
         </section>
 
-        <aside
-          className="absolute overflow-hidden"
-          style={{
-            right: 0,
-            top: 0,
-            width: embedded ? 378 : 350,
-            height: embedded ? 900 : 674,
-            padding: embedded ? "23px 23px 20px" : "21px 21px 18px",
-            background: "linear-gradient(180deg, #ffffff 0%, #fcfcfd 100%)",
-            borderLeft: "1px solid #e7e9ed",
-            boxSizing: "border-box",
-          }}
-        >
-          <div
-            aria-hidden
-            className="pointer-events-none absolute"
+        {embedded && (
+          <aside
+            className="absolute overflow-hidden"
             style={{
-              left: -1,
+              right: 0,
               top: 0,
-              width: 2,
-              height: 112,
-              background:
-                "linear-gradient(180deg, rgba(217,35,57,0.75), rgba(217,35,57,0))",
+              width: embedded ? 378 : 350,
+              height: embedded ? 900 : PRESENTATION_UI_FRAME.height,
+              padding: embedded ? "23px 23px 20px" : "21px 21px 18px",
+              background: "linear-gradient(180deg, #ffffff 0%, #fcfcfd 100%)",
+              borderLeft: "1px solid #e7e9ed",
+              boxSizing: "border-box",
             }}
-          />
-          <div className="flex items-center justify-between">
-            <div>
+          >
+            <div
+              aria-hidden
+              className="pointer-events-none absolute"
+              style={{
+                left: -1,
+                top: 0,
+                width: 2,
+                height: 112,
+                background:
+                  "linear-gradient(180deg, rgba(217,35,57,0.75), rgba(217,35,57,0))",
+              }}
+            />
+            <div className="flex items-center justify-between">
+              <div>
+                <span
+                  style={{
+                    color: "#d92339",
+                    fontFamily: "'LogoSC Unbounded Sans', sans-serif",
+                    fontSize: 9,
+                    fontWeight: 700,
+                    letterSpacing: 1.2,
+                  }}
+                >
+                  WIKI COMPILER
+                </span>
+                <h2
+                  style={{
+                    margin: "4px 0 0",
+                    color: "#181a1d",
+                    fontSize: 17,
+                    fontWeight: 700,
+                    letterSpacing: -0.3,
+                  }}
+                >
+                  Wiki 节点编译器
+                </h2>
+              </div>
               <span
                 style={{
-                  color: "#d92339",
-                  fontFamily: "'LogoSC Unbounded Sans', sans-serif",
-                  fontSize: 9,
-                  fontWeight: 700,
-                  letterSpacing: 1.2,
+                  padding: "6px 9px",
+                  borderRadius: 999,
+                  color: "#7a818b",
+                  background: "#f6f7f8",
+                  border: "1px solid #e6e8eb",
+                  fontSize: 8,
+                  fontWeight: 600,
                 }}
               >
-                WIKI COMPILER
+                {KNOWLEDGE_NODES.length} NODES
               </span>
-              <h2
-                style={{
-                  margin: "4px 0 0",
-                  color: "#181a1d",
-                  fontSize: 17,
-                  fontWeight: 700,
-                  letterSpacing: -0.3,
-                }}
-              >
-                Wiki 节点编译器
-              </h2>
             </div>
-            <span
-              style={{
-                padding: "6px 9px",
-                borderRadius: 999,
-                color: "#7a818b",
-                background: "#f6f7f8",
-                border: "1px solid #e6e8eb",
-                fontSize: 8,
-                fontWeight: 600,
-              }}
-            >
-              {KNOWLEDGE_NODES.length} NODES
-            </span>
-          </div>
 
-          <p
-            style={{
-              margin: "7px 0 0",
-              color: "#858b94",
-              fontSize: 9.5,
-              lineHeight: 1.5,
-            }}
-          >
-            将异构资料整理为可追溯、可调用的知识节点
-          </p>
-
-          <div style={{ marginTop: 14 }}>
-            <div className="flex items-center gap-2">
-              <span style={{ color: "#d92339", fontSize: 9, fontWeight: 700 }}>
-                01 · 原始资料
-              </span>
-              <span style={{ height: 1, flex: 1, background: "#eceef1" }} />
-              <span style={{ color: "#a0a5ad", fontSize: 8 }}>INPUT</span>
-            </div>
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {["政策文件", "院校资料", "分数数据", "备考指南"].map((item) => (
-                <RelationTag key={item}>{item}</RelationTag>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ marginTop: 14 }}>
-            <div className="mb-2 flex items-center justify-between">
-              <span style={{ color: "#35393f", fontSize: 9, fontWeight: 700 }}>
-                02 · 编译流程
-              </span>
-              <span style={{ color: "#a0a5ad", fontSize: 8 }}>4 STEPS</span>
-            </div>
-            <div
-              style={{
-                padding: "7px 10px",
-                borderRadius: 10,
-                background: "#fafafa",
-                border: "1px solid #eceef1",
-              }}
-            >
-              {COMPILE_STEPS.map((step, index) => (
-                <div key={step.index}>
-                  <div
-                    className="flex items-center gap-2.5"
-                    style={{ minHeight: 27 }}
-                  >
-                    <span
-                      className="flex items-center justify-center rounded-full"
-                      style={{
-                        width: 20,
-                        height: 20,
-                        color: index === 3 ? "#fff" : "#c72a3b",
-                        background: index === 3 ? "#d92339" : "#ffecef",
-                        fontSize: 8,
-                        fontWeight: 700,
-                        flexShrink: 0,
-                      }}
-                    >
-                      {step.index}
-                    </span>
-                    <span
-                      style={{
-                        color: "#34383e",
-                        fontSize: 11,
-                        fontWeight: index === 3 ? 650 : 500,
-                        flex: 1,
-                      }}
-                    >
-                      {step.label}
-                    </span>
-                    <span
-                      style={{
-                        color: "#a4a9b1",
-                        fontSize: 7,
-                        letterSpacing: 0.8,
-                      }}
-                    >
-                      {step.meta}
-                    </span>
-                  </div>
-                  {index < COMPILE_STEPS.length - 1 && (
-                    <div
-                      style={{
-                        marginLeft: 9.5,
-                        width: 1,
-                        height: 6,
-                        background: "#f1bfc6",
-                      }}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div
-            style={{
-              marginTop: 14,
-              paddingTop: 12,
-              borderTop: "1px solid #eceef1",
-            }}
-          >
-            <div className="flex items-center justify-between">
-              <span style={{ color: "#35393f", fontSize: 9, fontWeight: 700 }}>
-                03 · 当前节点
-              </span>
-              <span style={{ color: "#5c5cff", fontSize: 8, fontWeight: 600 }}>
-                WIKI NODE
-              </span>
-            </div>
-            <h2
+            <p
               style={{
                 margin: "7px 0 0",
-                color: "#17191c",
-                fontFamily: DISPLAY_FONT,
-                fontSize: 20,
-                fontWeight: 400,
-                lineHeight: 1.3,
-              }}
-            >
-              {selected.label}
-            </h2>
-            <p
-              style={{
-                margin: "6px 0 0",
-                color: "#737a84",
-                fontSize: 10.5,
-                lineHeight: 1.6,
-              }}
-            >
-              {selected.description}
-            </p>
-          </div>
-
-          <div style={{ marginTop: 11 }}>
-            <div style={{ color: "#969ca5", fontSize: 8, letterSpacing: 0.8 }}>
-              关联标签 · {selectedRelations.length}
-            </div>
-            <div className="mt-2 flex flex-wrap gap-1.5">
-              {selectedRelations.map((relation) => (
-                <RelationTag key={relation} accent>
-                  {relation}
-                </RelationTag>
-              ))}
-            </div>
-          </div>
-
-          <div
-            className="absolute"
-            style={{
-              left: 21,
-              right: 21,
-              bottom: 18,
-              padding: "10px 11px",
-              borderRadius: 9,
-              border: "1px solid #f2d8dc",
-              background: "linear-gradient(100deg, #fff4f5, #fffafa)",
-            }}
-          >
-            <div className="flex items-center justify-between">
-              <span
-                style={{
-                  color: "#c62437",
-                  fontSize: 8,
-                  fontWeight: 700,
-                  letterSpacing: 0.6,
-                }}
-              >
-                04 · 编译输出
-              </span>
-              <span style={{ color: "#b8a0a4", fontSize: 7 }}>OUTPUT</span>
-            </div>
-            <p
-              style={{
-                margin: "5px 0 0",
-                color: "#4e535b",
+                color: "#858b94",
                 fontSize: 9.5,
-                fontWeight: 500,
                 lineHeight: 1.5,
               }}
             >
-              可检索　可互链　可溯源　可继续调用
+              将异构资料整理为可追溯、可调用的知识节点
             </p>
-          </div>
-        </aside>
+
+            <div style={{ marginTop: 14 }}>
+              <div className="flex items-center gap-2">
+                <span
+                  style={{ color: "#d92339", fontSize: 9, fontWeight: 700 }}
+                >
+                  01 · 原始资料
+                </span>
+                <span style={{ height: 1, flex: 1, background: "#eceef1" }} />
+                <span style={{ color: "#a0a5ad", fontSize: 8 }}>INPUT</span>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {["政策文件", "院校资料", "分数数据", "备考指南"].map(
+                  (item) => (
+                    <RelationTag key={item}>{item}</RelationTag>
+                  )
+                )}
+              </div>
+            </div>
+
+            <div style={{ marginTop: 14 }}>
+              <div className="mb-2 flex items-center justify-between">
+                <span
+                  style={{ color: "#35393f", fontSize: 9, fontWeight: 700 }}
+                >
+                  02 · 编译流程
+                </span>
+                <span style={{ color: "#a0a5ad", fontSize: 8 }}>4 STEPS</span>
+              </div>
+              <div
+                style={{
+                  padding: "7px 10px",
+                  borderRadius: 10,
+                  background: "#fafafa",
+                  border: "1px solid #eceef1",
+                }}
+              >
+                {COMPILE_STEPS.map((step, index) => (
+                  <div key={step.index}>
+                    <div
+                      className="flex items-center gap-2.5"
+                      style={{ minHeight: 27 }}
+                    >
+                      <span
+                        className="flex items-center justify-center rounded-full"
+                        style={{
+                          width: 20,
+                          height: 20,
+                          color: index === 3 ? "#fff" : "#c72a3b",
+                          background: index === 3 ? "#d92339" : "#ffecef",
+                          fontSize: 8,
+                          fontWeight: 700,
+                          flexShrink: 0,
+                        }}
+                      >
+                        {step.index}
+                      </span>
+                      <span
+                        style={{
+                          color: "#34383e",
+                          fontSize: 11,
+                          fontWeight: index === 3 ? 650 : 500,
+                          flex: 1,
+                        }}
+                      >
+                        {step.label}
+                      </span>
+                      <span
+                        style={{
+                          color: "#a4a9b1",
+                          fontSize: 7,
+                          letterSpacing: 0.8,
+                        }}
+                      >
+                        {step.meta}
+                      </span>
+                    </div>
+                    {index < COMPILE_STEPS.length - 1 && (
+                      <div
+                        style={{
+                          marginLeft: 9.5,
+                          width: 1,
+                          height: 6,
+                          background: "#f1bfc6",
+                        }}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div
+              style={{
+                marginTop: 14,
+                paddingTop: 12,
+                borderTop: "1px solid #eceef1",
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <span
+                  style={{ color: "#35393f", fontSize: 9, fontWeight: 700 }}
+                >
+                  03 · 当前节点
+                </span>
+                <span
+                  style={{ color: "#5c5cff", fontSize: 8, fontWeight: 600 }}
+                >
+                  WIKI NODE
+                </span>
+              </div>
+              <h2
+                style={{
+                  margin: "7px 0 0",
+                  color: "#17191c",
+                  fontFamily: DISPLAY_FONT,
+                  fontSize: 20,
+                  fontWeight: 400,
+                  lineHeight: 1.3,
+                }}
+              >
+                {selected.label}
+              </h2>
+              <p
+                style={{
+                  margin: "6px 0 0",
+                  color: "#737a84",
+                  fontSize: 10.5,
+                  lineHeight: 1.6,
+                }}
+              >
+                {selected.description}
+              </p>
+            </div>
+
+            <div style={{ marginTop: 11 }}>
+              <div
+                style={{ color: "#969ca5", fontSize: 8, letterSpacing: 0.8 }}
+              >
+                关联标签 · {selectedRelations.length}
+              </div>
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {selectedRelations.map((relation) => (
+                  <RelationTag key={relation} accent>
+                    {relation}
+                  </RelationTag>
+                ))}
+              </div>
+            </div>
+
+            <div
+              className="absolute"
+              style={{
+                left: 21,
+                right: 21,
+                bottom: 18,
+                padding: "10px 11px",
+                borderRadius: 9,
+                border: "1px solid #f2d8dc",
+                background: "linear-gradient(100deg, #fff4f5, #fffafa)",
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <span
+                  style={{
+                    color: "#c62437",
+                    fontSize: 8,
+                    fontWeight: 700,
+                    letterSpacing: 0.6,
+                  }}
+                >
+                  04 · 编译输出
+                </span>
+                <span style={{ color: "#b8a0a4", fontSize: 7 }}>OUTPUT</span>
+              </div>
+              <p
+                style={{
+                  margin: "5px 0 0",
+                  color: "#4e535b",
+                  fontSize: 9.5,
+                  fontWeight: 500,
+                  lineHeight: 1.5,
+                }}
+              >
+                可检索　可互链　可溯源　可继续调用
+              </p>
+            </div>
+          </aside>
+        )}
       </main>
     </div>
   )

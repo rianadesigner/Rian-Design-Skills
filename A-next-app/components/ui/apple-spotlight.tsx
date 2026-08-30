@@ -21,6 +21,7 @@ export interface AppleSpotlightProps {
   shortcuts: SpotlightShortcut[]
   placeholder?: string
   className?: string
+  surfaceStyle?: React.CSSProperties
   isOpen?: boolean
   viewTabs?: LiquidGlassTab[]
   defaultView?: string
@@ -50,6 +51,7 @@ export function AppleSpotlight({
   shortcuts,
   placeholder = "Search",
   className,
+  surfaceStyle,
   isOpen = true,
   viewTabs = [],
   defaultView,
@@ -102,6 +104,7 @@ export function AppleSpotlight({
           <div className="flex w-full items-center justify-end gap-2.5">
             <motion.div
               layout
+              style={surfaceStyle}
               transition={{
                 layout: { type: "spring", stiffness: 430, damping: 34 },
               }}

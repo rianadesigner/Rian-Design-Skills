@@ -56,20 +56,20 @@ export default function SlidePage4b() {
         position: "absolute", inset: 0, opacity: 0.1, mixBlendMode: "overlay", pointerEvents: "none",
         backgroundImage: "url('/images/film-grain.png')", backgroundRepeat: "repeat", backgroundSize: "128px 128px",
       }} />
-      <header style={{ position: "absolute", left: 48, right: 48, top: 32, display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "start", zIndex: 10 }}>
+      <header style={{ position: "absolute", left: 48, right: 48, top: 38, display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "start", zIndex: 10 }}>
         <div style={{ paddingTop: 34 }}>
-          <span style={{ display: "block", fontFamily: "Impact, 'Arial Black', sans-serif", fontSize: 11, letterSpacing: 2.4, color: red }}>LLM WIKI / 02</span>
+          <span style={{ display: "block", fontFamily: "Impact, 'Arial Black', sans-serif", fontSize: 11, letterSpacing: 2.4, color: red }}>LLM WIKI / 08</span>
           <span style={{ display: "block", marginTop: 6, fontSize: 10, letterSpacing: 2.4, color: "rgba(255,255,255,0.3)" }}>METHOD &amp; SYSTEM</span>
         </div>
 
-        <div style={{ textAlign: "center" }}>
-          <div style={{ height: 16, display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 10 }}>
-            <span style={{ fontFamily: "Impact, 'Arial Black', sans-serif", fontSize: 11, letterSpacing: 2, color: red }}>02</span>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, textAlign: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12 }}>
+            <span style={{ fontFamily: "Impact, 'Arial Black', sans-serif", fontSize: 13, letterSpacing: 2, color: red }}>08</span>
             <span aria-hidden style={{ width: 28, height: 1, background: "rgba(255,255,255,0.22)" }} />
-            <span style={{ fontSize: 10.5, letterSpacing: 2.6, color: "rgba(255,255,255,0.46)" }}>LLM WIKI 思维框架</span>
+            <span style={{ fontSize: 11, letterSpacing: 3, color: "rgba(255,255,255,0.46)" }}>LLM WIKI 思维框架</span>
           </div>
-          <p style={{ margin: 0, fontFamily: "'标小智无界黑', sans-serif", fontSize: 42, lineHeight: 1.15, fontWeight: 400, letterSpacing: "1.5px", color: "#fff" }}>LLM WIKI 方法论</p>
-          <p style={{ margin: "9px 0 0", fontSize: 13, lineHeight: 1.65, color: "rgba(255,255,255,0.5)" }}>让知识在使用中被持续整理、连接、验证与更新</p>
+          <p style={{ margin: 0, fontFamily: "'标小智无界黑', sans-serif", fontSize: 40, lineHeight: "51.92px", fontWeight: 400, letterSpacing: "1.5px", color: "#fff" }}>LLM WIKI 方法论</p>
+          <p style={{ margin: 0, fontSize: 14, lineHeight: "25.2px", color: "rgba(255,255,255,0.5)" }}>让知识在使用中被持续整理、连接、验证与更新</p>
         </div>
 
         <div style={{ justifySelf: "end", width: 260, paddingTop: 34, textAlign: "right" }}>

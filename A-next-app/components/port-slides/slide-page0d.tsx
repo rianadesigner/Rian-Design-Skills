@@ -556,7 +556,7 @@ export default function SlidePage0d() {
       <motion.div
         initial={false}
         animate={{
-          top: isPreviewingFullPage ? 28 : 184,
+          top: isPreviewingFullPage ? 28 : 171,
           scale: isPreviewingFullPage ? 0.88 : 1,
         }}
         transition={{ duration: motionDuration, ease: MAPPING_EASE }}
@@ -564,7 +564,7 @@ export default function SlidePage0d() {
           position: "absolute",
           left: 0,
           right: 0,
-          top: 184,
+          top: 171,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -611,6 +611,20 @@ export default function SlidePage0d() {
           }}
         >
           1. 原始资料上传
+        </p>
+        <p
+          data-testid="page0d-subtitle"
+          style={{
+            width: 778,
+            margin: 0,
+            color: "rgba(255,255,255,0.48)",
+            fontSize: 14,
+            lineHeight: "25.2px",
+            textAlign: "center",
+            whiteSpace: "normal",
+          }}
+        >
+          本地文件、网页长文本、第三方应用与 Git 仓库统一接入，保留来源与上下文，为后续 Wiki 编译建立可信基础。
         </p>
       </motion.div>
 

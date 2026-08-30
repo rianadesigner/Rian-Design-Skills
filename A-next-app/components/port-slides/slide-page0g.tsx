@@ -212,7 +212,7 @@ export default function SlidePage0g() {
           position: "absolute",
           left: "50%",
           transform: "translateX(-50%)",
-          top: 84,
+          top: 38,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
