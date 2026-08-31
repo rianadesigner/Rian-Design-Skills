@@ -255,18 +255,6 @@ export default function SlidePage0f() {
         />
 
         <div
-          aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            borderRadius: 7,
-            background:
-              "linear-gradient(180deg, rgba(0,0,0,0.42) 0%, transparent 12%, transparent 82%, rgba(0,0,0,0.52) 100%)",
-            pointerEvents: "none",
-          }}
-        />
-
-        <div
           style={{
             position: "absolute",
             top: 14,
