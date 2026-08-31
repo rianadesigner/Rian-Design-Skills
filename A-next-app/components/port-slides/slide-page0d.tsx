@@ -45,6 +45,7 @@ const SOURCE_SHORTCUTS: SpotlightShortcut[] = [
   {
     label: "上传本地文件",
     link: "#local-file",
+    action: "file-upload",
     icon: <Upload aria-hidden="true" />,
   },
   {
@@ -84,6 +85,7 @@ export function KnowledgeBaseSpotlight() {
           { label: "图谱", value: "graph" },
         ]}
         defaultView="materials"
+        fileAccept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.md,.csv,.json,.zip,image/*"
       />
     </div>
   );

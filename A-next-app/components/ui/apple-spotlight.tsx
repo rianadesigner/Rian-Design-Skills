@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
-import { Search } from "lucide-react"
+import { Search, X } from "lucide-react"
 
 import {
   LiquidGlassTabs,
@@ -15,6 +15,7 @@ export interface SpotlightShortcut {
   label: string
   icon: React.ReactNode
   link: string
+  action?: "file-upload"
 }
 
 export interface AppleSpotlightProps {
@@ -25,9 +26,11 @@ export interface AppleSpotlightProps {
   isOpen?: boolean
   viewTabs?: LiquidGlassTab[]
   defaultView?: string
+  fileAccept?: string
   value?: string
   onValueChange?: (value: string) => void
-  onSubmit?: (value: string) => void
+  onFileChange?: (file?: File) => void
+  onSubmit?: (value: string, file?: File) => void
 }
 
 function SendArrowIcon({ className }: { className?: string }) {
@@ -55,8 +58,10 @@ export function AppleSpotlight({
   isOpen = true,
   viewTabs = [],
   defaultView,
+  fileAccept,
   value: controlledValue,
   onValueChange,
+  onFileChange,
   onSubmit,
 }: AppleSpotlightProps) {
   const [isHovered, setIsHovered] = React.useState(false)
@@ -67,20 +72,42 @@ export function AppleSpotlight({
     null
   )
   const [internalValue, setInternalValue] = React.useState("")
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null)
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
   const value = controlledValue ?? internalValue
   const hasValue = value.trim().length > 0
+  const activeShortcut =
+    selectedShortcut === null ? null : shortcuts[selectedShortcut]
+  const isFileUploadMode = activeShortcut?.action === "file-upload"
+  const displayValue = isFileUploadMode ? (selectedFile?.name ?? "") : value
+  const hasSubmission = hasValue || Boolean(selectedFile)
   const activePlaceholder =
-    hoveredShortcut === null ? placeholder : shortcuts[hoveredShortcut].label
+    hoveredShortcut !== null
+      ? shortcuts[hoveredShortcut].label
+      : isFileUploadMode
+        ? activeShortcut.label
+        : placeholder
 
   const handleSubmit = () => {
-    if (hasValue) {
-      onSubmit?.(value.trim())
+    if (hasSubmission) {
+      onSubmit?.(value.trim(), selectedFile ?? undefined)
     }
   }
 
   const handleValueChange = (nextValue: string) => {
     if (controlledValue === undefined) setInternalValue(nextValue)
     onValueChange?.(nextValue)
+  }
+
+  const clearSelectedFile = () => {
+    setSelectedFile(null)
+    if (fileInputRef.current) fileInputRef.current.value = ""
+    onFileChange?.(undefined)
+  }
+
+  const handleShortcutSelect = (index: number) => {
+    setSelectedShortcut(index)
+    if (shortcuts[index].action !== "file-upload") clearSelectedFile()
   }
 
   return (
@@ -119,10 +146,14 @@ export function AppleSpotlight({
                 className="pointer-events-none absolute top-px right-8 left-8 h-px bg-gradient-to-r from-transparent via-white to-transparent"
               />
               <span className="relative flex size-8 shrink-0 items-center justify-center text-muted-foreground [&_svg]:size-5 [&_svg]:stroke-[1.7]">
-                <Search aria-hidden="true" />
+                {isFileUploadMode ? (
+                  activeShortcut.icon
+                ) : (
+                  <Search aria-hidden="true" />
+                )}
               </span>
               <span className="relative min-w-0 flex-1">
-                {!value && (
+                {!displayValue && (
                   <AnimatePresence mode="popLayout" initial={false}>
                     <motion.span
                       key={activePlaceholder}
@@ -137,17 +168,62 @@ export function AppleSpotlight({
                   </AnimatePresence>
                 )}
                 <input
-                  value={value}
-                  onChange={(event) => handleValueChange(event.target.value)}
+                  value={displayValue}
+                  readOnly={isFileUploadMode}
+                  onClick={() => {
+                    if (isFileUploadMode) fileInputRef.current?.click()
+                  }}
+                  onChange={(event) => {
+                    if (!isFileUploadMode) {
+                      handleValueChange(event.target.value)
+                    }
+                  }}
                   onKeyDown={(event) => {
-                    if (event.key === "Enter") {
+                    if (
+                      isFileUploadMode &&
+                      (event.key === "Enter" || event.key === " ")
+                    ) {
+                      event.preventDefault()
+                      fileInputRef.current?.click()
+                    } else if (event.key === "Enter") {
                       handleSubmit()
                     }
                   }}
-                  aria-label={placeholder}
-                  className="h-12 w-full bg-transparent text-sm outline-none"
+                  aria-label={
+                    isFileUploadMode ? activeShortcut.label : placeholder
+                  }
+                  className={cn(
+                    "h-12 w-full bg-transparent text-sm outline-none",
+                    isFileUploadMode && "cursor-pointer"
+                  )}
+                />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept={fileAccept}
+                  className="hidden"
+                  tabIndex={-1}
+                  onChange={(event) => {
+                    const file = event.target.files?.[0]
+                    if (!file) return
+                    setSelectedFile(file)
+                    onFileChange?.(file)
+                  }}
                 />
               </span>
+              {isFileUploadMode && selectedFile && (
+                <motion.button
+                  type="button"
+                  aria-label={`移除文件 ${selectedFile.name}`}
+                  onClick={clearSelectedFile}
+                  initial={{ opacity: 0, scale: 0.72 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.72 }}
+                  className="relative flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:bg-black/5 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3.5"
+                >
+                  <X aria-hidden="true" />
+                </motion.button>
+              )}
               {viewTabs.length > 0 && (
                 <>
                   <span
@@ -155,7 +231,7 @@ export function AppleSpotlight({
                     className="relative h-6 w-px shrink-0 bg-border/65"
                   />
                   <AnimatePresence mode="wait" initial={false}>
-                    {hasValue ? (
+                    {hasSubmission ? (
                       <motion.button
                         key="send-arrow"
                         type="button"
@@ -195,7 +271,7 @@ export function AppleSpotlight({
             </motion.div>
 
             <AnimatePresence mode="popLayout" initial={false}>
-              {isHovered && !value && shortcuts.length > 0 && (
+              {isHovered && !hasSubmission && shortcuts.length > 0 && (
                 <motion.div
                   layout
                   key="shortcut-glass-group"
@@ -247,20 +323,37 @@ export function AppleSpotlight({
                             className="absolute inset-0 rounded-full border border-white bg-[linear-gradient(145deg,rgba(255,255,255,0.94),rgba(255,255,255,0.58))] shadow-[inset_0_1.5px_1px_rgba(255,255,255,1),inset_0_-1px_0_rgba(255,255,255,0.42),0_5px_12px_rgba(15,23,42,0.13)] ring-1 ring-black/5"
                           />
                         )}
-                        <Link
-                          href={shortcut.link}
-                          aria-label={shortcut.label}
-                          aria-current={isSelected ? "page" : undefined}
-                          onClick={() => setSelectedShortcut(index)}
-                          className={cn(
-                            "relative flex size-10 items-center justify-center rounded-full transition-[color,opacity] outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-5 [&_svg]:stroke-[1.7]",
-                            isSelected
-                              ? "text-foreground opacity-100"
-                              : "text-muted-foreground opacity-55 hover:opacity-100"
-                          )}
-                        >
-                          {shortcut.icon}
-                        </Link>
+                        {shortcut.action === "file-upload" ? (
+                          <button
+                            type="button"
+                            aria-label={shortcut.label}
+                            aria-pressed={isSelected}
+                            onClick={() => handleShortcutSelect(index)}
+                            className={cn(
+                              "relative flex size-10 items-center justify-center rounded-full transition-[color,opacity] outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-5 [&_svg]:stroke-[1.7]",
+                              isSelected
+                                ? "text-foreground opacity-100"
+                                : "text-muted-foreground opacity-55 hover:opacity-100"
+                            )}
+                          >
+                            {shortcut.icon}
+                          </button>
+                        ) : (
+                          <Link
+                            href={shortcut.link}
+                            aria-label={shortcut.label}
+                            aria-current={isSelected ? "page" : undefined}
+                            onClick={() => handleShortcutSelect(index)}
+                            className={cn(
+                              "relative flex size-10 items-center justify-center rounded-full transition-[color,opacity] outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-5 [&_svg]:stroke-[1.7]",
+                              isSelected
+                                ? "text-foreground opacity-100"
+                                : "text-muted-foreground opacity-55 hover:opacity-100"
+                            )}
+                          >
+                            {shortcut.icon}
+                          </Link>
+                        )}
                       </motion.div>
                     )
                   })}
