@@ -37,7 +37,7 @@ type ScreenBox = ScreenPoint & { width: number; height: number }
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
 const easeOutCubic = (value: number) => 1 - Math.pow(1 - value, 3)
-const GRID_LINE_OPACITY = 0.54
+const GRID_LINE_OPACITY = 0.34
 const pointKey = (point: THREE.Vector3) =>
   `${point.x.toFixed(4)},${point.y.toFixed(4)},${point.z.toFixed(4)}`
 
@@ -189,7 +189,7 @@ export default function KnowledgeGraphSphere({
     const gridGeometry = new THREE.WireframeGeometry(latticeGeometry)
     latticeGeometry.dispose()
     const gridMaterial = new THREE.LineBasicMaterial({
-      color: 0x858d99,
+      color: 0xb1bac6,
       transparent: true,
       opacity: reducedMotion ? gridLineOpacity : 0,
       depthWrite: false,
@@ -217,9 +217,9 @@ export default function KnowledgeGraphSphere({
         new THREE.Float32BufferAttribute(semanticPositions, 3)
       )
       semanticEdgeMaterial = new THREE.LineBasicMaterial({
-        color: 0x8d93be,
+        color: 0xb8c0cd,
         transparent: true,
-        opacity: reducedMotion ? 0.15 * resolvedAmbientIntensity : 0,
+        opacity: reducedMotion ? 0.09 * resolvedAmbientIntensity : 0,
         depthWrite: false,
         depthTest: false,
       })
@@ -300,15 +300,15 @@ export default function KnowledgeGraphSphere({
             "polyline"
           )
           line.setAttribute("fill", "none")
-          line.setAttribute("stroke", "#5C5CFF")
-          line.setAttribute("stroke-width", richDetail ? "1.55" : "1.35")
+          line.setAttribute("stroke", "#9da8b8")
+          line.setAttribute("stroke-width", richDetail ? "1.4" : "1.25")
           line.setAttribute("stroke-linecap", "round")
           line.setAttribute("stroke-linejoin", "round")
           line.setAttribute("pathLength", "1")
           line.setAttribute("stroke-dasharray", "1")
           line.setAttribute("stroke-dashoffset", reducedMotion ? "0" : "1")
           line.style.opacity = reducedMotion
-            ? String(0.82 * resolvedLineIntensity)
+            ? String(0.56 * resolvedLineIntensity)
             : "0"
 
           let halo: SVGPolylineElement | undefined
@@ -319,8 +319,8 @@ export default function KnowledgeGraphSphere({
               "polyline"
             )
             halo.setAttribute("fill", "none")
-            halo.setAttribute("stroke", "#7777ff")
-            halo.setAttribute("stroke-width", "6")
+            halo.setAttribute("stroke", "#c6cdd7")
+            halo.setAttribute("stroke-width", "5")
             halo.setAttribute("stroke-linecap", "round")
             halo.setAttribute("stroke-linejoin", "round")
             halo.setAttribute("pathLength", "1")
@@ -328,7 +328,7 @@ export default function KnowledgeGraphSphere({
             halo.setAttribute("stroke-dashoffset", reducedMotion ? "0" : "1")
             halo.style.filter = "blur(3px)"
             halo.style.opacity = reducedMotion
-              ? String(0.12 * resolvedLineIntensity)
+              ? String(0.08 * resolvedLineIntensity)
               : "0"
             relationLayer.appendChild(halo)
           }
@@ -347,7 +347,7 @@ export default function KnowledgeGraphSphere({
             flow.setAttribute("pathLength", "1")
             flow.setAttribute("stroke-dasharray", "0.022 0.078")
             flow.style.opacity = reducedMotion
-              ? String(0.54 * resolvedLineIntensity)
+              ? String(0.28 * resolvedLineIntensity)
               : "0"
             relationLayer.appendChild(flow)
           }
@@ -739,12 +739,12 @@ export default function KnowledgeGraphSphere({
               "stroke-dashoffset",
               reducedMotion ? "0" : String(-((elapsed - delay) * 0.16) % 1)
             )
-            flow.style.opacity = String(0.54 * resolvedLineIntensity * progress)
+            flow.style.opacity = String(0.28 * resolvedLineIntensity * progress)
           }
           if (halo)
-            halo.style.opacity = String(0.12 * resolvedLineIntensity * progress)
+            halo.style.opacity = String(0.08 * resolvedLineIntensity * progress)
           line.style.opacity = String(
-            (richDetail ? 0.9 : 0.82) * resolvedLineIntensity * progress
+            (richDetail ? 0.56 : 0.5) * resolvedLineIntensity * progress
           )
         }
       )
@@ -764,7 +764,7 @@ export default function KnowledgeGraphSphere({
       gridMaterial.opacity = gridLineOpacity * globeProgress
       if (semanticEdgeMaterial)
         semanticEdgeMaterial.opacity =
-          (filterToRelated && selectedIdRef.current ? 0 : 0.15) *
+          (filterToRelated && selectedIdRef.current ? 0 : 0.09) *
           resolvedAmbientIntensity *
           globeProgress
 

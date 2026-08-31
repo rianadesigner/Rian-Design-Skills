@@ -317,13 +317,13 @@ export default function SlidePage0e({
   const [selectedFolderId, setSelectedFolderId] = useState(FOLDER_OPTIONS[0].id)
   const selectedNode = KNOWLEDGE_NODES.find((node) => node.id === selectedId)
   const selected = selectedNode ?? KNOWLEDGE_NODES[0]
-  const selectedRelations = selectedNode
-    ? Array.from(
-        getRelatedNodeIds(selectedNode.id),
-        (relatedId) =>
-          KNOWLEDGE_NODES.find((node) => node.id === relatedId)?.label
-      ).filter((label): label is string => Boolean(label))
+  const selectedRelatedNodeIds = selectedNode
+    ? getRelatedNodeIds(selectedNode.id)
+    : undefined
+  const selectedRelatedNodes = selectedRelatedNodeIds
+    ? KNOWLEDGE_NODES.filter((node) => selectedRelatedNodeIds.has(node.id))
     : []
+  const selectedRelations = selectedRelatedNodes.map((node) => node.label)
   const selectedFolder =
     FOLDER_OPTIONS.find((folder) => folder.id === selectedFolderId) ??
     FOLDER_OPTIONS[0]
@@ -441,7 +441,8 @@ export default function SlidePage0e({
                 whiteSpace: "normal",
               }}
             >
-              从散落资料到可检索、可互链、可溯源的 Wiki 节点，图谱是编译后的知识界面，而不是一张静态结果图。
+              从散落资料到可检索、可互链、可溯源的 Wiki
+              节点，图谱是编译后的知识界面，而不是一张静态结果图。
             </p>
           </header>
         </>
@@ -475,9 +476,7 @@ export default function SlidePage0e({
             right: embedded ? 378 : 0,
             top: 0,
             height: embedded ? 900 : PRESENTATION_UI_FRAME.height,
-            background: embedded
-              ? "#f8f8f8"
-              : "linear-gradient(135deg, #fbf9fd 0%, #f8f8fa 50%, #fff9f5 100%)",
+            background: "#f8f8f8",
           }}
         >
           <style>{`
@@ -486,17 +485,6 @@ export default function SlidePage0e({
               padding: 3px 7px 3px 5px !important;
             }
           `}</style>
-          {!embedded && (
-            <div
-              aria-hidden
-              data-testid="wiki-pastel-wash"
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(ellipse 44% 46% at 18% 2%, rgba(232,221,246,0.34) 0%, transparent 72%), radial-gradient(ellipse 48% 50% at 94% 8%, rgba(255,199,170,0.3) 0%, transparent 74%), radial-gradient(ellipse 36% 40% at 76% 100%, rgba(247,220,232,0.12) 0%, transparent 76%)",
-              }}
-            />
-          )}
           <div
             aria-hidden
             className="pointer-events-none absolute"
@@ -690,7 +678,7 @@ export default function SlidePage0e({
               }
               className={
                 selectedNode
-                  ? "absolute overflow-y-auto"
+                  ? "absolute flex flex-col overflow-hidden"
                   : "absolute flex items-center"
               }
               onPointerDown={(event) => event.stopPropagation()}
@@ -698,19 +686,20 @@ export default function SlidePage0e({
                 selectedNode
                   ? {
                       right: 18,
-                      top: 68,
+                      top: 18,
+                      bottom: 18,
                       zIndex: 43,
                       width: 296,
-                      maxHeight: 360,
-                      padding: "17px 17px 15px",
+                      padding: 0,
                       boxSizing: "border-box",
                       borderRadius: 17,
                       color: "#202226",
-                      background: "rgba(255,255,255,0.92)",
+                      background: "rgba(255,255,255,0.9)",
                       border: "1px solid rgba(220,224,230,0.94)",
                       boxShadow:
                         "0 18px 48px rgba(25,30,38,0.14), 0 2px 8px rgba(25,30,38,0.05)",
                       backdropFilter: "blur(18px) saturate(1.08)",
+                      WebkitBackdropFilter: "blur(18px) saturate(1.08)",
                     }
                   : {
                       right: 18,
@@ -733,88 +722,125 @@ export default function SlidePage0e({
             >
               {selectedNode && (
                 <>
-                  <span
-                    aria-hidden
-                    className="absolute"
+                  <section
+                    aria-labelledby="tag-detail-heading"
+                    className="relative shrink-0"
                     style={{
-                      left: 0,
-                      top: 18,
-                      width: 2,
-                      height: 42,
-                      borderRadius: 999,
-                      background: "#5c5cff",
+                      minHeight: 174,
+                      padding: "16px 17px 18px",
+                      boxSizing: "border-box",
                     }}
-                  />
+                  >
+                    <span
+                      aria-hidden
+                      className="absolute"
+                      style={{
+                        left: 0,
+                        top: 54,
+                        width: 2,
+                        height: 42,
+                        borderRadius: 999,
+                        background: "#5c5cff",
+                      }}
+                    />
 
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="min-w-0">
+                    <div className="flex items-center justify-between gap-3">
+                      <h2
+                        id="tag-detail-heading"
+                        style={{
+                          margin: 0,
+                          color: "#3d424a",
+                          fontSize: 10,
+                          fontWeight: 700,
+                          letterSpacing: 0.2,
+                        }}
+                      >
+                        标签详情
+                      </h2>
+
+                      <button
+                        type="button"
+                        aria-label="返回全部节点"
+                        onClick={() => handleNodeSelect("")}
+                        className="flex shrink-0 items-center justify-center"
+                        style={{
+                          width: 26,
+                          height: 26,
+                          borderRadius: 13,
+                          color: "#686e77",
+                          background: "rgba(246,247,248,0.94)",
+                          border: "1px solid #e5e7ea",
+                          fontSize: 16,
+                          lineHeight: 1,
+                          cursor: "pointer",
+                        }}
+                      >
+                        ×
+                      </button>
+                    </div>
+
+                    <div style={{ marginTop: 14 }}>
                       <span
                         style={{
                           color: "#5c5cff",
                           fontFamily: "'LogoSC Unbounded Sans', sans-serif",
-                          fontSize: 8,
+                          fontSize: 7.5,
                           fontWeight: 700,
-                          letterSpacing: 1.15,
+                          letterSpacing: 1.05,
                         }}
                       >
                         WIKI NODE
                       </span>
-                      <h2
+                      <h3
                         style={{
                           margin: "5px 0 0",
                           color: "#181a1d",
-                          fontSize: 18,
+                          fontSize: 19,
                           fontWeight: 700,
                           lineHeight: 1.28,
                           letterSpacing: -0.25,
                         }}
                       >
                         {selectedNode.label}
-                      </h2>
+                      </h3>
                     </div>
 
-                    <button
-                      type="button"
-                      aria-label="返回全部节点"
-                      onClick={() => handleNodeSelect("")}
-                      className="flex shrink-0 items-center justify-center"
+                    <p
                       style={{
-                        width: 26,
-                        height: 26,
-                        borderRadius: 13,
-                        color: "#686e77",
-                        background: "rgba(246,247,248,0.94)",
-                        border: "1px solid #e5e7ea",
-                        fontSize: 16,
-                        lineHeight: 1,
-                        cursor: "pointer",
+                        margin: "9px 0 0",
+                        color: "#747b85",
+                        fontSize: 10,
+                        lineHeight: 1.65,
                       }}
                     >
-                      ×
-                    </button>
-                  </div>
-
-                  <p
-                    style={{
-                      margin: "8px 0 0",
-                      color: "#747b85",
-                      fontSize: 10,
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {selectedNode.description}
-                  </p>
+                      {selectedNode.description}
+                    </p>
+                  </section>
                 </>
               )}
 
               {selectedNode ? (
-                <>
-                  <div className="mt-3 flex items-center justify-between border-t border-[#eceef1] pt-3">
-                    <span
-                      style={{ color: "#35393f", fontSize: 9, fontWeight: 700 }}
+                <section
+                  aria-labelledby="related-nodes-heading"
+                  className="flex min-h-0 flex-1 flex-col"
+                  style={{
+                    padding: "14px 17px 15px",
+                    borderTop: "1px solid #eceef1",
+                  }}
+                >
+                  <div className="flex items-center justify-between">
+                    <h2
+                      id="related-nodes-heading"
+                      style={{
+                        margin: 0,
+                        color: "#35393f",
+                        fontSize: 10,
+                        fontWeight: 700,
+                        letterSpacing: 0.2,
+                      }}
                     >
                       关联节点
-                    </span>
+                    </h2>
                     <span
                       style={{ color: "#8f95a0", fontSize: 8, fontWeight: 650 }}
                     >
@@ -822,12 +848,50 @@ export default function SlidePage0e({
                     </span>
                   </div>
 
-                  <div className="mt-2.5 flex flex-wrap gap-1.5">
-                    {selectedRelations.length ? (
-                      selectedRelations.map((relation) => (
-                        <RelationTag key={relation} accent>
-                          {relation}
-                        </RelationTag>
+                  <div
+                    className="mt-3 flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto"
+                    onWheel={(event) => event.stopPropagation()}
+                  >
+                    {selectedRelatedNodes.length ? (
+                      selectedRelatedNodes.map((relationNode) => (
+                        <button
+                          key={relationNode.id}
+                          type="button"
+                          data-slide-interactive="true"
+                          onClick={() => handleNodeSelect(relationNode.id)}
+                          className="flex w-full items-center justify-between text-left"
+                          style={{
+                            minHeight: 38,
+                            padding: "9px 10px",
+                            borderRadius: 10,
+                            color: "#525761",
+                            background: "rgba(247,248,249,0.94)",
+                            border: "1px solid #e7e9ec",
+                            fontSize: 9.5,
+                            fontWeight: 650,
+                            cursor: "pointer",
+                          }}
+                        >
+                          <span className="flex min-w-0 items-center gap-2">
+                            <span
+                              aria-hidden
+                              style={{
+                                width: 5,
+                                height: 5,
+                                flexShrink: 0,
+                                borderRadius: "50%",
+                                background: "#7777ff",
+                                boxShadow: "0 0 0 3px rgba(92,92,255,0.08)",
+                              }}
+                            />
+                            <span className="truncate">
+                              {relationNode.label}
+                            </span>
+                          </span>
+                          <span aria-hidden style={{ color: "#7b7bea" }}>
+                            ↗
+                          </span>
+                        </button>
                       ))
                     ) : (
                       <span style={{ color: "#969ca5", fontSize: 9 }}>
@@ -839,7 +903,7 @@ export default function SlidePage0e({
                   <button
                     type="button"
                     onClick={() => handleNodeSelect("")}
-                    className="mt-3 flex w-full items-center justify-between"
+                    className="mt-3 flex w-full shrink-0 items-center justify-between"
                     style={{
                       padding: "9px 10px",
                       borderRadius: 10,
@@ -856,7 +920,7 @@ export default function SlidePage0e({
                       ↗
                     </span>
                   </button>
-                </>
+                </section>
               ) : (
                 <>
                   <span
@@ -928,7 +992,7 @@ export default function SlidePage0e({
             className="pointer-events-auto absolute"
             onPointerDown={(event) => event.stopPropagation()}
             style={{
-              left: embedded ? 216 : "50%",
+              left: embedded ? 216 : selectedNode ? "calc(50% - 124px)" : "50%",
               bottom: embedded ? 22 : 16,
               zIndex: 41,
               width: embedded ? 659 : 610,
