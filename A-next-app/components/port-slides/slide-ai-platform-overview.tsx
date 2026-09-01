@@ -139,7 +139,12 @@ const sourceSlides: Record<ModuleId, ComponentType> = {
 const SOURCE_CANVAS_WIDTH = 1440
 const SOURCE_CANVAS_HEIGHT = 900
 const FALLBACK_CANVAS_SCALE = 0.56
-const DEFAULT_CANVAS_VIEW = { scale: FALLBACK_CANVAS_SCALE, x: 0, y: 0 }
+const DEFAULT_CANVAS_Y_OFFSET = -30
+const DEFAULT_CANVAS_VIEW = {
+  scale: FALLBACK_CANVAS_SCALE,
+  x: 0,
+  y: DEFAULT_CANVAS_Y_OFFSET,
+}
 const MIN_CANVAS_SCALE = 0.4
 const MAX_CANVAS_SCALE = 1.4
 
@@ -171,10 +176,10 @@ export default function SlideAiPlatformOverview() {
     if (width <= 0 || height <= 0) return
 
     const scale = clampCanvasScale(
-      Math.max(width / SOURCE_CANVAS_WIDTH, height / SOURCE_CANVAS_HEIGHT),
+      Math.min(width / SOURCE_CANVAS_WIDTH, height / SOURCE_CANVAS_HEIGHT),
     )
     setFittedCanvasScale(scale)
-    setCanvasView({ scale, x: 0, y: 0 })
+    setCanvasView({ scale, x: 0, y: DEFAULT_CANVAS_Y_OFFSET })
     setIsDraggingCanvas(false)
     canvasDragRef.current = null
   }, [])
@@ -311,7 +316,7 @@ export default function SlideAiPlatformOverview() {
       </header>
 
       <nav
-        className="absolute left-[5%] right-[5%] top-[17.8%] grid grid-cols-6 border-y border-white/10"
+        className="absolute bottom-[3.2%] left-[5%] top-[16.2%] flex w-[12%] flex-col border border-white/10"
         aria-label="平台能力模块"
       >
         {modules.map((module) => {
@@ -322,27 +327,20 @@ export default function SlideAiPlatformOverview() {
               key={module.id}
               type="button"
               onClick={() => setActiveId(module.id)}
-              className="group relative flex h-[70px] items-center gap-3 border-r border-white/10 px-4 text-left last:border-r-0"
+              className="group relative flex min-h-0 flex-1 items-center border-b border-white/10 px-5 text-left last:border-b-0"
               style={{ background: isActive ? "rgba(239,59,70,0.10)" : "transparent" }}
               aria-pressed={isActive}
             >
-              <span
-                className="grid h-8 w-8 shrink-0 place-items-center rounded-full border"
-                style={{
-                  borderColor: isActive ? "rgba(239,59,70,0.58)" : "rgba(255,255,255,0.12)",
-                  color: isActive ? "#ef3b46" : "rgba(255,255,255,0.42)",
-                }}
-              >
-                <Icon size={15} strokeWidth={1.8} />
-              </span>
               <span>
-                <span className="block text-[10px] font-semibold text-white/28">{module.index}</span>
-                <span className="mt-1 block text-[13px] font-semibold" style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.52)" }}>
+                <span className="block" style={{ color: isActive ? "#ef3b46" : "rgba(255,255,255,0.38)" }}>
+                  <Icon size={14} strokeWidth={1.8} />
+                </span>
+                <span className="mt-2 block text-[13px] font-semibold" style={{ color: isActive ? "#fff" : "rgba(255,255,255,0.52)" }}>
                   {module.title}
                 </span>
               </span>
               <span
-                className="absolute inset-x-0 bottom-0 h-0.5 transition-opacity"
+                className="absolute inset-y-0 right-0 w-0.5 transition-opacity"
                 style={{ background: "#ef3b46", opacity: isActive ? 1 : 0 }}
               />
             </button>
@@ -350,31 +348,10 @@ export default function SlideAiPlatformOverview() {
         })}
       </nav>
 
-      <main className="absolute bottom-[8.5%] left-[5%] right-[5%] top-[28.5%]">
-        <div key={active.id} className="grid h-full grid-cols-[36%_64%] animate-[fadeIn_.22s_ease-out]">
-          <section className="flex h-full flex-col border-y border-l border-white/12 bg-white/[0.025] p-8">
-            <div className="flex items-center gap-3 text-[11px] font-semibold tracking-[0.12em] text-[#ef3b46]">
-              <span>CAPABILITY {active.index}</span>
-              <span className="h-px flex-1 bg-white/10" />
-            </div>
-            <h2 className="mb-0 mt-6 text-[28px] font-semibold tracking-normal">{active.title}</h2>
-            <p className="mb-0 mt-4 max-w-[390px] text-[14px] leading-6 text-white/52">{active.summary}</p>
-            <div className="mt-7 space-y-3 border-t border-white/10 pt-5">
-              {active.details.map((detail) => (
-                <div key={detail.label} className="grid grid-cols-[58px_1fr] text-[12px] leading-5">
-                  <span className="font-semibold text-white/28">{detail.label}</span>
-                  <span className="text-white/66">{detail.value}</span>
-                </div>
-              ))}
-            </div>
-            <div className="mt-auto border-l-2 border-[#ef3b46] bg-[#ef3b46]/[0.07] px-4 py-3">
-              <p className="m-0 text-[10px] font-semibold tracking-[0.1em] text-white/30">CORE VALUE</p>
-              <p className="mb-0 mt-1 text-[12px] leading-5 text-white/60">{active.value}</p>
-            </div>
-          </section>
-
+      <main className="absolute bottom-[3.2%] left-[18.5%] right-[5%] top-[16.2%]">
+        <div key={active.id} className="h-full animate-[fadeIn_.22s_ease-out]">
           <section
-            className="relative h-full overflow-hidden border border-white/12 bg-[#070707] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09)_1px,transparent_1px)] bg-[size:22px_22px] outline-none"
+            className="relative h-full w-full overflow-hidden border border-white/12 bg-[#070707] bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.09)_1px,transparent_1px)] bg-[size:22px_22px] outline-none"
             style={{
               cursor: isDraggingCanvas ? "grabbing" : "grab",
               touchAction: "none",
@@ -390,7 +367,7 @@ export default function SlideAiPlatformOverview() {
             onDoubleClick={resetCanvas}
             onKeyDown={handleCanvasKeyDown}
           >
-            <div ref={canvasViewportRef} className="absolute inset-[14px] overflow-hidden">
+            <div ref={canvasViewportRef} className="absolute inset-[4px] overflow-hidden">
               <div
                 className="embedded-source-slide pointer-events-none absolute left-1/2 top-1/2 h-[900px] w-[1440px] select-none will-change-transform"
                 style={{
