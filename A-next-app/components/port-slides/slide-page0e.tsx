@@ -360,6 +360,10 @@ export default function SlidePage0e({
     if (value === "materials") window.location.assign("/23")
   }, [])
 
+  const handleResearchSubmit = useCallback((value: string) => {
+    if (value.trim()) window.location.assign("/25")
+  }, [])
+
   return (
     <div
       className="relative h-full w-full overflow-hidden"
@@ -1035,9 +1039,7 @@ export default function SlidePage0e({
             className="pointer-events-auto absolute"
             onPointerDown={(event) => event.stopPropagation()}
             style={{
-              left: embedded
-                ? 216
-                : "50%",
+              left: embedded ? 216 : "50%",
               bottom: embedded ? 22 : 16,
               zIndex: 41,
               width: embedded ? 659 : 610,
@@ -1057,6 +1059,7 @@ export default function SlidePage0e({
               onViewTabChange={handleViewTabChange}
               value={researchQuery}
               onValueChange={setResearchQuery}
+              onSubmit={handleResearchSubmit}
             />
           </div>
         </section>

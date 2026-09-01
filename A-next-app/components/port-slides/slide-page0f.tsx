@@ -241,6 +241,16 @@ export default function SlidePage0f() {
           key={activeSlide.image}
           src={activeSlide.image}
           alt={activeSlide.alt}
+          role="button"
+          tabIndex={0}
+          aria-label={`查看下一张：${SLIDES[(activeIndex + 1) % SLIDES.length].label}`}
+          onClick={showNext}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              showNext();
+            }
+          }}
           draggable={false}
           className="interaction-carousel-image"
           style={{
@@ -251,6 +261,7 @@ export default function SlidePage0f() {
             objectPosition: activeSlide.objectPosition,
             borderRadius: 7,
             userSelect: "none",
+            cursor: "pointer",
           }}
         />
 

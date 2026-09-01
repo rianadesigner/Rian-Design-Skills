@@ -6,7 +6,6 @@ import {
   useRef,
   useState,
   type CSSProperties,
-  type MouseEvent as ReactMouseEvent,
   type ReactNode,
 } from "react"
 import Image from "next/image"
@@ -14,9 +13,7 @@ import { Blocks, Clipboard, GitBranch, Upload } from "lucide-react"
 import {
   AnimatePresence,
   motion,
-  useMotionValue,
   useReducedMotion,
-  useSpring,
 } from "motion/react"
 import {
   AppleSpotlight,
@@ -145,8 +142,10 @@ const LIGHT_SPOTLIGHT_TOKENS = {
 
 export function KnowledgeBaseSpotlight({
   onFileUploaded,
+  onTextSubmitted,
 }: {
   onFileUploaded?: (file?: File) => void
+  onTextSubmitted?: (value: string) => void
 }) {
   const handleViewTabChange = useCallback((value: string) => {
     if (value === "graph") window.location.assign("/24")
@@ -164,6 +163,9 @@ export function KnowledgeBaseSpotlight({
         defaultView="materials"
         onViewTabChange={handleViewTabChange}
         onFileChange={onFileUploaded}
+        onSubmit={(value) => {
+          if (value.trim()) onTextSubmitted?.(value.trim())
+        }}
         fileAccept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.md,.csv,.json,.zip,image/*"
       />
     </div>
@@ -264,14 +266,26 @@ function FileCard({
   desc,
   gradient,
   imgSrc,
+  enableHover = true,
 }: {
   title: string
   desc: string
   gradient: string
   imgSrc: string
+  enableHover?: boolean
 }) {
+  const reducedMotion = useReducedMotion()
+
   return (
-    <div
+    <motion.div
+      initial="rest"
+      animate="rest"
+      whileHover={enableHover && !reducedMotion ? "hover" : "rest"}
+      variants={{
+        rest: { y: 0 },
+        hover: { y: -4 },
+      }}
+      transition={{ type: "spring", stiffness: 380, damping: 24 }}
       style={{
         width: 198.5,
         height: 184,
@@ -279,6 +293,8 @@ function FileCard({
         border: "0.5px solid rgba(0,0,0,0.08)",
         position: "relative",
         flexShrink: 0,
+        cursor: enableHover ? "pointer" : "default",
+        overflow: "hidden",
       }}
     >
       {/* Gradient background */}
@@ -375,6 +391,28 @@ function FileCard({
           </p>
         </div>
       </div>
+      {enableHover && !reducedMotion && (
+        <motion.div
+          aria-hidden
+          variants={{
+            rest: { x: "-140%", opacity: 0 },
+            hover: { x: "140%", opacity: 1 },
+          }}
+          transition={{ duration: 0.62, ease: "easeInOut" }}
+          style={{
+            position: "absolute",
+            top: "-42%",
+            bottom: "-42%",
+            left: "-78%",
+            width: "62%",
+            pointerEvents: "none",
+            transform: "skewX(-30deg)",
+            background:
+              "linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent)",
+            mixBlendMode: "screen",
+          }}
+        />
+      )}
       {/* Inner shadow */}
       <div
         style={{
@@ -382,17 +420,18 @@ function FileCard({
           inset: 0,
           borderRadius: 12,
           pointerEvents: "none",
-          boxShadow:
-            "inset 1.5px 1.5px 3px 0px rgba(0,0,0,0.05), inset -1.5px -1.5px 3px 0px rgba(255,255,255,0.5)",
+          boxShadow: "none",
         }}
       />
-    </div>
+    </motion.div>
   )
 }
 
 function LoadingFileCard({ title }: { title: string }) {
   return (
-    <div
+    <motion.div
+      animate={{ opacity: [0.5, 0.92, 0.5] }}
+      transition={{ duration: 1.05, repeat: Infinity, ease: "easeInOut" }}
       style={{
         width: 198.5,
         height: 184,
@@ -402,53 +441,46 @@ function LoadingFileCard({ title }: { title: string }) {
         flexShrink: 0,
         overflow: "hidden",
         background:
-          "linear-gradient(137.09deg, rgb(255, 248, 244) 0%, rgb(255, 190, 179) 100%)",
+          "linear-gradient(137.09deg, rgb(255, 245, 241) 0%, rgb(255, 205, 198) 100%)",
       }}
     >
-      <motion.div
+      <div
         aria-hidden
-        animate={{ opacity: [0.18, 0.46, 0.18], x: ["-42%", "108%"] }}
-        transition={{ duration: 1.15, repeat: Infinity, ease: "easeInOut" }}
         style={{
           position: "absolute",
-          top: 0,
-          bottom: 0,
-          left: 0,
-          width: "54%",
+          inset: 0,
           background:
-            "linear-gradient(90deg, transparent, rgba(255,255,255,0.72), transparent)",
-          transform: "skewX(-14deg)",
+            "linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.36))",
+        }}
+      />
+      <motion.div
+        aria-hidden
+        animate={{ x: ["-82%", "132%"] }}
+        transition={{ duration: 1.25, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          position: "absolute",
+          top: "-42%",
+          bottom: "-42%",
+          left: 0,
+          width: "62%",
+          background:
+            "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
+          transform: "skewX(-30deg)",
+          pointerEvents: "none",
         }}
       />
       <div
+        aria-hidden
         style={{
           position: "absolute",
-          left: 11,
-          top: 11,
-          width: 32,
-          height: 32,
-          borderRadius: 9,
-          background: "rgba(255,255,255,0.55)",
-          boxShadow:
-            "inset 0 1px 0 rgba(255,255,255,0.72), 0 6px 14px rgba(255,91,87,0.18)",
+          left: 16,
+          top: 16,
+          width: 30,
+          height: 30,
+          borderRadius: 8,
+          background: "rgba(255,255,255,0.54)",
         }}
-      >
-        <motion.span
-          aria-hidden
-          animate={{ rotate: 360 }}
-          transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
-          style={{
-            position: "absolute",
-            left: 8,
-            top: 8,
-            width: 16,
-            height: 16,
-            borderRadius: "50%",
-            border: "2px solid rgba(229,43,63,0.22)",
-            borderTopColor: "#e52b3f",
-          }}
-        />
-      </div>
+      />
       <div
         style={{
           position: "absolute",
@@ -463,7 +495,7 @@ function LoadingFileCard({ title }: { title: string }) {
         <p
           style={{
             margin: 0,
-            color: "#111",
+            color: "rgba(17,17,17,0.42)",
             fontSize: 14,
             fontWeight: 600,
             lineHeight: "22px",
@@ -474,17 +506,24 @@ function LoadingFileCard({ title }: { title: string }) {
         >
           {title}
         </p>
-        <p
+        <div
+          aria-hidden
           style={{
-            margin: 0,
-            color: "#8b6666",
-            fontSize: 12,
-            fontWeight: 400,
-            lineHeight: "20px",
+            width: "82%",
+            height: 10,
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.5)",
           }}
-        >
-          正在解析文件并生成图谱节点...
-        </p>
+        />
+        <div
+          aria-hidden
+          style={{
+            width: "58%",
+            height: 10,
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.38)",
+          }}
+        />
       </div>
       <div
         style={{
@@ -496,7 +535,7 @@ function LoadingFileCard({ title }: { title: string }) {
             "inset 1.5px 1.5px 3px rgba(0,0,0,0.04), inset -1.5px -1.5px 3px rgba(255,255,255,0.5)",
         }}
       />
-    </div>
+    </motion.div>
   )
 }
 
@@ -556,41 +595,16 @@ function PreviewHoverCard({
 }) {
   const cardRef = useRef<HTMLDivElement>(null)
   const [isHovered, setIsHovered] = useState(false)
-  const [glowPosition, setGlowPosition] = useState({ x: 50, y: 50 })
-  const rotateXTarget = useMotionValue(0)
-  const rotateYTarget = useMotionValue(0)
-  const rotateX = useSpring(rotateXTarget, { stiffness: 300, damping: 18 })
-  const rotateY = useSpring(rotateYTarget, { stiffness: 300, damping: 18 })
-
-  const handleMove = useCallback(
-    (event: ReactMouseEvent<HTMLDivElement>) => {
-      const bounds = cardRef.current?.getBoundingClientRect()
-      if (!bounds) return
-
-      const x = (event.clientX - bounds.left) / bounds.width
-      const y = (event.clientY - bounds.top) / bounds.height
-      setGlowPosition({ x: x * 100, y: y * 100 })
-
-      if (!reducedMotion) {
-        rotateXTarget.set(-(y - 0.5) * 12)
-        rotateYTarget.set((x - 0.5) * 12)
-      }
-    },
-    [reducedMotion, rotateXTarget, rotateYTarget]
-  )
 
   const handleLeave = useCallback(() => {
     setIsHovered(false)
-    rotateXTarget.set(0)
-    rotateYTarget.set(0)
-  }, [rotateXTarget, rotateYTarget])
+  }, [])
 
   return (
     <div
       ref={cardRef}
       aria-hidden="true"
       onMouseEnter={() => setIsHovered(true)}
-      onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       style={{
         position: "absolute",
@@ -618,8 +632,8 @@ function PreviewHoverCard({
         initial={false}
         animate={{
           opacity: isHovered ? 1 : 0,
-          scale: isHovered && !reducedMotion ? 1.045 : 1,
-          y: isHovered && !reducedMotion ? -5 : 0,
+          scale: 1,
+          y: isHovered && !reducedMotion ? -4 : 0,
         }}
         transition={{ type: "spring", stiffness: 380, damping: 22 }}
         style={{
@@ -627,61 +641,31 @@ function PreviewHoverCard({
           inset: 0,
           overflow: "hidden",
           borderRadius: 9,
-          rotateX,
-          rotateY,
-          transformStyle: "preserve-3d",
           boxShadow: isHovered
-            ? "0 16px 30px rgba(15,23,42,0.2), 0 3px 8px rgba(15,23,42,0.1)"
+            ? "0 6px 14px rgba(15,23,42,0.06), 0 1px 3px rgba(15,23,42,0.05)"
             : "none",
         }}
       >
         {children}
-        <motion.div
-          initial={false}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: reducedMotion ? 0 : 0.18 }}
-          style={{
-            position: "absolute",
-            inset: 0,
-            pointerEvents: "none",
-            background: `radial-gradient(circle at ${glowPosition.x}% ${glowPosition.y}%, rgba(255,255,255,0.72) 0%, rgba(255,255,255,0.24) 22%, transparent 52%)`,
-            mixBlendMode: "screen",
-          }}
-        />
         {isHovered && !reducedMotion && (
           <motion.div
             initial={{ x: "-135%" }}
             animate={{ x: "135%" }}
-            transition={{ duration: 0.72, ease: "easeInOut" }}
+            transition={{ duration: 0.64, ease: "easeInOut" }}
             style={{
               position: "absolute",
-              top: "-20%",
-              bottom: "-20%",
-              left: "-45%",
-              width: "42%",
+              top: "-42%",
+              bottom: "-42%",
+              left: "-78%",
+              width: "62%",
               pointerEvents: "none",
-              transform: "skewX(-16deg)",
+              transform: "skewX(-30deg)",
               background:
-                "linear-gradient(90deg, transparent, rgba(255,255,255,0.62), transparent)",
+                "linear-gradient(90deg, transparent, rgba(255,255,255,0.28), transparent)",
               mixBlendMode: "screen",
             }}
           />
         )}
-        <motion.div
-          initial={false}
-          animate={{
-            boxShadow: isHovered
-              ? "inset 0 0 0 1.2px rgba(255,255,255,0.82), inset 0 1px 0 rgba(255,255,255,0.95)"
-              : "inset 0 0 0 0 rgba(255,255,255,0)",
-          }}
-          transition={{ duration: 0.2 }}
-          style={{
-            position: "absolute",
-            inset: 0,
-            borderRadius: 9,
-            pointerEvents: "none",
-          }}
-        />
       </motion.div>
     </div>
   )
@@ -717,7 +701,10 @@ export default function SlidePage0d() {
   const [isPreviewingFullPage, setIsPreviewingFullPage] = useState(false)
   const [uploadedFileName, setUploadedFileName] = useState("")
   const [isUploadedFileLoading, setIsUploadedFileLoading] = useState(false)
+  const [submittedTextTitle, setSubmittedTextTitle] = useState("")
+  const [isSubmittedTextLoading, setIsSubmittedTextLoading] = useState(false)
   const loadingTimerRef = useRef<number | null>(null)
+  const textLoadingTimerRef = useRef<number | null>(null)
   const prefersReducedMotion = useReducedMotion()
   const motionDuration = prefersReducedMotion ? 0 : 0.72
   const fadeDuration = prefersReducedMotion ? 0 : 0.24
@@ -737,10 +724,25 @@ export default function SlidePage0d() {
     }
   }, [])
 
+  const handleTextSubmitted = useCallback((value: string) => {
+    setSubmittedTextTitle(value)
+    if (textLoadingTimerRef.current) {
+      window.clearTimeout(textLoadingTimerRef.current)
+    }
+    setIsSubmittedTextLoading(true)
+    textLoadingTimerRef.current = window.setTimeout(() => {
+      setIsSubmittedTextLoading(false)
+      textLoadingTimerRef.current = null
+    }, 1200)
+  }, [])
+
   useEffect(() => {
     preloadPage0dImages()
     return () => {
       if (loadingTimerRef.current) window.clearTimeout(loadingTimerRef.current)
+      if (textLoadingTimerRef.current) {
+        window.clearTimeout(textLoadingTimerRef.current)
+      }
     }
   }, [])
 
@@ -891,6 +893,7 @@ export default function SlidePage0d() {
           gap: 7.969,
           zIndex: 22,
           transformOrigin: "left top",
+          pointerEvents: isPreviewingFullPage ? "none" : "auto",
         }}
       >
         <SectionLabel num="01" title="本地上传物料" count="6 个类型" />
@@ -991,6 +994,7 @@ export default function SlidePage0d() {
           gap: 7.969,
           zIndex: 22,
           transformOrigin: "left top",
+          pointerEvents: isPreviewingFullPage ? "none" : "auto",
         }}
       >
         <SectionLabel num="02" title="网页/长文本" count="2 个类型" />
@@ -1036,6 +1040,7 @@ export default function SlidePage0d() {
           gap: 7.969,
           zIndex: 22,
           transformOrigin: "left top",
+          pointerEvents: isPreviewingFullPage ? "none" : "auto",
         }}
       >
         <SectionLabel num="03" title="第三方应用" count="2 个类型" />
@@ -1081,6 +1086,7 @@ export default function SlidePage0d() {
           gap: 7.969,
           zIndex: 22,
           transformOrigin: "left top",
+          pointerEvents: isPreviewingFullPage ? "none" : "auto",
         }}
       >
         <SectionLabel num="04" title="Git仓库" count="2 个类型" />
@@ -1192,6 +1198,17 @@ export default function SlidePage0d() {
                 loading={isUploadedFileLoading}
               />
             )}
+            {submittedTextTitle && (
+              <PreviewSupplementCard
+                left={uploadedFileName ? 245 : 78}
+                top={384}
+                title={submittedTextTitle}
+                desc="由输入内容生成的资料卡片，已进入资料区等待解析与图谱编译。"
+                gradient="linear-gradient(137.17deg, rgb(255, 255, 255) 0%, rgb(198, 198, 198) 100%)"
+                imgSrc={IMG_PROVINCE}
+                loading={isSubmittedTextLoading}
+              />
+            )}
             <div
               data-preview-supplement="Happy Horse"
               style={{
@@ -1251,6 +1268,7 @@ export default function SlidePage0d() {
                   desc="从 Notion 同步整理的各高校 2025 年招生简章，含专业目录与录取要求。"
                   gradient="linear-gradient(137.17deg, rgb(249, 249, 249) 0%, rgb(161, 175, 248) 100%)"
                   imgSrc={IMG_NOTION}
+                  enableHover={false}
                 />
               </div>
             </PreviewHoverCard>
@@ -1272,6 +1290,7 @@ export default function SlidePage0d() {
                   desc="飞书文档整理的新高考 3+1+2 选科组合分析与各高校专业匹配推荐。"
                   gradient="linear-gradient(137.17deg, rgb(255, 255, 255) 0%, rgb(135, 185, 243) 100%)"
                   imgSrc={IMG_FEISHU}
+                  enableHover={false}
                 />
               </div>
             </PreviewHoverCard>
@@ -1311,6 +1330,31 @@ export default function SlidePage0d() {
                     desc="刚刚上传的本地 PDF 文件，已进入资料区等待解析与图谱编译。"
                     gradient="linear-gradient(137.09deg, rgb(255, 248, 244) 0%, rgb(255, 190, 179) 100%)"
                     imgSrc={IMG_DAXUE}
+                    enableHover={false}
+                  />
+                </div>
+              </PreviewHoverCard>
+            )}
+            {submittedTextTitle && !isSubmittedTextLoading && (
+              <PreviewHoverCard
+                left={uploadedFileName ? 245 : 78}
+                top={384}
+                reducedMotion={Boolean(prefersReducedMotion)}
+              >
+                <div
+                  style={{
+                    width: 198.5,
+                    height: 184,
+                    transform: "scale(0.75)",
+                    transformOrigin: "left top",
+                  }}
+                >
+                  <FileCard
+                    title={submittedTextTitle}
+                    desc="由输入内容生成的资料卡片，已进入资料区等待解析与图谱编译。"
+                    gradient="linear-gradient(137.17deg, rgb(255, 255, 255) 0%, rgb(198, 198, 198) 100%)"
+                    imgSrc={IMG_PROVINCE}
+                    enableHover={false}
                   />
                 </div>
               </PreviewHoverCard>
@@ -1342,7 +1386,10 @@ export default function SlidePage0d() {
                 pointerEvents: "auto",
               }}
             >
-              <KnowledgeBaseSpotlight onFileUploaded={handleFileUploaded} />
+              <KnowledgeBaseSpotlight
+                onFileUploaded={handleFileUploaded}
+                onTextSubmitted={handleTextSubmitted}
+              />
             </div>
 
             {/* Hide the static Figma view switcher; its state now lives inside

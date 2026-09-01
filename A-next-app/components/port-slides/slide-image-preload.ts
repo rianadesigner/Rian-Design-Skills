@@ -186,7 +186,7 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   "if-studio": ["/images/if-studio/home-full-2026.webp"],
   "if-studio-skills": [
     "/images/if-studio/skills-plaza-2026-1440.webp",
-    "/images/if-studio/skill-detail-2026-1440.webp",
+    "/images/if-studio/skill-detail-open-platform-2026-1440.webp",
   ],
   "storyboard-video-skill": [
     "/images/storyboard-video-skill/workflow-full-105500.webp",

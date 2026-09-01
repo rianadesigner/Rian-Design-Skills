@@ -15,7 +15,7 @@ const skillScreens = [
     image: `${P_IF_STUDIO}/skills-plaza-2026.webp`,
     srcSet: `${P_IF_STUDIO}/skills-plaza-2026-960.webp 960w, ${P_IF_STUDIO}/skills-plaza-2026-1440.webp 1440w`,
     width: 1920,
-    height: 2675,
+    height: 2823,
     alt: "if Studio 技能广场全量技能列表",
   },
   {
@@ -23,11 +23,11 @@ const skillScreens = [
     label: "详情",
     title: "技能详情",
     caption: "理解能力、输入要求与使用示例",
-    image: `${P_IF_STUDIO}/skill-detail-2026.webp`,
-    srcSet: `${P_IF_STUDIO}/skill-detail-2026-960.webp 960w, ${P_IF_STUDIO}/skill-detail-2026-1440.webp 1440w`,
+    image: `${P_IF_STUDIO}/skill-detail-open-platform-2026.webp`,
+    srcSet: `${P_IF_STUDIO}/skill-detail-open-platform-2026-960.webp 960w, ${P_IF_STUDIO}/skill-detail-open-platform-2026-1440.webp 1440w`,
     width: 1920,
-    height: 2801,
-    alt: "if Studio 试穿套图技能详情",
+    height: 2588,
+    alt: "万相营造开放平台试穿套图技能详情",
   },
 ] as const
 

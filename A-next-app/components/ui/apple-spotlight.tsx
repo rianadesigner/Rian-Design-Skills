@@ -2,8 +2,19 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { createPortal } from "react-dom"
 import { AnimatePresence, motion } from "motion/react"
-import { Check, ChevronDown, ScanText, Search, X } from "lucide-react"
+import {
+  Check,
+  ChevronDown,
+  ChevronRight,
+  FileSpreadsheet,
+  FileText,
+  Folder,
+  ScanText,
+  Search,
+  X,
+} from "lucide-react"
 
 import {
   LiquidGlassTabs,
@@ -41,6 +52,37 @@ export interface AppleSpotlightProps {
   onValueChange?: (value: string) => void
   onFileChange?: (file?: File) => void
   onSubmit?: (value: string, file?: File) => void
+}
+
+const SOURCE_DIALOG_FILES = [
+  {
+    id: "admissions-policy",
+    name: "2025高校招生政策汇编.docx",
+    type: "document",
+  },
+  {
+    id: "subject-selection",
+    name: "新高考选科规则说明.pdf",
+    type: "document",
+  },
+  {
+    id: "major-directory",
+    name: "院校专业目录整理.xlsx",
+    type: "spreadsheet",
+  },
+] as const
+
+const SOURCE_DIALOG_WIDTH = 520
+const SOURCE_DIALOG_HEIGHT = 360
+
+function getSourceDialogScale() {
+  if (typeof window === "undefined") return 1
+
+  return Math.min(
+    1,
+    (window.innerWidth - 32) / SOURCE_DIALOG_WIDTH,
+    (window.innerHeight - 32) / SOURCE_DIALOG_HEIGHT
+  )
 }
 
 function SendArrowIcon({ className }: { className?: string }) {
@@ -88,6 +130,12 @@ export function AppleSpotlight({
     null
   )
   const [isSourceAuthorized, setIsSourceAuthorized] = React.useState(false)
+  const [isSourceDialogOpen, setIsSourceDialogOpen] = React.useState(false)
+  const [selectedDialogFiles, setSelectedDialogFiles] = React.useState<
+    string[]
+  >([])
+  const [sourceDialogScale, setSourceDialogScale] = React.useState(1)
+  const [isMounted, setIsMounted] = React.useState(false)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const value = controlledValue ?? internalValue
   const hasValue = value.trim().length > 0
@@ -108,6 +156,19 @@ export function AppleSpotlight({
       : (activeShortcut?.inputPlaceholder ??
         activeShortcut?.label ??
         placeholder)
+
+  React.useEffect(() => {
+    setIsMounted(true)
+
+    const updateSourceDialogScale = () => {
+      setSourceDialogScale(getSourceDialogScale())
+    }
+
+    updateSourceDialogScale()
+    window.addEventListener("resize", updateSourceDialogScale)
+
+    return () => window.removeEventListener("resize", updateSourceDialogScale)
+  }, [])
 
   const handleSubmit = () => {
     if (hasSubmission) {
@@ -132,6 +193,19 @@ export function AppleSpotlight({
     setSelectedSource(null)
     setIsSourceAuthorized(false)
     setSelectedShortcut(null)
+  }
+
+  const closeSourceDialog = () => {
+    setIsSourceDialogOpen(false)
+    setSelectedDialogFiles([])
+  }
+
+  const toggleDialogFile = (fileId: string) => {
+    setSelectedDialogFiles((current) =>
+      current.includes(fileId)
+        ? current.filter((id) => id !== fileId)
+        : [...current, fileId]
+    )
   }
 
   const handleShortcutSelect = (index: number) => {
@@ -365,8 +439,9 @@ export function AppleSpotlight({
                               aria-label={`选择${option.label}`}
                               title={option.label}
                               onClick={() => {
-                                setSelectedSource(option.value)
-                                setIsSourceAuthorized(false)
+                                setSelectedDialogFiles([])
+                                setIsSourceDialogOpen(true)
+                                setHoveredShortcut(null)
                               }}
                               className="flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border border-black/[0.045] bg-white/55 px-2.5 text-[10px] font-medium whitespace-nowrap text-foreground/75 transition-[background-color,color,box-shadow] outline-none hover:bg-white hover:text-foreground hover:shadow-sm focus-visible:ring-2 focus-visible:ring-ring [&_img]:size-4 [&_img]:shrink-0 [&_img]:object-contain [&_svg]:size-3.5 [&_svg]:shrink-0 [&_svg]:stroke-[1.9]"
                             >
@@ -605,6 +680,220 @@ export function AppleSpotlight({
                 )}
             </AnimatePresence>
           </div>
+          {isMounted &&
+            createPortal(
+              <AnimatePresence>
+                {isSourceDialogOpen && (
+                  <motion.div
+                    className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-[1.5px]"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onMouseDown={closeSourceDialog}
+                  >
+                    <div
+                      className="relative shrink-0"
+                      style={{
+                        width: SOURCE_DIALOG_WIDTH * sourceDialogScale,
+                        height: SOURCE_DIALOG_HEIGHT * sourceDialogScale,
+                      }}
+                    >
+                      <div
+                        className="absolute top-0 left-0"
+                        style={{
+                          width: SOURCE_DIALOG_WIDTH,
+                          height: SOURCE_DIALOG_HEIGHT,
+                          transform: `scale(${sourceDialogScale})`,
+                          transformOrigin: "left top",
+                        }}
+                      >
+                        <motion.div
+                          role="dialog"
+                          aria-modal="true"
+                          aria-label="文件上传"
+                          className="relative flex h-[360px] w-[520px] flex-col overflow-hidden rounded-[16px] bg-white text-[#1f1f1f] shadow-[0_24px_64px_rgba(15,23,42,0.22),0_4px_16px_rgba(15,23,42,0.10)] ring-1 ring-black/[0.035]"
+                          initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 12, scale: 0.985 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 430,
+                            damping: 34,
+                          }}
+                          onMouseDown={(event) => event.stopPropagation()}
+                        >
+                          <div className="flex h-11 shrink-0 items-center justify-between px-4">
+                            <h2 className="text-[14px] leading-5 font-semibold tracking-[0]">
+                              文件上传{" "}
+                              <span className="text-[11px] font-normal text-[#a0a0a0]">
+                                (最多50个文件)
+                              </span>
+                            </h2>
+                            <button
+                              type="button"
+                              aria-label="关闭弹窗"
+                              onClick={closeSourceDialog}
+                              className="flex size-7 cursor-pointer items-center justify-center rounded-full text-[#727272] transition-colors outline-none hover:bg-black/[0.04] hover:text-[#1f1f1f] focus-visible:ring-2 focus-visible:ring-black/20 [&_svg]:size-4 [&_svg]:stroke-[1.6]"
+                            >
+                              <X aria-hidden="true" />
+                            </button>
+                          </div>
+
+                          <div className="mx-4 h-[264px] shrink-0 overflow-y-auto rounded-[12px] border border-dashed border-[#d9d9d9] bg-[#fbfbfb] py-1.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                            {["钉盘", "知识库"].map((label) => {
+                              const folderId = `folder-${label}`
+                              const isSelected =
+                                selectedDialogFiles.includes(folderId)
+
+                              return (
+                                <button
+                                  key={label}
+                                  type="button"
+                                  aria-expanded="false"
+                                  aria-pressed={isSelected}
+                                  onClick={() => toggleDialogFile(folderId)}
+                                  className="group flex h-9 w-full cursor-pointer items-center gap-2 px-4 text-left transition-colors outline-none hover:bg-black/[0.025] focus-visible:ring-2 focus-visible:ring-black/15 focus-visible:ring-inset"
+                                >
+                                  <ChevronRight
+                                    aria-hidden="true"
+                                    className="size-2.5 shrink-0 fill-[#1f1f1f] stroke-[2.4] text-[#1f1f1f]"
+                                  />
+                                  <Folder
+                                    aria-hidden="true"
+                                    className="size-5 shrink-0 fill-[#ffc84f] stroke-[#ffc84f]"
+                                  />
+                                  <span className="min-w-0 flex-1 truncate text-[13px] leading-5 font-medium tracking-[0]">
+                                    {label}
+                                  </span>
+                                  <span
+                                    aria-hidden="true"
+                                    className={cn(
+                                      "flex size-3.5 shrink-0 items-center justify-center rounded-[4px] border transition-colors",
+                                      isSelected
+                                        ? "border-[#1f1f1f] bg-[#1f1f1f] text-white"
+                                        : "border-black/[0.08] bg-white group-hover:border-black/15"
+                                    )}
+                                  >
+                                    {isSelected && (
+                                      <Check className="size-2.5 stroke-[2.4]" />
+                                    )}
+                                  </span>
+                                </button>
+                              )
+                            })}
+
+                            <button
+                              type="button"
+                              aria-expanded="true"
+                              aria-pressed={selectedDialogFiles.includes(
+                                "folder-documents"
+                              )}
+                              onClick={() =>
+                                toggleDialogFile("folder-documents")
+                              }
+                              className="group flex h-9 w-full cursor-pointer items-center gap-2 px-4 text-left transition-colors outline-none hover:bg-black/[0.025] focus-visible:ring-2 focus-visible:ring-black/15 focus-visible:ring-inset"
+                            >
+                              <ChevronDown
+                                aria-hidden="true"
+                                className="size-2.5 shrink-0 fill-[#1f1f1f] stroke-[2.4] text-[#1f1f1f]"
+                              />
+                              <Folder
+                                aria-hidden="true"
+                                className="size-5 shrink-0 fill-[#ffc84f] stroke-[#ffc84f]"
+                              />
+                              <span className="min-w-0 flex-1 truncate text-[13px] leading-5 font-medium tracking-[0]">
+                                我的文档
+                              </span>
+                              <span
+                                aria-hidden="true"
+                                className={cn(
+                                  "flex size-3.5 shrink-0 items-center justify-center rounded-[4px] border transition-colors",
+                                  selectedDialogFiles.includes(
+                                    "folder-documents"
+                                  )
+                                    ? "border-[#1f1f1f] bg-[#1f1f1f] text-white"
+                                    : "border-black/[0.08] bg-white group-hover:border-black/15"
+                                )}
+                              >
+                                {selectedDialogFiles.includes(
+                                  "folder-documents"
+                                ) && (
+                                  <Check className="size-2.5 stroke-[2.4]" />
+                                )}
+                              </span>
+                            </button>
+
+                            <div>
+                              {SOURCE_DIALOG_FILES.map((file) => {
+                                const isSelected = selectedDialogFiles.includes(
+                                  file.id
+                                )
+
+                                return (
+                                  <button
+                                    key={file.id}
+                                    type="button"
+                                    aria-pressed={isSelected}
+                                    onClick={() => toggleDialogFile(file.id)}
+                                    className="group flex h-[46px] w-full cursor-pointer items-center gap-2.5 pr-4 pl-11 text-left transition-colors outline-none hover:bg-black/[0.025] focus-visible:ring-2 focus-visible:ring-black/15 focus-visible:ring-inset"
+                                  >
+                                    {file.type === "spreadsheet" ? (
+                                      <FileSpreadsheet
+                                        aria-hidden="true"
+                                        className="size-3.5 shrink-0 stroke-[1.8] text-[#49b968]"
+                                      />
+                                    ) : (
+                                      <FileText
+                                        aria-hidden="true"
+                                        className="size-3.5 shrink-0 stroke-[1.8] text-[#5b8ff9]"
+                                      />
+                                    )}
+                                    <span className="min-w-0 flex-1 truncate text-[12px] leading-5 font-normal tracking-[0] text-[#434343]">
+                                      {file.name}
+                                    </span>
+                                    <span
+                                      aria-hidden="true"
+                                      className={cn(
+                                        "flex size-3.5 shrink-0 items-center justify-center rounded-[4px] border transition-colors",
+                                        isSelected
+                                          ? "border-[#171717] bg-[#171717] text-white"
+                                          : "border-black/[0.08] bg-white group-hover:border-black/15"
+                                      )}
+                                    >
+                                      {isSelected && (
+                                        <Check className="size-2.5 stroke-[2.4]" />
+                                      )}
+                                    </span>
+                                  </button>
+                                )
+                              })}
+                            </div>
+                          </div>
+
+                          <div className="flex h-[52px] shrink-0 items-center justify-end gap-2 px-4">
+                            <button
+                              type="button"
+                              onClick={closeSourceDialog}
+                              className="h-8 cursor-pointer rounded-full bg-[#1f1f1f] px-[18px] text-[12px] leading-5 font-semibold text-white transition-colors outline-none hover:bg-black focus-visible:ring-2 focus-visible:ring-black/25"
+                            >
+                              插入
+                            </button>
+                            <button
+                              type="button"
+                              onClick={closeSourceDialog}
+                              className="h-8 cursor-pointer rounded-full bg-[#f8f8f8] px-[18px] text-[12px] leading-5 font-semibold text-[#111] transition-colors outline-none hover:bg-[#f1f1f1] focus-visible:ring-2 focus-visible:ring-black/15"
+                            >
+                              取消
+                            </button>
+                          </div>
+                        </motion.div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>,
+              document.body
+            )}
         </motion.div>
       )}
     </AnimatePresence>
