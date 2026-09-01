@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "motion/react"
-import { Search, X } from "lucide-react"
+import { Check, ChevronDown, ScanText, Search, X } from "lucide-react"
 
 import {
   LiquidGlassTabs,
@@ -15,7 +15,16 @@ export interface SpotlightShortcut {
   label: string
   icon: React.ReactNode
   link: string
-  action?: "file-upload"
+  action?: "file-upload" | "paste-content" | "connect-app" | "git-import"
+  inputPlaceholder?: string
+  sourceOptions?: SpotlightSourceOption[]
+}
+
+export interface SpotlightSourceOption {
+  value: string
+  label: string
+  compactLabel?: string
+  icon: React.ReactNode
 }
 
 export interface AppleSpotlightProps {
@@ -26,6 +35,7 @@ export interface AppleSpotlightProps {
   isOpen?: boolean
   viewTabs?: LiquidGlassTab[]
   defaultView?: string
+  onViewTabChange?: (value: string) => void
   fileAccept?: string
   value?: string
   onValueChange?: (value: string) => void
@@ -58,6 +68,7 @@ export function AppleSpotlight({
   isOpen = true,
   viewTabs = [],
   defaultView,
+  onViewTabChange,
   fileAccept,
   value: controlledValue,
   onValueChange,
@@ -73,20 +84,30 @@ export function AppleSpotlight({
   )
   const [internalValue, setInternalValue] = React.useState("")
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null)
+  const [selectedSource, setSelectedSource] = React.useState<string | null>(
+    null
+  )
+  const [isSourceAuthorized, setIsSourceAuthorized] = React.useState(false)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const value = controlledValue ?? internalValue
   const hasValue = value.trim().length > 0
   const activeShortcut =
     selectedShortcut === null ? null : shortcuts[selectedShortcut]
+  const hasActiveMode = selectedShortcut !== null
   const isFileUploadMode = activeShortcut?.action === "file-upload"
-  const displayValue = isFileUploadMode ? (selectedFile?.name ?? "") : value
+  const sourceOptions = activeShortcut?.sourceOptions ?? []
+  const isConnectionSourceMode =
+    activeShortcut?.action === "connect-app" && sourceOptions.length > 0
+  const selectedSourceOption =
+    sourceOptions.find((option) => option.value === selectedSource) ?? null
   const hasSubmission = hasValue || Boolean(selectedFile)
   const activePlaceholder =
     hoveredShortcut !== null
-      ? shortcuts[hoveredShortcut].label
-      : isFileUploadMode
-        ? activeShortcut.label
-        : placeholder
+      ? (shortcuts[hoveredShortcut].inputPlaceholder ??
+        shortcuts[hoveredShortcut].label)
+      : (activeShortcut?.inputPlaceholder ??
+        activeShortcut?.label ??
+        placeholder)
 
   const handleSubmit = () => {
     if (hasSubmission) {
@@ -105,7 +126,23 @@ export function AppleSpotlight({
     onFileChange?.(undefined)
   }
 
+  const exitActiveMode = () => {
+    clearSelectedFile()
+    handleValueChange("")
+    setSelectedSource(null)
+    setIsSourceAuthorized(false)
+    setSelectedShortcut(null)
+  }
+
   const handleShortcutSelect = (index: number) => {
+    if (selectedShortcut === index) {
+      exitActiveMode()
+      return
+    }
+
+    handleValueChange("")
+    setSelectedSource(null)
+    setIsSourceAuthorized(false)
     setSelectedShortcut(index)
     if (shortcuts[index].action !== "file-upload") clearSelectedFile()
   }
@@ -131,234 +168,441 @@ export function AppleSpotlight({
           <div className="flex w-full items-center justify-end gap-2.5">
             <motion.div
               layout
-              style={surfaceStyle}
+              style={{
+                ...surfaceStyle,
+                ...(isFileUploadMode
+                  ? {
+                      background: "#171717",
+                      borderColor: "rgba(0, 0, 0, 0.9)",
+                      boxShadow:
+                        "inset 0 1px 0 rgba(255,255,255,0.08), 0 12px 26px rgba(15,23,42,0.18)",
+                      backdropFilter: "none",
+                    }
+                  : {}),
+              }}
               transition={{
                 layout: { type: "spring", stiffness: 430, damping: 34 },
               }}
-              className="relative flex h-12 min-w-0 flex-1 items-center gap-3 overflow-hidden rounded-full border border-white/95 bg-[linear-gradient(135deg,rgba(255,255,255,0.86)_0%,rgba(255,255,255,0.58)_48%,rgba(255,255,255,0.34)_100%)] px-2 text-foreground shadow-[inset_0_1.5px_1px_rgba(255,255,255,1),inset_0_-1px_1px_rgba(255,255,255,0.5),0_2px_4px_rgba(15,23,42,0.05),0_14px_30px_rgba(15,23,42,0.12)] ring-1 ring-black/5 backdrop-blur-[24px] backdrop-saturate-150"
-            >
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-[1px] rounded-full bg-[radial-gradient(circle_at_24%_0%,rgba(255,255,255,0.95),rgba(255,255,255,0.18)_42%,transparent_70%)]"
-              />
-              <span
-                aria-hidden="true"
-                className="pointer-events-none absolute top-px right-8 left-8 h-px bg-gradient-to-r from-transparent via-white to-transparent"
-              />
-              <span className="relative flex size-8 shrink-0 items-center justify-center text-muted-foreground [&_svg]:size-5 [&_svg]:stroke-[1.7]">
-                {isFileUploadMode ? (
-                  activeShortcut.icon
-                ) : (
-                  <Search aria-hidden="true" />
-                )}
-              </span>
-              <span className="relative min-w-0 flex-1">
-                {!displayValue && (
-                  <AnimatePresence mode="popLayout" initial={false}>
-                    <motion.span
-                      key={activePlaceholder}
-                      initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
-                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
-                      transition={{ duration: 0.18, ease: "easeOut" }}
-                      className="pointer-events-none absolute inset-y-0 left-0 flex max-w-full items-center truncate text-sm text-muted-foreground"
-                    >
-                      {activePlaceholder}
-                    </motion.span>
-                  </AnimatePresence>
-                )}
-                <input
-                  value={displayValue}
-                  readOnly={isFileUploadMode}
-                  onClick={() => {
-                    if (isFileUploadMode) fileInputRef.current?.click()
-                  }}
-                  onChange={(event) => {
-                    if (!isFileUploadMode) {
-                      handleValueChange(event.target.value)
-                    }
-                  }}
-                  onKeyDown={(event) => {
-                    if (
-                      isFileUploadMode &&
-                      (event.key === "Enter" || event.key === " ")
-                    ) {
-                      event.preventDefault()
-                      fileInputRef.current?.click()
-                    } else if (event.key === "Enter") {
-                      handleSubmit()
-                    }
-                  }}
-                  aria-label={
-                    isFileUploadMode ? activeShortcut.label : placeholder
-                  }
-                  className={cn(
-                    "h-12 w-full bg-transparent text-sm outline-none",
-                    isFileUploadMode && "cursor-pointer"
-                  )}
-                />
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept={fileAccept}
-                  className="hidden"
-                  tabIndex={-1}
-                  onChange={(event) => {
-                    const file = event.target.files?.[0]
-                    if (!file) return
-                    setSelectedFile(file)
-                    onFileChange?.(file)
-                  }}
-                />
-              </span>
-              {isFileUploadMode && selectedFile && (
-                <motion.button
-                  type="button"
-                  aria-label={`移除文件 ${selectedFile.name}`}
-                  onClick={clearSelectedFile}
-                  initial={{ opacity: 0, scale: 0.72 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.72 }}
-                  className="relative flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full text-muted-foreground outline-none transition-colors hover:bg-black/5 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3.5"
-                >
-                  <X aria-hidden="true" />
-                </motion.button>
+              className={cn(
+                "relative flex min-w-0 flex-1 items-center gap-3 overflow-hidden border",
+                isFileUploadMode
+                  ? "h-12 rounded-full border-black px-2.5 text-white"
+                  : "h-12 rounded-full border-white/95 bg-[linear-gradient(135deg,rgba(255,255,255,0.86)_0%,rgba(255,255,255,0.58)_48%,rgba(255,255,255,0.34)_100%)] px-2 text-foreground shadow-[inset_0_1.5px_1px_rgba(255,255,255,1),inset_0_-1px_1px_rgba(255,255,255,0.5),0_2px_4px_rgba(15,23,42,0.05),0_14px_30px_rgba(15,23,42,0.12)] ring-1 ring-black/5 backdrop-blur-[24px] backdrop-saturate-150"
               )}
-              {viewTabs.length > 0 && (
+            >
+              {!isFileUploadMode && (
                 <>
                   <span
                     aria-hidden="true"
-                    className="relative h-6 w-px shrink-0 bg-border/65"
+                    className="pointer-events-none absolute inset-[1px] rounded-full bg-[radial-gradient(circle_at_24%_0%,rgba(255,255,255,0.95),rgba(255,255,255,0.18)_42%,transparent_70%)]"
                   />
-                  <AnimatePresence mode="wait" initial={false}>
-                    {hasSubmission ? (
-                      <motion.button
-                        key="send-arrow"
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-px right-8 left-8 h-px bg-gradient-to-r from-transparent via-white to-transparent"
+                  />
+                </>
+              )}
+
+              {isFileUploadMode ? (
+                <>
+                  <button
+                    type="button"
+                    aria-label={activeShortcut.label}
+                    onClick={() => fileInputRef.current?.click()}
+                    className="relative flex h-full min-w-0 flex-1 cursor-pointer items-center justify-center gap-2.5 rounded-full text-center outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                  >
+                    <span className="flex size-8 shrink-0 items-center justify-center text-white">
+                      <span className="[&_svg]:size-5 [&_svg]:stroke-[1.8]">
+                        {activeShortcut.icon}
+                      </span>
+                    </span>
+                    <span
+                      className={cn(
+                        "shrink-0 text-[14px] leading-[17px] font-semibold tracking-[-0.01em] text-white"
+                      )}
+                    >
+                      上传本地文件
+                    </span>
+                  </button>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept={fileAccept}
+                    className="hidden"
+                    tabIndex={-1}
+                    onChange={(event) => {
+                      const file = event.target.files?.[0]
+                      if (!file) return
+                      setSelectedFile(file)
+                      onFileChange?.(file)
+                    }}
+                  />
+                  <motion.button
+                    type="button"
+                    aria-label="返回普通输入"
+                    title="返回普通输入"
+                    onClick={exitActiveMode}
+                    initial={{ opacity: 0, scale: 0.72 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.72 }}
+                    className="relative flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full text-white/55 transition-colors outline-none hover:bg-white/10 hover:text-white focus-visible:ring-2 focus-visible:ring-white/70 [&_svg]:size-3.5"
+                  >
+                    <X aria-hidden="true" />
+                  </motion.button>
+                </>
+              ) : isConnectionSourceMode ? (
+                <>
+                  <span className="relative flex size-8 shrink-0 items-center justify-center text-muted-foreground [&_img]:size-5 [&_img]:object-contain [&_svg]:size-5 [&_svg]:stroke-[1.7]">
+                    {selectedSourceOption?.icon ?? activeShortcut.icon}
+                  </span>
+                  {selectedSourceOption ? (
+                    <>
+                      <button
                         type="button"
-                        onClick={handleSubmit}
-                        aria-label="提交研究内容"
-                        initial={{ opacity: 0, scale: 0.7, rotate: -12 }}
-                        animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                        exit={{ opacity: 0, scale: 0.72, rotate: 10 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 480,
-                          damping: 30,
+                        aria-label="更换来源"
+                        onClick={() => {
+                          setSelectedSource(null)
+                          setIsSourceAuthorized(false)
                         }}
-                        className="relative flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                        className="relative flex min-w-0 flex-1 items-center gap-2 rounded-lg px-1 text-left transition-colors outline-none hover:bg-black/[0.035] focus-visible:ring-2 focus-visible:ring-ring"
                       >
-                        <SendArrowIcon className="size-8" />
-                      </motion.button>
-                    ) : (
-                      <motion.div
-                        key="view-tabs"
-                        initial={{ opacity: 0, scale: 0.92, x: 8 }}
-                        animate={{ opacity: 1, scale: 1, x: 0 }}
-                        exit={{ opacity: 0, scale: 0.92, x: 8 }}
-                        transition={{ duration: 0.16, ease: "easeOut" }}
-                        className="relative shrink-0"
-                      >
-                        <LiquidGlassTabs
-                          items={viewTabs}
-                          defaultValue={defaultView}
-                          variant="embedded"
+                        <span className="truncate text-sm font-semibold text-foreground">
+                          {selectedSourceOption.label}
+                        </span>
+                        <span
+                          className={cn(
+                            "flex shrink-0 items-center gap-1 text-[10px] font-medium",
+                            isSourceAuthorized
+                              ? "text-[#3d9b61]"
+                              : "text-muted-foreground"
+                          )}
+                        >
+                          <span
+                            aria-hidden="true"
+                            className={cn(
+                              "size-1.5 rounded-full",
+                              isSourceAuthorized
+                                ? "bg-[#55bd7b]"
+                                : "bg-black/25"
+                            )}
+                          />
+                          {isSourceAuthorized ? "已授权" : "未授权"}
+                        </span>
+                        <ChevronDown
+                          aria-hidden="true"
+                          className="size-3.5 shrink-0 stroke-[1.7] text-muted-foreground"
                         />
-                      </motion.div>
+                      </button>
+                      <span
+                        aria-hidden="true"
+                        className="relative h-6 w-px shrink-0 bg-border/65"
+                      />
+                      <button
+                        type="button"
+                        aria-label={
+                          isSourceAuthorized
+                            ? `${selectedSourceOption.label}已关联`
+                            : `关联${selectedSourceOption.label}账号`
+                        }
+                        onClick={() => setIsSourceAuthorized(true)}
+                        className={cn(
+                          "relative flex h-8 shrink-0 items-center gap-1 rounded-xl px-3 text-[11px] font-semibold transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                          isSourceAuthorized
+                            ? "cursor-default bg-[#f1faf4] text-[#3d9b61]"
+                            : "cursor-pointer bg-black/[0.055] text-foreground hover:bg-black/[0.085]"
+                        )}
+                      >
+                        {isSourceAuthorized && (
+                          <Check
+                            aria-hidden="true"
+                            className="size-3.5 stroke-[2.4]"
+                          />
+                        )}
+                        {isSourceAuthorized ? "已关联" : "关联账号"}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <div className="relative min-w-0 flex-1 overflow-hidden">
+                        <div
+                          role="group"
+                          aria-label="第三方来源"
+                          tabIndex={0}
+                          onWheel={(event) => {
+                            event.stopPropagation()
+                            if (
+                              Math.abs(event.deltaY) > Math.abs(event.deltaX)
+                            ) {
+                              event.preventDefault()
+                              event.currentTarget.scrollLeft += event.deltaY
+                            }
+                          }}
+                          onKeyDown={(event) => {
+                            event.stopPropagation()
+                            if (event.key === "ArrowRight") {
+                              event.preventDefault()
+                              event.currentTarget.scrollBy({
+                                left: 96,
+                                behavior: "smooth",
+                              })
+                            }
+                            if (event.key === "ArrowLeft") {
+                              event.preventDefault()
+                              event.currentTarget.scrollBy({
+                                left: -96,
+                                behavior: "smooth",
+                              })
+                            }
+                          }}
+                          onPointerDown={(event) => event.stopPropagation()}
+                          onTouchMove={(event) => event.stopPropagation()}
+                          className="flex min-w-0 touch-pan-x items-center gap-1.5 overflow-x-auto overscroll-x-contain scroll-smooth pr-4 outline-none [scrollbar-width:none] focus-visible:ring-2 focus-visible:ring-ring [&::-webkit-scrollbar]:hidden"
+                        >
+                          {sourceOptions.map((option) => (
+                            <button
+                              key={option.value}
+                              type="button"
+                              aria-label={`选择${option.label}`}
+                              title={option.label}
+                              onClick={() => {
+                                setSelectedSource(option.value)
+                                setIsSourceAuthorized(false)
+                              }}
+                              className="flex h-8 shrink-0 cursor-pointer items-center gap-1.5 rounded-xl border border-black/[0.045] bg-white/55 px-2.5 text-[10px] font-medium whitespace-nowrap text-foreground/75 transition-[background-color,color,box-shadow] outline-none hover:bg-white hover:text-foreground hover:shadow-sm focus-visible:ring-2 focus-visible:ring-ring [&_img]:size-4 [&_img]:shrink-0 [&_img]:object-contain [&_svg]:size-3.5 [&_svg]:shrink-0 [&_svg]:stroke-[1.9]"
+                            >
+                              {option.icon}
+                              <span>{option.label}</span>
+                            </button>
+                          ))}
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-gradient-to-r from-transparent to-white/85"
+                        />
+                      </div>
+                    </>
+                  )}
+                  <motion.button
+                    type="button"
+                    aria-label="返回普通输入"
+                    title="返回普通输入"
+                    onClick={exitActiveMode}
+                    initial={{ opacity: 0, scale: 0.72 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.72 }}
+                    className="relative flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full text-muted-foreground/65 transition-colors outline-none hover:bg-black/5 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3.5"
+                  >
+                    <X aria-hidden="true" />
+                  </motion.button>
+                </>
+              ) : (
+                <>
+                  <span className="relative flex size-8 shrink-0 items-center justify-center text-muted-foreground [&_svg]:size-5 [&_svg]:stroke-[1.7]">
+                    {activeShortcut?.icon ?? <Search aria-hidden="true" />}
+                  </span>
+                  <span className="relative min-w-0 flex-1">
+                    {!value && (
+                      <AnimatePresence mode="popLayout" initial={false}>
+                        <motion.span
+                          key={activePlaceholder}
+                          initial={{ opacity: 0, y: 8, filter: "blur(4px)" }}
+                          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                          exit={{ opacity: 0, y: -8, filter: "blur(4px)" }}
+                          transition={{ duration: 0.18, ease: "easeOut" }}
+                          className="pointer-events-none absolute inset-y-0 left-0 flex max-w-full items-center truncate text-sm text-muted-foreground"
+                        >
+                          {activePlaceholder}
+                        </motion.span>
+                      </AnimatePresence>
                     )}
-                  </AnimatePresence>
+                    <input
+                      value={value}
+                      onInput={(event) => {
+                        handleValueChange(event.currentTarget.value)
+                      }}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter") handleSubmit()
+                      }}
+                      aria-label={activePlaceholder}
+                      className={cn(
+                        "h-12 w-full bg-transparent text-sm outline-none",
+                        activeShortcut &&
+                          hasValue &&
+                          "font-medium text-foreground"
+                      )}
+                    />
+                  </span>
+                  {activeShortcut && (
+                    <motion.button
+                      type="button"
+                      aria-label="返回普通输入"
+                      title="返回普通输入"
+                      onClick={exitActiveMode}
+                      initial={{ opacity: 0, scale: 0.72 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.72 }}
+                      className="relative flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full text-muted-foreground/65 transition-colors outline-none hover:bg-black/5 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-3.5"
+                    >
+                      <X aria-hidden="true" />
+                    </motion.button>
+                  )}
+                  {viewTabs.length > 0 &&
+                    (!activeShortcut || hasSubmission) && (
+                      <>
+                        <span
+                          aria-hidden="true"
+                          className="relative h-6 w-px shrink-0 bg-border/65"
+                        />
+                        <AnimatePresence mode="wait" initial={false}>
+                          {hasSubmission ? (
+                            <motion.div
+                              key="submit-actions"
+                              initial={{ opacity: 0, scale: 0.7, rotate: -12 }}
+                              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                              exit={{ opacity: 0, scale: 0.72, rotate: 10 }}
+                              transition={{
+                                type: "spring",
+                                stiffness: 480,
+                                damping: 30,
+                              }}
+                              className="relative flex shrink-0 items-center gap-1.5"
+                            >
+                              <button
+                                type="button"
+                                onClick={handleSubmit}
+                                aria-label={
+                                  activeShortcut ? "解析内容" : "提交研究内容"
+                                }
+                                className="relative flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full text-foreground outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                              >
+                                {activeShortcut ? (
+                                  <span className="flex size-8 items-center justify-center rounded-full bg-[#111] text-white shadow-[0_4px_10px_rgba(15,23,42,.18)]">
+                                    <ScanText
+                                      aria-hidden="true"
+                                      className="size-[17px] stroke-[1.9]"
+                                    />
+                                  </span>
+                                ) : (
+                                  <SendArrowIcon className="size-8" />
+                                )}
+                              </button>
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              key="view-tabs"
+                              initial={{ opacity: 0, scale: 0.92, x: 8 }}
+                              animate={{ opacity: 1, scale: 1, x: 0 }}
+                              exit={{ opacity: 0, scale: 0.92, x: 8 }}
+                              transition={{ duration: 0.16, ease: "easeOut" }}
+                              className="relative shrink-0"
+                            >
+                              <LiquidGlassTabs
+                                items={viewTabs}
+                                defaultValue={defaultView}
+                                variant="embedded"
+                                onValueChange={onViewTabChange}
+                              />
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </>
+                    )}
                 </>
               )}
             </motion.div>
 
             <AnimatePresence mode="popLayout" initial={false}>
-              {isHovered && !hasSubmission && shortcuts.length > 0 && (
-                <motion.div
-                  layout
-                  key="shortcut-glass-group"
-                  initial={{ opacity: 0, scale: 0.84, x: -46 }}
-                  animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.84, x: -34 }}
-                  transition={{ type: "spring", stiffness: 390, damping: 30 }}
-                  className="relative flex shrink-0 items-center gap-1 rounded-full border border-white/95 bg-[linear-gradient(135deg,rgba(255,255,255,0.84)_0%,rgba(255,255,255,0.54)_50%,rgba(255,255,255,0.30)_100%)] p-1 shadow-[inset_0_1.5px_1px_rgba(255,255,255,1),inset_0_-1px_1px_rgba(255,255,255,0.5),0_2px_4px_rgba(15,23,42,0.05),0_14px_30px_rgba(15,23,42,0.13)] ring-1 ring-black/5 backdrop-blur-[24px] backdrop-saturate-150"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-[1px] rounded-full bg-[radial-gradient(circle_at_25%_0%,rgba(255,255,255,0.95),rgba(255,255,255,0.16)_45%,transparent_72%)]"
-                  />
-                  <span
-                    aria-hidden="true"
-                    className="pointer-events-none absolute top-px right-5 left-5 h-px bg-gradient-to-r from-transparent via-white to-transparent"
-                  />
-                  {shortcuts.map((shortcut, index) => {
-                    const isSelected = selectedShortcut === index
+              {(isHovered || hasActiveMode) &&
+                (!hasSubmission || hasActiveMode) &&
+                shortcuts.length > 0 && (
+                  <motion.div
+                    layout
+                    key="shortcut-glass-group"
+                    initial={{ opacity: 0, scale: 0.84, x: -46 }}
+                    animate={{ opacity: 1, scale: 1, x: 0 }}
+                    exit={{ opacity: 0, scale: 0.84, x: -34 }}
+                    transition={{ type: "spring", stiffness: 390, damping: 30 }}
+                    className="relative flex shrink-0 items-center gap-1 rounded-full border border-white/95 bg-[linear-gradient(135deg,rgba(255,255,255,0.84)_0%,rgba(255,255,255,0.54)_50%,rgba(255,255,255,0.30)_100%)] p-1 shadow-[inset_0_1.5px_1px_rgba(255,255,255,1),inset_0_-1px_1px_rgba(255,255,255,0.5),0_2px_4px_rgba(15,23,42,0.05),0_14px_30px_rgba(15,23,42,0.13)] ring-1 ring-black/5 backdrop-blur-[24px] backdrop-saturate-150"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-[1px] rounded-full bg-[radial-gradient(circle_at_25%_0%,rgba(255,255,255,0.95),rgba(255,255,255,0.16)_45%,transparent_72%)]"
+                    />
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none absolute top-px right-5 left-5 h-px bg-gradient-to-r from-transparent via-white to-transparent"
+                    />
+                    {shortcuts.map((shortcut, index) => {
+                      const isSelected = selectedShortcut === index
 
-                    return (
-                      <motion.div
-                        layout
-                        key={shortcut.label}
-                        initial={{
-                          opacity: 0,
-                          scale: 0.72,
-                          x: -18 * (index + 1),
-                        }}
-                        animate={{ opacity: 1, scale: 1, x: 0 }}
-                        exit={{ opacity: 0, scale: 0.76, x: -12 }}
-                        transition={{
-                          type: "spring",
-                          stiffness: 430,
-                          damping: 30,
-                          delay: index * 0.035,
-                        }}
-                        onMouseEnter={() => setHoveredShortcut(index)}
-                        className="relative shrink-0 rounded-full"
-                      >
-                        {isSelected && (
-                          <motion.span
-                            layoutId="spotlight-active-shortcut"
-                            transition={{
-                              type: "spring",
-                              stiffness: 430,
-                              damping: 30,
-                            }}
-                            className="absolute inset-0 rounded-full border border-white bg-[linear-gradient(145deg,rgba(255,255,255,0.94),rgba(255,255,255,0.58))] shadow-[inset_0_1.5px_1px_rgba(255,255,255,1),inset_0_-1px_0_rgba(255,255,255,0.42),0_5px_12px_rgba(15,23,42,0.13)] ring-1 ring-black/5"
-                          />
-                        )}
-                        {shortcut.action === "file-upload" ? (
-                          <button
-                            type="button"
-                            aria-label={shortcut.label}
-                            aria-pressed={isSelected}
-                            onClick={() => handleShortcutSelect(index)}
-                            className={cn(
-                              "relative flex size-10 items-center justify-center rounded-full transition-[color,opacity] outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-5 [&_svg]:stroke-[1.7]",
-                              isSelected
-                                ? "text-foreground opacity-100"
-                                : "text-muted-foreground opacity-55 hover:opacity-100"
-                            )}
-                          >
-                            {shortcut.icon}
-                          </button>
-                        ) : (
-                          <Link
-                            href={shortcut.link}
-                            aria-label={shortcut.label}
-                            aria-current={isSelected ? "page" : undefined}
-                            onClick={() => handleShortcutSelect(index)}
-                            className={cn(
-                              "relative flex size-10 items-center justify-center rounded-full transition-[color,opacity] outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-5 [&_svg]:stroke-[1.7]",
-                              isSelected
-                                ? "text-foreground opacity-100"
-                                : "text-muted-foreground opacity-55 hover:opacity-100"
-                            )}
-                          >
-                            {shortcut.icon}
-                          </Link>
-                        )}
-                      </motion.div>
-                    )
-                  })}
-                </motion.div>
-              )}
+                      return (
+                        <motion.div
+                          layout
+                          key={shortcut.label}
+                          initial={{
+                            opacity: 0,
+                            scale: 0.72,
+                            x: -18 * (index + 1),
+                          }}
+                          animate={{ opacity: 1, scale: 1, x: 0 }}
+                          exit={{ opacity: 0, scale: 0.76, x: -12 }}
+                          transition={{
+                            type: "spring",
+                            stiffness: 430,
+                            damping: 30,
+                            delay: index * 0.035,
+                          }}
+                          onMouseEnter={() => setHoveredShortcut(index)}
+                          onMouseLeave={() => setHoveredShortcut(null)}
+                          className="relative shrink-0 rounded-full"
+                        >
+                          {isSelected && (
+                            <motion.span
+                              layoutId="spotlight-active-shortcut"
+                              transition={{
+                                type: "spring",
+                                stiffness: 430,
+                                damping: 30,
+                              }}
+                              className="absolute inset-0 rounded-full border border-white bg-[linear-gradient(145deg,rgba(255,255,255,0.94),rgba(255,255,255,0.58))] shadow-[inset_0_1.5px_1px_rgba(255,255,255,1),inset_0_-1px_0_rgba(255,255,255,0.42),0_5px_12px_rgba(15,23,42,0.13)] ring-1 ring-black/5"
+                            />
+                          )}
+                          {shortcut.action ? (
+                            <button
+                              type="button"
+                              aria-label={shortcut.label}
+                              aria-pressed={isSelected}
+                              onClick={() => handleShortcutSelect(index)}
+                              className={cn(
+                                "relative flex size-10 items-center justify-center rounded-full transition-[color,opacity] outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-5 [&_svg]:stroke-[1.7]",
+                                isSelected
+                                  ? "text-foreground opacity-100"
+                                  : "text-muted-foreground opacity-55 hover:opacity-100"
+                              )}
+                            >
+                              {shortcut.icon}
+                            </button>
+                          ) : (
+                            <Link
+                              href={shortcut.link}
+                              aria-label={shortcut.label}
+                              aria-current={isSelected ? "page" : undefined}
+                              onClick={() => handleShortcutSelect(index)}
+                              className={cn(
+                                "relative flex size-10 items-center justify-center rounded-full transition-[color,opacity] outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-5 [&_svg]:stroke-[1.7]",
+                                isSelected
+                                  ? "text-foreground opacity-100"
+                                  : "text-muted-foreground opacity-55 hover:opacity-100"
+                              )}
+                            >
+                              {shortcut.icon}
+                            </Link>
+                          )}
+                        </motion.div>
+                      )
+                    })}
+                  </motion.div>
+                )}
             </AnimatePresence>
           </div>
         </motion.div>

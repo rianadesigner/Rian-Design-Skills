@@ -217,6 +217,134 @@ export const KNOWLEDGE_NODES = [
   },
 ] satisfies readonly KnowledgeNode[]
 
+export type KnowledgeNodeSource = {
+  kind: "demo"
+  fileName: string
+  section: string
+}
+
+const KNOWLEDGE_SOURCE_GROUPS = [
+  {
+    fileName: "志愿报考指南",
+    section: "升学决策与志愿策略",
+    nodeIds: [
+      "framework",
+      "strategy",
+      "match",
+      "region-preference",
+      "rush-safe",
+      "risk-check",
+      "admission-probability",
+      "preference-order",
+      "review",
+      "career-interest",
+    ],
+  },
+  {
+    fileName: "双一流大学介绍.pdf",
+    section: "院校画像与层级",
+    nodeIds: [
+      "school",
+      "tier",
+      "subject",
+      "school-tier",
+      "double-first-class",
+      "city-opportunity",
+      "tuition-cost",
+    ],
+  },
+  {
+    fileName: "教育部公告",
+    section: "政策改革与地区实施细则",
+    nodeIds: [
+      "policy",
+      "regional-policy",
+      "admission-policy",
+      "region-rules",
+      "special-plan",
+    ],
+  },
+  {
+    fileName: "各省录取分数线汇总",
+    section: "历年分数与录取趋势",
+    nodeIds: [
+      "score",
+      "admission-trend",
+      "mock-score",
+      "rank-conversion",
+      "score-control",
+      "school-cutoff",
+      "major-cutoff",
+      "plan-change",
+      "update-time",
+    ],
+  },
+  {
+    fileName: "高校招生简章 · Notion",
+    section: "招生专业与录取要求",
+    nodeIds: ["quota", "major-catalog", "cultivation-path"],
+  },
+  {
+    fileName: "选科搭配策略 · 飞书文档",
+    section: "选科组合与专业匹配",
+    nodeIds: ["preparation", "subject-choice", "course-base"],
+  },
+  {
+    fileName: "学科评估笔记",
+    section: "学科与专业发展",
+    nodeIds: [
+      "major-path",
+      "subject-evaluation",
+      "employment",
+      "advanced-study",
+    ],
+  },
+  {
+    fileName: "知识库编译索引（系统生成）",
+    section: "来源追踪与版本信息",
+    nodeIds: ["data-source"],
+  },
+] satisfies readonly {
+  fileName: string
+  section: string
+  nodeIds: readonly string[]
+}[]
+
+const KNOWLEDGE_SOURCE_BY_NODE_ID = new Map<string, KnowledgeNodeSource>()
+
+KNOWLEDGE_SOURCE_GROUPS.forEach(({ fileName, section, nodeIds }) => {
+  nodeIds.forEach((nodeId) => {
+    KNOWLEDGE_SOURCE_BY_NODE_ID.set(nodeId, {
+      kind: "demo",
+      fileName,
+      section,
+    })
+  })
+})
+
+export function getKnowledgeNodeSource(nodeId: string): KnowledgeNodeSource {
+  return (
+    KNOWLEDGE_SOURCE_BY_NODE_ID.get(nodeId) ?? {
+      kind: "demo",
+      fileName: "知识库编译索引（系统生成）",
+      section: "未分类编译节点",
+    }
+  )
+}
+
+export function getKnowledgeNodeDemoExcerpt(node: KnowledgeNode) {
+  const source = getKnowledgeNodeSource(node.id)
+
+  return [
+    "以下内容用于演示 Wiki 节点完成溯源后的阅读形态，并非源文件中的逐字原文。",
+    `围绕「${node.label}」，当前节点的整理结论是：${node.description}`,
+    `在「${source.section}」这一整理主题下，阅读材料时需要先确认信息出现的章节、表格或段落，并同步核对政策适用范围、数据年份、地区差异、院校口径与更新时间，避免脱离上下文，只凭一个数字或一句结论作出判断。`,
+    "如果资料来自政策公告、招生简章、院校介绍或分数统计，还应继续检查发布机构、发布日期、专业与批次条件，以及是否存在补充通知或后续修订；涉及趋势判断时，则需要同时观察连续年份的位次变化、招生计划变化和样本口径，区分稳定规律、短期波动与异常值。",
+    `编译为「${node.label}」节点后，这段资料会与相邻概念建立连接，用来说明该信息为什么重要、会影响哪些升学选择，以及与其他节点之间是支持、补充还是约束关系。用户查看关联节点时，应能沿着这些连接返回上下游证据，而不是只看到脱离来源的标签。`,
+    "当前演示数据尚未保存真实页码、段落编号和逐字摘录，因此不能作为正式引用。接入知识库后，此处应替换为可返回原文件的真实片段，并显示文件名、章节标题、页码或段落锚点、版本时间及引用范围，确保每个结论都能够被定位、核对上下文并追溯来源。",
+  ].join("")
+}
+
 export const KNOWLEDGE_EDGES = [
   ["framework", "school"],
   ["framework", "tier"],
@@ -289,11 +417,56 @@ export const KNOWLEDGE_EDGES = [
   ["review", "update-time"],
 ] as const
 
+export const MIN_SELECTED_RELATED_NODES = 20
+
+const KNOWLEDGE_ADJACENCY = new Map(
+  KNOWLEDGE_NODES.map((node) => [node.id, [] as string[]])
+)
+
+KNOWLEDGE_EDGES.forEach(([from, to]) => {
+  KNOWLEDGE_ADJACENCY.get(from)?.push(to)
+  KNOWLEDGE_ADJACENCY.get(to)?.push(from)
+})
+
 export function getRelatedNodeIds(selectedId: string) {
-  const relatedIds = new Set<string>()
-  KNOWLEDGE_EDGES.forEach(([from, to]) => {
-    if (from === selectedId) relatedIds.add(to)
-    if (to === selectedId) relatedIds.add(from)
-  })
+  return new Set(KNOWLEDGE_ADJACENCY.get(selectedId) ?? [])
+}
+
+export function getExpandedRelatedNodeIds(
+  selectedId: string,
+  minimumCount = MIN_SELECTED_RELATED_NODES
+) {
+  if (!KNOWLEDGE_ADJACENCY.has(selectedId)) return []
+
+  const targetCount = Math.min(
+    Math.max(0, minimumCount),
+    KNOWLEDGE_NODES.length - 1
+  )
+  const visited = new Set([selectedId])
+  const queue = [selectedId]
+  const relatedIds: string[] = []
+
+  while (queue.length && relatedIds.length < targetCount) {
+    const currentId = queue.shift()!
+    const neighbors = KNOWLEDGE_ADJACENCY.get(currentId) ?? []
+
+    for (const neighborId of neighbors) {
+      if (visited.has(neighborId)) continue
+      visited.add(neighborId)
+      queue.push(neighborId)
+      relatedIds.push(neighborId)
+      if (relatedIds.length >= targetCount) break
+    }
+  }
+
+  if (relatedIds.length < targetCount) {
+    for (const node of KNOWLEDGE_NODES) {
+      if (visited.has(node.id)) continue
+      visited.add(node.id)
+      relatedIds.push(node.id)
+      if (relatedIds.length >= targetCount) break
+    }
+  }
+
   return relatedIds
 }

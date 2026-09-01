@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import {
   useCallback,
@@ -8,39 +8,37 @@ import {
   type CSSProperties,
   type MouseEvent as ReactMouseEvent,
   type ReactNode,
-} from "react";
-import { Blocks, Clipboard, GitBranch, Upload } from "lucide-react";
+} from "react"
+import Image from "next/image"
+import { Blocks, Clipboard, GitBranch, Upload } from "lucide-react"
 import {
   AnimatePresence,
   motion,
   useMotionValue,
   useReducedMotion,
   useSpring,
-} from "motion/react";
+} from "motion/react"
 import {
   AppleSpotlight,
   type SpotlightShortcut,
-} from "@/components/ui/apple-spotlight";
-import {
-  PAGE0D_ASSET_BASE,
-  preloadPage0dImages,
-} from "./slide-page0d-assets";
+} from "@/components/ui/apple-spotlight"
+import { PAGE0D_ASSET_BASE, preloadPage0dImages } from "./slide-page0d-assets"
 
-const P = PAGE0D_ASSET_BASE;
-const IMG_DAXUE = `${P}/daxue.png`;
-const IMG_JIAOYUBU = `${P}/jiaoyubu.png`;
-const IMG_985 = `${P}/985.png`;
-const IMG_211 = `${P}/211.png`;
-const IMG_ZHIYUAN = `${P}/zhiyuan.png`;
-const IMG_HAPPY_HORSE = `${P}/happy-horse.png`;
-const IMG_BEIKAO_1 = `${P}/beikao-1.png`;
-const IMG_XUKE = `${P}/xuke.png`;
-const IMG_PROVINCE = `${P}/province.png`;
-const IMG_PROVINCE_TOTAL = `${P}/province-total.png`;
-const IMG_NOTION = `${P}/notion.png`;
-const IMG_FEISHU = `${P}/feishu.png`;
-const IMG_FULL_PAGE = `${P}/knowledge-base-full.png`;
-const MAPPING_EASE = [0.22, 1, 0.36, 1] as const;
+const P = PAGE0D_ASSET_BASE
+const IMG_DAXUE = `${P}/daxue.png`
+const IMG_JIAOYUBU = `${P}/jiaoyubu.png`
+const IMG_985 = `${P}/985.png`
+const IMG_211 = `${P}/211.png`
+const IMG_ZHIYUAN = `${P}/zhiyuan.png`
+const IMG_HAPPY_HORSE = `${P}/happy-horse.png`
+const IMG_BEIKAO_1 = `${P}/beikao-1.png`
+const IMG_XUKE = `${P}/xuke.png`
+const IMG_PROVINCE = `${P}/province.png`
+const IMG_PROVINCE_TOTAL = `${P}/province-total.png`
+const IMG_NOTION = `${P}/notion.png`
+const IMG_FEISHU = `${P}/feishu.png`
+const IMG_FULL_PAGE = `${P}/knowledge-base-full.png`
+const MAPPING_EASE = [0.22, 1, 0.36, 1] as const
 const SOURCE_SHORTCUTS: SpotlightShortcut[] = [
   {
     label: "上传本地文件",
@@ -51,19 +49,90 @@ const SOURCE_SHORTCUTS: SpotlightShortcut[] = [
   {
     label: "粘贴网页或长文本",
     link: "#web-content",
+    action: "paste-content",
+    inputPlaceholder: "粘贴网页链接或长文本",
     icon: <Clipboard aria-hidden="true" />,
   },
   {
     label: "连接第三方应用",
     link: "#third-party-app",
+    action: "connect-app",
+    inputPlaceholder: "搜索 Notion、飞书或其他应用",
     icon: <Blocks aria-hidden="true" />,
+    sourceOptions: [
+      {
+        value: "baidu-drive",
+        label: "百度网盘",
+        icon: (
+          <Image
+            src="/images/page0d/source-icons/baidu-netdisk.png"
+            alt=""
+            aria-hidden="true"
+            width={20}
+            height={20}
+            draggable={false}
+            className="size-4 object-contain"
+          />
+        ),
+      },
+      {
+        value: "yuque",
+        label: "语雀文档",
+        compactLabel: "语雀",
+        icon: (
+          <Image
+            src="/images/page0d/source-icons/yuque-docs.png"
+            alt=""
+            aria-hidden="true"
+            width={20}
+            height={20}
+            draggable={false}
+            className="size-4 object-contain"
+          />
+        ),
+      },
+      {
+        value: "feishu",
+        label: "飞书文档",
+        compactLabel: "飞书",
+        icon: (
+          <Image
+            src="/images/page0d/source-icons/feishu-docs.png"
+            alt=""
+            aria-hidden="true"
+            width={20}
+            height={20}
+            draggable={false}
+            className="size-4 object-contain"
+          />
+        ),
+      },
+      {
+        value: "dingtalk",
+        label: "钉钉文档",
+        compactLabel: "钉钉",
+        icon: (
+          <Image
+            src="/images/page0d/source-icons/dingtalk-docs.png"
+            alt=""
+            aria-hidden="true"
+            width={20}
+            height={20}
+            draggable={false}
+            className="size-4 object-contain"
+          />
+        ),
+      },
+    ],
   },
   {
     label: "导入 Git 仓库",
     link: "#git-repository",
+    action: "git-import",
+    inputPlaceholder: "粘贴 Git 仓库地址",
     icon: <GitBranch aria-hidden="true" />,
   },
-];
+]
 const LIGHT_SPOTLIGHT_TOKENS = {
   "--background": "oklch(1 0 0)",
   "--foreground": "#111111",
@@ -72,9 +141,17 @@ const LIGHT_SPOTLIGHT_TOKENS = {
   "--muted-foreground": "oklch(0.5 0 0)",
   "--border": "oklch(0.9 0 0)",
   "--ring": "oklch(0.55 0 0)",
-} as CSSProperties;
+} as CSSProperties
 
-export function KnowledgeBaseSpotlight() {
+export function KnowledgeBaseSpotlight({
+  onFileUploaded,
+}: {
+  onFileUploaded?: (file?: File) => void
+}) {
+  const handleViewTabChange = useCallback((value: string) => {
+    if (value === "graph") window.location.assign("/24")
+  }, [])
+
   return (
     <div style={{ width: "100%", ...LIGHT_SPOTLIGHT_TOKENS }}>
       <AppleSpotlight
@@ -85,10 +162,12 @@ export function KnowledgeBaseSpotlight() {
           { label: "图谱", value: "graph" },
         ]}
         defaultView="materials"
+        onViewTabChange={handleViewTabChange}
+        onFileChange={onFileUploaded}
         fileAccept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.md,.csv,.json,.zip,image/*"
       />
     </div>
-  );
+  )
 }
 
 const PREVIEW_SCREENSHOT_CARDS = [
@@ -101,7 +180,7 @@ const PREVIEW_SCREENSHOT_CARDS = [
   { left: 78, top: 228 },
   { left: 244.5, top: 228 },
   { left: 411.75, top: 228 },
-] as const;
+] as const
 
 // ─── Section header ───────────────────────────────────────────────────────────
 function SectionLabel({
@@ -109,12 +188,19 @@ function SectionLabel({
   title,
   count,
 }: {
-  num: string;
-  title: string;
-  count: string;
+  num: string
+  title: string
+  count: string
 }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 6.375, width: "100%" }}>
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 6.375,
+        width: "100%",
+      }}
+    >
       <span
         style={{
           fontFamily: "Impact, 'Arial Black', sans-serif",
@@ -169,7 +255,7 @@ function SectionLabel({
         {count}
       </span>
     </div>
-  );
+  )
 }
 
 // ─── File card ────────────────────────────────────────────────────────────────
@@ -179,10 +265,10 @@ function FileCard({
   gradient,
   imgSrc,
 }: {
-  title: string;
-  desc: string;
-  gradient: string;
-  imgSrc: string;
+  title: string
+  desc: string
+  gradient: string
+  imgSrc: string
 }) {
   return (
     <div
@@ -217,7 +303,15 @@ function FileCard({
         }}
       >
         {/* Icon image */}
-        <div style={{ position: "absolute", left: 3.5, top: 3.5, width: 48, height: 48 }}>
+        <div
+          style={{
+            position: "absolute",
+            left: 3.5,
+            top: 3.5,
+            width: 48,
+            height: 48,
+          }}
+        >
           <img
             alt=""
             src={imgSrc}
@@ -293,21 +387,135 @@ function FileCard({
         }}
       />
     </div>
-  );
+  )
+}
+
+function LoadingFileCard({ title }: { title: string }) {
+  return (
+    <div
+      style={{
+        width: 198.5,
+        height: 184,
+        borderRadius: 12,
+        border: "0.5px solid rgba(0,0,0,0.08)",
+        position: "relative",
+        flexShrink: 0,
+        overflow: "hidden",
+        background:
+          "linear-gradient(137.09deg, rgb(255, 248, 244) 0%, rgb(255, 190, 179) 100%)",
+      }}
+    >
+      <motion.div
+        aria-hidden
+        animate={{ opacity: [0.18, 0.46, 0.18], x: ["-42%", "108%"] }}
+        transition={{ duration: 1.15, repeat: Infinity, ease: "easeInOut" }}
+        style={{
+          position: "absolute",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          width: "54%",
+          background:
+            "linear-gradient(90deg, transparent, rgba(255,255,255,0.72), transparent)",
+          transform: "skewX(-14deg)",
+        }}
+      />
+      <div
+        style={{
+          position: "absolute",
+          left: 11,
+          top: 11,
+          width: 32,
+          height: 32,
+          borderRadius: 9,
+          background: "rgba(255,255,255,0.55)",
+          boxShadow:
+            "inset 0 1px 0 rgba(255,255,255,0.72), 0 6px 14px rgba(255,91,87,0.18)",
+        }}
+      >
+        <motion.span
+          aria-hidden
+          animate={{ rotate: 360 }}
+          transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
+          style={{
+            position: "absolute",
+            left: 8,
+            top: 8,
+            width: 16,
+            height: 16,
+            borderRadius: "50%",
+            border: "2px solid rgba(229,43,63,0.22)",
+            borderTopColor: "#e52b3f",
+          }}
+        />
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          left: 16,
+          right: 16,
+          bottom: 18,
+          display: "flex",
+          flexDirection: "column",
+          gap: 8,
+        }}
+      >
+        <p
+          style={{
+            margin: 0,
+            color: "#111",
+            fontSize: 14,
+            fontWeight: 600,
+            lineHeight: "22px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {title}
+        </p>
+        <p
+          style={{
+            margin: 0,
+            color: "#8b6666",
+            fontSize: 12,
+            fontWeight: 400,
+            lineHeight: "20px",
+          }}
+        >
+          正在解析文件并生成图谱节点...
+        </p>
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          inset: 0,
+          borderRadius: 12,
+          pointerEvents: "none",
+          boxShadow:
+            "inset 1.5px 1.5px 3px rgba(0,0,0,0.04), inset -1.5px -1.5px 3px rgba(255,255,255,0.5)",
+        }}
+      />
+    </div>
+  )
 }
 
 function PreviewSupplementCard({
   left,
+  top = 228,
   title,
   desc,
   gradient,
   imgSrc,
+  loading = false,
 }: {
-  left: number;
-  title: string;
-  desc: string;
-  gradient: string;
-  imgSrc: string;
+  left: number
+  top?: number
+  title: string
+  desc: string
+  gradient: string
+  imgSrc: string
+  loading?: boolean
 }) {
   return (
     <div
@@ -315,20 +523,24 @@ function PreviewSupplementCard({
       style={{
         position: "absolute",
         left,
-        top: 228,
+        top,
         zIndex: 2,
         transform: "scale(0.75)",
         transformOrigin: "left top",
       }}
     >
-      <FileCard
-        title={title}
-        desc={desc}
-        gradient={gradient}
-        imgSrc={imgSrc}
-      />
+      {loading ? (
+        <LoadingFileCard title={title} />
+      ) : (
+        <FileCard
+          title={title}
+          desc={desc}
+          gradient={gradient}
+          imgSrc={imgSrc}
+        />
+      )}
     </div>
-  );
+  )
 }
 
 function PreviewHoverCard({
@@ -337,41 +549,41 @@ function PreviewHoverCard({
   reducedMotion,
   children,
 }: {
-  left: number;
-  top: number;
-  reducedMotion: boolean;
-  children: ReactNode;
+  left: number
+  top: number
+  reducedMotion: boolean
+  children: ReactNode
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [glowPosition, setGlowPosition] = useState({ x: 50, y: 50 });
-  const rotateXTarget = useMotionValue(0);
-  const rotateYTarget = useMotionValue(0);
-  const rotateX = useSpring(rotateXTarget, { stiffness: 300, damping: 18 });
-  const rotateY = useSpring(rotateYTarget, { stiffness: 300, damping: 18 });
+  const cardRef = useRef<HTMLDivElement>(null)
+  const [isHovered, setIsHovered] = useState(false)
+  const [glowPosition, setGlowPosition] = useState({ x: 50, y: 50 })
+  const rotateXTarget = useMotionValue(0)
+  const rotateYTarget = useMotionValue(0)
+  const rotateX = useSpring(rotateXTarget, { stiffness: 300, damping: 18 })
+  const rotateY = useSpring(rotateYTarget, { stiffness: 300, damping: 18 })
 
   const handleMove = useCallback(
     (event: ReactMouseEvent<HTMLDivElement>) => {
-      const bounds = cardRef.current?.getBoundingClientRect();
-      if (!bounds) return;
+      const bounds = cardRef.current?.getBoundingClientRect()
+      if (!bounds) return
 
-      const x = (event.clientX - bounds.left) / bounds.width;
-      const y = (event.clientY - bounds.top) / bounds.height;
-      setGlowPosition({ x: x * 100, y: y * 100 });
+      const x = (event.clientX - bounds.left) / bounds.width
+      const y = (event.clientY - bounds.top) / bounds.height
+      setGlowPosition({ x: x * 100, y: y * 100 })
 
       if (!reducedMotion) {
-        rotateXTarget.set(-(y - 0.5) * 12);
-        rotateYTarget.set((x - 0.5) * 12);
+        rotateXTarget.set(-(y - 0.5) * 12)
+        rotateYTarget.set((x - 0.5) * 12)
       }
     },
     [reducedMotion, rotateXTarget, rotateYTarget]
-  );
+  )
 
   const handleLeave = useCallback(() => {
-    setIsHovered(false);
-    rotateXTarget.set(0);
-    rotateYTarget.set(0);
-  }, [rotateXTarget, rotateYTarget]);
+    setIsHovered(false)
+    rotateXTarget.set(0)
+    rotateYTarget.set(0)
+  }, [rotateXTarget, rotateYTarget])
 
   return (
     <div
@@ -472,7 +684,7 @@ function PreviewHoverCard({
         />
       </motion.div>
     </div>
-  );
+  )
 }
 
 function PreviewScreenshotHoverCard({
@@ -480,9 +692,9 @@ function PreviewScreenshotHoverCard({
   top,
   reducedMotion,
 }: {
-  left: number;
-  top: number;
-  reducedMotion: boolean;
+  left: number
+  top: number
+  reducedMotion: boolean
 }) {
   return (
     <PreviewHoverCard left={left} top={top} reducedMotion={reducedMotion}>
@@ -497,19 +709,40 @@ function PreviewScreenshotHoverCard({
         }}
       />
     </PreviewHoverCard>
-  );
+  )
 }
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function SlidePage0d() {
-  const [isPreviewingFullPage, setIsPreviewingFullPage] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
-  const motionDuration = prefersReducedMotion ? 0 : 0.72;
-  const fadeDuration = prefersReducedMotion ? 0 : 0.24;
+  const [isPreviewingFullPage, setIsPreviewingFullPage] = useState(false)
+  const [uploadedFileName, setUploadedFileName] = useState("")
+  const [isUploadedFileLoading, setIsUploadedFileLoading] = useState(false)
+  const loadingTimerRef = useRef<number | null>(null)
+  const prefersReducedMotion = useReducedMotion()
+  const motionDuration = prefersReducedMotion ? 0 : 0.72
+  const fadeDuration = prefersReducedMotion ? 0 : 0.24
+
+  const handleFileUploaded = useCallback((file?: File) => {
+    setUploadedFileName(file?.name || "")
+    if (loadingTimerRef.current) window.clearTimeout(loadingTimerRef.current)
+    if (file) {
+      setIsUploadedFileLoading(true)
+      loadingTimerRef.current = window.setTimeout(() => {
+        setIsUploadedFileLoading(false)
+        loadingTimerRef.current = null
+      }, 1200)
+    } else {
+      setIsUploadedFileLoading(false)
+      loadingTimerRef.current = null
+    }
+  }, [])
 
   useEffect(() => {
-    preloadPage0dImages();
-  }, []);
+    preloadPage0dImages()
+    return () => {
+      if (loadingTimerRef.current) window.clearTimeout(loadingTimerRef.current)
+    }
+  }, [])
 
   return (
     <div
@@ -519,20 +752,15 @@ export default function SlidePage0d() {
         height: "100%",
         background: "#070707",
         overflow: "hidden",
-        fontFamily: "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif",
+        fontFamily:
+          "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif",
       }}
       data-testid="knowledge-base-slide"
       role="group"
       tabIndex={0}
-      aria-label="知识库资料上传流程，悬停或聚焦可查看完整知识库界面"
+      aria-label="知识库资料上传流程，悬停或聚焦后固定展示完整知识库界面"
       onMouseEnter={() => setIsPreviewingFullPage(true)}
-      onMouseLeave={() => setIsPreviewingFullPage(false)}
       onFocus={() => setIsPreviewingFullPage(true)}
-      onBlur={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-          setIsPreviewingFullPage(false);
-        }
-      }}
     >
       {/* Left red glow */}
       <div
@@ -552,7 +780,6 @@ export default function SlidePage0d() {
           backgroundImage: `url("data:image/svg+xml;utf8,<svg viewBox='0 0 240 1000' xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'><rect x='0' y='0' height='100%' width='100%' fill='url(%23grad)' opacity='1'/><defs><radialGradient id='grad' gradientUnits='userSpaceOnUse' cx='0' cy='0' r='10' gradientTransform='matrix(0 -111.8 -26.833 0 240 500)'><stop stop-color='rgba(200,8,8,0.26)' offset='0'/><stop stop-color='rgba(180,0,0,0.1)' offset='0.45'/><stop stop-color='rgba(0,0,0,0)' offset='0.75'/></radialGradient></defs></svg>")`,
         }}
       />
-
 
       {/* ── Header (Figma: top=184, centered) ────────────── */}
       <motion.div
@@ -588,7 +815,14 @@ export default function SlidePage0d() {
           >
             04
           </span>
-          <div style={{ width: 28, height: 1, background: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
+          <div
+            style={{
+              width: 28,
+              height: 1,
+              background: "rgba(255,255,255,0.2)",
+              flexShrink: 0,
+            }}
+          />
           <span
             style={{
               fontFamily: "'PingFang SC', sans-serif",
@@ -626,7 +860,8 @@ export default function SlidePage0d() {
             whiteSpace: "normal",
           }}
         >
-          本地文件、网页长文本、第三方应用与 Git 仓库统一接入，保留来源与上下文，为后续 Wiki 编译建立可信基础。
+          本地文件、网页长文本、第三方应用与 Git
+          仓库统一接入，保留来源与上下文，为后续 Wiki 编译建立可信基础。
         </p>
       </motion.div>
 
@@ -946,6 +1181,17 @@ export default function SlidePage0d() {
               gradient="linear-gradient(137.17deg, rgb(255, 255, 255) 0%, rgb(135, 185, 243) 100%)"
               imgSrc={IMG_FEISHU}
             />
+            {uploadedFileName && (
+              <PreviewSupplementCard
+                left={78}
+                top={384}
+                title={uploadedFileName}
+                desc="刚刚上传的本地 PDF 文件，已进入资料区等待解析与图谱编译。"
+                gradient="linear-gradient(137.09deg, rgb(255, 248, 244) 0%, rgb(255, 190, 179) 100%)"
+                imgSrc={IMG_DAXUE}
+                loading={isUploadedFileLoading}
+              />
+            )}
             <div
               data-preview-supplement="Happy Horse"
               style={{
@@ -1046,6 +1292,29 @@ export default function SlidePage0d() {
                 }}
               />
             </PreviewHoverCard>
+            {uploadedFileName && !isUploadedFileLoading && (
+              <PreviewHoverCard
+                left={78}
+                top={384}
+                reducedMotion={Boolean(prefersReducedMotion)}
+              >
+                <div
+                  style={{
+                    width: 198.5,
+                    height: 184,
+                    transform: "scale(0.75)",
+                    transformOrigin: "left top",
+                  }}
+                >
+                  <FileCard
+                    title={uploadedFileName}
+                    desc="刚刚上传的本地 PDF 文件，已进入资料区等待解析与图谱编译。"
+                    gradient="linear-gradient(137.09deg, rgb(255, 248, 244) 0%, rgb(255, 190, 179) 100%)"
+                    imgSrc={IMG_DAXUE}
+                  />
+                </div>
+              </PreviewHoverCard>
+            )}
 
             {/* Merge search and import shortcuts into a single Spotlight-style
                 control, replacing the two static rows captured in the image. */}
@@ -1073,7 +1342,7 @@ export default function SlidePage0d() {
                 pointerEvents: "auto",
               }}
             >
-              <KnowledgeBaseSpotlight />
+              <KnowledgeBaseSpotlight onFileUploaded={handleFileUploaded} />
             </div>
 
             {/* Hide the static Figma view switcher; its state now lives inside
@@ -1145,5 +1414,5 @@ export default function SlidePage0d() {
         )}
       </AnimatePresence>
     </div>
-  );
+  )
 }

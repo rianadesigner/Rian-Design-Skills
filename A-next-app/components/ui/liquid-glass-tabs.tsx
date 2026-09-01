@@ -15,6 +15,7 @@ export interface LiquidGlassTabsProps {
   defaultValue?: string
   className?: string
   variant?: "floating" | "embedded"
+  onValueChange?: (value: string) => void
 }
 
 export function LiquidGlassTabs({
@@ -22,6 +23,7 @@ export function LiquidGlassTabs({
   defaultValue,
   className,
   variant = "floating",
+  onValueChange,
 }: LiquidGlassTabsProps) {
   const [activeValue, setActiveValue] = React.useState(
     defaultValue ?? items[0]?.value
@@ -61,7 +63,10 @@ export function LiquidGlassTabs({
             type="button"
             role="tab"
             aria-selected={isActive}
-            onClick={() => setActiveValue(item.value)}
+            onClick={() => {
+              setActiveValue(item.value)
+              onValueChange?.(item.value)
+            }}
             className={cn(
               "relative flex h-8 min-w-12 items-center justify-center rounded-full px-3 text-xs font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-ring",
               isActive ? "text-foreground" : "text-muted-foreground"

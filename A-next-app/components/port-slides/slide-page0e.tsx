@@ -3,15 +3,19 @@
 import Image from "next/image"
 import dynamic from "next/dynamic"
 import { useCallback, useState, type CSSProperties } from "react"
-import { Blocks, Clipboard, GitBranch, Upload } from "lucide-react"
+import { Blocks, Clipboard, Ellipsis, GitBranch, Upload } from "lucide-react"
 import {
   AppleSpotlight,
   type SpotlightShortcut,
 } from "@/components/ui/apple-spotlight"
 import {
+  getExpandedRelatedNodeIds,
+  getKnowledgeNodeDemoExcerpt,
+  getKnowledgeNodeSource,
   getRelatedNodeIds,
   KNOWLEDGE_EDGES,
   KNOWLEDGE_NODES,
+  MIN_SELECTED_RELATED_NODES,
 } from "./knowledge-graph-data"
 
 const KnowledgeGraphSphere = dynamic(() => import("./knowledge-graph-sphere"), {
@@ -26,6 +30,7 @@ const PRESENTATION_UI_FRAME = {
   height: 645,
   borderRadius: 14,
 } as const
+const DETAIL_DRAWER_WIDTH = 218
 const NAV_ASSET_BASE = "/images/page08/navigation"
 const LIGHT_SPOTLIGHT_TOKENS = {
   "--background": "oklch(1 0 0)",
@@ -38,9 +43,9 @@ const LIGHT_SPOTLIGHT_TOKENS = {
 } as CSSProperties
 const GRAPH_SPOTLIGHT_SURFACE_STYLE = {
   background:
-    "linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.70) 48%, rgba(255,255,255,0.52) 100%)",
-  backdropFilter: "blur(32px) saturate(1.22)",
-  WebkitBackdropFilter: "blur(32px) saturate(1.22)",
+    "linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(255,255,255,0.94) 48%, rgba(255,255,255,0.88) 100%)",
+  backdropFilter: "blur(48px) saturate(1.08)",
+  WebkitBackdropFilter: "blur(48px) saturate(1.08)",
   boxShadow:
     "inset 0 1.5px 1px rgba(255,255,255,1), inset 0 -1px 1px rgba(255,255,255,0.5), 0 2px 6px rgba(15,23,42,0.06), 0 16px 36px rgba(15,23,42,0.12)",
 } satisfies CSSProperties
@@ -318,12 +323,18 @@ export default function SlidePage0e({
   const selectedNode = KNOWLEDGE_NODES.find((node) => node.id === selectedId)
   const selected = selectedNode ?? KNOWLEDGE_NODES[0]
   const selectedRelatedNodeIds = selectedNode
-    ? getRelatedNodeIds(selectedNode.id)
-    : undefined
-  const selectedRelatedNodes = selectedRelatedNodeIds
-    ? KNOWLEDGE_NODES.filter((node) => selectedRelatedNodeIds.has(node.id))
+    ? embedded
+      ? Array.from(getRelatedNodeIds(selectedNode.id))
+      : getExpandedRelatedNodeIds(selectedNode.id, MIN_SELECTED_RELATED_NODES)
     : []
+  const selectedRelatedNodes = selectedRelatedNodeIds.flatMap((nodeId) => {
+    const node = KNOWLEDGE_NODES.find((item) => item.id === nodeId)
+    return node ? [node] : []
+  })
   const selectedRelations = selectedRelatedNodes.map((node) => node.label)
+  const visibleRelatedNodes = selectedRelatedNodes.slice(0, 4)
+  const selectedSource = getKnowledgeNodeSource(selected.id)
+  const selectedSourceExcerpt = getKnowledgeNodeDemoExcerpt(selected)
   const selectedFolder =
     FOLDER_OPTIONS.find((folder) => folder.id === selectedFolderId) ??
     FOLDER_OPTIONS[0]
@@ -343,6 +354,10 @@ export default function SlidePage0e({
   const handleNodeOpen = useCallback((nodeId: string) => {
     window.sessionStorage.setItem("wiki:selected-node", nodeId)
     window.location.assign("/09")
+  }, [])
+
+  const handleViewTabChange = useCallback((value: string) => {
+    if (value === "materials") window.location.assign("/23")
   }, [])
 
   return (
@@ -490,7 +505,7 @@ export default function SlidePage0e({
             className="pointer-events-none absolute"
             style={{
               left: embedded ? 71 : 66,
-              right: 0,
+              right: embedded ? 0 : selectedNode ? DETAIL_DRAWER_WIDTH : 0,
               top: 0,
               bottom: 0,
               backgroundImage: "url('/images/page0-landing/bg-grid.svg')",
@@ -510,7 +525,7 @@ export default function SlidePage0e({
             className="wiki-graph-flat absolute overflow-hidden"
             style={{
               left: embedded ? 71 : 66,
-              right: 0,
+              right: embedded ? 0 : selectedNode ? DETAIL_DRAWER_WIDTH : 0,
               top: 0,
               bottom: 0,
             }}
@@ -522,10 +537,11 @@ export default function SlidePage0e({
               onSelect={handleNodeSelect}
               onOpen={handleNodeOpen}
               detailLevel="rich"
-              lineIntensity={0.56}
-              ambientIntensity={0.72}
+              lineIntensity={1}
+              ambientIntensity={1}
               filterToRelated={!embedded}
               clearSelectionOnBackground={!embedded}
+              minimumRelatedNodes={embedded ? 0 : MIN_SELECTED_RELATED_NODES}
             />
           </div>
           <WikiSidebar />
@@ -670,7 +686,6 @@ export default function SlidePage0e({
                   ? `节点详情：${selectedNode.label}`
                   : `知识图谱节点概览：${selectedFolder.files} 个资料、${KNOWLEDGE_NODES.length} 个节点、${KNOWLEDGE_EDGES.length} 条关系`
               }
-              aria-live="polite"
               data-testid={
                 selectedNode
                   ? "knowledge-node-detail-card"
@@ -685,19 +700,21 @@ export default function SlidePage0e({
               style={
                 selectedNode
                   ? {
-                      right: 18,
-                      top: 18,
-                      bottom: 18,
+                      right: 0,
+                      top: 0,
+                      bottom: 0,
                       zIndex: 43,
-                      width: 296,
+                      width: DETAIL_DRAWER_WIDTH,
                       padding: 0,
                       boxSizing: "border-box",
-                      borderRadius: 17,
+                      borderRadius: `0 ${PRESENTATION_UI_FRAME.borderRadius}px ${PRESENTATION_UI_FRAME.borderRadius}px 0`,
                       color: "#202226",
-                      background: "rgba(255,255,255,0.9)",
-                      border: "1px solid rgba(220,224,230,0.94)",
+                      background:
+                        "linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(252,253,255,0.96) 100%)",
+                      border: "none",
+                      borderLeft: "1px solid rgba(220,224,230,0.94)",
                       boxShadow:
-                        "0 18px 48px rgba(25,30,38,0.14), 0 2px 8px rgba(25,30,38,0.05)",
+                        "inset 1px 0 0 rgba(255,255,255,0.86), -2px 0 8px rgba(25,30,38,0.025)",
                       backdropFilter: "blur(18px) saturate(1.08)",
                       WebkitBackdropFilter: "blur(18px) saturate(1.08)",
                     }
@@ -724,26 +741,12 @@ export default function SlidePage0e({
                 <>
                   <section
                     aria-labelledby="tag-detail-heading"
-                    className="relative shrink-0"
+                    className="relative flex min-h-0 flex-1 flex-col"
                     style={{
-                      minHeight: 174,
-                      padding: "16px 17px 18px",
+                      padding: "16px 14px 11px",
                       boxSizing: "border-box",
                     }}
                   >
-                    <span
-                      aria-hidden
-                      className="absolute"
-                      style={{
-                        left: 0,
-                        top: 54,
-                        width: 2,
-                        height: 42,
-                        borderRadius: 999,
-                        background: "#5c5cff",
-                      }}
-                    />
-
                     <div className="flex items-center justify-between gap-3">
                       <h2
                         id="tag-detail-heading"
@@ -755,7 +758,7 @@ export default function SlidePage0e({
                           letterSpacing: 0.2,
                         }}
                       >
-                        标签详情
+                        {selectedNode.label}
                       </h2>
 
                       <button
@@ -768,8 +771,9 @@ export default function SlidePage0e({
                           height: 26,
                           borderRadius: 13,
                           color: "#686e77",
-                          background: "rgba(246,247,248,0.94)",
-                          border: "1px solid #e5e7ea",
+                          background: "transparent",
+                          border: "none",
+                          boxShadow: "none",
                           fontSize: 16,
                           lineHeight: 1,
                           cursor: "pointer",
@@ -779,42 +783,85 @@ export default function SlidePage0e({
                       </button>
                     </div>
 
-                    <div style={{ marginTop: 14 }}>
-                      <span
-                        style={{
-                          color: "#5c5cff",
-                          fontFamily: "'LogoSC Unbounded Sans', sans-serif",
-                          fontSize: 7.5,
-                          fontWeight: 700,
-                          letterSpacing: 1.05,
-                        }}
-                      >
-                        WIKI NODE
-                      </span>
-                      <h3
-                        style={{
-                          margin: "5px 0 0",
-                          color: "#181a1d",
-                          fontSize: 19,
-                          fontWeight: 700,
-                          lineHeight: 1.28,
-                          letterSpacing: -0.25,
-                        }}
-                      >
-                        {selectedNode.label}
-                      </h3>
-                    </div>
-
-                    <p
+                    <div
+                      className="flex min-h-0 flex-1 flex-col"
                       style={{
                         margin: "9px 0 0",
-                        color: "#747b85",
-                        fontSize: 10,
-                        lineHeight: 1.65,
+                        padding: "9px 10px 10px",
+                        borderRadius: 10,
+                        color: "#535963",
+                        background: "rgba(247,248,250,0.96)",
+                        border: "1px solid #e8eaee",
                       }}
                     >
-                      {selectedNode.description}
-                    </p>
+                      <span
+                        style={{
+                          color: "#7777ee",
+                          fontSize: 7.5,
+                          fontWeight: 750,
+                          letterSpacing: 0.5,
+                        }}
+                      >
+                        演示来源 · 尚未接入原文
+                      </span>
+                      <div
+                        title={selectedSource.fileName}
+                        style={{
+                          marginTop: 3,
+                          color: "#33373d",
+                          fontSize: 9,
+                          fontWeight: 700,
+                          lineHeight: 1.35,
+                          overflowWrap: "anywhere",
+                        }}
+                      >
+                        来源文件 · {selectedSource.fileName}
+                      </div>
+                      <div
+                        style={{
+                          marginTop: 2,
+                          color: "#9298a1",
+                          fontSize: 7.5,
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        整理位置 · {selectedSource.section} /{" "}
+                        {selectedNode.label}
+                      </div>
+                      <div
+                        style={{
+                          marginTop: 7,
+                          color: "#9a6d32",
+                          fontSize: 7.5,
+                          fontWeight: 650,
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        原文段落 · 尚未关联，待知识库回填
+                      </div>
+                      <div
+                        key={selectedNode.id}
+                        role="region"
+                        aria-label={`${selectedNode.label}的来源摘录`}
+                        tabIndex={0}
+                        className="min-h-0 flex-1 overflow-y-auto"
+                        onWheel={(event) => event.stopPropagation()}
+                        style={{
+                          marginTop: 6,
+                          paddingRight: 4,
+                          color: "#666d77",
+                          fontSize: 9,
+                          lineHeight: 1.62,
+                          textWrap: "pretty",
+                          overscrollBehaviorY: "contain",
+                          scrollbarWidth: "thin",
+                        }}
+                      >
+                        <p style={{ margin: 0 }}>
+                          演示摘录（非原文）：{selectedSourceExcerpt}
+                        </p>
+                      </div>
+                    </div>
                   </section>
                 </>
               )}
@@ -822,9 +869,9 @@ export default function SlidePage0e({
               {selectedNode ? (
                 <section
                   aria-labelledby="related-nodes-heading"
-                  className="flex min-h-0 flex-1 flex-col"
+                  className="flex shrink-0 flex-col"
                   style={{
-                    padding: "14px 17px 15px",
+                    padding: "11px 14px 14px",
                     borderTop: "1px solid #eceef1",
                   }}
                 >
@@ -834,62 +881,79 @@ export default function SlidePage0e({
                       style={{
                         margin: 0,
                         color: "#35393f",
-                        fontSize: 10,
+                        fontSize: 8.5,
                         fontWeight: 700,
                         letterSpacing: 0.2,
+                        lineHeight: 1.35,
                       }}
                     >
                       关联节点
                     </h2>
                     <span
-                      style={{ color: "#8f95a0", fontSize: 8, fontWeight: 650 }}
+                      role="img"
+                      aria-label={`还有 ${Math.max(
+                        0,
+                        selectedRelations.length - visibleRelatedNodes.length
+                      )} 个关联节点`}
+                      title={`还有 ${Math.max(
+                        0,
+                        selectedRelations.length - visibleRelatedNodes.length
+                      )} 个关联节点`}
+                      className="flex items-center justify-center"
+                      style={{
+                        width: 20,
+                        height: 20,
+                        borderRadius: 10,
+                        color: "#747a84",
+                        background: "transparent",
+                        border: "none",
+                        boxShadow: "none",
+                      }}
                     >
-                      1 HOP · {selectedRelations.length}
+                      <Ellipsis aria-hidden size={13} strokeWidth={1.8} />
                     </span>
                   </div>
 
                   <div
-                    className="mt-3 flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto"
-                    onWheel={(event) => event.stopPropagation()}
+                    id="related-node-list"
+                    className="mt-2 grid gap-1.5 overflow-hidden"
+                    style={{
+                      gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                    }}
                   >
-                    {selectedRelatedNodes.length ? (
-                      selectedRelatedNodes.map((relationNode) => (
+                    {visibleRelatedNodes.length ? (
+                      visibleRelatedNodes.map((relationNode) => (
                         <button
                           key={relationNode.id}
                           type="button"
                           data-slide-interactive="true"
                           onClick={() => handleNodeSelect(relationNode.id)}
-                          className="flex w-full items-center justify-between text-left"
+                          className="flex min-w-0 items-center gap-1.5 text-left"
                           style={{
-                            minHeight: 38,
-                            padding: "9px 10px",
-                            borderRadius: 10,
+                            height: 24,
+                            padding: "0 8px",
+                            borderRadius: 999,
                             color: "#525761",
                             background: "rgba(247,248,249,0.94)",
                             border: "1px solid #e7e9ec",
-                            fontSize: 9.5,
+                            fontSize: 8.5,
                             fontWeight: 650,
                             cursor: "pointer",
                           }}
                         >
-                          <span className="flex min-w-0 items-center gap-2">
-                            <span
-                              aria-hidden
-                              style={{
-                                width: 5,
-                                height: 5,
-                                flexShrink: 0,
-                                borderRadius: "50%",
-                                background: "#7777ff",
-                                boxShadow: "0 0 0 3px rgba(92,92,255,0.08)",
-                              }}
-                            />
-                            <span className="truncate">
-                              {relationNode.label}
-                            </span>
-                          </span>
-                          <span aria-hidden style={{ color: "#7b7bea" }}>
-                            ↗
+                          <span
+                            aria-hidden
+                            style={{
+                              width: 4,
+                              height: 4,
+                              flexShrink: 0,
+                              borderRadius: "50%",
+                              background: "#7777ff",
+                              boxShadow: "0 0 0 2px rgba(92,92,255,0.08)",
+                            }}
+                          />
+                          <span className="min-w-0 truncate">
+                            {relationNode.label}
                           </span>
                         </button>
                       ))
@@ -899,27 +963,6 @@ export default function SlidePage0e({
                       </span>
                     )}
                   </div>
-
-                  <button
-                    type="button"
-                    onClick={() => handleNodeSelect("")}
-                    className="mt-3 flex w-full shrink-0 items-center justify-between"
-                    style={{
-                      padding: "9px 10px",
-                      borderRadius: 10,
-                      color: "#525761",
-                      background: "#f7f7f9",
-                      border: "1px solid #e8e9ed",
-                      fontSize: 9,
-                      fontWeight: 650,
-                      cursor: "pointer",
-                    }}
-                  >
-                    <span>显示全部节点</span>
-                    <span aria-hidden style={{ color: "#5c5cff" }}>
-                      ↗
-                    </span>
-                  </button>
                 </section>
               ) : (
                 <>
@@ -992,7 +1035,9 @@ export default function SlidePage0e({
             className="pointer-events-auto absolute"
             onPointerDown={(event) => event.stopPropagation()}
             style={{
-              left: embedded ? 216 : selectedNode ? "calc(50% - 124px)" : "50%",
+              left: embedded
+                ? 216
+                : "50%",
               bottom: embedded ? 22 : 16,
               zIndex: 41,
               width: embedded ? 659 : 610,
@@ -1009,6 +1054,7 @@ export default function SlidePage0e({
                 { label: "图谱", value: "graph" },
               ]}
               defaultView="graph"
+              onViewTabChange={handleViewTabChange}
               value={researchQuery}
               onValueChange={setResearchQuery}
             />

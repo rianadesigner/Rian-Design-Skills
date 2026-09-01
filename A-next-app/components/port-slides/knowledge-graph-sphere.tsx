@@ -8,6 +8,7 @@ import {
   CSS2DRenderer,
 } from "three/examples/jsm/renderers/CSS2DRenderer.js"
 import {
+  getExpandedRelatedNodeIds,
   getRelatedNodeIds,
   KNOWLEDGE_EDGES,
   KNOWLEDGE_NODES,
@@ -40,6 +41,10 @@ const easeOutCubic = (value: number) => 1 - Math.pow(1 - value, 3)
 const GRID_LINE_OPACITY = 0.34
 const pointKey = (point: THREE.Vector3) =>
   `${point.x.toFixed(4)},${point.y.toFixed(4)},${point.z.toFixed(4)}`
+const resolveRelatedNodeIds = (nodeId: string, minimumCount: number) =>
+  minimumCount > 0
+    ? new Set(getExpandedRelatedNodeIds(nodeId, minimumCount))
+    : getRelatedNodeIds(nodeId)
 
 export default function KnowledgeGraphSphere({
   selectedId,
@@ -51,6 +56,7 @@ export default function KnowledgeGraphSphere({
   detailLevel = "standard",
   filterToRelated = false,
   clearSelectionOnBackground = false,
+  minimumRelatedNodes = 0,
 }: {
   selectedId: string
   onSelect?: (id: string) => void
@@ -61,6 +67,7 @@ export default function KnowledgeGraphSphere({
   detailLevel?: "standard" | "rich"
   filterToRelated?: boolean
   clearSelectionOnBackground?: boolean
+  minimumRelatedNodes?: number
 }) {
   const scrollOnly = interactionMode === "scroll"
   const richDetail = detailLevel === "rich"
@@ -69,10 +76,17 @@ export default function KnowledgeGraphSphere({
   const hostRef = useRef<HTMLDivElement>(null)
   const nodeVisualsRef = useRef(new Map<string, NodeVisual>())
   const selectedIdRef = useRef(selectedId)
+  const relatedIdsRef = useRef(
+    resolveRelatedNodeIds(selectedId, minimumRelatedNodes)
+  )
 
   useEffect(() => {
     selectedIdRef.current = selectedId
-  }, [selectedId])
+    relatedIdsRef.current = resolveRelatedNodeIds(
+      selectedId,
+      minimumRelatedNodes
+    )
+  }, [minimumRelatedNodes, selectedId])
 
   useEffect(() => {
     const host = hostRef.current
@@ -491,7 +505,7 @@ export default function KnowledgeGraphSphere({
     const getVisibleHit = () => {
       const currentId = selectedIdRef.current
       const relatedIds =
-        filterToRelated && currentId ? getRelatedNodeIds(currentId) : null
+        filterToRelated && currentId ? relatedIdsRef.current : null
 
       return raycaster
         .intersectObjects(nodeMeshes, false)
@@ -827,7 +841,7 @@ export default function KnowledgeGraphSphere({
       graph.updateMatrixWorld(true)
 
       const hasSelection = Boolean(selectedIdRef.current)
-      const relatedIds = getRelatedNodeIds(selectedIdRef.current)
+      const relatedIds = relatedIdsRef.current
       nodeVisuals.forEach(({ mesh, label, delay, degreeScale }, nodeId) => {
         const entrance = reducedMotion
           ? 1
@@ -934,6 +948,7 @@ export default function KnowledgeGraphSphere({
     clearSelectionOnBackground,
     filterToRelated,
     interactionMode,
+    minimumRelatedNodes,
     onOpen,
     onSelect,
     resolvedAmbientIntensity,
@@ -943,7 +958,7 @@ export default function KnowledgeGraphSphere({
   ])
 
   useEffect(() => {
-    const relatedIds = getRelatedNodeIds(selectedId)
+    const relatedIds = relatedIdsRef.current
     const ambient = !selectedId
 
     nodeVisualsRef.current.forEach(({ mesh, label, dot }, nodeId) => {
@@ -1014,7 +1029,7 @@ export default function KnowledgeGraphSphere({
             : "0 0 0 2px rgba(92,92,255,0.1)"
           : "0 0 0 2px rgba(31,34,39,0.05)"
     })
-  }, [richDetail, selectedId])
+  }, [minimumRelatedNodes, richDetail, selectedId])
 
   return <div ref={hostRef} className="absolute inset-0 overflow-hidden" />
 }
