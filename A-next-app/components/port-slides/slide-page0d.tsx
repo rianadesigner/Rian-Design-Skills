@@ -27,14 +27,14 @@ const IMG_JIAOYUBU = `${P}/jiaoyubu.png`
 const IMG_985 = `${P}/985.png`
 const IMG_211 = `${P}/211.png`
 const IMG_ZHIYUAN = `${P}/zhiyuan.png`
-const IMG_HAPPY_HORSE = `${P}/happy-horse.png`
+const IMG_HAPPY_HORSE = `${P}/happy-horse.webp`
 const IMG_BEIKAO_1 = `${P}/beikao-1.png`
 const IMG_XUKE = `${P}/xuke.png`
 const IMG_PROVINCE = `${P}/province.png`
 const IMG_PROVINCE_TOTAL = `${P}/province-total.png`
 const IMG_NOTION = `${P}/notion.png`
 const IMG_FEISHU = `${P}/feishu.png`
-const IMG_FULL_PAGE = `${P}/knowledge-base-full.png`
+const IMG_FULL_PAGE = `${P}/knowledge-base-full.webp`
 const MAPPING_EASE = [0.22, 1, 0.36, 1] as const
 const SOURCE_SHORTCUTS: SpotlightShortcut[] = [
   {
@@ -705,6 +705,8 @@ export default function SlidePage0d() {
   const [isSubmittedTextLoading, setIsSubmittedTextLoading] = useState(false)
   const loadingTimerRef = useRef<number | null>(null)
   const textLoadingTimerRef = useRef<number | null>(null)
+  const stopSlidePointerGestureRef = useRef(false)
+  const stopSlideTouchGestureRef = useRef(false)
   const prefersReducedMotion = useReducedMotion()
   const motionDuration = prefersReducedMotion ? 0 : 0.72
   const fadeDuration = prefersReducedMotion ? 0 : 0.24
@@ -763,6 +765,35 @@ export default function SlidePage0d() {
       aria-label="知识库资料上传流程，悬停或聚焦后固定展示完整知识库界面"
       onMouseEnter={() => setIsPreviewingFullPage(true)}
       onFocus={() => setIsPreviewingFullPage(true)}
+      onPointerDown={(event) => {
+        const target = event.target as Element
+        const shouldCapture =
+          !isPreviewingFullPage ||
+          Boolean(target.closest('[data-testid="knowledge-base-full-preview"]'))
+        stopSlidePointerGestureRef.current = shouldCapture
+        if (shouldCapture) event.stopPropagation()
+        setIsPreviewingFullPage(true)
+      }}
+      onPointerUp={(event) => {
+        if (stopSlidePointerGestureRef.current) event.stopPropagation()
+        stopSlidePointerGestureRef.current = false
+      }}
+      onTouchStart={(event) => {
+        const target = event.target as Element
+        const shouldCapture =
+          !isPreviewingFullPage ||
+          Boolean(target.closest('[data-testid="knowledge-base-full-preview"]'))
+        stopSlideTouchGestureRef.current = shouldCapture
+        if (shouldCapture) event.stopPropagation()
+        setIsPreviewingFullPage(true)
+      }}
+      onTouchMove={(event) => {
+        if (stopSlideTouchGestureRef.current) event.stopPropagation()
+      }}
+      onTouchEnd={(event) => {
+        if (stopSlideTouchGestureRef.current) event.stopPropagation()
+        stopSlideTouchGestureRef.current = false
+      }}
     >
       {/* Left red glow */}
       <div

@@ -6,14 +6,14 @@ export const PAGE0D_IMAGES = [
   `${PAGE0D_ASSET_BASE}/985.png`,
   `${PAGE0D_ASSET_BASE}/211.png`,
   `${PAGE0D_ASSET_BASE}/zhiyuan.png`,
-  `${PAGE0D_ASSET_BASE}/happy-horse.png`,
+  `${PAGE0D_ASSET_BASE}/happy-horse.webp`,
   `${PAGE0D_ASSET_BASE}/beikao-1.png`,
   `${PAGE0D_ASSET_BASE}/xuke.png`,
   `${PAGE0D_ASSET_BASE}/notion.png`,
   `${PAGE0D_ASSET_BASE}/feishu.png`,
   `${PAGE0D_ASSET_BASE}/province.png`,
   `${PAGE0D_ASSET_BASE}/province-total.png`,
-  `${PAGE0D_ASSET_BASE}/knowledge-base-full.png`,
+  `${PAGE0D_ASSET_BASE}/knowledge-base-full.webp`,
 ] as const;
 
 export function preloadPage0dImages() {

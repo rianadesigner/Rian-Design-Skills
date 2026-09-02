@@ -18,7 +18,7 @@ const EDGE_MAX = 96;
 const EDGE_RATIO = 0.055;
 const CAROUSEL_DOWN = 72;
 const SIDE_REVEAL_RATIO = 0.20;
-const KNOWLEDGE_BASE_SCREEN = "/images/page0d/knowledge-base-full.png";
+const KNOWLEDGE_BASE_SCREEN = "/images/page0d/knowledge-base-full.webp";
 
 type PanelDef = {
   view: "landing" | "library" | "graph" | "agent";

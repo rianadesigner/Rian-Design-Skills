@@ -2,7 +2,7 @@
 
 import { motion } from "motion/react";
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design";
-import { EdgeCurlCanvasCarousel } from "./edge-curl-canvas-carousel";
+import SlidePage0 from "./slide-page0";
 
 const FONT    = "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif";
 const FONT_EN = "var(--font-syne, 'Impact', 'Arial Black', sans-serif)";
@@ -25,6 +25,14 @@ const WALL_Y = 178;
 ───────────────────────────────────────────────────────────────────── */
 const CONTOUR_H = Math.round(WALL_Y * 260 / 216); // ≈ 214
 const EDGE_W = DESIGN_W * 0.10;
+const PIPELINE_LABELS = ["海量原始资料", "多格式入库", "Wiki 图谱编译", "多模态输出"] as const;
+const PANEL_L = 120;
+const PANEL_T = 267;
+const PANEL_W = 1200;
+const PANEL_H = 633;
+const INNER_W = 1440;
+const INNER_H = 760;
+const PANEL_SCALE = PANEL_W / INNER_W;
 
 /* ─────────────────────────────────────────────
    Main slide
@@ -72,7 +80,7 @@ export default function SlidePage0a() {
           ══════════════════════════════════════════ */}
       <div style={{
         position: "absolute",
-        top: 104, left: 0, right: 0, zIndex: 17,
+        top: 56, left: 0, right: 0, zIndex: 17,
         display: "flex", flexDirection: "column",
         alignItems: "center", textAlign: "center",
         padding: "0 80px",
@@ -81,12 +89,12 @@ export default function SlidePage0a() {
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}
+          style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}
         >
           <span style={{
             fontSize: 11, fontFamily: FONT_EN, fontWeight: 600,
             letterSpacing: "0.18em", color: "rgba(200,8,8,0.85)",
-          }}>00</span>
+          }}>01</span>
           <span style={{ width: 28, height: 1, background: "rgba(255,255,255,0.2)" }} />
           <span style={{
             fontSize: 10.5, letterSpacing: "0.26em",
@@ -112,7 +120,7 @@ export default function SlidePage0a() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.18, duration: 0.6 }}
           style={{
-            margin: "14px 0 0", maxWidth: 640,
+            margin: "10px 0 0", maxWidth: 640,
             fontSize: 14, fontWeight: 600, lineHeight: 1.75,
             color: "rgba(255,255,255,0.5)", fontFamily: FONT,
             textWrap: "pretty" as never,
@@ -127,30 +135,41 @@ export default function SlidePage0a() {
           initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.30, duration: 0.5 }}
-          style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 20, flexWrap: "wrap", justifyContent: "center" }}
+          style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 10, flexWrap: "wrap", justifyContent: "center" }}
         >
-          {(["海量原始资料", "多格式入库", "Wiki 图谱编译", "多模态输出"] as const).map((label, i, arr) => (
-            <span key={label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{
-                padding: "5px 14px",
-                border: i === 2
-                  ? "1px solid rgba(200,8,8,0.70)"
-                  : "1px solid rgba(255,255,255,0.15)",
-                background: i === 2 ? "rgba(200,8,8,0.18)" : "transparent",
-                fontSize: 13,
-                color: i === 2 ? "#fff" : "rgba(255,255,255,0.75)",
-                fontFamily: FONT,
-                letterSpacing: "0.02em",
-              }}>{label}</span>
-              {i < arr.length - 1 && (
-                <span style={{
-                  fontFamily: FONT_EN, fontSize: 18,
-                  color: i === 1 ? "rgba(200,8,8,0.9)" : "rgba(255,255,255,0.9)",
-                  letterSpacing: "0.12em",
-                }}>{">>>"}</span>
-              )}
-            </span>
-          ))}
+          {PIPELINE_LABELS.map((label, i, arr) => {
+            const isActive = i === 0;
+            return (
+              <span key={label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span
+                  aria-current={isActive ? "step" : undefined}
+                  data-pipeline-index={i}
+                  style={{
+                    padding: "5px 14px",
+                    border: isActive
+                      ? "1px solid rgba(200,8,8,0.70)"
+                      : "1px solid rgba(255,255,255,0.15)",
+                    background: isActive ? "rgba(200,8,8,0.18)" : "transparent",
+                    fontSize: 13,
+                    color: isActive ? "#fff" : "rgba(255,255,255,0.75)",
+                    fontFamily: FONT,
+                    letterSpacing: "0.02em",
+                    transition: "border-color 180ms ease, background-color 180ms ease, color 180ms ease",
+                  }}
+                >
+                  {label}
+                </span>
+                {i < arr.length - 1 && (
+                  <span style={{
+                    fontFamily: FONT_EN, fontSize: 18,
+                    color: i === 0 ? "rgba(200,8,8,0.9)" : "rgba(255,255,255,0.9)",
+                    letterSpacing: "0.12em",
+                    transition: "color 180ms ease",
+                  }}>{">>>"}</span>
+                )}
+              </span>
+            );
+          })}
         </motion.div>
       </div>
 
@@ -175,10 +194,35 @@ export default function SlidePage0a() {
         </svg>
       </div>
 
-      {/* ══════════════════════════════════════════
-          BOTTOM — single-source WebGL carousel
-          ══════════════════════════════════════════ */}
-      <EdgeCurlCanvasCarousel />
+      {/* Same V2 Wiki canvas and scale as the following slide. */}
+      <div
+        style={{
+          position: "absolute",
+          left: PANEL_L,
+          top: PANEL_T,
+          width: PANEL_W,
+          height: PANEL_H,
+          overflow: "hidden",
+          borderRadius: 2,
+          background: "#f8f8f8",
+          boxShadow: "0 4px 24px rgba(0,0,0,0.45)",
+          zIndex: 4,
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            top: 0,
+            width: INNER_W,
+            height: INNER_H,
+            transformOrigin: "top left",
+            transform: `scale(${PANEL_SCALE})`,
+          }}
+        >
+          <SlidePage0 initialView="landing" landingStyle="editorial" />
+        </div>
+      </div>
 
       {/* ── Scroll-down hint ── */}
       <div

@@ -74,12 +74,13 @@ const SOURCE_DIALOG_FILES = [
 
 const SOURCE_DIALOG_WIDTH = 520
 const SOURCE_DIALOG_HEIGHT = 360
+const SOURCE_DIALOG_MAX_SCALE = 0.5
 
 function getSourceDialogScale() {
-  if (typeof window === "undefined") return 1
+  if (typeof window === "undefined") return SOURCE_DIALOG_MAX_SCALE
 
   return Math.min(
-    1,
+    SOURCE_DIALOG_MAX_SCALE,
     (window.innerWidth - 32) / SOURCE_DIALOG_WIDTH,
     (window.innerHeight - 32) / SOURCE_DIALOG_HEIGHT
   )
@@ -134,8 +135,11 @@ export function AppleSpotlight({
   const [selectedDialogFiles, setSelectedDialogFiles] = React.useState<
     string[]
   >([])
-  const [sourceDialogScale, setSourceDialogScale] = React.useState(1)
+  const [sourceDialogScale, setSourceDialogScale] = React.useState(
+    SOURCE_DIALOG_MAX_SCALE
+  )
   const [isMounted, setIsMounted] = React.useState(false)
+  const spotlightRootRef = React.useRef<HTMLDivElement>(null)
   const fileInputRef = React.useRef<HTMLInputElement>(null)
   const value = controlledValue ?? internalValue
   const hasValue = value.trim().length > 0
@@ -168,6 +172,18 @@ export function AppleSpotlight({
     window.addEventListener("resize", updateSourceDialogScale)
 
     return () => window.removeEventListener("resize", updateSourceDialogScale)
+  }, [])
+
+  React.useEffect(() => {
+    const handleOutsidePointerDown = (event: PointerEvent) => {
+      if (spotlightRootRef.current?.contains(event.target as Node)) return
+      setIsHovered(false)
+      setHoveredShortcut(null)
+    }
+
+    document.addEventListener("pointerdown", handleOutsidePointerDown)
+    return () =>
+      document.removeEventListener("pointerdown", handleOutsidePointerDown)
   }, [])
 
   const handleSubmit = () => {
@@ -225,15 +241,30 @@ export function AppleSpotlight({
     <AnimatePresence mode="wait">
       {isOpen && (
         <motion.div
+          ref={spotlightRootRef}
           initial={{ opacity: 0, y: 8, scaleX: 1.04, filter: "blur(8px)" }}
           animate={{ opacity: 1, y: 0, scaleX: 1, filter: "blur(0px)" }}
           exit={{ opacity: 0, y: 6, scaleX: 1.03, filter: "blur(8px)" }}
           transition={{ type: "spring", stiffness: 420, damping: 36 }}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => {
+            if (spotlightRootRef.current?.contains(document.activeElement)) {
+              return
+            }
             setIsHovered(false)
             setHoveredShortcut(null)
           }}
+          onFocusCapture={() => setIsHovered(true)}
+          onBlurCapture={(event) => {
+            if (
+              event.relatedTarget &&
+              !event.currentTarget.contains(event.relatedTarget as Node)
+            ) {
+              setIsHovered(false)
+              setHoveredShortcut(null)
+            }
+          }}
+          onPointerDown={() => setIsHovered(true)}
           className={cn(
             "relative flex w-full items-center justify-end gap-2",
             className

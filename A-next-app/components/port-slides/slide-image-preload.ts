@@ -164,11 +164,7 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/page19/cardB-screenshot.webp",
     "/images/page19/cardC-screenshot.webp",
   ],
-  page20: [
-    "/images/page20/right-top.webp",
-    "/images/page20/right-bottom.webp",
-    "/images/page20/left-panel.jpg",
-  ],
+  page20: ["/images/page20/design-system-overview.jpg"],
   page21: [
     "/images/page21/free-canvas-01.webp",
     "/images/page21/free-canvas-02.webp",
