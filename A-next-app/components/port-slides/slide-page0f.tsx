@@ -231,7 +231,7 @@ export default function SlidePage0f() {
           margin: "18px auto 0",
           overflow: "visible",
           border: "1px solid rgba(255,255,255,0.18)",
-          borderRadius: 8,
+          borderRadius: 14,
           background: "#0b0b0b",
           boxShadow: "0 30px 80px rgba(0,0,0,0.48)",
           outline: "none",
@@ -259,7 +259,7 @@ export default function SlidePage0f() {
             height: "100%",
             objectFit: "contain",
             objectPosition: activeSlide.objectPosition,
-            borderRadius: 7,
+            borderRadius: 13,
             userSelect: "none",
             cursor: "pointer",
           }}
