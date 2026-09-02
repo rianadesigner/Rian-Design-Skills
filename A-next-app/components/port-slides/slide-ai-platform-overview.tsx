@@ -297,7 +297,6 @@ export default function SlideAiPlatformOverview() {
         <div>
           <div className="mb-3 flex items-center gap-3 text-[11px] font-semibold tracking-[0.16em] text-white/36">
             <span className="text-[#ef3b46]">PLATFORM SYSTEM</span>
-            <span className="h-px w-8 bg-white/20" />
             <span>万相星链 · 能力架构</span>
           </div>
           <h1
