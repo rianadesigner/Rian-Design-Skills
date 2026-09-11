@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" width="439.324" height="463.256" viewBox="0 0 439.324 463.256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="ambient" x="88" y="90" width="264" height="292" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="0" stdDeviation="4.5" flood-color="#1C304C" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+  <path
+    d="M219.662 363.256C195.461 354.932 122.86 286.256 107.734 243.594C91.6007 199.892 101.684 143.703 128.91 121.851C166.219 92.7162 273.105 92.7162 310.414 121.851C337.639 143.703 347.723 199.892 331.589 243.594C316.464 286.256 243.862 354.932 219.662 363.256Z"
+    fill="#FFFFFF"
+    fill-opacity="0.09"
+    stroke="#FFFFFF"
+    stroke-opacity="0.24"
+    stroke-width="1.8"
+    filter="url(#ambient)"
+  />
+</svg>

@@ -1,0 +1,127 @@
+.keyboard {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  height: 72cqw;
+  flex: 0 0 72cqw;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 1.6cqw 1.5cqw 1.8cqw;
+  border-radius: 6cqw 6cqw 0 0;
+  background: #e5e5e8;
+  color: #111;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+  font-weight: 400;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.candidates {
+  display: grid;
+  height: 9.4cqw;
+  flex: 0 0 9.4cqw;
+  grid-template-columns: repeat(6, minmax(0, 1fr)) 0.8fr;
+  align-items: center;
+  padding-bottom: 1.3cqw;
+  font-size: 4.4cqw;
+  line-height: 1;
+  text-align: center;
+}
+
+.candidateArrow {
+  display: flex;
+  height: 4.8cqw;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid rgb(0 0 0 / 8%);
+}
+
+.candidateArrow svg {
+  width: 4.7cqw;
+  height: 4.7cqw;
+  stroke-width: 1.8;
+}
+
+.rows {
+  display: grid;
+  min-height: 0;
+  flex: 1;
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+  gap: 1.9cqw;
+}
+
+.row {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 1.35cqw;
+}
+
+.middleRow {
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  margin-inline: 4.85cqw;
+}
+
+.lowerRow {
+  grid-template-columns: 1.28fr repeat(7, minmax(0, 1fr)) 1.28fr;
+}
+
+.actionRow {
+  grid-template-columns: 1fr 1fr 5.6fr 1.7fr;
+}
+
+.key {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.65cqw;
+  background: #fff;
+  box-shadow: 0 0.3cqw 0.15cqw rgb(0 0 0 / 9%);
+  font-size: 5.7cqw;
+  line-height: 1;
+}
+
+.key svg {
+  width: 5.1cqw;
+  height: 5.1cqw;
+  stroke-width: 1.75;
+}
+
+.utility {
+  background: #d7d8dc;
+}
+
+.numbers {
+  font-size: 4.4cqw;
+}
+
+.space {
+  font-size: 3.8cqw;
+}
+
+.footer {
+  display: flex;
+  height: 11.2cqw;
+  flex: 0 0 11.2cqw;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 5.2cqw;
+}
+
+.footer svg {
+  width: 6.1cqw;
+  height: 6.1cqw;
+  stroke-width: 1.7;
+}
+
+.homeIndicator {
+  width: 34%;
+  height: 0.8cqw;
+  flex: 0 0 0.8cqw;
+  align-self: center;
+  border-radius: 999px;
+  background: #171717;
+}
