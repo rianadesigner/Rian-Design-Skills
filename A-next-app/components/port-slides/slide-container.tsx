@@ -588,6 +588,7 @@ export default function SlideContainer({
     (start: HTMLElement | null, boundary: HTMLElement) => {
       let node: HTMLElement | null = start
       while (node && node !== boundary && node !== document.body) {
+        if (node.hasAttribute("data-slide-interactive")) return true
         const tag = node.tagName
         if (
           tag === "A" ||
@@ -763,6 +764,8 @@ export default function SlideContainer({
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      const target = e.target instanceof HTMLElement ? e.target : null
+      if (target?.closest("[data-slide-interactive]")) return
       if (e.key === "ArrowRight" || e.key === "ArrowDown") paginate(1)
       if (e.key === "ArrowLeft" || e.key === "ArrowUp") paginate(-1)
     }

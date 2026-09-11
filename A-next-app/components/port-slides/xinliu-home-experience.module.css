@@ -1,0 +1,285 @@
+.ambientLight,
+.capabilityLight,
+.hoverLight {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 0;
+  top: 22.46%;
+  height: 46.5261%;
+  pointer-events: none;
+}
+
+.ambientLight {
+  mix-blend-mode: soft-light;
+}
+
+.capabilityLight {
+  mix-blend-mode: screen;
+}
+
+.hoverLight {
+  z-index: 3;
+}
+
+.lightField {
+  position: absolute;
+  inset: -3%;
+  overflow: hidden;
+  mask-image: radial-gradient(
+    ellipse 49% 48% at 50% 49%,
+    #000 48%,
+    #000c 72%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 49% 48% at 50% 49%,
+    #000 48%,
+    #000c 72%,
+    transparent 100%
+  );
+}
+
+.lightRiver,
+.shadowRiver,
+.warmReflection {
+  position: absolute;
+  inset: -25%;
+  will-change: transform;
+  animation-play-state: var(--light-play-state);
+}
+
+.lightRiver {
+  background:
+    radial-gradient(
+      ellipse 25% 42% at 30% 38%,
+      rgb(227 247 255 / 80%),
+      transparent 78%
+    ),
+    radial-gradient(
+      ellipse 32% 18% at 68% 68%,
+      rgb(248 252 255 / 65%),
+      transparent 82%
+    );
+  animation: light-drift 16s ease-in-out infinite;
+  animation-play-state: var(--light-play-state);
+}
+
+.shadowRiver {
+  background:
+    radial-gradient(
+      ellipse 22% 34% at 65% 38%,
+      rgb(35 65 106 / 42%),
+      transparent 85%
+    ),
+    radial-gradient(
+      ellipse 32% 21% at 34% 64%,
+      rgb(59 91 137 / 28%),
+      transparent 80%
+    );
+  animation: shadow-drift 16s ease-in-out infinite;
+  animation-play-state: var(--light-play-state);
+}
+
+.warmReflection {
+  background: radial-gradient(
+    ellipse 23% 35% at 66% 37%,
+    rgb(255 221 196 / 38%),
+    transparent 78%
+  );
+  animation: warm-drift 22s ease-in-out infinite;
+  animation-play-state: var(--light-play-state);
+}
+
+.petalLight {
+  position: absolute;
+  width: 31.91%;
+  height: 35.1%;
+  transform-origin: 50% 50%;
+}
+
+.petalMask {
+  position: absolute;
+  inset: -37.99% -41.78%;
+  mask: url("/images/page7/figma-home/petal-light-mask.svg") center / 100% 100%
+    no-repeat;
+  -webkit-mask: url("/images/page7/figma-home/petal-light-mask.svg") center /
+    100% 100% no-repeat;
+}
+
+.surfaceLight,
+.surfaceShade {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.surfaceLight {
+  background:
+    radial-gradient(
+      ellipse 17% 42% at 35% 42%,
+      rgb(244 252 255 / 85%),
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 23% 14% at 63% 27%,
+      rgb(233 248 255 / 60%),
+      transparent 85%
+    );
+  animation: petal-refraction 12s ease-in-out infinite;
+  animation-delay: var(--light-phase);
+  animation-play-state: var(--light-play-state);
+}
+
+.outerOrbitMask {
+  position: absolute;
+  inset: 0;
+  mask: url("/images/page7/figma-home/flower-outer-light-mask.svg") center /
+    100% 100% no-repeat;
+  -webkit-mask: url("/images/page7/figma-home/flower-outer-light-mask.svg")
+    center / 100% 100% no-repeat;
+}
+
+.outerOrbitSweep {
+  position: absolute;
+  inset: -25%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg 230deg,
+    rgb(160 210 250 / 3%) 250deg,
+    rgb(191 231 255 / 28%) 278deg,
+    rgb(238 250 255 / 78%) 305deg,
+    rgb(195 227 255 / 26%) 326deg,
+    transparent 348deg 360deg
+  );
+  will-change: transform;
+  animation: flower-outer-orbit 12s linear infinite;
+  animation-play-state: var(--light-play-state);
+}
+
+/* The light rotates around one feathered silhouette for the entire flower. */
+@keyframes flower-outer-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.waterRipple {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.rippleExpansion {
+  transform-origin: 0 0;
+  animation: water-ripple-expand 2.2s linear both;
+  animation-play-state: var(--light-play-state);
+}
+
+/* Each wave expands from one fixed point on the petal, then settles. */
+@keyframes water-ripple-expand {
+  0% {
+    transform: scale(0.055);
+    opacity: 0;
+  }
+  12% {
+    transform: scale(0.29);
+    opacity: 0.85;
+  }
+  36% {
+    transform: scale(0.7);
+    opacity: 0.7;
+  }
+  65% {
+    transform: scale(1.08);
+    opacity: 0.36;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.surfaceShade {
+  background: radial-gradient(
+    ellipse 22% 31% at 62% 52%,
+    rgb(37 69 112 / 34%),
+    transparent 85%
+  );
+  animation: petal-shadow 12s ease-in-out infinite;
+  animation-delay: var(--light-phase);
+  animation-play-state: var(--light-play-state);
+}
+
+/* Idle light moves independently; hover deforms the surface with travelling waves. */
+@keyframes light-drift {
+  0%,
+  100% {
+    transform: translate(-8%, -5%) rotate(-18deg);
+  }
+  35% {
+    transform: translate(9%, -1%) rotate(12deg);
+  }
+  70% {
+    transform: translate(1%, 9%) rotate(28deg);
+  }
+}
+
+@keyframes shadow-drift {
+  0%,
+  100% {
+    transform: translate(6%, 5%) rotate(16deg);
+  }
+  35% {
+    transform: translate(-8%, 3%) rotate(-14deg);
+  }
+  70% {
+    transform: translate(-2%, -8%) rotate(-26deg);
+  }
+}
+
+@keyframes warm-drift {
+  0%,
+  100% {
+    transform: translate(5%, -9%) rotate(-12deg);
+  }
+  50% {
+    transform: translate(-10%, 10%) rotate(24deg);
+  }
+}
+
+@keyframes petal-refraction {
+  0%,
+  100% {
+    transform: translate(-11%, -5%) rotate(-12deg);
+  }
+  50% {
+    transform: translate(13%, 7%) rotate(14deg);
+  }
+}
+
+@keyframes petal-shadow {
+  0%,
+  100% {
+    transform: translate(9%, 6%) rotate(10deg);
+  }
+  50% {
+    transform: translate(-10%, -6%) rotate(-12deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambientLight,
+  .capabilityLight,
+  .hoverLight {
+    display: none;
+  }
+  .ambientLight *,
+  .capabilityLight *,
+  .hoverLight * {
+    animation: none;
+  }
+}
