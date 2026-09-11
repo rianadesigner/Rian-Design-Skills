@@ -4,9 +4,52 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react"
 import styles from "./xinliu-home-experience.module.css"
 import { XinliuFullscreenPanel as CapabilitySheet } from "./xinliu-fullscreen-panel"
+import type { FullscreenCapability } from "./xinliu-fullscreen-controls"
 import { usePetalRippleDisplacement } from "./petal-ripple-displacement"
 
-const SCREEN = "/images/page7/phone-screenshot.webp"
+// Native 750 × 1612 exports preserve both Figma homepage states.
+const SCREENS = {
+  search: "/images/page7/figma-home/ai-search-home.png",
+  research: "/images/page7/figma-home/research-home.png",
+}
+export type XinliuHomeMode = keyof typeof SCREENS
+
+export const RESEARCH_CAPABILITIES = [
+  {
+    id: "web",
+    label: "网页专家",
+    icon: "/images/page7/figma-home/research-icon-web.svg",
+  },
+  {
+    id: "pdf",
+    label: "PDF专家",
+    icon: "/images/page7/figma-home/research-icon-pdf.svg",
+  },
+  {
+    id: "ppt",
+    label: "PPT专家",
+    icon: "/images/page7/figma-home/research-icon-ppt.svg",
+  },
+  {
+    id: "word",
+    label: "Word专家",
+    icon: "/images/page7/figma-home/research-icon-word.svg",
+  },
+  {
+    id: "excel",
+    label: "Excel专家",
+    icon: "/images/page7/figma-home/research-icon-excel.svg",
+  },
+  {
+    id: "video",
+    label: "视频专家",
+    icon: "/images/page7/figma-home/research-icon-video.svg",
+  },
+] as const satisfies readonly {
+  id: FullscreenCapability
+  label: string
+  icon: string
+}[]
 const CLEAN_BACKGROUND = "/images/page7/figma-home/clean-background.webp"
 const PETAL_SHELL = "/images/page7/figma-home/petal-shell.svg"
 const PETAL_CONTOUR =
@@ -14,13 +57,7 @@ const PETAL_CONTOUR =
 const EASE = [0.22, 1, 0.36, 1] as const
 const EXIT_EASE = [0.4, 0, 1, 1] as const
 
-type PetalId =
-  | "code"
-  | "translate"
-  | "call"
-  | "write"
-  | "document"
-  | "knowledge"
+type PetalId = "code" | "translate" | "call" | "write" | "document" | "academic"
 
 const PETALS = [
   {
@@ -84,8 +121,8 @@ const PETALS = [
       "polygon(57.33% 57.33%, 60.27% 49.33%, 97.33% 49.33%, 98.93% 66.67%, 95.33% 86%, 66.67% 88%)",
   },
   {
-    id: "knowledge",
-    label: "知识库",
+    id: "academic",
+    label: "搜学术",
     icon: "/images/page7/figma-home/icon-knowledge.svg",
     artLeft: "34.04%",
     artTop: "62.45%",
@@ -103,12 +140,18 @@ const PETAL_COLLAPSE: Record<PetalId, { x: `${number}%`; y: `${number}%` }> = {
   call: { x: "-4.4%", y: "3.4%" },
   write: { x: "4.4%", y: "-3.4%" },
   document: { x: "-4.4%", y: "-3.4%" },
-  knowledge: { x: "0%", y: "-6%" },
+  academic: { x: "0%", y: "-6%" },
 }
 
 type PetalOrigin = { x: number; y: number; width: number; height: number }
 
-export function XinliuHomeExperience() {
+export function XinliuHomeExperience({
+  mode,
+  onModeChange,
+}: {
+  mode: XinliuHomeMode
+  onModeChange: (mode: XinliuHomeMode) => void
+}) {
   const reduceMotion = Boolean(useReducedMotion())
   const screenRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement | null>(null)
@@ -116,7 +159,25 @@ export function XinliuHomeExperience() {
   const [pointerHovered, setPointerHovered] = useState<PetalId | null>(null)
   const [selected, setSelected] = useState<PetalId | null>(null)
   const [origin, setOrigin] = useState<PetalOrigin | null>(null)
-  const activePetal = PETALS.find((petal) => petal.id === selected) ?? null
+  const screenImage = SCREENS[mode]
+  const petals = PETALS.map((petal, index) => {
+    const capability =
+      mode === "research" ? RESEARCH_CAPABILITIES[index] : petal
+    return {
+      ...petal,
+      capabilityId: capability.id,
+      label: capability.label,
+      icon: capability.icon,
+    }
+  })
+  const activePetal = petals.find((petal) => petal.id === selected) ?? null
+
+  const changeMode = (nextMode: XinliuHomeMode) => {
+    if (selected || nextMode === mode) return
+    setHovered(null)
+    setPointerHovered(null)
+    onModeChange(nextMode)
+  }
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -135,13 +196,45 @@ export function XinliuHomeExperience() {
       data-slide-interactive="true"
       data-petal-state={selected ?? "idle"}
       data-petal-hovered={hovered ?? "none"}
+      data-home-mode={mode}
+      data-figma-node={mode === "research" ? "37:2666" : "25:2078"}
     >
+      <link rel="preload" as="image" href={SCREENS.research} />
       <img
-        src={SCREEN}
-        alt="心流移动端首页最终方案"
+        src={screenImage}
+        alt={mode === "research" ? "心流高级研究首页" : "心流 AI 搜索首页"}
+        width={750}
+        height={1612}
         className="absolute inset-0 block h-full w-full object-cover select-none"
         draggable={false}
       />
+
+      <div
+        role="group"
+        aria-label="首页模式"
+        className={styles.modeSwitch}
+        inert={selected !== null}
+        aria-hidden={selected ? true : undefined}
+      >
+        <button
+          type="button"
+          aria-label="AI搜索"
+          aria-pressed={mode === "search"}
+          onClick={() => changeMode("search")}
+        >
+          <span className="sr-only">AI搜索</span>
+        </button>
+        <button
+          type="button"
+          aria-label={mode === "research" ? "高级研究" : "深度研究"}
+          aria-pressed={mode === "research"}
+          onClick={() => changeMode("research")}
+        >
+          <span className="sr-only">
+            {mode === "research" ? "高级研究" : "深度研究"}
+          </span>
+        </button>
+      </div>
 
       <motion.img
         src={CLEAN_BACKGROUND}
@@ -176,6 +269,7 @@ export function XinliuHomeExperience() {
       />
 
       <PetalAmbientLight
+        screenImage={screenImage}
         active={!selected}
         pointerHovered={pointerHovered}
         reduceMotion={reduceMotion}
@@ -212,7 +306,7 @@ export function XinliuHomeExperience() {
                 }}
               >
                 <img
-                  src={SCREEN}
+                  src={screenImage}
                   alt=""
                   className="absolute left-0 block w-full max-w-none object-cover select-none"
                   style={{ top: "-48.274%", height: "214.9331%" }}
@@ -244,7 +338,7 @@ export function XinliuHomeExperience() {
           aria-hidden={selected ? "true" : undefined}
           inert={selected !== null}
         >
-          {PETALS.map((petal) => (
+          {petals.map((petal) => (
             <button
               key={petal.id}
               type="button"
@@ -299,7 +393,7 @@ export function XinliuHomeExperience() {
         {activePetal && origin && (
           <CapabilitySheet
             key={activePetal.id}
-            petal={activePetal}
+            petal={{ ...activePetal, id: activePetal.capabilityId }}
             reduceMotion={reduceMotion}
             origin={origin}
             onClose={() => setSelected(null)}
@@ -311,10 +405,12 @@ export function XinliuHomeExperience() {
 }
 
 function PetalAmbientLight({
+  screenImage,
   active,
   pointerHovered,
   reduceMotion,
 }: {
+  screenImage: string
   active: boolean
   pointerHovered: PetalId | null
   reduceMotion: boolean
@@ -414,7 +510,11 @@ function PetalAmbientLight({
             exit={{ opacity: 0 }}
             transition={{ duration: 0.14 }}
           >
-            <PetalWaterRipple petal={hoverPetal} running={running} />
+            <PetalWaterRipple
+              petal={hoverPetal}
+              screenImage={screenImage}
+              running={running}
+            />
           </motion.div>
         )}
       </AnimatePresence>
@@ -424,9 +524,11 @@ function PetalAmbientLight({
 
 function PetalWaterRipple({
   petal,
+  screenImage,
   running,
 }: {
   petal: (typeof PETALS)[number]
+  screenImage: string
   running: boolean
 }) {
   const uid = useId().replace(/:/g, "")
@@ -553,7 +655,7 @@ function PetalWaterRipple({
       <g mask={`url(#${uid}-petal-surface)`}>
         <g filter={`url(#${uid}-refraction)`}>
           <image
-            href={SCREEN}
+            href={screenImage}
             x="0"
             y="-362.055"
             width="750"

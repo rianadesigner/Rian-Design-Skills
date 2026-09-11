@@ -12,6 +12,61 @@
   line-height: 1.4;
 }
 
+.root[data-fullscreen-controls="academic"] {
+  width: 86.666667cqw;
+  height: 13.866667cqw;
+  margin: 0;
+}
+.root[data-fullscreen-controls="academic"] .fieldGroup {
+  gap: 1.6cqw;
+}
+.root[data-fullscreen-controls="academic"] .label {
+  margin-left: -0.133333cqw;
+  color: #999;
+  font-size: 3.2cqw;
+  line-height: 4.8cqw;
+}
+.root[data-fullscreen-controls="academic"] .selectRow {
+  gap: 2.133333cqw;
+  margin-left: -0.133333cqw;
+}
+.root[data-fullscreen-controls="academic"] .selectField {
+  width: 22.4cqw;
+  height: 6.933333cqw;
+  flex: 0 0 22.4cqw;
+}
+.root[data-fullscreen-controls="academic"] .selectField select {
+  height: 6.933333cqw;
+  min-height: 0;
+  padding: 0.533333cqw 5.733333cqw 0.533333cqw 2.266667cqw;
+  border: 0.266667cqw solid #f0f2f5;
+  border-radius: 5.333333cqw;
+  background: #fff;
+  color: #1f1f1f;
+  font-size: 3.466667cqw;
+  line-height: 5.333333cqw;
+}
+.root[data-fullscreen-controls="academic"]
+  .selectField[data-active="true"]
+  select {
+  padding-left: 2.533333cqw;
+  border-color: transparent;
+  background: #f1f2fe;
+  color: #5057f6;
+}
+.academicCaret {
+  position: absolute;
+  top: 2.966422cqw;
+  right: 3.052257cqw;
+  width: 1.390458cqw;
+  height: 1.060079cqw;
+  pointer-events: none;
+}
+.selectField[data-active="true"] .academicCaret {
+  top: 2.862394cqw;
+  right: 3.024255cqw;
+}
+
 .fieldGroup {
   display: flex;
   min-width: 0;

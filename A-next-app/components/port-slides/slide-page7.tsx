@@ -1,4 +1,11 @@
-import { XinliuHomeExperience } from "./xinliu-home-experience"
+"use client"
+
+import { useState } from "react"
+import {
+  XinliuHomeExperience,
+  RESEARCH_CAPABILITIES,
+  type XinliuHomeMode,
+} from "./xinliu-home-experience"
 import { XinliuReferencePanel } from "./xinliu-reference-panel"
 
 const PETAL_ASSET = "/images/page7/figma-home"
@@ -121,8 +128,8 @@ const capabilities = [
   },
   {
     num: "06",
-    title: "知识库",
-    summary: "基于个人资料回答",
+    title: "搜学术",
+    summary: "检索文献，解答专业问题",
     icon: `${PETAL_ASSET}/icon-knowledge.svg`,
   },
 ] as const
@@ -223,7 +230,7 @@ const flowSteps = [
 ] as const
 
 const homeHighlights = [
-  { title: "六瓣快捷入口", detail: "写代码、翻译、通话、写作、读文档与知识库" },
+  { title: "六瓣快捷入口", detail: "写代码、翻译、通话、写作、读文档与搜学术" },
   { title: "兴趣主动推荐", detail: "结合上下文，持续提供可直接开始的话题" },
   { title: "多模态输入", detail: "文字、语音与附件统一从底部输入框进入" },
   { title: "任务自然承接", detail: "从首页入口进入轻量配置，再继续完成任务" },
@@ -465,6 +472,16 @@ function FlowPreview({ step }: { step: (typeof flowSteps)[number] }) {
 }
 
 export default function SlidePage7() {
+  const [homeMode, setHomeMode] = useState<XinliuHomeMode>("search")
+  const visibleCapabilities = capabilities.map((capability, index) =>
+    homeMode === "research"
+      ? {
+          ...capability,
+          title: RESEARCH_CAPABILITIES[index].label,
+          icon: RESEARCH_CAPABILITIES[index].icon,
+        }
+      : capability
+  )
   return (
     <div
       className="relative h-full w-full overflow-hidden"
@@ -898,7 +915,7 @@ export default function SlidePage7() {
             搜索、深度搜索与高级研究等多种模式，将搜索、文档问答和学术精读串联起来，以清晰的过程展示和结构化结果承接不同复杂度的任务。
           </p>
           <p className="m-0 mt-[clamp(13px,calc(1.25*var(--u)),18px)]">
-            移动端首页以六瓣聚合写作、翻译、写代码、打电话、读文档和知识库六类高频能力。用户先选择能力，再通过轻量浮层补充必要信息，直接进入任务，在统一交互中完成从需求表达、任务执行到结果获取的衔接。
+            移动端首页以六瓣聚合写作、翻译、写代码、打电话、读文档和搜学术六类高频能力。用户先选择能力，再通过全屏浮层补充必要信息，直接进入任务，在统一交互中完成从需求表达、任务执行到结果获取的衔接。
           </p>
         </div>
         <div className="mt-[clamp(20px,calc(2.08*var(--u)),30px)] flex flex-wrap gap-[clamp(8px,calc(0.8*var(--u)),12px)]">
@@ -910,10 +927,7 @@ export default function SlidePage7() {
                 padding:
                   "clamp(7px, calc(0.7 * var(--u)), 10px) clamp(14px, calc(1.3 * var(--u)), 19px)",
                 color: "rgba(255,255,255,0.88)",
-                background:
-                  tag === overviewTags[0]
-                    ? "rgba(255,255,255,0.13)"
-                    : "rgba(255,255,255,0.035)",
+                background: "rgba(255,255,255,0.13)",
                 border: "1px solid rgba(255,255,255,0.22)",
                 fontFamily: "'PingFang SC', sans-serif",
                 fontSize: "clamp(10px, calc(1.02 * var(--u)), 15px)",
@@ -946,7 +960,7 @@ export default function SlidePage7() {
           }}
         />
 
-        {capabilities.map((capability, index) => {
+        {visibleCapabilities.map((capability, index) => {
           const decoration = capabilityDecorationLayout[index]
 
           return (
@@ -1415,7 +1429,6 @@ export default function SlidePage7() {
           top: "50%",
           width: "calc(27.1 * var(--u))",
           maxWidth: "390px",
-          aspectRatio: "410 / 861",
         }}
       >
         <div
@@ -1434,7 +1447,7 @@ export default function SlidePage7() {
           可交互原型 · HOVER / CLICK
         </div>
         <div
-          className="absolute inset-0 overflow-hidden"
+          className="relative overflow-hidden"
           style={{
             padding: "clamp(5px, calc(0.56 * var(--u)), 8px)",
             background:
@@ -1446,10 +1459,13 @@ export default function SlidePage7() {
           }}
         >
           <div
-            className="h-full w-full overflow-hidden"
-            style={{ borderRadius: "clamp(21px, calc(2.48 * var(--u)), 36px)" }}
+            className="w-full overflow-hidden"
+            style={{
+              aspectRatio: "750 / 1612",
+              borderRadius: "clamp(21px, calc(2.48 * var(--u)), 36px)",
+            }}
           >
-            <XinliuHomeExperience />
+            <XinliuHomeExperience mode={homeMode} onModeChange={setHomeMode} />
           </div>
         </div>
       </aside>

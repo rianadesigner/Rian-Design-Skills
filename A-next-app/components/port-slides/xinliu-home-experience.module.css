@@ -283,3 +283,32 @@
     animation: none;
   }
 }
+.modeSwitch {
+  position: absolute;
+  z-index: 3;
+  top: 6.94789%;
+  left: 61.86667%;
+  width: 34.93333%;
+  height: 4.09429%;
+  display: flex;
+  padding: 0.53333cqw;
+}
+
+.modeSwitch button {
+  flex: 110 1 0;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 100px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.modeSwitch button + button {
+  flex-grow: 144;
+}
+
+.modeSwitch button:focus-visible {
+  outline: 1.5px solid white;
+  outline-offset: 2px;
+}

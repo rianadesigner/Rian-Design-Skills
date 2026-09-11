@@ -1,0 +1,697 @@
+@font-face {
+  font-family: "Xinliu Figma Noto";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/images/page7/figma-overlays/shared/noto-sans-sc-0.woff2")
+    format("truetype");
+}
+@font-face {
+  font-family: "Xinliu Figma Noto";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/images/page7/figma-overlays/shared/noto-sans-sc-1.woff2")
+    format("truetype");
+}
+
+.viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #fff;
+}
+.canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 750px;
+  height: 1624px;
+  overflow: hidden;
+  transform-origin: 0 0;
+  background: #fff;
+  color: #1c1c1e;
+  font-family:
+    "PingFang SC",
+    -apple-system,
+    sans-serif;
+}
+.canvas * {
+  box-sizing: border-box;
+}
+.canvas button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.canvas button:disabled {
+  cursor: default;
+}
+.canvas button:focus-visible,
+.canvas label:has(select:focus-visible) {
+  outline: 3px solid #a578dd;
+  outline-offset: 4px;
+}
+.canvas img {
+  display: block;
+  flex: none;
+  max-width: none;
+  user-select: none;
+}
+.canvas p,
+.canvas h2,
+.canvas h3 {
+  margin: 0;
+}
+.status {
+  position: absolute;
+  inset: 0 auto auto 0;
+  width: 750px;
+  height: 88px;
+}
+.header {
+  position: absolute;
+  left: 0;
+  top: 88px;
+  width: 750px;
+  height: 120px;
+}
+.canvas .header h2 {
+  position: absolute;
+  left: 0;
+  top: 36px;
+  width: 750px;
+  color: #1c1c1e;
+  font-family: "Alimama ShuZhiTi VF", "PingFang SC", sans-serif;
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 51px;
+  text-align: center;
+}
+.underline {
+  position: absolute;
+  left: 306px;
+  top: 70.633px;
+  width: 125px;
+  height: 12.864px;
+}
+.canvas .close {
+  position: absolute;
+  left: 654px;
+  top: 24px;
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 37.5px;
+  background: #fff;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 8%);
+}
+.close img {
+  width: 36px;
+  height: 36px;
+}
+.hero {
+  position: absolute;
+  left: 30px;
+  top: 232px;
+  width: 690px;
+  height: 250px;
+  text-align: center;
+}
+.heroIcon {
+  position: absolute;
+  left: 300px;
+  top: 19.5px;
+  display: grid;
+  place-items: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 30px;
+  background: rgb(80 87 246 / 10%);
+}
+.heroIcon img {
+  max-width: 50px;
+  max-height: 50px;
+}
+.canvas .hero h3 {
+  position: absolute;
+  left: 57px;
+  top: 134.5px;
+  width: 576px;
+  font-family: "PingFang SC", sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 42px;
+  white-space: nowrap;
+}
+.canvas .hero p {
+  position: absolute;
+  left: 0;
+  top: 184.5px;
+  width: 690px;
+  color: #858589;
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 39px;
+  white-space: nowrap;
+}
+.canvas[data-figma-overlay="translate"] .hero h3 {
+  font-family: "Xinliu Figma Noto", "PingFang SC", sans-serif;
+  font-size: 33px;
+  line-height: 49.5px;
+}
+.canvas[data-figma-overlay="translate"] .hero p {
+  top: 192px;
+}
+.writing {
+  position: absolute;
+  left: 29px;
+  top: 506px;
+  width: 721px;
+  height: 230px;
+}
+.controlLabel,
+.requirementsLabel {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #999;
+  font-size: 24px;
+  line-height: 36px;
+}
+.requirementsLabel {
+  top: 126px;
+}
+.writingTypes {
+  position: absolute;
+  left: 0;
+  top: 48px;
+  display: flex;
+  gap: 16px;
+  width: 721px;
+  height: 56px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.canvas .pill {
+  flex: none;
+  min-width: 100px;
+  height: 56px;
+  padding: 6px 22px;
+  border: 2px solid #f0f2f5;
+  border-radius: 40px;
+  background: #fff;
+  color: #1f1f1f;
+  font-size: 26px;
+  line-height: 40px;
+  white-space: nowrap;
+}
+.canvas .pill[aria-pressed="true"] {
+  border-color: transparent;
+  background: rgb(80 87 246 / 8%);
+  color: #5057f6;
+}
+.writingFilters {
+  position: absolute;
+  left: 0;
+  top: 174px;
+  display: flex;
+  gap: 16px;
+}
+.pillSelect {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 52px;
+  padding: 6px 14px;
+  border: 2px solid #f0f2f5;
+  border-radius: 40px;
+  background: #fff;
+  color: #1f1f1f;
+  font-size: 26px;
+  line-height: 36.4px;
+  white-space: nowrap;
+}
+.pillSelect span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pillSelect[data-accent="true"] {
+  border-color: transparent;
+  background: rgb(80 87 246 / 8%);
+  color: #5057f6;
+}
+.pillSelect img,
+.language img {
+  width: 10.4285px;
+  height: 7.9506px;
+}
+.pillSelect select,
+.language select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  font-size: 26px;
+}
+.documents {
+  position: absolute;
+  left: 30px;
+  top: 506px;
+  display: flex;
+  gap: 14px;
+  height: 104px;
+}
+.documentCard {
+  position: relative;
+  width: 280px;
+  height: 104px;
+  border-radius: 24px;
+  background: rgb(238 238 238 / 50%);
+}
+.documentCard img {
+  position: absolute;
+  left: 12px;
+  top: 24px;
+  width: 56px;
+  height: 56px;
+}
+.documentCard span {
+  position: absolute;
+  left: 76px;
+  top: 16px;
+  width: 192px;
+  max-height: 72px;
+  overflow: hidden;
+  color: #434343;
+  font-size: 24px;
+  line-height: 33.6px;
+  overflow-wrap: anywhere;
+}
+.canvas .addDocument {
+  display: grid;
+  place-items: center;
+  width: 104px;
+  height: 104px;
+  margin-left: -2px;
+  border-radius: 24px;
+  background: rgb(238 238 238 / 50%);
+}
+.addDocument img {
+  width: 29.3837px;
+  height: 29.3842px;
+}
+.documentTasks {
+  position: absolute;
+  left: 30px;
+  top: 634px;
+  display: flex;
+  gap: 12px;
+  width: 720px;
+  height: 72px;
+  padding: 8px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.canvas .documentTasks button {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 248px;
+  height: 56px;
+  border: 2px solid #f0f2f5;
+  border-radius: 40px;
+  font-size: 26px;
+  line-height: 40px;
+  white-space: nowrap;
+}
+.documentTasks img {
+  width: 36px;
+  height: 36px;
+}
+.translation {
+  position: absolute;
+  left: 30px;
+  top: 506px;
+  width: 690px;
+  height: 129px;
+  font-family: "Xinliu Figma Noto", "PingFang SC", sans-serif;
+}
+.translation p {
+  color: #858589;
+  font-size: 23px;
+  line-height: 34.5px;
+}
+.languageRow {
+  position: absolute;
+  left: 0;
+  top: 46.5px;
+  width: 690px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.language {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 26.8px;
+  width: 295px;
+  height: 82px;
+  border-radius: 64px;
+  background: #f7f7f8;
+  font-size: 27px;
+  line-height: 40.5px;
+}
+.canvas .swap {
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 60px;
+}
+.swap img {
+  width: 28.8px;
+  height: 28.8px;
+}
+.codeTasks {
+  position: absolute;
+  left: 40px;
+  top: 506px;
+  width: 670px;
+}
+.canvas .codeTasks button {
+  display: flex;
+  align-items: center;
+  width: 670px;
+  height: 69px;
+  padding: 0 16px;
+  color: #434343;
+  font-size: 26px;
+  line-height: 36.4px;
+  text-align: left;
+}
+.canvas .codeTasks button:first-child {
+  color: #1f1f1f;
+}
+.codeTasks img:first-child {
+  width: 28px;
+  height: 28px;
+  margin-right: 15px;
+}
+.codeTasks span {
+  flex: 1;
+  white-space: nowrap;
+}
+.codeTasks img:last-child {
+  width: 36px;
+  height: 36px;
+}
+.academicTools {
+  position: absolute;
+  left: 30px;
+  top: 506px;
+  display: flex;
+  gap: 16px;
+}
+.canvas .academicTools button {
+  position: relative;
+  width: 220px;
+  height: 104px;
+  border-radius: 24px;
+  background: rgb(238 238 238 / 50%);
+  text-align: left;
+}
+.academicTools img {
+  position: absolute;
+  left: 24px;
+  top: 14px;
+  width: 32px;
+  height: 32px;
+}
+.academicTools span {
+  position: absolute;
+  left: 24px;
+  top: 54px;
+  color: #434343;
+  font-size: 24px;
+  line-height: 33.6px;
+}
+.academicFilters {
+  position: absolute;
+  left: 30px;
+  top: 634px;
+  display: flex;
+  gap: 16px;
+}
+.fileInput {
+  display: none;
+}
+.composer {
+  position: absolute;
+  left: 20px;
+  width: 710px;
+  border-radius: 32px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 8%);
+}
+.composer::after {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgb(34 34 34 / 12%);
+  border-radius: inherit;
+  content: "";
+  pointer-events: none;
+}
+.inputArea {
+  position: absolute;
+  left: 32px;
+  top: 32px;
+  width: 646px;
+  height: 180px;
+  overflow: hidden;
+}
+.canvas .inputArea textarea {
+  display: block;
+  width: 657px;
+  height: 180px;
+  margin: 0;
+  padding: 0;
+  resize: none;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #1c1c1e;
+  font-family: "Xinliu Figma Noto", "PingFang SC", sans-serif;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 45px;
+  letter-spacing: 0;
+  scrollbar-width: none;
+}
+.inputArea textarea::placeholder {
+  color: #b0b0b6;
+  opacity: 1;
+}
+.toolbar {
+  position: absolute;
+  left: 32px;
+  width: 646px;
+  height: 56.2569px;
+}
+.canvas .attach,
+.canvas .microphone {
+  position: absolute;
+  top: 12.12845px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+}
+.attach {
+  left: 0;
+}
+.attach img {
+  width: 26.119px;
+  height: 26.119px;
+}
+.microphone {
+  left: 529px;
+}
+.microphone img {
+  width: 26.119px;
+  height: 28.798px;
+}
+.canvas .send {
+  position: absolute;
+  right: 0;
+  top: 0;
+  display: grid;
+  place-items: center;
+  width: 56.2569px;
+  height: 56.2569px;
+  border-radius: 50%;
+  background: #1c1c1e;
+}
+.canvas .send[data-muted="true"] {
+  background: rgb(28 28 30 / 50%);
+}
+.send img {
+  width: 29.971px;
+  height: 30.133px;
+  transform: translate(2.43px, -2.59px) rotate(-45deg);
+}
+.keyboard {
+  position: absolute;
+  left: 0;
+  width: 750px;
+  height: 540px;
+  pointer-events: none;
+}
+.mascot {
+  position: absolute;
+  left: 173px;
+  top: 262px;
+  width: 400px;
+  height: 411.111px;
+}
+.voiceBadge {
+  position: absolute;
+  left: 169px;
+  top: 294px;
+  display: grid;
+  place-items: center;
+  width: 132px;
+  height: 76px;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: 0 4px 8px rgb(25 33 61 / 8%);
+}
+.voiceWave {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 70px;
+  height: 48px;
+}
+.voiceWave i {
+  display: block;
+  width: 6px;
+  height: 20px;
+  border-radius: 3px;
+  background: #5057f6;
+}
+.voiceWave i:nth-child(1),
+.voiceWave i:nth-child(5) {
+  opacity: 0.3;
+}
+.voiceWave i:nth-child(2),
+.voiceWave i:nth-child(4) {
+  opacity: 0.6;
+}
+.voiceBadge .voiceWave i:nth-child(2),
+.voiceBadge .voiceWave i:nth-child(4) {
+  height: 28px;
+}
+.voiceBadge .voiceWave i:nth-child(3) {
+  height: 40px;
+}
+.conversation {
+  position: absolute;
+  left: 32px;
+  top: 759px;
+  width: 686px;
+  height: 406px;
+}
+.conversation img {
+  position: absolute;
+  left: 0;
+  width: 564px;
+  height: 88px;
+}
+.conversation img:nth-child(2) {
+  left: 40px;
+  top: 120px;
+  width: 646px;
+  height: 166px;
+}
+.conversation img:nth-child(3) {
+  top: 318px;
+}
+.voiceDock {
+  position: absolute;
+  left: 32px;
+  top: 1376px;
+  width: 686px;
+  height: 170px;
+  border-radius: 150px;
+  background: #fff;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 8%);
+}
+.canvas .voiceMic,
+.canvas .endCall {
+  position: absolute;
+  left: 48px;
+  top: 41px;
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+}
+.voiceMic img {
+  width: 39px;
+  height: 43px;
+}
+.canvas .voiceMic[aria-pressed="true"] {
+  background: #f0f0f3;
+}
+.canvas .endCall {
+  left: 550px;
+}
+.endCall img {
+  width: 88px;
+  height: 88px;
+}
+.listening {
+  position: absolute;
+  left: 251px;
+  top: 32px;
+  width: 184px;
+  height: 106px;
+  padding: 8px;
+  text-align: center;
+}
+.listening .voiceWave {
+  margin: 0 auto;
+}
+.listening span {
+  display: block;
+  margin-top: 8px;
+  color: #a0a0a0;
+  font-size: 24px;
+  line-height: 33.6px;
+  white-space: nowrap;
+}
+.listening[data-muted="true"] .voiceWave {
+  opacity: 0.3;
+}
+.homeIndicator {
+  position: absolute;
+  left: 243px;
+  top: 1601px;
+  width: 268px;
+  height: 7px;
+  border-radius: 4px;
+  background: #000;
+}

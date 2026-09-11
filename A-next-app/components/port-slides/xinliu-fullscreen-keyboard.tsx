@@ -12,19 +12,24 @@ import styles from "./xinliu-fullscreen-keyboard.module.css"
 
 const CANDIDATES = ["我", "好", "是", "不", "那", "这"]
 
-export function FullscreenKeyboard() {
+export function FullscreenKeyboard({
+  academic = false,
+}: {
+  academic?: boolean
+}) {
   return (
     <div
       className={styles.keyboard}
       aria-hidden="true"
       data-fullscreen-keyboard="true"
+      data-academic={academic || undefined}
     >
       <div className={styles.candidates}>
         {CANDIDATES.map((candidate) => (
           <span key={candidate}>{candidate}</span>
         ))}
         <span className={styles.candidateArrow}>
-          <ChevronDown />
+          {academic ? <AcademicKeyIcon name="down" /> : <ChevronDown />}
         </span>
       </div>
 
@@ -45,7 +50,7 @@ export function FullscreenKeyboard() {
         </div>
         <div className={`${styles.row} ${styles.lowerRow}`}>
           <span className={`${styles.key} ${styles.utility}`}>
-            <ArrowBigUp />
+            {academic ? <AcademicKeyIcon name="up" /> : <ArrowBigUp />}
           </span>
           {"zxcvbnm".split("").map((letter) => (
             <span key={letter} className={styles.key}>
@@ -53,7 +58,7 @@ export function FullscreenKeyboard() {
             </span>
           ))}
           <span className={`${styles.key} ${styles.utility}`}>
-            <Delete />
+            {academic ? <AcademicKeyIcon name="delete" /> : <Delete />}
           </span>
         </div>
         <div className={`${styles.row} ${styles.actionRow}`}>
@@ -61,20 +66,36 @@ export function FullscreenKeyboard() {
             123
           </span>
           <span className={styles.key}>
-            <Smile />
+            {academic ? <AcademicKeyIcon name="smile" /> : <Smile />}
           </span>
           <span className={`${styles.key} ${styles.space}`}>空格</span>
           <span className={`${styles.key} ${styles.utility}`}>
-            <CornerDownLeft />
+            {academic ? <AcademicKeyIcon name="return" /> : <CornerDownLeft />}
           </span>
         </div>
       </div>
 
       <div className={styles.footer}>
-        <Globe />
-        <Mic />
+        {academic ? (
+          <>
+            <AcademicKeyIcon name="globe" />
+            <AcademicKeyIcon name="mic" />
+          </>
+        ) : (
+          <>
+            <Globe />
+            <Mic />
+          </>
+        )}
       </div>
       <div className={styles.homeIndicator} />
     </div>
+  )
+}
+
+function AcademicKeyIcon({ name }: { name: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img src={`/images/page7/academic-overlay/keyboard-${name}.svg`} alt="" />
   )
 }

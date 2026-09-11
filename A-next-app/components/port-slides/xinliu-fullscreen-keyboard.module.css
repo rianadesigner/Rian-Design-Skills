@@ -125,3 +125,94 @@
   border-radius: 999px;
   background: #171717;
 }
+
+.keyboard[data-academic="true"] {
+  align-items: center;
+  padding: 1.6cqw 1.6cqw 1.866667cqw;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  color: #1c1c1e;
+}
+.keyboard[data-academic="true"] .candidates {
+  display: flex;
+  width: 96.8cqw;
+  height: 8.533333cqw;
+  flex: 0 0 8.533333cqw;
+  justify-content: space-between;
+  padding: 0 2.133333cqw;
+  font-size: 4.4cqw;
+  line-height: 1.5;
+}
+.keyboard[data-academic="true"] .candidateArrow {
+  width: 4cqw;
+  height: 4cqw;
+  border: 0;
+}
+.keyboard[data-academic="true"] .candidateArrow > img {
+  width: 4cqw;
+  height: 4cqw;
+}
+.keyboard[data-academic="true"] .rows {
+  display: flex;
+  width: 96.8cqw;
+  height: 46.666667cqw;
+  flex: 0 0 46.666667cqw;
+  flex-direction: column;
+  gap: 1.866667cqw;
+}
+.keyboard[data-academic="true"] .row {
+  display: flex;
+  height: 10.266667cqw;
+  flex: 0 0 10.266667cqw;
+  justify-content: center;
+  gap: 1.333333cqw;
+}
+.keyboard[data-academic="true"] .middleRow {
+  margin: 0;
+}
+.keyboard[data-academic="true"] .key {
+  width: 8.48cqw;
+  flex-shrink: 0;
+  border-radius: 1.6cqw;
+  box-shadow: none;
+  font-size: 5.6cqw;
+  line-height: 1.5;
+}
+.keyboard[data-academic="true"] .key > img {
+  width: 5.066667cqw;
+  height: 5.066667cqw;
+}
+.keyboard[data-academic="true"] .lowerRow .key {
+  width: 8.666667cqw;
+}
+.keyboard[data-academic="true"] .lowerRow .key:first-child {
+  width: 10.266667cqw;
+}
+.keyboard[data-academic="true"] .lowerRow .key:last-child {
+  width: 9.866667cqw;
+}
+.keyboard[data-academic="true"] .actionRow .key {
+  width: 9.066667cqw;
+}
+.keyboard[data-academic="true"] .actionRow .numbers {
+  font-size: 4.133333cqw;
+}
+.keyboard[data-academic="true"] .actionRow .space {
+  width: 55.6cqw;
+  font-size: 3.733333cqw;
+}
+.keyboard[data-academic="true"] .actionRow .key:last-child {
+  width: 19.066667cqw;
+}
+.keyboard[data-academic="true"] .footer {
+  width: 96.8cqw;
+  height: 12.533333cqw;
+  flex: 0 0 12.533333cqw;
+  padding-inline: 4.8cqw;
+}
+.keyboard[data-academic="true"] .footer > img {
+  width: 5.6cqw;
+  height: 5.6cqw;
+}
+.keyboard[data-academic="true"] .homeIndicator {
+  width: 34cqw;
+}

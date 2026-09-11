@@ -291,3 +291,188 @@
     scroll-behavior: auto;
   }
 }
+
+/* Figma 53:1117. Keep the academic variant independent of the other tools. */
+.screen[data-fullscreen-panel="academic"] .statusBar {
+  position: relative;
+  flex: 0 0 11.733333cqw;
+  padding: 0;
+  font-family:
+    "SF Pro Text",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-size: 3.733333cqw;
+  font-weight: 400;
+  color: #1f1f1f;
+}
+.screen[data-fullscreen-panel="academic"] .statusBar > span {
+  position: absolute;
+  top: 2.4cqw;
+  left: 9.6cqw;
+  display: flex;
+  width: 12.266667cqw;
+  height: 6.4cqw;
+  align-items: center;
+  line-height: 5.333333cqw;
+}
+.screen[data-fullscreen-panel="academic"] .statusBar > div {
+  display: contents;
+}
+.screen[data-fullscreen-panel="academic"] .statusBar img {
+  position: absolute;
+  display: block;
+}
+.screen[data-fullscreen-panel="academic"] .statusBar img:nth-child(1) {
+  left: 78.310667cqw;
+  top: 4.710667cqw;
+  width: 4.533333cqw;
+  height: 2.8444cqw;
+}
+.screen[data-fullscreen-panel="academic"] .statusBar img:nth-child(2) {
+  left: 84.185333cqw;
+  top: 4.621333cqw;
+  width: 4.072667cqw;
+  height: 2.924133cqw;
+}
+.screen[data-fullscreen-panel="academic"] .statusBar img:nth-child(3) {
+  left: 89.6cqw;
+  top: 4.622667cqw;
+  width: 6.487467cqw;
+  height: 3.022267cqw;
+}
+.screen[data-fullscreen-panel="academic"] .header {
+  flex: 0 0 16cqw;
+  padding: 0;
+}
+.screen[data-fullscreen-panel="academic"] .header h2 {
+  top: 4.8cqw;
+  isolation: isolate;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #1c1c1e;
+  font-family: "Alimama ShuZhiTi VF", sans-serif;
+  font-size: 4.533333cqw;
+  font-weight: 600;
+  line-height: 6.8cqw;
+}
+.screen[data-fullscreen-panel="academic"] .header h2 > img {
+  position: absolute;
+  z-index: -1;
+  top: 4.553333cqw;
+  left: -0.133333cqw;
+  width: 16.666667cqw;
+  height: 1.715627cqw;
+}
+.screen[data-fullscreen-panel="academic"] .close {
+  position: absolute;
+  top: 3.2cqw;
+  right: 3.2cqw;
+  width: 9.6cqw;
+  height: 9.6cqw;
+  box-shadow: 0 1.066667cqw 4cqw rgb(0 0 0 / 8%);
+}
+.screen[data-fullscreen-panel="academic"] .close > img {
+  width: 4cqw;
+  height: 4cqw;
+  transform: rotate(-45deg);
+}
+.screen[data-fullscreen-panel="academic"] .content {
+  /* The home screen is 12px shorter than this source frame; absorb the
+     difference in the empty area under the filters, above the input dock. */
+  flex: 1 1 auto;
+  padding: 3.2cqw 4cqw 2cqw;
+  overflow: auto;
+}
+.screen[data-fullscreen-panel="academic"] .intro {
+  height: 33.333333cqw;
+  gap: 3.333333cqw;
+  justify-content: center;
+  margin: 0 0 4.266667cqw;
+}
+.screen[data-fullscreen-panel="academic"] .capabilityIcon {
+  width: 12cqw;
+  height: 12cqw;
+  border: 0;
+  border-radius: 4cqw;
+  background: rgb(80 87 246 / 10%);
+  box-shadow: none;
+}
+.screen[data-fullscreen-panel="academic"] .capabilityIcon > img {
+  width: 6.526133cqw;
+  height: 6.601547cqw;
+  filter: none;
+}
+.screen[data-fullscreen-panel="academic"] .intro > div:last-child {
+  width: 76.8cqw;
+  height: 12.8cqw;
+}
+.screen[data-fullscreen-panel="academic"] .intro h3 {
+  color: #1c1c1e;
+  font-size: 3.733333cqw;
+  font-weight: 500;
+  line-height: 5.6cqw;
+  letter-spacing: normal;
+}
+.screen[data-fullscreen-panel="academic"] .intro p {
+  margin-top: 1.066667cqw;
+  color: #858589;
+  font-size: 3.466667cqw;
+  line-height: 5.2cqw;
+}
+.screen[data-fullscreen-panel="academic"] .composerDock {
+  padding: 2.666667cqw;
+}
+.screen[data-fullscreen-panel="academic"] .composer {
+  display: flex;
+  height: 41.10092cqw;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4.266667cqw 4.266667cqw 3.2cqw;
+  border: 0.2cqw solid rgb(34 34 34 / 12%);
+  border-radius: 4.266667cqw;
+  background: #fff;
+  box-shadow: 0 1.066667cqw 3.2cqw rgb(0 0 0 / 8%);
+}
+.screen[data-fullscreen-panel="academic"] .composer textarea {
+  flex: 0 0 24cqw;
+  font-family: "Noto Sans SC", "PingFang SC", sans-serif;
+  font-size: 4cqw;
+  line-height: 1.5;
+}
+.screen[data-fullscreen-panel="academic"] .toolbar {
+  height: 7.50092cqw;
+  flex: 0 0 7.50092cqw;
+  margin: 0;
+}
+.screen[data-fullscreen-panel="academic"] .attach {
+  width: 4.266667cqw;
+  height: 4.266667cqw;
+}
+.screen[data-fullscreen-panel="academic"] .attach > img {
+  width: 3.482573cqw;
+  height: 3.482573cqw;
+}
+.screen[data-fullscreen-panel="academic"] .actions {
+  gap: 6.666667cqw;
+}
+.screen[data-fullscreen-panel="academic"] .voice {
+  width: 4.266667cqw;
+  height: 4.266667cqw;
+}
+.screen[data-fullscreen-panel="academic"] .voice > img {
+  width: 3.482573cqw;
+  height: 3.83976cqw;
+}
+.screen[data-fullscreen-panel="academic"] .send {
+  width: 7.50092cqw;
+  height: 7.50092cqw;
+}
+.screen[data-fullscreen-panel="academic"] .send > img {
+  width: 3.996133cqw;
+  height: 4.017707cqw;
+  transform: translate(0.324cqw, -0.345333cqw) rotate(-45deg);
+}
