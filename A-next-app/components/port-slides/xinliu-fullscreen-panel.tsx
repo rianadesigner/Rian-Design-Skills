@@ -8,6 +8,7 @@ import {
   FullscreenControls,
   type FullscreenCapability,
 } from "./xinliu-fullscreen-controls"
+import { FigmaFullscreenContent } from "./xinliu-figma-fullscreen-content"
 import { FullscreenKeyboard } from "./xinliu-fullscreen-keyboard"
 import styles from "./xinliu-fullscreen-panel.module.css"
 
@@ -151,101 +152,111 @@ export function XinliuFullscreenPanel({
         }
       }}
     >
-      <div className={styles.statusBar} aria-hidden="true">
-        <span>9:41</span>
-        <div>
-          <Signal />
-          <Wifi />
-          <BatteryFull />
-        </div>
-      </div>
-
-      <header className={styles.header}>
-        <span className={styles.brand}>
-          心流<span>AI</span>
-        </span>
-        <h2>{content.title}</h2>
-        <button
-          ref={closeButtonRef}
-          className={styles.close}
-          type="button"
-          onClick={onClose}
-          aria-label="关闭能力浮层"
-        >
-          <X strokeWidth={1.7} />
-        </button>
-      </header>
-
-      <div
-        className={styles.content}
-        data-compact={petal.id !== "translate"}
-      >
-        <div className={styles.intro}>
-          <div className={styles.capabilityIcon} aria-hidden="true">
-            {/* The original capability glyph keeps the petal-to-tool connection. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={petal.icon} alt="" />
-          </div>
-          <div>
-            <h3>{content.heading}</h3>
-            <p>{content.description}</p>
-          </div>
-        </div>
-        <FullscreenControls kind={petal.id} onDraftChange={setDraft} />
-      </div>
-
-      <div className={styles.composerDock}>
-        <div className={styles.composer}>
-          <textarea
-            aria-label="工具需求输入"
-            value={draft}
-            onChange={(event) => setDraft(event.target.value)}
-            placeholder={content.placeholder}
-            spellCheck={false}
-          />
-          <div className={styles.toolbar}>
-            <div className={styles.sources}>
-              <button
-                type="button"
-                className={styles.attach}
-                aria-label={content.source}
-              >
-                <Plus strokeWidth={1.7} />
-              </button>
-              {petal.id === "document" ? (
-                <button
-                  className={styles.deepSearch}
-                  type="button"
-                  aria-pressed={deepSearch}
-                  onClick={() => setDeepSearch(!deepSearch)}
-                >
-                  深度搜索
-                </button>
-              ) : (
-                <span className={styles.sourceLabel}>{content.source}</span>
-              )}
-            </div>
-            <div className={styles.actions}>
-              <button
-                type="button"
-                className={styles.voice}
-                aria-label="语音输入"
-              >
-                <Mic strokeWidth={1.8} />
-              </button>
-              <button
-                type="button"
-                className={styles.send}
-                aria-label="发送"
-                disabled={!hasContent}
-              >
-                <Send strokeWidth={1.8} />
-              </button>
+      {petal.id === "code" ? (
+        <FigmaFullscreenContent
+          kind="code"
+          onClose={onClose}
+          closeButtonRef={closeButtonRef}
+        />
+      ) : (
+        <>
+          <div className={styles.statusBar} aria-hidden="true">
+            <span>9:41</span>
+            <div>
+              <Signal />
+              <Wifi />
+              <BatteryFull />
             </div>
           </div>
-        </div>
-      </div>
-      <FullscreenKeyboard />
+
+          <header className={styles.header}>
+            <span className={styles.brand}>
+              心流<span>AI</span>
+            </span>
+            <h2>{content.title}</h2>
+            <button
+              ref={closeButtonRef}
+              className={styles.close}
+              type="button"
+              onClick={onClose}
+              aria-label="关闭能力浮层"
+            >
+              <X strokeWidth={1.7} />
+            </button>
+          </header>
+
+          <div
+            className={styles.content}
+            data-compact={petal.id !== "translate"}
+          >
+            <div className={styles.intro}>
+              <div className={styles.capabilityIcon} aria-hidden="true">
+                {/* The original capability glyph keeps the petal-to-tool connection. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={petal.icon} alt="" />
+              </div>
+              <div>
+                <h3>{content.heading}</h3>
+                <p>{content.description}</p>
+              </div>
+            </div>
+            <FullscreenControls kind={petal.id} onDraftChange={setDraft} />
+          </div>
+
+          <div className={styles.composerDock}>
+            <div className={styles.composer}>
+              <textarea
+                aria-label="工具需求输入"
+                value={draft}
+                onChange={(event) => setDraft(event.target.value)}
+                placeholder={content.placeholder}
+                spellCheck={false}
+              />
+              <div className={styles.toolbar}>
+                <div className={styles.sources}>
+                  <button
+                    type="button"
+                    className={styles.attach}
+                    aria-label={content.source}
+                  >
+                    <Plus strokeWidth={1.7} />
+                  </button>
+                  {petal.id === "document" ? (
+                    <button
+                      className={styles.deepSearch}
+                      type="button"
+                      aria-pressed={deepSearch}
+                      onClick={() => setDeepSearch(!deepSearch)}
+                    >
+                      深度搜索
+                    </button>
+                  ) : (
+                    <span className={styles.sourceLabel}>{content.source}</span>
+                  )}
+                </div>
+                <div className={styles.actions}>
+                  <button
+                    type="button"
+                    className={styles.voice}
+                    aria-label="语音输入"
+                  >
+                    <Mic strokeWidth={1.8} />
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.send}
+                    aria-label="发送"
+                    disabled={!hasContent}
+                  >
+                    <Send strokeWidth={1.8} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <FullscreenKeyboard />
+        </>
+      )}
     </motion.section>
   )
 }
