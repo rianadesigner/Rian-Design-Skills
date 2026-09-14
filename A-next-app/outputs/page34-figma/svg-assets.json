@@ -1,0 +1,186 @@
+{
+  "notes": "SVGs contain native paths/groups/shapes. Petal svg variants use #1c1c1e for recoloring; originalSvg preserves source white. PDF retains original gradient and white path details.",
+  "assets": {
+    "petal-code": {
+      "sourcePath": "public/images/page7/figma-home/icon-code.svg",
+      "width": "43",
+      "height": "43",
+      "viewBox": "0 0 43 43",
+      "svg": "<svg width=\"43\" height=\"43\" viewBox=\"0 0 43 43\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M11.2803 15.5C13.2403 16.48 14.9203 17.96 16.1403 19.8C16.8403 20.84 16.8403 22.18 16.1403 23.22C14.9203 25.04 13.2403 26.52 11.2803 27.5\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_2\" d=\"M1.5 23.58V27.5C1.5 37.5 5.5 41.5 15.5 41.5H27.5C37.5 41.5 41.5 37.5 41.5 27.5V15.5C41.5 5.5 37.5 1.5 27.5 1.5H15.5C5.5 1.5 1.5 5.5 1.5 15.5\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_3\" d=\"M23.5 27.5H31.5\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n",
+      "originalSvg": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"43\" height=\"43\" viewBox=\"0 0 43 43\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M11.2803 15.5C13.2403 16.48 14.9203 17.96 16.1403 19.8C16.8403 20.84 16.8403 22.18 16.1403 23.22C14.9203 25.04 13.2403 26.52 11.2803 27.5\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_2\" d=\"M1.5 23.58V27.5C1.5 37.5 5.5 41.5 15.5 41.5H27.5C37.5 41.5 41.5 37.5 41.5 27.5V15.5C41.5 5.5 37.5 1.5 27.5 1.5H15.5C5.5 1.5 1.5 5.5 1.5 15.5\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_3\" d=\"M23.5 27.5H31.5\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n"
+    },
+    "petal-translate": {
+      "sourcePath": "public/images/page7/figma-home/icon-translate.svg",
+      "width": "43",
+      "height": "43",
+      "viewBox": "0 0 43 43",
+      "svg": "<svg width=\"43\" height=\"43\" viewBox=\"0 0 43 43\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M31.4794 15.4199H11.5195\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_2\" d=\"M21.5 12.0605V15.4205\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_3\" d=\"M26.5 15.3809C26.5 23.9808 19.78 30.9408 11.5 30.9408\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_4\" d=\"M31.5004 30.94C27.9004 30.94 24.7004 29.02 22.4004 26\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_5\" d=\"M1.5 23.16V27.5C1.5 37.5 5.5 41.5 15.5 41.5H27.5C37.5 41.5 41.5 37.5 41.5 27.5V15.5C41.5 5.5 37.5 1.5 27.5 1.5H15.5C5.5 1.5 1.5 5.5 1.5 15.5\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n",
+      "originalSvg": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"43\" height=\"43\" viewBox=\"0 0 43 43\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M31.4794 15.4199H11.5195\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_2\" d=\"M21.5 12.0605V15.4205\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_3\" d=\"M26.5 15.3809C26.5 23.9808 19.78 30.9408 11.5 30.9408\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_4\" d=\"M31.5004 30.94C27.9004 30.94 24.7004 29.02 22.4004 26\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_5\" d=\"M1.5 23.16V27.5C1.5 37.5 5.5 41.5 15.5 41.5H27.5C37.5 41.5 41.5 37.5 41.5 27.5V15.5C41.5 5.5 37.5 1.5 27.5 1.5H15.5C5.5 1.5 1.5 5.5 1.5 15.5\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n"
+    },
+    "petal-call": {
+      "sourcePath": "public/images/page7/figma-home/icon-call.svg",
+      "width": "42.94",
+      "height": "43",
+      "viewBox": "0 0 42.94 43",
+      "svg": "<svg width=\"42.94\" height=\"43\" viewBox=\"0 0 42.94 43\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M16.28 9.52C16.64 10.02 16.9 10.48 17.08 10.92C17.26 11.34 17.36 11.76 17.36 12.14C17.36 12.62 17.22 13.1 16.94 13.56C16.68 14.02 16.3 14.5 15.82 14.98L14.3 16.56C14.08 16.78 13.98 17.04 13.98 17.36C13.98 17.52 14 17.66 14.04 17.82C14.1 17.98 14.16 18.1 14.2 18.22C14.56 18.88 15.18 19.74 16.06 20.78C16.96 21.82 17.92 22.88 18.96 23.94C20.04 25 21.08 25.98 22.14 26.88C23.18 27.76 24.04 28.36 24.72 28.72C24.82 28.76 24.94 28.82 25.08 28.88C25.24 28.94 25.4 28.96 25.58 28.96C25.92 28.96 26.18 28.84 26.4 28.62L27.92 27.12C28.42 26.62 28.9 26.24 29.36 26C29.82 25.72 30.28 25.58 30.78 25.58C31.16 25.58 31.56 25.66 32 25.84C32.44 26.02 32.9 26.28 33.4 26.62L40.02 31.32C40.54 31.68 40.9 32.1 41.12 32.6C41.32 33.1 41.44 33.6 41.44 34.16C41.44 34.88 41.28 35.62 40.94 36.34C40.6 37.06 40.16 37.74 39.58 38.38C38.6 39.46 37.52 40.24 36.3 40.74C35.1 41.24 33.8 41.5 32.4 41.5C30.36 41.5 28.18 41.02 25.88 40.04C23.58 39.06 21.28 37.74 19 36.08C16.7 34.4 14.52 32.54 12.44 30.48C10.38 28.4 8.52 26.22 6.86 23.94C5.22 21.66 3.9 19.38 2.94 17.12C1.98 14.84 1.5 12.66 1.5 10.58C1.5 9.22 1.74 7.92 2.22 6.72C2.7 5.5 3.46 4.38 4.52 3.38C5.8 2.12 7.2 1.5 8.68 1.5C9.24 1.5 9.8 1.62 10.3 1.86C10.82 2.1 11.28 2.46 11.64 2.98\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-miterlimit=\"10\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n",
+      "originalSvg": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"42.94\" height=\"43\" viewBox=\"0 0 42.94 43\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M16.28 9.52C16.64 10.02 16.9 10.48 17.08 10.92C17.26 11.34 17.36 11.76 17.36 12.14C17.36 12.62 17.22 13.1 16.94 13.56C16.68 14.02 16.3 14.5 15.82 14.98L14.3 16.56C14.08 16.78 13.98 17.04 13.98 17.36C13.98 17.52 14 17.66 14.04 17.82C14.1 17.98 14.16 18.1 14.2 18.22C14.56 18.88 15.18 19.74 16.06 20.78C16.96 21.82 17.92 22.88 18.96 23.94C20.04 25 21.08 25.98 22.14 26.88C23.18 27.76 24.04 28.36 24.72 28.72C24.82 28.76 24.94 28.82 25.08 28.88C25.24 28.94 25.4 28.96 25.58 28.96C25.92 28.96 26.18 28.84 26.4 28.62L27.92 27.12C28.42 26.62 28.9 26.24 29.36 26C29.82 25.72 30.28 25.58 30.78 25.58C31.16 25.58 31.56 25.66 32 25.84C32.44 26.02 32.9 26.28 33.4 26.62L40.02 31.32C40.54 31.68 40.9 32.1 41.12 32.6C41.32 33.1 41.44 33.6 41.44 34.16C41.44 34.88 41.28 35.62 40.94 36.34C40.6 37.06 40.16 37.74 39.58 38.38C38.6 39.46 37.52 40.24 36.3 40.74C35.1 41.24 33.8 41.5 32.4 41.5C30.36 41.5 28.18 41.02 25.88 40.04C23.58 39.06 21.28 37.74 19 36.08C16.7 34.4 14.52 32.54 12.44 30.48C10.38 28.4 8.52 26.22 6.86 23.94C5.22 21.66 3.9 19.38 2.94 17.12C1.98 14.84 1.5 12.66 1.5 10.58C1.5 9.22 1.74 7.92 2.22 6.72C2.7 5.5 3.46 4.38 4.52 3.38C5.8 2.12 7.2 1.5 8.68 1.5C9.24 1.5 9.8 1.62 10.3 1.86C10.82 2.1 11.28 2.46 11.64 2.98\" stroke=\"white\" stroke-width=\"3\" stroke-miterlimit=\"10\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n"
+    },
+    "petal-write": {
+      "sourcePath": "public/images/page7/figma-home/icon-write.svg",
+      "width": "43.5025",
+      "height": "43.5042",
+      "viewBox": "0 0 43.5025 43.5042",
+      "svg": "<svg width=\"43.5025\" height=\"43.5042\" viewBox=\"0 0 43.5025 43.5042\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M19.5 2.00421H15.5C5.5 2.00421 1.5 6.00421 1.5 16.0042V28.0042C1.5 38.0042 5.5 42.0042 15.5 42.0042H27.5C37.5 42.0042 41.5 38.0042 41.5 28.0042V24.0042\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_2\" d=\"M29.5798 4.04276L13.8198 19.8028C13.2198 20.4028 12.6198 21.5828 12.4998 22.4428L11.6398 28.4628C11.3198 30.6428 12.8598 32.1628 15.0398 31.8628L21.0598 31.0028C21.8998 30.8828 23.0798 30.2828 23.6998 29.6828L39.4598 13.9228C42.1798 11.2028 43.4598 8.04276 39.4598 4.04276C35.4598 0.0427585 32.2998 1.32276 29.5798 4.04276Z\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-miterlimit=\"10\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_3\" d=\"M27.3198 6.30499C28.6598 11.085 32.3998 14.825 37.1998 16.185\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-miterlimit=\"10\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n",
+      "originalSvg": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"43.5025\" height=\"43.5042\" viewBox=\"0 0 43.5025 43.5042\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M19.5 2.00421H15.5C5.5 2.00421 1.5 6.00421 1.5 16.0042V28.0042C1.5 38.0042 5.5 42.0042 15.5 42.0042H27.5C37.5 42.0042 41.5 38.0042 41.5 28.0042V24.0042\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_2\" d=\"M29.5798 4.04276L13.8198 19.8028C13.2198 20.4028 12.6198 21.5828 12.4998 22.4428L11.6398 28.4628C11.3198 30.6428 12.8598 32.1628 15.0398 31.8628L21.0598 31.0028C21.8998 30.8828 23.0798 30.2828 23.6998 29.6828L39.4598 13.9228C42.1798 11.2028 43.4598 8.04276 39.4598 4.04276C35.4598 0.0427585 32.2998 1.32276 29.5798 4.04276Z\" stroke=\"white\" stroke-width=\"3\" stroke-miterlimit=\"10\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_3\" d=\"M27.3198 6.30499C28.6598 11.085 32.3998 14.825 37.1998 16.185\" stroke=\"white\" stroke-width=\"3\" stroke-miterlimit=\"10\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n"
+    },
+    "petal-document": {
+      "sourcePath": "public/images/page7/figma-home/icon-document.svg",
+      "width": "43",
+      "height": "43",
+      "viewBox": "0 0 43 43",
+      "svg": "<svg width=\"43\" height=\"43\" viewBox=\"0 0 43 43\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M1.5 15.5C1.5 5.50004 5.5 1.50004 15.5 1.50004H25.5\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_2\" d=\"M41.5 17.5V27.5C41.5 37.5 37.5 41.5 27.5 41.5H15.5C5.5 41.5 1.5 37.5 1.5 27.5V23.46\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_3\" d=\"M33.5 17.5C27.5 17.5 25.5 15.5 25.5 9.50004V1.50004L41.5 17.5\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n",
+      "originalSvg": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"43\" height=\"43\" viewBox=\"0 0 43 43\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M1.5 15.5C1.5 5.50004 5.5 1.50004 15.5 1.50004H25.5\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_2\" d=\"M41.5 17.5V27.5C41.5 37.5 37.5 41.5 27.5 41.5H15.5C5.5 41.5 1.5 37.5 1.5 27.5V23.46\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_3\" d=\"M33.5 17.5C27.5 17.5 25.5 15.5 25.5 9.50004V1.50004L41.5 17.5\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n"
+    },
+    "petal-knowledge": {
+      "sourcePath": "public/images/page7/figma-home/icon-knowledge.svg",
+      "width": "37.0005",
+      "height": "43",
+      "viewBox": "0 0 37.0005 43",
+      "svg": "<svg width=\"37.0005\" height=\"43\" viewBox=\"0 0 37.0005 43\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M35.5005 19.5V31.5C35.5005 31.78 35.5005 32.06 35.4805 32.34\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_2\" d=\"M1.5 33.5V11.5C1.5 3.5 3.5 1.5 11.5 1.5H25.5C33.5 1.5 35.5 3.5 35.5 11.5\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_3\" d=\"M7.2 27.5H35.5V34.5C35.5 38.36 32.36 41.5 28.5 41.5H8.5C4.64 41.5 1.5 38.36 1.5 34.5V33.2C1.5 30.06 4.06 27.5 7.2 27.5Z\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_4\" d=\"M10.5 11.5H26.5\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_5\" d=\"M10.5 18.5H20.5\" stroke=\"#1c1c1e\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n",
+      "originalSvg": "<svg preserveAspectRatio=\"none\" overflow=\"visible\" style=\"display: block;\" width=\"37.0005\" height=\"43\" viewBox=\"0 0 37.0005 43\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<g id=\"Group\">\n<path id=\"Vector\" d=\"M35.5005 19.5V31.5C35.5005 31.78 35.5005 32.06 35.4805 32.34\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_2\" d=\"M1.5 33.5V11.5C1.5 3.5 3.5 1.5 11.5 1.5H25.5C33.5 1.5 35.5 3.5 35.5 11.5\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_3\" d=\"M7.2 27.5H35.5V34.5C35.5 38.36 32.36 41.5 28.5 41.5H8.5C4.64 41.5 1.5 38.36 1.5 34.5V33.2C1.5 30.06 4.06 27.5 7.2 27.5Z\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_4\" d=\"M10.5 11.5H26.5\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n<path id=\"Vector_5\" d=\"M10.5 18.5H20.5\" stroke=\"white\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n</g>\n</svg>\n"
+    },
+    "pdf": {
+      "sourcePath": "public/images/page7/reference-panels/pdf.svg",
+      "width": "56",
+      "height": "56",
+      "viewBox": "0 0 56 56",
+      "svg": "<svg width=\"56\" height=\"56\" viewBox=\"0 0 56 56\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n<mask id=\"mask0_21_1916\" style=\"mask-type:luminance\" maskUnits=\"userSpaceOnUse\" x=\"0\" y=\"0\" width=\"56\" height=\"56\">\n<rect width=\"56\" height=\"56\" fill=\"white\"/>\n</mask>\n<g mask=\"url(#mask0_21_1916)\">\n<path d=\"M32.5362 0L50.8633 18.6659V49.4659C50.8633 53.0751 47.9922 56 44.4487 56H11.4597C7.91632 56 5.04492 53.0726 5.04492 49.4659V6.53408C5.0452 2.92488 7.9166 0 11.46 0H32.5362Z\" fill=\"url(#paint0_linear_21_1916)\"/>\n<path d=\"M50.8642 18.6659H39.275C35.7341 18.6659 32.5371 15.4126 32.5371 11.8031V0L50.8642 18.6659Z\" fill=\"white\" fill-opacity=\"0.4\"/>\n<path d=\"M30.597 19.7242C31.5043 18.6052 32.888 18.2346 34.5618 18.7369C36.3939 19.2656 37.0896 20.3851 37.3011 21.2662C38.076 24.3235 34.5613 28.4467 32.1917 30.8697C32.7203 32.9668 33.4163 35.1791 34.262 37.2057C37.6623 38.7212 41.7052 40.9856 42.1634 43.4528C42.3483 44.3073 42.0847 45.1004 41.3889 45.7965C40.7899 46.2899 40.1551 46.5807 39.4856 46.5807C36.6666 46.5805 34.138 41.7428 32.8079 38.5973C30.5704 37.6634 28.1041 36.791 25.7083 36.2272C23.6117 37.6105 20.0437 39.6812 17.304 39.6813C15.6038 39.6813 14.3792 38.8266 13.93 37.3375C13.5865 36.1129 13.8774 35.2674 14.2473 34.8092C14.9697 33.8224 16.458 33.32 18.6868 33.3199C20.4927 33.3199 22.7834 33.6368 25.3382 34.2535C26.9854 33.0817 28.659 31.7249 30.1477 30.2887C29.4871 27.152 28.7648 22.0681 30.597 19.7242ZM36.9514 41.2477C37.5716 42.6278 38.1632 43.2789 38.4749 43.2789C38.5231 43.2788 38.5907 43.2577 38.6868 43.1735C38.8024 43.0468 38.8018 42.9618 38.7825 42.8844C38.7179 42.5217 38.1944 41.927 36.9514 41.2477ZM19.0511 35.6598C18.0602 35.6598 17.7875 35.8995 17.7044 36.0113C17.6807 36.0473 17.6088 36.1557 17.68 36.4352C17.7393 36.6747 17.9059 36.9303 18.4192 36.9303C19.0632 36.9303 19.9959 36.5666 21.0784 35.9156C20.304 35.744 19.6199 35.6598 19.0511 35.6598ZM30.0227 33.3746C29.6095 33.7342 29.1887 34.0851 28.761 34.4274C29.3534 34.5924 29.9677 34.8049 30.5384 35.025C30.3312 34.4823 30.1644 33.9174 30.0227 33.3746ZM32.9495 22.5172C32.7388 22.5172 32.5904 22.5951 32.4573 22.7399C32.0654 23.234 32.0213 24.479 32.3245 26.0729C33.4743 24.8394 34.0989 23.7058 33.9436 23.1002C33.9213 23.0108 33.8542 22.7395 33.3186 22.5836C33.171 22.5392 33.0602 22.5173 32.9495 22.5172Z\" fill=\"white\"/>\n</g>\n<defs>\n<linearGradient id=\"paint0_linear_21_1916\" x1=\"5.04492\" y1=\"0\" x2=\"5.04492\" y2=\"56\" gradientUnits=\"userSpaceOnUse\">\n<stop stop-color=\"#FF8F8F\"/>\n<stop offset=\"1\" stop-color=\"#FE4E4E\"/>\n</linearGradient>\n</defs>\n</svg>\n"
+    },
+    "X": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-x\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"></path><path d=\"m6 6 12 12\"></path></svg>"
+    },
+    "Plus": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-plus\" aria-hidden=\"true\"><path d=\"M5 12h14\"></path><path d=\"M12 5v14\"></path></svg>"
+    },
+    "Mic": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-mic\" aria-hidden=\"true\"><path d=\"M12 19v3\"></path><path d=\"M19 10v2a7 7 0 0 1-14 0v-2\"></path><rect x=\"9\" y=\"2\" width=\"6\" height=\"13\" rx=\"3\"></rect></svg>"
+    },
+    "Send": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-send\" aria-hidden=\"true\"><path d=\"M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z\"></path><path d=\"m21.854 2.147-10.94 10.939\"></path></svg>"
+    },
+    "ChevronDown": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-chevron-down\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg>"
+    },
+    "ChevronRight": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-chevron-right\" aria-hidden=\"true\"><path d=\"m9 18 6-6-6-6\"></path></svg>"
+    },
+    "ArrowLeftRight": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-arrow-left-right\" aria-hidden=\"true\"><path d=\"M8 3 4 7l4 4\"></path><path d=\"M4 7h16\"></path><path d=\"m16 21 4-4-4-4\"></path><path d=\"M20 17H4\"></path></svg>"
+    },
+    "ArrowDownLeft": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-arrow-down-left\" aria-hidden=\"true\"><path d=\"M17 7 7 17\"></path><path d=\"M17 17H7V7\"></path></svg>"
+    },
+    "Search": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-search\" aria-hidden=\"true\"><path d=\"m21 21-4.34-4.34\"></path><circle cx=\"11\" cy=\"11\" r=\"8\"></circle></svg>"
+    },
+    "Phone": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-phone\" aria-hidden=\"true\"><path d=\"M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384\"></path></svg>"
+    },
+    "Globe": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-globe\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20\"></path><path d=\"M2 12h20\"></path></svg>"
+    },
+    "Smile": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-smile\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"></circle><path d=\"M8 14s1.5 2 4 2 4-2 4-2\"></path><line x1=\"9\" x2=\"9.01\" y1=\"9\" y2=\"9\"></line><line x1=\"15\" x2=\"15.01\" y1=\"9\" y2=\"9\"></line></svg>"
+    },
+    "CornerDownLeft": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-corner-down-left\" aria-hidden=\"true\"><path d=\"M20 4v7a4 4 0 0 1-4 4H4\"></path><path d=\"m9 10-5 5 5 5\"></path></svg>"
+    },
+    "Delete": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-delete\" aria-hidden=\"true\"><path d=\"M10 5a2 2 0 0 0-1.344.519l-6.328 5.74a1 1 0 0 0 0 1.481l6.328 5.741A2 2 0 0 0 10 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z\"></path><path d=\"m12 9 6 6\"></path><path d=\"m18 9-6 6\"></path></svg>"
+    },
+    "ArrowBigUp": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-arrow-big-up\" aria-hidden=\"true\"><path d=\"M9 13a1 1 0 0 0-1-1H5.061a1 1 0 0 1-.75-1.811l6.836-6.835a1.207 1.207 0 0 1 1.707 0l6.835 6.835a1 1 0 0 1-.75 1.811H16a1 1 0 0 0-1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1z\"></path></svg>"
+    },
+    "Signal": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-signal\" aria-hidden=\"true\"><path d=\"M2 20h.01\"></path><path d=\"M7 20v-4\"></path><path d=\"M12 20v-8\"></path><path d=\"M17 20V8\"></path><path d=\"M22 4v16\"></path></svg>"
+    },
+    "Wifi": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-wifi\" aria-hidden=\"true\"><path d=\"M12 20h.01\"></path><path d=\"M2 8.82a15 15 0 0 1 20 0\"></path><path d=\"M5 12.859a10 10 0 0 1 14 0\"></path><path d=\"M8.5 16.429a5 5 0 0 1 7 0\"></path></svg>"
+    },
+    "BatteryFull": {
+      "source": "lucide-react",
+      "width": "24",
+      "height": "24",
+      "viewBox": "0 0 24 24",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"#1c1c1e\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-battery-full\" aria-hidden=\"true\"><path d=\"M10 10v4\"></path><path d=\"M14 10v4\"></path><path d=\"M22 14v-4\"></path><path d=\"M6 10v4\"></path><rect x=\"2\" y=\"6\" width=\"16\" height=\"12\" rx=\"2\"></rect></svg>"
+    }
+  }
+}

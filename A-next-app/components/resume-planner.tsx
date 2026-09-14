@@ -200,7 +200,7 @@ export type CareerEntry = { period: string; title: string; body: CareerBody }
 const careerEntries: CareerEntry[] = [
   {
     period: "2026.04-now",
-    title:  "if Studio：产品运营&UX设计",
+    title:  "淘天集团-if Studio：产品运营&UX设计",
     body: {
       type: "text",
       text: "围绕 Skill 全生命周期开展能力建设：完善 Skill 从开发验证到上线运营的机制，推动高价值 Skill 持续产出；建设并运营技能广场，持续丰富优质内容与应用场景；提炼平台能力与标杆案例，通过内容包装、演示传播和场景化方案加强能力外宣；探索技能商品化与售卖模式，逐步形成可持续的 Skill 内容生态与商业闭环。",
@@ -208,7 +208,7 @@ const careerEntries: CareerEntry[] = [
   },
   {
     period: "2024.04-2026.04",
-    title:  "iFlow 心流：用户产品&UX设计",
+    title:  "ATH-iFlow 心流：用户产品&UX设计",
     body: {
       type: "paragraphs",
       paragraphs: [
@@ -219,7 +219,7 @@ const careerEntries: CareerEntry[] = [
   },
   {
     period: "2022.01 - 2024.03",
-    title:  "星链&万相营造：UX设计",
+    title:  "淘天集团-星链&万相营造：UX设计",
     body: {
       type: "paragraphs",
       paragraphs: [
@@ -746,7 +746,7 @@ export function ResumePlanner() {
                 <div className="flex flex-col gap-3">
                   <div className="relative h-[26px] w-full">
                     <h2 className={cn(bodyFont, "absolute left-0 top-0 text-[18px] font-semibold leading-[26px] text-[#171717]")}>作品集</h2>
-                    <p className={cn(bodyFont, "absolute left-[60px] top-[6px] text-[10px] leading-[18px] text-[#a39e99]")}>AI原生产品设计</p>
+                    <p className={cn(bodyFont, "absolute left-[60px] top-[6px] text-[10px] leading-[18px] text-[#a39e99]")}>点击下方卡片进入作品集</p>
                   </div>
                   <PortfolioBadge />
                 </div>
@@ -948,7 +948,7 @@ export function ResumePlanner() {
                   <div className="flex flex-col gap-3">
                     <div className="relative h-[26px] w-full">
                       <h2 className={cn(bodyFont, "absolute left-0 top-0 text-[18px] font-semibold leading-[26px] text-[#171717]")}>Portfolio</h2>
-                      <p className={cn(bodyFont, "absolute left-[81px] top-[6px] text-[10px] leading-[18px] text-[#a39e99]")}>AI原生产品设计</p>
+                      <p className={cn(bodyFont, "absolute left-[81px] top-[6px] text-[10px] leading-[18px] text-[#a39e99]")}>点击下方卡片进入作品集</p>
                     </div>
                     <PortfolioBadge />
                   </div>
@@ -1219,6 +1219,7 @@ function PageCurlStack({
         ...(isBR ? { right: 0, bottom: 0 } : { left: 0, bottom: 0 }),
         width:  size,
         height: size,
+        borderRadius: isBR ? "0 0 12px 0" : "0 0 0 12px",
         opacity,
       }}
     >

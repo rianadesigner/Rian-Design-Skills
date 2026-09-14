@@ -1,0 +1,42 @@
+{
+  "hoverAudit": [
+    {
+      "carousel": "paused",
+      "effect": "water-ripple-contour",
+      "mapLength": 6530,
+      "petal": "code"
+    },
+    {
+      "carousel": "paused",
+      "effect": "water-ripple-contour",
+      "mapLength": 7162,
+      "petal": "translate"
+    },
+    {
+      "carousel": "paused",
+      "effect": "water-ripple-contour",
+      "mapLength": 7426,
+      "petal": "call"
+    },
+    {
+      "carousel": "paused",
+      "effect": "water-ripple-contour",
+      "mapLength": 7366,
+      "petal": "write"
+    },
+    {
+      "carousel": "paused",
+      "effect": "water-ripple-contour",
+      "mapLength": 7474,
+      "petal": "document"
+    },
+    {
+      "carousel": "paused",
+      "effect": "water-ripple-contour",
+      "mapLength": 6366,
+      "petal": "knowledge"
+    }
+  ],
+  "settled": true,
+  "settledLength": 2094
+}

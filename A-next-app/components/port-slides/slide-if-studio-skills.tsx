@@ -29,6 +29,17 @@ const skillScreens = [
     height: 2588,
     alt: "万相营造开放平台试穿套图技能详情",
   },
+  {
+    id: "cloud-market",
+    label: "云市场",
+    title: "阿里云市场",
+    caption: "ai应用及服务售卖",
+    image: `${P_IF_STUDIO}/aliyun-market-2026.webp`,
+    srcSet: `${P_IF_STUDIO}/aliyun-market-2026-960.webp 960w, ${P_IF_STUDIO}/aliyun-market-2026-1440.webp 1440w`,
+    width: 1512,
+    height: 7971,
+    alt: "阿里云市场 AI 应用及服务售卖页面",
+  },
 ] as const
 
 type SkillScreen = (typeof skillScreens)[number]

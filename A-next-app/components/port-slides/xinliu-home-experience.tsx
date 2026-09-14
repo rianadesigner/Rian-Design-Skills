@@ -2,31 +2,75 @@
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import { useEffect, useId, useRef, useState, type CSSProperties } from "react"
+import { XinliuInputSheet } from "./xinliu-input-sheet"
+import inputStyles from "./xinliu-input-sheet.module.css"
 import styles from "./xinliu-home-experience.module.css"
+import { XinliuAppPetal } from "./xinliu-app-petal"
 import { XinliuFullscreenPanel as CapabilitySheet } from "./xinliu-fullscreen-panel"
-import { usePetalRippleDisplacement } from "./petal-ripple-displacement"
+import type { FullscreenCapability } from "./xinliu-fullscreen-controls"
+import {
+  PETAL_RIPPLE_DURATION_MS,
+  usePetalRippleDisplacement,
+} from "./petal-ripple-displacement"
 
-const SCREEN = "/images/page7/phone-screenshot.webp"
+// Native 750 × 1612 exports preserve both Figma homepage states.
+const SCREENS = {
+  search: "/images/page7/figma-home/ai-search-home.png",
+  research: "/images/page7/figma-home/research-home.png",
+}
+export type XinliuHomeMode = keyof typeof SCREENS
+
+export const RESEARCH_CAPABILITIES = [
+  {
+    id: "web",
+    label: "网页专家",
+    icon: "/images/page7/figma-home/research-icon-web.svg",
+  },
+  {
+    id: "pdf",
+    label: "PDF专家",
+    icon: "/images/page7/figma-home/research-icon-pdf.svg",
+  },
+  {
+    id: "ppt",
+    label: "PPT专家",
+    icon: "/images/page7/figma-home/research-icon-ppt.svg",
+  },
+  {
+    id: "word",
+    label: "Word专家",
+    icon: "/images/page7/figma-home/research-icon-word.svg",
+  },
+  {
+    id: "excel",
+    label: "Excel专家",
+    icon: "/images/page7/figma-home/research-icon-excel.svg",
+  },
+  {
+    id: "video",
+    label: "视频专家",
+    icon: "/images/page7/figma-home/research-icon-video.svg",
+  },
+] as const satisfies readonly {
+  id: FullscreenCapability
+  label: string
+  icon: string
+}[]
 const CLEAN_BACKGROUND = "/images/page7/figma-home/clean-background.webp"
 const PETAL_SHELL = "/images/page7/figma-home/petal-shell.svg"
 const PETAL_CONTOUR =
   "M219.662 363.256C195.461 354.932 122.86 286.256 107.734 243.594C91.6007 199.892 101.684 143.703 128.91 121.851C166.219 92.7162 273.105 92.7162 310.414 121.851C337.639 143.703 347.723 199.892 331.589 243.594C316.464 286.256 243.862 354.932 219.662 363.256Z"
 const EASE = [0.22, 1, 0.36, 1] as const
 const EXIT_EASE = [0.4, 0, 1, 1] as const
+const RIPPLE_PLAYBACK_MS = PETAL_RIPPLE_DURATION_MS + 180
 
-type PetalId =
-  | "code"
-  | "translate"
-  | "call"
-  | "write"
-  | "document"
-  | "knowledge"
+type PetalId = "code" | "translate" | "call" | "write" | "document" | "academic"
 
 const PETALS = [
   {
     id: "code",
-    label: "写代码",
-    icon: "/images/page7/figma-home/icon-code.svg",
+    label: "做应用",
+    icon: "/images/page7/figma-home/icon-app.svg",
     artLeft: "33.97%",
     artTop: "2.45%",
     rotation: 0,
@@ -84,8 +128,8 @@ const PETALS = [
       "polygon(57.33% 57.33%, 60.27% 49.33%, 97.33% 49.33%, 98.93% 66.67%, 95.33% 86%, 66.67% 88%)",
   },
   {
-    id: "knowledge",
-    label: "知识库",
+    id: "academic",
+    label: "搜学术",
     icon: "/images/page7/figma-home/icon-knowledge.svg",
     artLeft: "34.04%",
     artTop: "62.45%",
@@ -103,12 +147,20 @@ const PETAL_COLLAPSE: Record<PetalId, { x: `${number}%`; y: `${number}%` }> = {
   call: { x: "-4.4%", y: "3.4%" },
   write: { x: "4.4%", y: "-3.4%" },
   document: { x: "-4.4%", y: "-3.4%" },
-  knowledge: { x: "0%", y: "-6%" },
+  academic: { x: "0%", y: "-6%" },
 }
 
 type PetalOrigin = { x: number; y: number; width: number; height: number }
 
-export function XinliuHomeExperience() {
+export function XinliuHomeExperience({
+  mode,
+  onModeChange,
+}: {
+  mode: XinliuHomeMode
+  onModeChange: (mode: XinliuHomeMode) => void
+}) {
+  const [inputOpen, setInputOpen] = useState(false)
+  const inputTrigger = useRef<HTMLButtonElement>(null)
   const reduceMotion = Boolean(useReducedMotion())
   const screenRef = useRef<HTMLDivElement>(null)
   const triggerRef = useRef<HTMLButtonElement | null>(null)
@@ -116,7 +168,25 @@ export function XinliuHomeExperience() {
   const [pointerHovered, setPointerHovered] = useState<PetalId | null>(null)
   const [selected, setSelected] = useState<PetalId | null>(null)
   const [origin, setOrigin] = useState<PetalOrigin | null>(null)
-  const activePetal = PETALS.find((petal) => petal.id === selected) ?? null
+  const screenImage = SCREENS[mode]
+  const petals = PETALS.map((petal, index) => {
+    const capability =
+      mode === "research" ? RESEARCH_CAPABILITIES[index] : petal
+    return {
+      ...petal,
+      capabilityId: capability.id,
+      label: capability.label,
+      icon: capability.icon,
+    }
+  })
+  const activePetal = petals.find((petal) => petal.id === selected) ?? null
+
+  const changeMode = (nextMode: XinliuHomeMode) => {
+    if (selected || inputOpen || nextMode === mode) return
+    setHovered(null)
+    setPointerHovered(null)
+    onModeChange(nextMode)
+  }
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -135,13 +205,53 @@ export function XinliuHomeExperience() {
       data-slide-interactive="true"
       data-petal-state={selected ?? "idle"}
       data-petal-hovered={hovered ?? "none"}
+      data-home-mode={mode}
+      data-figma-node={mode === "research" ? "37:2666" : "25:2078"}
     >
+      <link rel="preload" as="image" href={SCREENS.research} />
       <img
-        src={SCREEN}
-        alt="心流移动端首页最终方案"
+        src={screenImage}
+        alt={mode === "research" ? "心流高级研究首页" : "心流 AI 搜索首页"}
+        width={750}
+        height={1612}
         className="absolute inset-0 block h-full w-full object-cover select-none"
         draggable={false}
       />
+      {mode === "search" && (
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 750 1612"
+          preserveAspectRatio="none"
+          className="pointer-events-none absolute inset-0 h-full w-full"
+        >
+          <XinliuAppPetal />
+        </svg>
+      )}
+
+      <div
+        role="group"
+        aria-label="首页模式"
+        className={styles.modeSwitch}
+        inert={selected !== null || inputOpen}
+        aria-hidden={selected || inputOpen ? true : undefined}
+      >
+        <button
+          type="button"
+          aria-label="AI搜索"
+          aria-pressed={mode === "search"}
+          onClick={() => changeMode("search")}
+        >
+          <span>AI搜索</span>
+        </button>
+        <button
+          type="button"
+          aria-label="高级研究"
+          aria-pressed={mode === "research"}
+          onClick={() => changeMode("research")}
+        >
+          <span>高级研究</span>
+        </button>
+      </div>
 
       <motion.img
         src={CLEAN_BACKGROUND}
@@ -176,7 +286,8 @@ export function XinliuHomeExperience() {
       />
 
       <PetalAmbientLight
-        active={!selected}
+        screenImage={screenImage}
+        active={!selected && !inputOpen}
         pointerHovered={pointerHovered}
         reduceMotion={reduceMotion}
       />
@@ -212,12 +323,23 @@ export function XinliuHomeExperience() {
                 }}
               >
                 <img
-                  src={SCREEN}
+                  src={screenImage}
                   alt=""
                   className="absolute left-0 block w-full max-w-none object-cover select-none"
                   style={{ top: "-48.274%", height: "214.9331%" }}
                   draggable={false}
                 />
+                {mode === "search" && (
+                  <svg
+                    viewBox="0 0 750 750"
+                    preserveAspectRatio="none"
+                    className="absolute inset-0 h-full w-full"
+                  >
+                    <g transform="translate(0 -362.055)">
+                      <XinliuAppPetal />
+                    </g>
+                  </svg>
+                )}
               </motion.div>
             ))}
         </AnimatePresence>
@@ -240,11 +362,11 @@ export function XinliuHomeExperience() {
 
         <div
           className="absolute inset-0"
-          style={{ pointerEvents: selected ? "none" : "auto" }}
-          aria-hidden={selected ? "true" : undefined}
-          inert={selected !== null}
+          style={{ pointerEvents: selected || inputOpen ? "none" : "auto" }}
+          aria-hidden={selected || inputOpen ? "true" : undefined}
+          inert={selected !== null || inputOpen}
         >
-          {PETALS.map((petal) => (
+          {petals.map((petal) => (
             <button
               key={petal.id}
               type="button"
@@ -290,6 +412,28 @@ export function XinliuHomeExperience() {
         </div>
       </div>
 
+      <button
+        ref={inputTrigger}
+        className={inputStyles.trigger}
+        aria-label="向心流提问"
+        aria-haspopup="dialog"
+        aria-expanded={inputOpen}
+        disabled={selected !== null}
+        onClick={() => setInputOpen(true)}
+      />
+      <AnimatePresence
+        onExitComplete={() =>
+          inputTrigger.current?.focus({ preventScroll: true })
+        }
+      >
+        {inputOpen && (
+          <XinliuInputSheet
+            reduceMotion={reduceMotion}
+            onClose={() => setInputOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
       <AnimatePresence
         mode="wait"
         onExitComplete={() =>
@@ -299,7 +443,7 @@ export function XinliuHomeExperience() {
         {activePetal && origin && (
           <CapabilitySheet
             key={activePetal.id}
-            petal={activePetal}
+            petal={{ ...activePetal, id: activePetal.capabilityId }}
             reduceMotion={reduceMotion}
             origin={origin}
             onClose={() => setSelected(null)}
@@ -311,10 +455,12 @@ export function XinliuHomeExperience() {
 }
 
 function PetalAmbientLight({
+  screenImage,
   active,
   pointerHovered,
   reduceMotion,
 }: {
+  screenImage: string
   active: boolean
   pointerHovered: PetalId | null
   reduceMotion: boolean
@@ -397,36 +543,104 @@ function PetalAmbientLight({
           <div className={styles.outerOrbitSweep} />
         </div>
       </motion.div>
-      <AnimatePresence>
-        {active && hoverPetal && (
-          <motion.div
-            key={hoverPetal.id}
-            aria-hidden="true"
-            className={styles.hoverLight}
-            data-petal-hover-ripple={hoverPetal.id}
-            style={
-              {
-                "--light-play-state": running ? "running" : "paused",
-              } as CSSProperties
-            }
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.14 }}
-          >
-            <PetalWaterRipple petal={hoverPetal} running={running} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {running &&
+        (hoverPetal ? (
+          <PetalRippleLayer
+            key={`hover-${screenImage}-${hoverPetal.id}`}
+            petal={hoverPetal}
+            screenImage={screenImage}
+            source="hover"
+          />
+        ) : (
+          <IdlePetalRipples key={screenImage} screenImage={screenImage} />
+        ))}
     </>
+  )
+}
+
+function IdlePetalRipples({ screenImage }: { screenImage: string }) {
+  const [ripple, setRipple] = useState<{
+    petal: (typeof PETALS)[number]
+    sequence: number
+  } | null>(null)
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>
+    let disposed = false
+    let previousIndex = -1
+    let sequence = 0
+
+    const play = () => {
+      if (disposed) return
+      // Choose freely, while avoiding the same petal on consecutive idle waves.
+      const candidates = PETALS.map((_, index) => index).filter(
+        (index) => index !== previousIndex
+      )
+      const index = candidates[Math.floor(Math.random() * candidates.length)]
+      previousIndex = index
+      setRipple({ petal: PETALS[index], sequence: sequence++ })
+      timer = setTimeout(() => {
+        if (disposed) return
+        setRipple(null)
+        timer = setTimeout(play, 1500 + Math.random() * 1500)
+      }, RIPPLE_PLAYBACK_MS)
+    }
+
+    // Give the homepage (or the closing tool) time to settle before the first wave.
+    timer = setTimeout(play, 900 + Math.random() * 600)
+    return () => {
+      disposed = true
+      clearTimeout(timer)
+    }
+  }, [])
+
+  return ripple ? (
+    <PetalRippleLayer
+      key={ripple.sequence}
+      petal={ripple.petal}
+      screenImage={screenImage}
+      source="idle"
+    />
+  ) : null
+}
+
+function PetalRippleLayer({
+  petal,
+  screenImage,
+  source,
+}: {
+  petal: (typeof PETALS)[number]
+  screenImage: string
+  source: "idle" | "hover"
+}) {
+  return (
+    <motion.div
+      aria-hidden="true"
+      className={styles.hoverLight}
+      data-petal-ripple-source={source}
+      data-petal-idle-ripple={source === "idle" ? petal.id : undefined}
+      data-petal-hover-ripple={source === "hover" ? petal.id : undefined}
+      style={{ "--light-play-state": "running" } as CSSProperties}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [0, 1, 1, 0] }}
+      transition={{
+        duration: RIPPLE_PLAYBACK_MS / 1000,
+        times: [0, 0.05, 0.94, 1],
+        ease: "linear",
+      }}
+    >
+      <PetalWaterRipple petal={petal} screenImage={screenImage} running />
+    </motion.div>
   )
 }
 
 function PetalWaterRipple({
   petal,
+  screenImage,
   running,
 }: {
   petal: (typeof PETALS)[number]
+  screenImage: string
   running: boolean
 }) {
   const uid = useId().replace(/:/g, "")
@@ -553,13 +767,18 @@ function PetalWaterRipple({
       <g mask={`url(#${uid}-petal-surface)`}>
         <g filter={`url(#${uid}-refraction)`}>
           <image
-            href={SCREEN}
+            href={screenImage}
             x="0"
             y="-362.055"
             width="750"
             height="1611.99825"
             preserveAspectRatio="none"
           />
+          {screenImage === SCREENS.search && (
+            <g transform="translate(0 -362.055)">
+              <XinliuAppPetal />
+            </g>
+          )}
           <g
             clipPath={`url(#${uid}-petal)`}
             mask={`url(#${uid}-keep-label-clear)`}

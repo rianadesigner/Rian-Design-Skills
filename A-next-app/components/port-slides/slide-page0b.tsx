@@ -8,6 +8,9 @@ import { SLIDE_DESIGN_WIDTH } from "./slide-design";
 // ── Assets ──────────────────────────────────────────────────
 const P = "/images/page0b";
 const imgAi1 = `${P}/ai1-bg.webp`;
+const FONT = "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif";
+const FONT_EN = "var(--font-syne, 'Impact', 'Arial Black', sans-serif)";
+const PIPELINE_LABELS = ["海量原始资料", "多格式入库", "Wiki 图谱编译", "多模态输出"] as const;
 
 // Design canvas dimensions
 const DESIGN_W = SLIDE_DESIGN_WIDTH; // 1440
@@ -88,46 +91,100 @@ export default function SlidePage0b() {
       {/* ══════════════════════════════════════════
           TOP HEADER
       ══════════════════════════════════════════ */}
-      <motion.div
-        initial={!reduceMotion ? { opacity: 0, y: -12 } : false}
-        animate={{ opacity: 1, y: 0 }}
-        transition={!reduceMotion ? { duration: 0.52, delay: 0.08, ease: [0.22, 1, 0.36, 1] } : { duration: 0 }}
-        style={{
-        position: "absolute", left: 35, right: 35, top: 84,
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 12,
-        padding: "0 76px", zIndex: 17,
+      <div style={{
+        position: "absolute",
+        top: 56, left: 0, right: 0, zIndex: 17,
+        display: "flex", flexDirection: "column",
+        alignItems: "center", textAlign: "center",
+        padding: "0 80px",
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 11.4 }}>
+        <motion.div
+          initial={!reduceMotion ? { opacity: 0, y: -8 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 10 }}
+        >
           <span style={{
-            fontFamily: "Impact, 'Arial Black', sans-serif",
-            fontSize: 10.46, lineHeight: "15.69px", color: "rgba(200,8,8,0.85)",
-            letterSpacing: "1.88px",
-          }}>02</span>
-          <div style={{ width: 26.63, height: 0.95, background: "rgba(255,255,255,0.2)", flexShrink: 0 }} />
+            fontSize: 11, fontFamily: FONT_EN, fontWeight: 600,
+            letterSpacing: "0.18em", color: "rgba(200,8,8,0.85)",
+          }}>01</span>
+          <span style={{ width: 28, height: 1, background: "rgba(255,255,255,0.2)" }} />
           <span style={{
-            fontFamily: "'PingFang SC', sans-serif", fontWeight: 400,
-            fontSize: 9.99, lineHeight: "14.98px", color: "rgba(255,255,255,0.4)",
-            letterSpacing: "2.60px", whiteSpace: "nowrap",
-          }}>LLM WIKI 不得不做的理由</span>
-        </div>
+            fontSize: 10.5, letterSpacing: "0.26em",
+            color: "rgba(255,255,255,0.4)", fontFamily: FONT,
+          }}>LLM WIKI 产品方法论</span>
+        </motion.div>
 
-        <p style={{
-          margin: 0,
-          fontFamily: "'标小智无界黑', sans-serif", fontWeight: 400,
-          fontSize: 44, lineHeight: "47.25px", color: "#fff",
-          letterSpacing: "1.5px", whiteSpace: "nowrap",
-        }}>心流2.0升级： LLM Wiki</p>
+        <motion.h1
+          initial={!reduceMotion ? { opacity: 0, y: -10 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.06, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          style={{
+            margin: 0, fontSize: 46, lineHeight: 1.08, fontWeight: 400,
+            letterSpacing: "1.5px", color: "#fff", fontFamily: "'标小智无界黑', sans-serif",
+            textWrap: "balance" as never,
+          }}
+        >
+          LLM Wiki-你的AI知识库
+        </motion.h1>
 
-        <div style={{
-          fontFamily: "'PingFang SC', sans-serif", fontWeight: 400,
-          fontSize: 12.36, color: "rgba(255,255,255,0.5)",
-          textAlign: "center", lineHeight: "21.64px", width: 346,
-        }}>
-          <p style={{ margin: 0 }}>1. 用户需求升级：从&quot;问答&quot;变成&quot;完成复杂任务&quot;</p>
-          <p style={{ margin: 0 }}>2. 产品定位升级：从&quot;AI 搜索助手&quot;变成&quot;AI IDE / AI 工作台&quot;</p>
-          <p style={{ margin: 0 }}>3. 技术能力升级：从&quot;全网搜索&quot;到&quot;Agent 原生创作平台&quot;</p>
-        </div>
-      </motion.div>
+        <motion.p
+          initial={!reduceMotion ? { opacity: 0 } : false}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.18, duration: 0.6 }}
+          style={{
+            margin: "10px 0 0", maxWidth: 640,
+            fontSize: 14, fontWeight: 600, lineHeight: 1.75,
+            color: "rgba(255,255,255,0.5)", fontFamily: FONT,
+            textWrap: "pretty" as never,
+          }}
+        >
+          本项目完整承接了从「海量原始资料」到「结构化 Wiki 节点」的全链路：采集、入库、编译到再生成。<br />
+          让散落、孤立的资料沉淀为可检索、可互链、可溯源的团队知识资产。
+        </motion.p>
+
+        {/* ── Flow pipeline ── */}
+        <motion.div
+          initial={!reduceMotion ? { opacity: 0, y: 6 } : false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.30, duration: 0.5 }}
+          style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 10, flexWrap: "wrap", justifyContent: "center" }}
+        >
+          {PIPELINE_LABELS.map((label, i, arr) => {
+            const isActive = i === 0;
+            return (
+              <span key={label} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span
+                  aria-current={isActive ? "step" : undefined}
+                  data-pipeline-index={i}
+                  style={{
+                    padding: "5px 14px",
+                    border: isActive
+                      ? "1px solid rgba(200,8,8,0.70)"
+                      : "1px solid rgba(255,255,255,0.15)",
+                    background: isActive ? "rgba(200,8,8,0.18)" : "transparent",
+                    fontSize: 13,
+                    color: isActive ? "#fff" : "rgba(255,255,255,0.75)",
+                    fontFamily: FONT,
+                    letterSpacing: "0.02em",
+                    transition: "border-color 180ms ease, background-color 180ms ease, color 180ms ease",
+                  }}
+                >
+                  {label}
+                </span>
+                {i < arr.length - 1 && (
+                  <span style={{
+                    fontFamily: FONT_EN, fontSize: 18,
+                    color: i === 0 ? "rgba(200,8,8,0.9)" : "rgba(255,255,255,0.9)",
+                    letterSpacing: "0.12em",
+                    transition: "color 180ms ease",
+                  }}>{">>>"}</span>
+                )}
+              </span>
+            );
+          })}
+        </motion.div>
+      </div>
 
       {/* ══════════════════════════════════════════
           VERTICAL CAROUSEL — V1.0 ↔ V2.0

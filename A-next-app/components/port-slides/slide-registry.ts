@@ -1,5 +1,6 @@
 export const HIDDEN_SLIDE_IDS = new Set<string>([
   "page0",
+  "page0a",
   "page14",
   "page15",
   "page16",
@@ -11,9 +12,11 @@ export const HIDDEN_SLIDE_IDS = new Set<string>([
   "video-entry-experience",
   "video-async-loop",
   "page31",
+  "page8",
   "page9",
   "page29",
   "page30",
+  "other-search-projects",
 ])
 
 export const allSlideIds = [

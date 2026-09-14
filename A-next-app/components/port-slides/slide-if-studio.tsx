@@ -2,8 +2,8 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-const HOME_IMAGE = "/images/if-studio/home-full-light-2026.webp"
-const DARK_HOME_IMAGE = "/images/if-studio/home-full-dark-2026.webp"
+const HOME_IMAGE = "/images/if-studio/home-full-light-2026.jpg"
+const DARK_HOME_IMAGE = "/images/if-studio/home-full-dark-2026.jpg"
 
 function AmbientBackground() {
   return (
@@ -155,7 +155,7 @@ export default function SlideIfStudio() {
           animation-name: if-studio-page-tour;
         }
 
-        @media (hover: hover) and (pointer: fine) {
+        @media (any-hover: hover) and (any-pointer: fine) {
           .if-studio-home-panel:hover .if-studio-tour-shell,
           .if-studio-home-panel:hover .if-studio-home-image,
           .if-studio-page:has(.if-studio-home-panel:hover) .if-studio-backdrop-shell,

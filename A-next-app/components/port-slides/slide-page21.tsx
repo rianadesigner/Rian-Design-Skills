@@ -19,7 +19,7 @@ const workflowScreens = [
     label: "默认入口",
     title: "从空白画布进入搭建",
     description: "搭建助手给出常用任务建议，让用户从自然语言需求快速开始。",
-    image: `${P21}/free-canvas-01.webp`,
+    image: `${P21}/free-canvas-01.png`,
     alt: "工作流空白画布与搭建助手默认入口，展示任务建议和自然语言输入框",
   },
   {
@@ -28,7 +28,7 @@ const workflowScreens = [
     label: "素材识别",
     title: "根据上传素材确认方向",
     description: "识别用户上传的图片，先澄清目标，再给出可选择的工作流方向。",
-    image: `${P21}/free-canvas-02.webp`,
+    image: `${P21}/free-canvas-02.png`,
     alt: "用户上传图片后，搭建助手识别素材并给出三种图像工作流方向",
   },
   {
@@ -37,7 +37,7 @@ const workflowScreens = [
     label: "大纲确认",
     title: "生成可确认的工作流大纲",
     description: "将需求拆解为节点计划，在真正搭建前支持确认或重新生成。",
-    image: `${P21}/free-canvas-03.webp`,
+    image: `${P21}/free-canvas-03.png`,
     alt: "搭建助手生成工作流节点大纲，并提供确认与重新生成操作",
   },
   {
@@ -46,7 +46,7 @@ const workflowScreens = [
     label: "自动搭建",
     title: "按大纲逐个创建节点",
     description: "自动添加节点、填写参数并建立连接，同时持续展示搭建进度。",
-    image: `${P21}/free-canvas-04.webp`,
+    image: `${P21}/free-canvas-04.png`,
     alt: "搭建助手正在自动创建和连接工作流节点，并显示搭建进度",
   },
   {
@@ -55,7 +55,7 @@ const workflowScreens = [
     label: "搭建完成",
     title: "完整工作流已就绪",
     description: "全部节点和连线完成后汇总检查，并将下一步收束到开始试运行。",
-    image: `${P21}/free-canvas-05.webp`,
+    image: `${P21}/free-canvas-05.png`,
     alt: "工作流全部节点搭建完成，搭建助手展示检查结果和开始运行按钮",
   },
   {
@@ -64,7 +64,7 @@ const workflowScreens = [
     label: "试运行中",
     title: "同步反馈执行进度",
     description: "运行时展示节点状态与生成过程，让用户始终知道系统正在做什么。",
-    image: `${P21}/free-canvas-06.webp`,
+    image: `${P21}/free-canvas-06.png`,
     alt: "工作流正在试运行，画布节点显示成功状态，助手同步输出执行进度",
   },
   {
@@ -73,7 +73,7 @@ const workflowScreens = [
     label: "结果输出",
     title: "试运行成功并交付结果",
     description: "完成后统一呈现文本、视频结果与运行状态，形成完整闭环。",
-    image: `${P21}/free-canvas-07.webp`,
+    image: `${P21}/free-canvas-07.png`,
     alt: "工作流试运行成功，搭建助手展示生成文案和两项视频结果",
   },
 ] as const
@@ -159,14 +159,14 @@ export default function SlidePage21() {
         />
       </div>
 
-      <header className="absolute top-[6.2%] right-[4.17%] left-[4.17%] z-20 flex items-end justify-between">
-        <div>
+      <header className="absolute top-[6.2%] right-[4.17%] left-[4.17%] z-20 flex items-end justify-between gap-6">
+        <div className="shrink-0">
           <div className="mb-[8px] flex items-center gap-[9px] text-[10px] font-semibold tracking-[0.18em] text-[#ef3b46]">
             <span className="h-px w-[30px] bg-[#ef3b46]" />
             AI WORKFLOW BUILDER · ENTRY EXPERIENCE
           </div>
           <h1
-            className="m-0"
+            className="m-0 whitespace-nowrap"
             style={{
               fontFamily:
                 "'标小智无界黑', 'LogoSC Unbounded Sans', 'PingFang SC', sans-serif",
@@ -178,7 +178,8 @@ export default function SlidePage21() {
               WebkitFontSmoothing: "antialiased",
             }}
           >
-            Prompt To <span className="text-[#ef3b46]">Workflow</span>
+            <span className="mr-4 text-[#ef3b46]">自由画布编排</span>
+            Prompt To <span className="text-white">Workflow</span>
           </h1>
         </div>
 

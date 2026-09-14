@@ -289,7 +289,7 @@ export default function SlidePage8() {
                   bottom: "8px",
                   transform: "translateX(-50%)",
                   padding: "4px 14px",
-                  background: "rgba(255,255,255,0.15)",
+                  background: "#202024",
                   border: "1px solid rgba(255,255,255,0.28)",
                   borderRadius: "48px",
                   boxShadow: "0px 4px 12px 0px rgba(0,0,0,0.4)",
@@ -297,7 +297,7 @@ export default function SlidePage8() {
               >
                 <span
                   style={{
-                    color: "rgba(255,255,255,0.72)",
+                    color: "#FFFFFF",
                     fontSize: "clamp(9px, calc(0.83 * var(--u)), 12px)",
                     fontFamily: "'PingFang SC', sans-serif",
                     fontWeight: 700,

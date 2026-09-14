@@ -1,0 +1,190 @@
+{
+  "report": [
+    {
+      "sourceId": "25:2078",
+      "targetId": "30:624",
+      "name": "心流 / 首页 · 玻璃层次与可读性优化",
+      "size": [
+        750,
+        1612
+      ],
+      "sourceNodeCount": 272,
+      "targetNodeCount": 272,
+      "sourceInstances": 10,
+      "targetInstances": 10,
+      "sourceMissingFonts": 13,
+      "targetMissingFonts": 0,
+      "textDiff": [],
+      "fonts": [
+        "Noto Sans SC",
+        "SF Pro Text",
+        "Inter"
+      ],
+      "sourceCorner": 0,
+      "sourceFills": [
+        {
+          "type": "IMAGE",
+          "imageHash": "947fd3d0961545d531ed24da9b9950e3d239cacb"
+        },
+        {
+          "type": "GRADIENT_LINEAR"
+        }
+      ],
+      "targetPlaceholders": 0
+    },
+    {
+      "sourceId": "21:1418",
+      "targetId": "32:748",
+      "name": "写作 / 冰蓝玻璃优化",
+      "size": [
+        702,
+        545
+      ],
+      "sourceNodeCount": 98,
+      "targetNodeCount": 98,
+      "sourceInstances": 0,
+      "targetInstances": 0,
+      "sourceMissingFonts": 17,
+      "targetMissingFonts": 0,
+      "textDiff": [
+        {
+          "source": "21:1445",
+          "target": "32:774",
+          "before": "请输入学术问题",
+          "after": "描述你想写的内容"
+        }
+      ],
+      "fonts": [
+        "Noto Sans SC"
+      ],
+      "sourceCorner": 24,
+      "sourceFills": [
+        {
+          "type": "SOLID",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          }
+        }
+      ],
+      "targetPlaceholders": 0
+    },
+    {
+      "sourceId": "21:1848",
+      "targetId": "32:847",
+      "name": "文档阅读 / 冰蓝玻璃优化",
+      "size": [
+        702,
+        545
+      ],
+      "sourceNodeCount": 131,
+      "targetNodeCount": 131,
+      "sourceInstances": 0,
+      "targetInstances": 0,
+      "sourceMissingFonts": 11,
+      "targetMissingFonts": 0,
+      "textDiff": [],
+      "fonts": [
+        "Noto Sans SC"
+      ],
+      "sourceCorner": 24,
+      "sourceFills": [
+        {
+          "type": "SOLID",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          }
+        }
+      ],
+      "targetPlaceholders": 0
+    },
+    {
+      "sourceId": "27:2446",
+      "targetId": "32:979",
+      "name": "翻译 / 冰蓝玻璃优化",
+      "size": [
+        702,
+        542
+      ],
+      "sourceNodeCount": 80,
+      "targetNodeCount": 80,
+      "sourceInstances": 0,
+      "targetInstances": 0,
+      "sourceMissingFonts": 5,
+      "targetMissingFonts": 0,
+      "textDiff": [],
+      "fonts": [
+        "Noto Sans SC"
+      ],
+      "sourceCorner": 24,
+      "sourceFills": [
+        {
+          "type": "SOLID",
+          "color": {
+            "r": 1,
+            "g": 1,
+            "b": 1
+          }
+        }
+      ],
+      "targetPlaceholders": 0
+    }
+  ],
+  "petals": {
+    "sourceGlass": [
+      {
+        "type": "GLASS",
+        "visible": true,
+        "radius": 10,
+        "boundVariables": {},
+        "refraction": 0.7799999713897705,
+        "depth": 29,
+        "lightAngle": -45,
+        "lightIntensity": 0.1599999964237213,
+        "dispersion": 0.46000000834465027
+      }
+    ],
+    "targetGlass": [
+      {
+        "type": "GLASS",
+        "visible": true,
+        "radius": 6,
+        "boundVariables": {},
+        "refraction": 0.6499999761581421,
+        "depth": 24,
+        "lightAngle": -45,
+        "lightIntensity": 0.2199999988079071,
+        "dispersion": 0.1599999964237213
+      }
+    ]
+  },
+  "panelBoard": {
+    "id": "32:747",
+    "children": [
+      {
+        "id": "32:748",
+        "x": 40,
+        "y": 40,
+        "width": 702,
+        "height": 545
+      },
+      {
+        "id": "32:847",
+        "x": 40,
+        "y": 625,
+        "width": 702,
+        "height": 545
+      },
+      {
+        "id": "32:979",
+        "x": 40,
+        "y": 1210,
+        "width": 702,
+        "height": 542
+      }
+    ]
+  }
+}

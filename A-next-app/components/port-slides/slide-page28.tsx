@@ -8,23 +8,23 @@ const creationFlow = [
     alt: "视频角色选择界面，主画面为穿红色西装的女性，底部展示可通过 @ 唤起的角色列表和已选角色",
   },
   {
-    src: "/images/page28/style-filter.webp",
+    src: "/images/page28/co-create-v2.webp",
     step: "02",
-    stage: "STYLE",
-    title: "风格滤镜",
-    description: "一键套用不同影调，让同一素材快速切换视觉氛围。",
-    alt: "风格滤镜界面，主画面为海边徒步合照，底部展示电影胶片、暖调和北欧冷调等滤镜",
-  },
-  {
-    src: "/images/page28/co-create.webp",
-    step: "03",
     stage: "COLLAB",
     title: "多人合拍",
     description: "从角色库选择搭档，让多个角色加入同一画面。",
     alt: "多人合拍界面，主画面为海边徒步合照，底部展示可加入合拍的角色列表和已选角色",
   },
   {
-    src: "/images/page28/subject-removal.webp",
+    src: "/images/page28/style-filter-v2.webp",
+    step: "03",
+    stage: "STYLE",
+    title: "风格滤镜",
+    description: "一键套用不同影调，让同一素材快速切换视觉氛围。",
+    alt: "风格滤镜界面，主画面为海边徒步合照，底部展示电影胶片、暖调和北欧冷调等滤镜",
+  },
+  {
+    src: "/images/page28/subject-removal-v2.webp",
     step: "04",
     stage: "CLEANUP",
     title: "主体消除",
@@ -179,7 +179,7 @@ export default function SlidePage28() {
             whiteSpace: "nowrap",
           }}
         >
-          调用角色、套用风格、加入合拍、消除主体，把复杂编辑能力变成直观、可组合的创作玩法。
+          调用角色、加入合拍、套用风格、消除主体，把复杂编辑能力变成直观、可组合的创作玩法。
         </p>
       </header>
 
@@ -321,7 +321,7 @@ export default function SlidePage28() {
             fontSize: "clamp(7px, calc(0.7 * var(--u)), 10px)",
           }}
         >
-          CAST · STYLE · COLLAB · CLEANUP
+          CAST · COLLAB · STYLE · CLEANUP
         </span>
         <span
           style={{

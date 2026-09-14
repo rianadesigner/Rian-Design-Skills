@@ -11,8 +11,8 @@ import {
 import { cn } from "@/lib/utils"
 
 const FULL_WORKFLOW_SCREENSHOT =
-  "/images/storyboard-video-skill/workflow-full-105500.webp"
-const SKILL_CONFIG_SCREENSHOT = "/images/if-studio/skill-config-2026.webp"
+  "/images/storyboard-video-skill/workflow-full-105500.png"
+const SKILL_CONFIG_SCREENSHOT = "/images/if-studio/skill-config-2026.png"
 
 const workflowNotes = [
   {

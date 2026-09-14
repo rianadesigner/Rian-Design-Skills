@@ -8,6 +8,21 @@ const nextConfig = {
   // 仓库外若另有 package-lock.json，须锁定 Turbopack 根目录，否则 dev 路由可能异常
   turbopack: {
     root: __dirname,
+    rules: {
+      "*.wgsl": {
+        loaders: ["@vgpu/wgsl/loader-webpack"],
+        as: "*.js",
+      },
+    },
+  },
+  // 保留 webpack 构建兼容；生产环境同时压缩 WGSL 模块。
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.wgsl$/,
+      loader: "@vgpu/wgsl/loader-webpack",
+      options: { minify: true },
+    });
+    return config;
   },
   // 阿里云 OSS 静态网站托管仅支持纯静态文件，需导出为 `out/`
   output: "export",

@@ -1,0 +1,2419 @@
+{
+  "schemaVersion": 1,
+  "fileKey": "Sf1WeihrlqUUeSx0EIUC8R",
+  "pageId": "0:1",
+  "preparedDate": "2026-09-10",
+  "executionStatus": "NOT_EXECUTED",
+  "instructions": [
+    "主代理分别 clone 三个原面板，建立原ID→克隆ID一对一映射后应用。严禁将本计划直接应用到原节点。",
+    "必须按每个面板内 batches 顺序执行；每次 use_figma 只执行一个 batch，最大10节点。",
+    "本计划不创建节点，不改变功能、遮罩、裁剪、实例关系与核心结构。",
+    "源字体均已确认 missingFont=true；Noto Sans SC Regular/Medium 已从 listAvailableFontsAsync 验证。保留原字号及行高层级，只提升选中标签字重。",
+    "根容器保留原尺寸、圆角24和裁剪状态；材质设置仅更新 fills/strokes/effects。",
+    "所有 resize 先执行 props，再 resize，再 postProps；文字替换字体必须在其他文本变更之前。",
+    "文档卡片保持320x104，内容块y14高76，标题40+间隔4+元信息32，标题保留完整文字。",
+    "每批返回全部 mutatedNodeIds，执行后重新读取并截图。若翻译原文高度超过176，停止后审视实际换行，禁止裁剪或缩小字号以掩盖。"
+  ],
+  "palette": {
+    "text": "#263B4F",
+    "title": "#233448",
+    "secondary": "#65788A",
+    "accent": "#456984",
+    "selected": "#DFEAF4",
+    "control": "#F4F8FC",
+    "divider": "#6E869E"
+  },
+  "panels": [
+    {
+      "key": "writing",
+      "name": "写作",
+      "sourceRootId": "21:1418",
+      "batches": [
+        {
+          "id": "writing-surface-1",
+          "description": "surface",
+          "mutations": [
+            {
+              "sourceId": "21:1418",
+              "expectedType": "FRAME",
+              "purpose": "面板冰蓝半透明玻璃材质，保留702x545及圆角24",
+              "props": {
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "position": 0,
+                        "color": {
+                          "r": 1,
+                          "g": 1,
+                          "b": 1,
+                          "a": 0.96
+                        }
+                      },
+                      {
+                        "position": 0.48,
+                        "color": {
+                          "r": 0.9490196078431372,
+                          "g": 0.9725490196078431,
+                          "b": 1,
+                          "a": 0.91
+                        }
+                      },
+                      {
+                        "position": 1,
+                        "color": {
+                          "r": 0.9098039215686274,
+                          "g": 0.9490196078431372,
+                          "b": 0.9882352941176471,
+                          "a": 0.9
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [
+                        0,
+                        1,
+                        0
+                      ],
+                      [
+                        -1,
+                        0,
+                        1
+                      ]
+                    ]
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.8,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1.5,
+                "strokeAlign": "INSIDE",
+                "effects": [
+                  {
+                    "type": "BACKGROUND_BLUR",
+                    "visible": true,
+                    "radius": 28
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "visible": true,
+                    "color": {
+                      "r": 0.13725490196078433,
+                      "g": 0.23137254901960785,
+                      "b": 0.36470588235294116,
+                      "a": 0.12
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 12
+                    },
+                    "radius": 32,
+                    "spread": 0,
+                    "blendMode": "NORMAL",
+                    "showShadowBehindNode": true
+                  },
+                  {
+                    "type": "INNER_SHADOW",
+                    "visible": true,
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 0.65
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "radius": 2,
+                    "spread": 0,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "writing-typography-1",
+          "description": "typography",
+          "mutations": [
+            {
+              "sourceId": "21:1444",
+              "expectedType": "TEXT",
+              "purpose": "保留输入光标",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 30,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 44
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1445",
+              "expectedType": "TEXT",
+              "purpose": "写作输入提示",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 30,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 44
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.396078431372549,
+                      "g": 0.47058823529411764,
+                      "b": 0.5411764705882353
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "characters": "描述你想写的内容"
+              }
+            },
+            {
+              "sourceId": "21:1461",
+              "expectedType": "TEXT",
+              "purpose": "场景写作标题",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Medium"
+                },
+                "fontSize": 30,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.13725490196078433,
+                      "g": 0.20392156862745098,
+                      "b": 0.2823529411764706
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1475",
+              "expectedType": "TEXT",
+              "purpose": "类型分组标签",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 24,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 36
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.396078431372549,
+                      "g": 0.47058823529411764,
+                      "b": 0.5411764705882353
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1480",
+              "expectedType": "TEXT",
+              "purpose": "文章选中态",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Medium"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1483",
+              "expectedType": "TEXT",
+              "purpose": "作文",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1486",
+              "expectedType": "TEXT",
+              "purpose": "宣传文案",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1489",
+              "expectedType": "TEXT",
+              "purpose": "小说",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1492",
+              "expectedType": "TEXT",
+              "purpose": "脚本",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1495",
+              "expectedType": "TEXT",
+              "purpose": "回复",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "writing-typography-2",
+          "description": "typography",
+          "mutations": [
+            {
+              "sourceId": "21:1498",
+              "expectedType": "TEXT",
+              "purpose": "改写",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1501",
+              "expectedType": "TEXT",
+              "purpose": "PPT大纲",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1504",
+              "expectedType": "TEXT",
+              "purpose": "总结汇报",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1507",
+              "expectedType": "TEXT",
+              "purpose": "要求分组标签",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 24,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 36
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.396078431372549,
+                      "g": 0.47058823529411764,
+                      "b": 0.5411764705882353
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1512",
+              "expectedType": "TEXT",
+              "purpose": "写作风格选中态",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Medium"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1517",
+              "expectedType": "TEXT",
+              "purpose": "长度",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1522",
+              "expectedType": "TEXT",
+              "purpose": "语言",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "writing-controls-1",
+          "description": "controls",
+          "mutations": [
+            {
+              "sourceId": "21:1479",
+              "expectedType": "RECTANGLE",
+              "purpose": "选中标签浅蓝灰底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.8745098039215686,
+                      "g": 0.9176470588235294,
+                      "b": 0.9568627450980393
+                    },
+                    "opacity": 0.97,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 0.16,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1511",
+              "expectedType": "RECTANGLE",
+              "purpose": "选中标签浅蓝灰底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.8745098039215686,
+                      "g": 0.9176470588235294,
+                      "b": 0.9568627450980393
+                    },
+                    "opacity": 0.97,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 0.16,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1514",
+              "expectedType": "VECTOR",
+              "purpose": "选中下拉箭头蓝灰色",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1482",
+              "expectedType": "RECTANGLE",
+              "purpose": "统一未选标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1485",
+              "expectedType": "RECTANGLE",
+              "purpose": "统一未选标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1488",
+              "expectedType": "RECTANGLE",
+              "purpose": "统一未选标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1491",
+              "expectedType": "RECTANGLE",
+              "purpose": "统一未选标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1494",
+              "expectedType": "RECTANGLE",
+              "purpose": "统一未选标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1497",
+              "expectedType": "RECTANGLE",
+              "purpose": "统一未选标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1500",
+              "expectedType": "RECTANGLE",
+              "purpose": "统一未选标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            }
+          ]
+        },
+        {
+          "id": "writing-controls-2",
+          "description": "controls",
+          "mutations": [
+            {
+              "sourceId": "21:1503",
+              "expectedType": "RECTANGLE",
+              "purpose": "统一未选标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1516",
+              "expectedType": "RECTANGLE",
+              "purpose": "统一未选标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1521",
+              "expectedType": "RECTANGLE",
+              "purpose": "统一未选标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1469",
+              "expectedType": "RECTANGLE",
+              "purpose": "柔和分隔线",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.43137254901960786,
+                      "g": 0.5254901960784314,
+                      "b": 0.6196078431372549
+                    },
+                    "opacity": 0.16,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1525",
+              "expectedType": "RECTANGLE",
+              "purpose": "柔和分隔线",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.43137254901960786,
+                      "g": 0.5254901960784314,
+                      "b": 0.6196078431372549
+                    },
+                    "opacity": 0.16,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "document",
+      "name": "文档阅读",
+      "sourceRootId": "21:1848",
+      "batches": [
+        {
+          "id": "document-surface-1",
+          "description": "surface",
+          "mutations": [
+            {
+              "sourceId": "21:1848",
+              "expectedType": "FRAME",
+              "purpose": "面板冰蓝半透明玻璃材质，保留702x545及圆角24",
+              "props": {
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "position": 0,
+                        "color": {
+                          "r": 1,
+                          "g": 1,
+                          "b": 1,
+                          "a": 0.96
+                        }
+                      },
+                      {
+                        "position": 0.48,
+                        "color": {
+                          "r": 0.9490196078431372,
+                          "g": 0.9725490196078431,
+                          "b": 1,
+                          "a": 0.91
+                        }
+                      },
+                      {
+                        "position": 1,
+                        "color": {
+                          "r": 0.9098039215686274,
+                          "g": 0.9490196078431372,
+                          "b": 0.9882352941176471,
+                          "a": 0.9
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [
+                        0,
+                        1,
+                        0
+                      ],
+                      [
+                        -1,
+                        0,
+                        1
+                      ]
+                    ]
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.8,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1.5,
+                "strokeAlign": "INSIDE",
+                "effects": [
+                  {
+                    "type": "BACKGROUND_BLUR",
+                    "visible": true,
+                    "radius": 28
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "visible": true,
+                    "color": {
+                      "r": 0.13725490196078433,
+                      "g": 0.23137254901960785,
+                      "b": 0.36470588235294116,
+                      "a": 0.12
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 12
+                    },
+                    "radius": 32,
+                    "spread": 0,
+                    "blendMode": "NORMAL",
+                    "showShadowBehindNode": true
+                  },
+                  {
+                    "type": "INNER_SHADOW",
+                    "visible": true,
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 0.65
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "radius": 2,
+                    "spread": 0,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "document-typography-1",
+          "description": "typography",
+          "mutations": [
+            {
+              "sourceId": "21:1863",
+              "expectedType": "TEXT",
+              "purpose": "深度搜索选中态",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Medium"
+                },
+                "fontSize": 24,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 36
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1866",
+              "expectedType": "TEXT",
+              "purpose": "清除操作",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 24,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 36
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1879",
+              "expectedType": "TEXT",
+              "purpose": "保留输入光标",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 30,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 44
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1880",
+              "expectedType": "TEXT",
+              "purpose": "文档提问提示",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 30,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 44
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.396078431372549,
+                      "g": 0.47058823529411764,
+                      "b": 0.5411764705882353
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1885",
+              "expectedType": "TEXT",
+              "purpose": "详细总结文档",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1893",
+              "expectedType": "TEXT",
+              "purpose": "生成简短摘要",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1928",
+              "expectedType": "TEXT",
+              "purpose": "第一份文件完整标题",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Medium"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1929",
+              "expectedType": "TEXT",
+              "purpose": "文件大小",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 22,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 32
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.396078431372549,
+                      "g": 0.47058823529411764,
+                      "b": 0.5411764705882353
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1947",
+              "expectedType": "TEXT",
+              "purpose": "第二份文件完整标题",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Medium"
+                },
+                "fontSize": 26,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1954",
+              "expectedType": "TEXT",
+              "purpose": "上传中状态",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Medium"
+                },
+                "fontSize": 22,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 32
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "document-typography-2",
+          "description": "typography",
+          "mutations": [
+            {
+              "sourceId": "21:1974",
+              "expectedType": "TEXT",
+              "purpose": "文档阅读标题",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Medium"
+                },
+                "fontSize": 30,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.13725490196078433,
+                      "g": 0.20392156862745098,
+                      "b": 0.2823529411764706
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "document-controls-1",
+          "description": "controls",
+          "mutations": [
+            {
+              "sourceId": "21:1862",
+              "expectedType": "RECTANGLE",
+              "purpose": "深度搜索浅蓝灰底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.8745098039215686,
+                      "g": 0.9176470588235294,
+                      "b": 0.9568627450980393
+                    },
+                    "opacity": 0.97,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 0.16,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1868",
+              "expectedType": "RECTANGLE",
+              "purpose": "清除图标原有颜色层改蓝灰，保持遮罩关系",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1869",
+              "expectedType": "RECTANGLE",
+              "purpose": "清除图标原有颜色层改蓝灰，保持遮罩关系",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1953",
+              "expectedType": "VECTOR",
+              "purpose": "上传状态图标蓝灰色",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1884",
+              "expectedType": "RECTANGLE",
+              "purpose": "文档建议标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1892",
+              "expectedType": "RECTANGLE",
+              "purpose": "文档建议标签浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "21:1876",
+              "expectedType": "RECTANGLE",
+              "purpose": "柔和分隔线",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.43137254901960786,
+                      "g": 0.5254901960784314,
+                      "b": 0.6196078431372549
+                    },
+                    "opacity": 0.16,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "21:1982",
+              "expectedType": "RECTANGLE",
+              "purpose": "柔和分隔线",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.43137254901960786,
+                      "g": 0.5254901960784314,
+                      "b": 0.6196078431372549
+                    },
+                    "opacity": 0.16,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "document-spacing-1",
+          "description": "spacing",
+          "mutations": [
+            {
+              "sourceId": "21:1926",
+              "expectedType": "FRAME",
+              "purpose": "第一张卡内容区居中，40+4+32=76",
+              "props": {
+                "x": 84,
+                "y": 14
+              },
+              "resize": {
+                "width": 220,
+                "height": 76
+              }
+            },
+            {
+              "sourceId": "21:1927",
+              "expectedType": "RECTANGLE",
+              "purpose": "匹配第一张卡内容区透明占位",
+              "props": {},
+              "resize": {
+                "width": 220,
+                "height": 76
+              }
+            },
+            {
+              "sourceId": "21:1945",
+              "expectedType": "FRAME",
+              "purpose": "第二张卡内容区居中，40+4+32=76",
+              "props": {
+                "x": 84,
+                "y": 14
+              },
+              "resize": {
+                "width": 220,
+                "height": 76
+              }
+            },
+            {
+              "sourceId": "21:1946",
+              "expectedType": "RECTANGLE",
+              "purpose": "匹配第二张卡内容区透明占位",
+              "props": {},
+              "resize": {
+                "width": 220,
+                "height": 76
+              }
+            },
+            {
+              "sourceId": "21:1928",
+              "expectedType": "TEXT",
+              "purpose": "标题40行高、固定220宽，高度自动，保留完整文字",
+              "props": {
+                "textAutoResize": "HEIGHT",
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "x": 0,
+                "y": 0
+              },
+              "resize": {
+                "width": 220,
+                "height": 40
+              },
+              "postProps": {
+                "layoutSizingHorizontal": "FIXED"
+              },
+              "assertions": {
+                "heightMax": 40.01,
+                "widthMin": 219.99,
+                "characters": "生物科学研究报告"
+              }
+            },
+            {
+              "sourceId": "21:1929",
+              "expectedType": "TEXT",
+              "purpose": "第一张卡元信息与标题间距4",
+              "props": {
+                "x": 0,
+                "y": 44,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 32
+                }
+              }
+            },
+            {
+              "sourceId": "21:1947",
+              "expectedType": "TEXT",
+              "purpose": "标题40行高、固定220宽，高度自动，保留完整文字",
+              "props": {
+                "textAutoResize": "HEIGHT",
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "x": 0,
+                "y": 0
+              },
+              "resize": {
+                "width": 220,
+                "height": 40
+              },
+              "postProps": {
+                "layoutSizingHorizontal": "FIXED"
+              },
+              "assertions": {
+                "heightMax": 40.01,
+                "widthMin": 219.99,
+                "characters": "生物科学研究报告"
+              }
+            },
+            {
+              "sourceId": "21:1948",
+              "expectedType": "FRAME",
+              "purpose": "第二张卡上传状态与标题间距4",
+              "props": {
+                "x": 0,
+                "y": 44
+              },
+              "resize": {
+                "width": 96,
+                "height": 32
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "translation",
+      "name": "翻译",
+      "sourceRootId": "27:2446",
+      "batches": [
+        {
+          "id": "translation-surface-1",
+          "description": "surface",
+          "mutations": [
+            {
+              "sourceId": "27:2446",
+              "expectedType": "FRAME",
+              "purpose": "面板冰蓝半透明玻璃材质，保留702x542及圆角24",
+              "props": {
+                "fills": [
+                  {
+                    "type": "GRADIENT_LINEAR",
+                    "visible": true,
+                    "opacity": 1,
+                    "blendMode": "NORMAL",
+                    "gradientStops": [
+                      {
+                        "position": 0,
+                        "color": {
+                          "r": 1,
+                          "g": 1,
+                          "b": 1,
+                          "a": 0.96
+                        }
+                      },
+                      {
+                        "position": 0.48,
+                        "color": {
+                          "r": 0.9490196078431372,
+                          "g": 0.9725490196078431,
+                          "b": 1,
+                          "a": 0.91
+                        }
+                      },
+                      {
+                        "position": 1,
+                        "color": {
+                          "r": 0.9098039215686274,
+                          "g": 0.9490196078431372,
+                          "b": 0.9882352941176471,
+                          "a": 0.9
+                        }
+                      }
+                    ],
+                    "gradientTransform": [
+                      [
+                        0,
+                        1,
+                        0
+                      ],
+                      [
+                        -1,
+                        0,
+                        1
+                      ]
+                    ]
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.8,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1.5,
+                "strokeAlign": "INSIDE",
+                "effects": [
+                  {
+                    "type": "BACKGROUND_BLUR",
+                    "visible": true,
+                    "radius": 28
+                  },
+                  {
+                    "type": "DROP_SHADOW",
+                    "visible": true,
+                    "color": {
+                      "r": 0.13725490196078433,
+                      "g": 0.23137254901960785,
+                      "b": 0.36470588235294116,
+                      "a": 0.12
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 12
+                    },
+                    "radius": 32,
+                    "spread": 0,
+                    "blendMode": "NORMAL",
+                    "showShadowBehindNode": true
+                  },
+                  {
+                    "type": "INNER_SHADOW",
+                    "visible": true,
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1,
+                      "a": 0.65
+                    },
+                    "offset": {
+                      "x": 0,
+                      "y": 1
+                    },
+                    "radius": 2,
+                    "spread": 0,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "translation-typography-1",
+          "description": "typography",
+          "mutations": [
+            {
+              "sourceId": "27:2524",
+              "expectedType": "TEXT",
+              "purpose": "清除操作",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 24,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 36
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "27:2476",
+              "expectedType": "TEXT",
+              "purpose": "完整翻译原文，保留字号与176高可读区域",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 30,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 44
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "textAutoResize": "HEIGHT",
+                "x": 0
+              },
+              "resize": {
+                "width": 654,
+                "height": 176
+              },
+              "postProps": {
+                "layoutSizingHorizontal": "FIXED"
+              },
+              "assertions": {
+                "heightMax": 176.01,
+                "widthMin": 653.99
+              }
+            },
+            {
+              "sourceId": "27:2492",
+              "expectedType": "TEXT",
+              "purpose": "一键翻译标题",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Medium"
+                },
+                "fontSize": 30,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 40
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.13725490196078433,
+                      "g": 0.20392156862745098,
+                      "b": 0.2823529411764706
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "27:2505",
+              "expectedType": "TEXT",
+              "purpose": "自动检测语言",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 24,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 36
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "27:2518",
+              "expectedType": "TEXT",
+              "purpose": "目标语言",
+              "props": {
+                "fontName": {
+                  "family": "Noto Sans SC",
+                  "style": "Regular"
+                },
+                "fontSize": 24,
+                "lineHeight": {
+                  "unit": "PIXELS",
+                  "value": 36
+                },
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.14901960784313725,
+                      "g": 0.23137254901960785,
+                      "b": 0.30980392156862746
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "translation-controls-1",
+          "description": "controls",
+          "mutations": [
+            {
+              "sourceId": "27:2526",
+              "expectedType": "RECTANGLE",
+              "purpose": "清除图标原有颜色层改蓝灰，保持遮罩关系",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "27:2527",
+              "expectedType": "RECTANGLE",
+              "purpose": "清除图标原有颜色层改蓝灰，保持遮罩关系",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.27058823529411763,
+                      "g": 0.4117647058823529,
+                      "b": 0.5176470588235295
+                    },
+                    "opacity": 1,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "27:2504",
+              "expectedType": "RECTANGLE",
+              "purpose": "语言选择器浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "27:2517",
+              "expectedType": "RECTANGLE",
+              "purpose": "语言选择器浅冰蓝底",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.9568627450980393,
+                      "g": 0.9725490196078431,
+                      "b": 0.9882352941176471
+                    },
+                    "opacity": 0.9,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokes": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 1,
+                      "g": 1,
+                      "b": 1
+                    },
+                    "opacity": 0.85,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ],
+                "strokeWeight": 1,
+                "strokeAlign": "INSIDE"
+              }
+            },
+            {
+              "sourceId": "27:2500",
+              "expectedType": "RECTANGLE",
+              "purpose": "柔和分隔线",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.43137254901960786,
+                      "g": 0.5254901960784314,
+                      "b": 0.6196078431372549
+                    },
+                    "opacity": 0.16,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            },
+            {
+              "sourceId": "27:2521",
+              "expectedType": "RECTANGLE",
+              "purpose": "柔和分隔线",
+              "props": {
+                "fills": [
+                  {
+                    "type": "SOLID",
+                    "color": {
+                      "r": 0.43137254901960786,
+                      "g": 0.5254901960784314,
+                      "b": 0.6196078431372549
+                    },
+                    "opacity": 0.16,
+                    "visible": true,
+                    "blendMode": "NORMAL"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "verification": {
+    "sourcesUnchanged": true,
+    "cloneNodeCountsMatch": true,
+    "missingFontsExpected": 0,
+    "instancesUnchanged": true,
+    "textChangesAllowed": {
+      "21:1445": "描述你想写的内容"
+    },
+    "documentTitles": [
+      "生物科学研究报告",
+      "生物科学研究报告"
+    ],
+    "documentLayout": {
+      "cardHeight": 104,
+      "contentY": 14,
+      "contentHeight": 76,
+      "titleHeight": 40,
+      "metadataY": 44,
+      "metadataHeight": 32
+    },
+    "screenshots": "Inspect each saved clone at 1x and in the home-screen context. Confirm no clipped text, no lost icons, consistent blue-gray selected states, no purple panel strokes."
+  },
+  "runnerTemplate": "// Run ONE batch per use_figma call. Prepend const PANEL, BATCH, NODE_MAP with literal JSON.\n// NODE_MAP maps ORIGINAL IDs to the matching nodes inside one cloned panel.\nconst page = await figma.getNodeByIdAsync(\"0:1\");\nawait figma.setCurrentPageAsync(page);\nif (!BATCH.mutations.length || BATCH.mutations.length > 10) throw new Error(\"Batch must contain 1-10 mutations\");\nconst cloneRootId = NODE_MAP[PANEL.sourceRootId];\nif (!cloneRootId || cloneRootId === PANEL.sourceRootId) throw new Error(\"Clone root mapping required\");\nconst cloneRoot = await figma.getNodeByIdAsync(cloneRootId);\nif (!cloneRoot) throw new Error(\"Clone root missing\");\nconst nodes = [];\nfor (const m of BATCH.mutations) {\n  const targetId = NODE_MAP[m.sourceId];\n  if (!targetId || targetId === m.sourceId) throw new Error(\"Refuse to modify original: \" + m.sourceId);\n  const node = await figma.getNodeByIdAsync(targetId);\n  if (!node || node.type !== m.expectedType) throw new Error(\"Unexpected target type: \" + m.sourceId);\n  let ancestor = node; let insideClone = false;\n  while (ancestor) { if (ancestor.id === cloneRootId) { insideClone = true; break; } ancestor = ancestor.parent; }\n  if (!insideClone) throw new Error(\"Target outside clone: \" + targetId);\n  nodes.push({ m, node });\n}\n// Attempt all current fonts first, then load verified replacements.\nconst unavailableCurrentFonts = [];\nconst currentFonts = new Map();\nfor (const { node } of nodes) {\n  const texts = node.type === \"TEXT\" ? [node] : (\"findAllWithCriteria\" in node ? node.findAllWithCriteria({types:[\"TEXT\"]}) : []);\n  for (const t of texts) for (const s of t.getStyledTextSegments([\"fontName\"])) currentFonts.set(JSON.stringify(s.fontName), s.fontName);\n}\nfor (const [key, font] of currentFonts) {\n  try { await figma.loadFontAsync(font); } catch (e) { unavailableCurrentFonts.push({font, reason:String(e)}); }\n}\nawait figma.loadFontAsync({family:\"Noto Sans SC\",style:\"Regular\"});\nawait figma.loadFontAsync({family:\"Noto Sans SC\",style:\"Medium\"});\nconst mutatedNodeIds = [];\nconst results = [];\nfor (const { m, node } of nodes) {\n  // On text, assign the loaded replacement font before all remaining text properties.\n  if (node.type === \"TEXT\" && m.props.fontName) node.fontName = m.props.fontName;\n  const props = { ...m.props }; delete props.fontName;\n  node.set(props);\n  if (m.resize) node.resize(m.resize.width, m.resize.height);\n  if (m.postProps) node.set(m.postProps);\n  if (m.assertions) {\n    if (m.assertions.heightMax !== undefined && node.height > m.assertions.heightMax) throw new Error(\"Text reflow needs layout adjustment: \" + node.id);\n    if (m.assertions.widthMin !== undefined && node.width < m.assertions.widthMin) throw new Error(\"Text width collapsed: \" + node.id);\n    if (m.assertions.characters !== undefined && node.characters !== m.assertions.characters) throw new Error(\"Filename content changed: \" + node.id);\n  }\n  mutatedNodeIds.push(node.id);\n  results.push({sourceId:m.sourceId,id:node.id,type:node.type,width:node.width,height:node.height});\n}\nreturn {batchId:BATCH.id,mutatedNodeIds,results,unavailableCurrentFonts};"
+}
