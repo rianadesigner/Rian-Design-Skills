@@ -140,16 +140,6 @@ export default function SlidePage27() {
         <div
           className="absolute"
           style={{
-            left: "4.17%",
-            top: "16.7%",
-            width: "91.66%",
-            height: 1,
-            background: "rgba(255,255,255,0.1)",
-          }}
-        />
-        <div
-          className="absolute"
-          style={{
             left: "31%",
             top: "18%",
             width: "38%",

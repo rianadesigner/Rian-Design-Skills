@@ -1,0 +1,321 @@
+{
+  "sourceFiles": [
+    "components/port-slides/xinliu-fullscreen-panel.tsx",
+    "components/port-slides/xinliu-fullscreen-controls.tsx",
+    "components/port-slides/xinliu-fullscreen-keyboard.tsx"
+  ],
+  "shared": {
+    "brand": "心流",
+    "brandSuffix": "AI",
+    "time": "9:41",
+    "background": "#FFFFFF",
+    "text": "#1c1c1e",
+    "controlFill": "#f7f7f8",
+    "activeControlFill": "#f2ebfb",
+    "activeText": "#9464c9",
+    "composerFill": "#fafafa",
+    "composerTextareaHeightInPercentOfScreenWidth": 24,
+    "composerRadiusInPercentOfScreenWidth": 6.5,
+    "keyboardHeightInPercentOfScreenWidth": 72,
+    "keyboardFill": "#e5e5e8",
+    "keyboardUtilityFill": "#d7d8dc",
+    "keyboardCandidates": [
+      "我",
+      "好",
+      "是",
+      "不",
+      "那",
+      "这"
+    ],
+    "keyboardRows": [
+      "qwertyuiop",
+      "asdfghjkl",
+      "zxcvbnm"
+    ],
+    "keyboardActions": [
+      "123",
+      "Smile",
+      "空格",
+      "CornerDownLeft"
+    ],
+    "sendFill": "#1c1c1e",
+    "disabledSendFill": "#e9e9ec",
+    "closePosition": "top-right",
+    "font": "PingFang SC"
+  },
+  "screens": {
+    "code": {
+      "title": "代码生成",
+      "heading": "把想法，变成可运行的代码",
+      "description": "选好类型，描述你想实现的功能。",
+      "placeholder": "描述你想实现的功能",
+      "draft": "创建一个带筛选与数据卡片的移动端看板",
+      "source": "参考文件",
+      "choiceGroup": {
+        "label": "生成类型",
+        "options": [
+          "网页",
+          "小程序",
+          "脚本",
+          "数据处理"
+        ],
+        "active": "网页"
+      },
+      "fieldGroup": "代码要求",
+      "fields": [
+        {
+          "label": "技术栈",
+          "visibleValue": "技术栈",
+          "options": [
+            "智能选择",
+            "React",
+            "Vue",
+            "Python",
+            "JavaScript"
+          ]
+        },
+        {
+          "label": "运行环境",
+          "visibleValue": "运行环境",
+          "options": [
+            "浏览器",
+            "Node.js",
+            "本地运行"
+          ]
+        },
+        {
+          "label": "输出方式",
+          "visibleValue": "输出方式",
+          "options": [
+            "完整代码",
+            "代码与解释",
+            "步骤指导"
+          ]
+        }
+      ],
+      "sendEnabled": true,
+      "compactIntro": true
+    },
+    "translate": {
+      "title": "一键翻译",
+      "heading": "让表达，跨越语言",
+      "description": "保留原文语意，让译文自然流畅。",
+      "placeholder": "输入需要翻译的内容",
+      "draft": "请帮我规划一个“赛博朋克风”的旅游路线，以拍照打卡为主要活动，需要包含一些都市景观、霓虹灯光夜景、以及其他小众打卡点。不用考虑食宿和交通，但行程不能太赶",
+      "source": "添加原文",
+      "fieldGroup": "翻译语言",
+      "fields": [
+        {
+          "label": "原文语言",
+          "visibleValue": "自动检测",
+          "options": [
+            "自动检测",
+            "中文",
+            "英文",
+            "日语",
+            "韩语",
+            "法语"
+          ]
+        },
+        {
+          "label": "译文语言",
+          "visibleValue": "中文",
+          "options": [
+            "中文",
+            "英文",
+            "日语",
+            "韩语",
+            "法语",
+            "自动检测"
+          ]
+        }
+      ],
+      "swapIcon": "ArrowLeftRight",
+      "compactIntro": false,
+      "sendEnabled": true
+    },
+    "call": {
+      "title": "打电话",
+      "heading": "把沟通，交给心流",
+      "description": "说清代办事项，记录每一次沟通结果。",
+      "placeholder": "说明需要代办的事项",
+      "draft": "帮我预约今晚 7 点的双人位，并记录确认结果",
+      "source": "联系人",
+      "contact": {
+        "label": "通话对象",
+        "placeholder": "输入联系人或电话号码"
+      },
+      "choiceGroup": {
+        "label": "通话任务",
+        "options": [
+          "预约",
+          "咨询",
+          "改签",
+          "其他"
+        ],
+        "active": "预约"
+      },
+      "fields": [
+        {
+          "label": "通话语言",
+          "visibleValue": "通话语言",
+          "options": [
+            "中文",
+            "英文",
+            "日语"
+          ]
+        },
+        {
+          "label": "沟通语气",
+          "visibleValue": "沟通语气",
+          "options": [
+            "礼貌自然",
+            "简洁直接",
+            "正式专业"
+          ]
+        },
+        {
+          "label": "结果记录",
+          "visibleValue": "结果记录",
+          "options": [
+            "生成摘要",
+            "完整记录",
+            "仅记录结论"
+          ]
+        }
+      ],
+      "sendEnabled": true,
+      "compactIntro": true
+    },
+    "write": {
+      "title": "场景写作",
+      "heading": "让灵感，成为好表达",
+      "description": "从一段想法开始，找到合适的文字。",
+      "placeholder": "写下你的主题和创作要求",
+      "draft": "",
+      "source": "参考素材",
+      "choiceGroup": {
+        "label": "写作类型",
+        "options": [
+          "文章",
+          "作文",
+          "宣传文案",
+          "小说",
+          "脚本",
+          "回复",
+          "改写",
+          "PPT大纲",
+          "总结汇报"
+        ],
+        "active": "文章"
+      },
+      "fieldGroup": "写作要求",
+      "fields": [
+        {
+          "label": "写作风格",
+          "visibleValue": "写作风格",
+          "options": [
+            "简洁",
+            "专业",
+            "生动",
+            "轻松"
+          ]
+        },
+        {
+          "label": "长度",
+          "visibleValue": "长度",
+          "options": [
+            "短篇",
+            "中篇",
+            "长篇"
+          ]
+        },
+        {
+          "label": "语言",
+          "visibleValue": "语言",
+          "options": [
+            "中文",
+            "英文",
+            "日语"
+          ]
+        }
+      ],
+      "sendEnabled": false,
+      "compactIntro": true
+    },
+    "document": {
+      "title": "文档阅读",
+      "heading": "读懂重点，发现更多",
+      "description": "从文档出发，提炼信息、梳理结论。",
+      "placeholder": "有任何问题尽管向我提问",
+      "draft": "",
+      "source": "添加文档",
+      "documentGroupLabel": "已添加文档",
+      "documents": [
+        {
+          "title": "生物科学研究报告",
+          "status": "28.6 KB"
+        },
+        {
+          "title": "生物科学研究报告",
+          "status": "上传中"
+        }
+      ],
+      "quickActions": [
+        "详细总结文档",
+        "生成简短摘要"
+      ],
+      "deepSearch": {
+        "label": "深度搜索",
+        "active": true
+      },
+      "sendEnabled": false,
+      "compactIntro": true
+    },
+    "knowledge": {
+      "title": "知识库",
+      "heading": "从你的知识中，找到答案",
+      "description": "关联项目资料，让每个结论都有依据。",
+      "placeholder": "基于我的资料提问",
+      "draft": "对比首页两版方案的主要差异，并标注信息来源",
+      "source": "项目知识库",
+      "fields": [
+        {
+          "label": "知识范围",
+          "visibleValue": "知识范围",
+          "options": [
+            "全部资料",
+            "项目知识库",
+            "个人收藏"
+          ]
+        },
+        {
+          "label": "时间范围",
+          "visibleValue": "时间范围",
+          "options": [
+            "不限时间",
+            "最近一周",
+            "最近一月",
+            "最近一年"
+          ]
+        },
+        {
+          "label": "引用来源",
+          "visibleValue": "引用来源",
+          "options": [
+            "显示引用",
+            "仅内部资料",
+            "全部来源"
+          ]
+        }
+      ],
+      "recommendationsLabel": "试试这样问",
+      "recommendations": [
+        "找到项目最新结论",
+        "对比两版方案差异"
+      ],
+      "sendEnabled": true,
+      "compactIntro": true
+    }
+  }
+}

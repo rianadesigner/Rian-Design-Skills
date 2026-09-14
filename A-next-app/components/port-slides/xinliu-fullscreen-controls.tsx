@@ -1,16 +1,17 @@
 "use client"
 
-import {
-  ArrowDownLeft,
-  ArrowLeftRight,
-  ChevronDown,
-  ChevronRight,
-  Phone,
-  Search,
-} from "lucide-react"
+import { ArrowDownLeft, ArrowLeftRight, ChevronDown, Phone } from "lucide-react"
 import { useState } from "react"
 
 import styles from "./xinliu-fullscreen-controls.module.css"
+
+export type ResearchCapability =
+  | "web"
+  | "pdf"
+  | "ppt"
+  | "word"
+  | "excel"
+  | "video"
 
 export type FullscreenCapability =
   | "code"
@@ -18,7 +19,72 @@ export type FullscreenCapability =
   | "call"
   | "write"
   | "document"
-  | "knowledge"
+  | "academic"
+  | ResearchCapability
+
+const RESEARCH_CONTROLS: Record<
+  ResearchCapability,
+  {
+    label: string
+    options: readonly string[]
+    fields: readonly { label: string; options: readonly string[] }[]
+  }
+> = {
+  web: {
+    label: "网页类型",
+    options: ["产品介绍", "作品展示", "数据看板"],
+    fields: [
+      { label: "视觉风格", options: ["简洁", "科技", "商务"] },
+      { label: "适配设备", options: ["响应式", "移动端", "桌面端"] },
+    ],
+  },
+  pdf: {
+    label: "处理任务",
+    options: ["总结要点", "文档问答", "对比分析"],
+    fields: [
+      { label: "解读深度", options: ["简要概览", "详细解读"] },
+      { label: "输出语言", options: ["中文", "英文"] },
+    ],
+  },
+  ppt: {
+    label: "演示场景",
+    options: ["项目汇报", "方案提案", "知识分享"],
+    fields: [
+      { label: "演示页数", options: ["自动", "5–10 页", "10–20 页"] },
+      { label: "表达风格", options: ["简洁清晰", "正式专业", "生动直观"] },
+    ],
+  },
+  word: {
+    label: "文档类型",
+    options: ["报告", "方案", "文章"],
+    fields: [
+      { label: "文档长度", options: ["简短", "适中", "详细"] },
+      { label: "写作语言", options: ["中文", "英文"] },
+    ],
+  },
+  excel: {
+    label: "分析任务",
+    options: ["数据整理", "统计分析", "图表可视化"],
+    fields: [
+      { label: "输出形式", options: ["表格与图表", "表格", "图表"] },
+      { label: "分析范围", options: ["全部数据", "指定工作表", "指定字段"] },
+    ],
+  },
+  video: {
+    label: "视频类型",
+    options: ["产品介绍", "知识讲解", "创意短片"],
+    fields: [
+      { label: "视频时长", options: ["15 秒", "30 秒", "60 秒"] },
+      { label: "画面比例", options: ["16:9", "9:16", "1:1"] },
+    ],
+  },
+}
+
+function isResearchCapability(
+  kind: FullscreenCapability
+): kind is ResearchCapability {
+  return kind in RESEARCH_CONTROLS
+}
 
 const WRITING_TYPES = [
   "文章",
@@ -48,9 +114,33 @@ export function FullscreenControls({
     "自动检测",
     "中文",
   ])
+  const [researchChoice, setResearchChoice] = useState("")
+  const research = isResearchCapability(kind) ? RESEARCH_CONTROLS[kind] : null
 
   return (
     <div className={styles.root} data-fullscreen-controls={kind}>
+      {research && (
+        <>
+          <ChoiceGroup
+            label={research.label}
+            options={research.options}
+            value={researchChoice || research.options[0]}
+            onChange={setResearchChoice}
+          />
+          <div className={styles.fieldGroup}>
+            <span className={styles.label}>要求</span>
+            <div className={styles.selectRow}>
+              {research.fields.map((field) => (
+                <FieldSelect
+                  key={field.label}
+                  label={field.label}
+                  options={field.options}
+                />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
       {kind === "write" && (
         <>
           <ChoiceGroup
@@ -195,42 +285,28 @@ export function FullscreenControls({
         </>
       )}
 
-      {kind === "knowledge" && (
-        <>
+      {kind === "academic" && (
+        <div className={styles.fieldGroup}>
+          <span className={styles.label}>要求</span>
           <div className={styles.selectRow}>
             <FieldSelect
               label="知识范围"
-              options={["全部资料", "项目知识库", "个人收藏"]}
+              options={["全部学科", "自然科学", "社会科学", "工程技术"]}
+              academic
+              active
             />
             <FieldSelect
               label="时间范围"
               options={["不限时间", "最近一周", "最近一月", "最近一年"]}
+              academic
             />
             <FieldSelect
               label="引用来源"
-              options={["显示引用", "仅内部资料", "全部来源"]}
+              options={["全部来源", "期刊论文", "会议论文", "学位论文"]}
+              academic
             />
           </div>
-          <div className={styles.fieldGroup}>
-            <span className={styles.label}>试试这样问</span>
-            <div className={styles.recommendations}>
-              {["找到项目最新结论", "对比两版方案差异"].map(
-                (recommendation) => (
-                  <button
-                    key={recommendation}
-                    type="button"
-                    className={styles.recommendation}
-                    onClick={() => onDraftChange(recommendation)}
-                  >
-                    <Search aria-hidden="true" strokeWidth={1.7} />
-                    <span>{recommendation}</span>
-                    <ChevronRight aria-hidden="true" strokeWidth={1.6} />
-                  </button>
-                )
-              )}
-            </div>
-          </div>
-        </>
+        </div>
       )}
     </div>
   )
@@ -273,14 +349,18 @@ function FieldSelect({
   options,
   value,
   onChange,
+  academic = false,
+  active = false,
 }: {
   label: string
   options: readonly string[]
   value?: string
   onChange?: (value: string) => void
+  academic?: boolean
+  active?: boolean
 }) {
   return (
-    <label className={styles.selectField}>
+    <label className={styles.selectField} data-active={active || undefined}>
       <select
         key={label}
         aria-label={label}
@@ -299,7 +379,17 @@ function FieldSelect({
           </option>
         ))}
       </select>
-      <ChevronDown aria-hidden="true" strokeWidth={1.8} />
+      {academic ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          className={styles.academicCaret}
+          src={`/images/page7/academic-overlay/caret-${active ? "up" : "down"}.svg`}
+          alt=""
+          aria-hidden="true"
+        />
+      ) : (
+        <ChevronDown aria-hidden="true" strokeWidth={1.8} />
+      )}
     </label>
   )
 }

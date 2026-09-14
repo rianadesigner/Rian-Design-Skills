@@ -20,7 +20,7 @@ const PROJECTS = [
     num: "01",
     name: "if Studio",
     subtitle: "专家级 AI 智能体工作台与创作 Skill",
-    cover: "/images/page0/content0-card-xingliu.webp",
+    cover: "/images/if-studio/home-full-light-2026.jpg",
     aspect: COVER_ASPECT,
     accent: "#22d3ee",
     pages: "03 – 06",
@@ -42,7 +42,7 @@ const PROJECTS = [
     num: "03",
     name: "Riff 视频编辑",
     subtitle: "高可控 AI 视频创作与编辑体验",
-    cover: "/images/page0/content0-card-riff.webp",
+    cover: "/images/page0/content0-card-riff.png",
     aspect: COVER_ASPECT,
     accent: "#ef3b46",
     pages: "11 – 19",
@@ -53,11 +53,11 @@ const PROJECTS = [
     num: "04",
     name: "LLM Wiki",
     subtitle: "大模型知识体系与产品方法沉淀",
-    cover: "/images/page0/content0-card-kb.webp",
+    cover: "/images/page0-landing/llm-wiki-v2-home.jpg",
     aspect: COVER_ASPECT,
     accent: "#818cf8",
-    pages: "20 – 27",
-    slideIndex: 32,
+    pages: "20 – 26",
+    slideIndex: 33,
   },
   {
     id: "xinliu",
@@ -67,7 +67,7 @@ const PROJECTS = [
     cover: "/images/page0/content0-card-xinliu.webp",
     aspect: COVER_ASPECT,
     accent: "#60a5fa",
-    pages: "28 – 38",
+    pages: "27 – 36",
     slideIndex: 41,
   },
 ]
@@ -137,8 +137,12 @@ function FilmCard({
           inset: 0,
           width: "100%",
           height: "100%",
-          objectFit: "contain",
-          objectPosition: "center",
+          objectFit:
+            project.id === "if-studio" || project.id === "kb"
+              ? "cover"
+              : "contain",
+          objectPosition:
+            project.id === "if-studio" ? "center top" : "center",
           display: "block",
           opacity: 0.96,
           filter: "saturate(0.94) contrast(1.02) brightness(0.92)",

@@ -1,0 +1,116 @@
+[
+  {
+    "animation": [
+      {
+        "opacity": "0.802348",
+        "transform": "matrix(0.276826, 0, 0, 0.276826, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      }
+    ],
+    "carousel": "paused",
+    "petal": "code",
+    "ringGroups": 6
+  },
+  {
+    "animation": [
+      {
+        "opacity": "0.748258",
+        "transform": "matrix(0.261871, 0, 0, 0.261871, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      }
+    ],
+    "carousel": "paused",
+    "petal": "translate",
+    "ringGroups": 6
+  },
+  {
+    "animation": [
+      {
+        "opacity": "0.802992",
+        "transform": "matrix(0.277004, 0, 0, 0.277004, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      }
+    ],
+    "carousel": "paused",
+    "petal": "call",
+    "ringGroups": 6
+  },
+  {
+    "animation": [
+      {
+        "opacity": "0.806521",
+        "transform": "matrix(0.277979, 0, 0, 0.277979, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      }
+    ],
+    "carousel": "paused",
+    "petal": "write",
+    "ringGroups": 6
+  },
+  {
+    "animation": [
+      {
+        "opacity": "0.804602",
+        "transform": "matrix(0.277449, 0, 0, 0.277449, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      }
+    ],
+    "carousel": "paused",
+    "petal": "document",
+    "ringGroups": 6
+  },
+  {
+    "animation": [
+      {
+        "opacity": "0.751477",
+        "transform": "matrix(0.262761, 0, 0, 0.262761, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      },
+      {
+        "opacity": "0",
+        "transform": "matrix(0.055, 0, 0, 0.055, 0, 0)"
+      }
+    ],
+    "carousel": "paused",
+    "petal": "knowledge",
+    "ringGroups": 6
+  }
+]

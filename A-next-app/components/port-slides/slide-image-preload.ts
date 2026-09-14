@@ -47,9 +47,9 @@ export function getSlidePreloadPolicy(): SlidePreloadPolicy {
 
 const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   content0: [
-    "/images/page0/content0-card-kb.webp",
+    "/images/page0-landing/llm-wiki-v2-home.jpg",
     "/images/page0/content0-card-wanxiang.webp",
-    "/images/page0/content0-card-xingliu.webp",
+    "/images/if-studio/home-full-light-2026.jpg",
     "/images/page0/content0-card-xinliu.webp",
   ],
   page0b: ["/images/page0b/ai1-bg.webp"],
@@ -166,13 +166,13 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   ],
   page20: ["/images/page20/design-system-overview.jpg"],
   page21: [
-    "/images/page21/free-canvas-01.webp",
-    "/images/page21/free-canvas-02.webp",
-    "/images/page21/free-canvas-03.webp",
-    "/images/page21/free-canvas-04.webp",
-    "/images/page21/free-canvas-05.webp",
-    "/images/page21/free-canvas-06.webp",
-    "/images/page21/free-canvas-07.webp",
+    "/images/page21/free-canvas-01.png",
+    "/images/page21/free-canvas-02.png",
+    "/images/page21/free-canvas-03.png",
+    "/images/page21/free-canvas-04.png",
+    "/images/page21/free-canvas-05.png",
+    "/images/page21/free-canvas-06.png",
+    "/images/page21/free-canvas-07.png",
   ],
   page22: [
     "/images/page22/card3-left.webp",
@@ -183,16 +183,17 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   "if-studio-skills": [
     "/images/if-studio/skills-plaza-2026-1440.webp",
     "/images/if-studio/skill-detail-open-platform-2026-1440.webp",
+    "/images/if-studio/aliyun-market-2026-1440.webp",
   ],
   "storyboard-video-skill": [
-    "/images/storyboard-video-skill/workflow-full-105500.webp",
-    "/images/if-studio/skill-config-2026.webp",
+    "/images/storyboard-video-skill/workflow-full-105500.png",
+    "/images/if-studio/skill-config-2026.png",
   ],
   "if-studio-insights": [
-    "/images/if-studio/generated-covers/workflow-cover-v5.webp",
-    "/images/if-studio/generated-covers/canvas-cover-v5.webp",
-    "/images/if-studio/generated-covers/skills-cover-v5.webp",
-    "/images/if-studio/generated-covers/assets-cover-v6.webp",
+    "/images/if-studio/generated-covers/workflow-cover-v5.png",
+    "/images/if-studio/generated-covers/canvas-cover-v5.png",
+    "/images/if-studio/generated-covers/skills-cover-v5.png",
+    "/images/if-studio/generated-covers/assets-cover-v6.png",
   ],
   "if-studio-capabilities": [
     "/images/if-studio/capabilities/brand.webp",
@@ -258,7 +259,10 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/other-search-projects/ui-v3/10-recommend-entry.png",
   ],
   page27: [
-    "/images/page27/riff-home-logged-out.webp",
+    "/images/page27/riff-interactive/red-suit.png",
+    "/images/page27/riff-interactive/snow.png",
+    "/images/page27/riff-interactive/city.png",
+    "/images/page27/riff-interactive/beach.png",
     "/images/page27/riff-material-v2.webp",
   ],
   "video-user-journey": [],
@@ -297,9 +301,9 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
   "video-future": ["/images/video/ifs-workflow-canvas.webp"],
   page28: [
     "/images/page28/video-character-library.webp",
-    "/images/page28/style-filter.webp",
-    "/images/page28/co-create.webp",
-    "/images/page28/subject-removal.webp",
+    "/images/page28/style-filter-v2.webp",
+    "/images/page28/co-create-v2.webp",
+    "/images/page28/subject-removal-v2.webp",
   ],
   page29: [
     "/images/page39/sketch-home.webp",

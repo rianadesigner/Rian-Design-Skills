@@ -1,0 +1,68 @@
+[
+  {
+    "closeCount": 1,
+    "composerTop": 387.84808349609375,
+    "controlsBottom": 337.4248046875,
+    "fullHeight": true,
+    "fullWidth": true,
+    "inputHeight": 71.85272216796875,
+    "inputTop": 399.0281066894531,
+    "kind": "code",
+    "sendDisabled": false
+  },
+  {
+    "closeCount": 1,
+    "composerTop": 387.84808349609375,
+    "controlsBottom": 352.2644348144531,
+    "fullHeight": true,
+    "fullWidth": true,
+    "inputHeight": 71.85272216796875,
+    "inputTop": 399.0281066894531,
+    "kind": "translate",
+    "sendDisabled": false
+  },
+  {
+    "closeCount": 1,
+    "composerTop": 387.84808349609375,
+    "controlsBottom": 379.3341674804687,
+    "fullHeight": true,
+    "fullWidth": true,
+    "inputHeight": 71.85272216796875,
+    "inputTop": 399.0281066894531,
+    "kind": "call",
+    "sendDisabled": false
+  },
+  {
+    "closeCount": 1,
+    "composerTop": 387.84808349609375,
+    "controlsBottom": 367.6574096679687,
+    "fullHeight": true,
+    "fullWidth": true,
+    "inputHeight": 71.85272216796875,
+    "inputTop": 399.0281066894531,
+    "kind": "write",
+    "sendDisabled": true
+  },
+  {
+    "closeCount": 1,
+    "composerTop": 387.84808349609375,
+    "controlsBottom": 400.166259765625,
+    "fullHeight": true,
+    "fullWidth": true,
+    "inputHeight": 71.85272216796875,
+    "inputTop": 399.0281066894531,
+    "kind": "document",
+    "sendDisabled": true
+  },
+  {
+    "closeCount": 1,
+    "composerTop": 387.84808349609375,
+    "controlsBottom": 359.19378662109375,
+    "fullHeight": true,
+    "fullWidth": true,
+    "inputHeight": 71.85272216796875,
+    "inputTop": 399.0281066894531,
+    "kind": "knowledge",
+    "sendDisabled": false
+  }
+]

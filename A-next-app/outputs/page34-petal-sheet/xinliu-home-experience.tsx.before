@@ -1,0 +1,1215 @@
+"use client"
+
+import { AnimatePresence, motion, useReducedMotion } from "motion/react"
+import {
+  ArrowLeftRight,
+  ChevronDown,
+  ChevronRight,
+  FileText,
+  ImagePlus,
+  Mic,
+  Paperclip,
+  Phone,
+  Search,
+  Send,
+  Upload,
+  X,
+} from "lucide-react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
+
+const SCREEN = "/images/page7/phone-screenshot.webp"
+const CLEAN_BACKGROUND = "/images/page7/figma-home/clean-background.webp"
+const PETAL_SHELL = "/images/page7/figma-home/petal-shell.svg"
+const EASE = [0.22, 1, 0.36, 1] as const
+const EXIT_EASE = [0.4, 0, 1, 1] as const
+
+type PetalId =
+  | "code"
+  | "translate"
+  | "call"
+  | "write"
+  | "document"
+  | "knowledge"
+
+const PETALS = [
+  {
+    id: "code",
+    label: "写代码",
+    icon: "/images/page7/figma-home/icon-code.svg",
+    artLeft: "33.97%",
+    artTop: "2.45%",
+    rotation: 0,
+    labelLeft: "50%",
+    labelTop: "10.13%",
+    polygon:
+      "polygon(33.33% 2.4%, 66.67% 2.4%, 66.67% 12%, 57.33% 40%, 45.73% 40%, 33.33% 12%)",
+  },
+  {
+    id: "translate",
+    label: "翻译",
+    icon: "/images/page7/figma-home/icon-translate.svg",
+    artLeft: "8.03%",
+    artTop: "17.42%",
+    rotation: -60,
+    labelLeft: "21.6%",
+    labelTop: "25.07%",
+    polygon:
+      "polygon(4.67% 14%, 33.33% 12%, 45.73% 40%, 42.67% 48%, 2.67% 48%, 1.07% 34%)",
+  },
+  {
+    id: "call",
+    label: "打电话",
+    icon: "/images/page7/figma-home/icon-call.svg",
+    artLeft: "59.48%",
+    artTop: "17.18%",
+    rotation: 60,
+    labelLeft: "78.67%",
+    labelTop: "25.07%",
+    polygon:
+      "polygon(66.67% 12%, 95.33% 14%, 98.93% 34%, 97.33% 48%, 60.27% 48%, 57.33% 40%)",
+  },
+  {
+    id: "write",
+    label: "写作",
+    icon: "/images/page7/figma-home/icon-write.svg",
+    artLeft: "8.03%",
+    artTop: "47.21%",
+    rotation: -120,
+    labelLeft: "21.6%",
+    labelTop: "58.4%",
+    polygon:
+      "polygon(2.67% 49.33%, 42.67% 49.33%, 45.73% 57.33%, 33.33% 88%, 4.67% 86%, 1.07% 66.67%)",
+  },
+  {
+    id: "document",
+    label: "读文档",
+    icon: "/images/page7/figma-home/icon-document.svg",
+    artLeft: "59.48%",
+    artTop: "47.21%",
+    rotation: 120,
+    labelLeft: "78.67%",
+    labelTop: "58.4%",
+    polygon:
+      "polygon(57.33% 57.33%, 60.27% 49.33%, 97.33% 49.33%, 98.93% 66.67%, 95.33% 86%, 66.67% 88%)",
+  },
+  {
+    id: "knowledge",
+    label: "知识库",
+    icon: "/images/page7/figma-home/icon-knowledge.svg",
+    artLeft: "34.04%",
+    artTop: "62.45%",
+    rotation: 180,
+    labelLeft: "50%",
+    labelTop: "76.13%",
+    polygon:
+      "polygon(45.73% 57.33%, 57.33% 57.33%, 66.67% 88%, 66.67% 97.6%, 33.33% 97.6%, 33.33% 88%)",
+  },
+] as const
+
+const PETAL_COLLAPSE: Record<PetalId, { x: `${number}%`; y: `${number}%` }> = {
+  code: { x: "0%", y: "6%" },
+  translate: { x: "4.4%", y: "3.4%" },
+  call: { x: "-4.4%", y: "3.4%" },
+  write: { x: "4.4%", y: "-3.4%" },
+  document: { x: "-4.4%", y: "-3.4%" },
+  knowledge: { x: "0%", y: "-6%" },
+}
+
+const PANEL_DRAFTS: Record<PetalId, string> = {
+  code: "创建一个带筛选与数据卡片的移动端看板",
+  translate:
+    "Please confirm whether tomorrow afternoon's meeting time works for you.",
+  call: "帮我预约今晚 7 点的双人位，并记录确认结果",
+  write: "写一篇新品发布文案，语气简洁、有力量",
+  document: "总结文档的关键结论、风险与下一步行动",
+  knowledge: "对比首页两版方案的主要差异，并标注信息来源",
+}
+
+const PANEL_CARD_HEIGHT: Record<PetalId, `${number}cqw`> = {
+  code: "94cqw",
+  translate: "78cqw",
+  call: "100cqw",
+  write: "94cqw",
+  document: "100cqw",
+  knowledge: "100cqw",
+}
+
+export function XinliuHomeExperience() {
+  const reduceMotion = Boolean(useReducedMotion())
+  const [hovered, setHovered] = useState<PetalId | null>(null)
+  const [selected, setSelected] = useState<PetalId | null>(null)
+  const activePetal = PETALS.find((petal) => petal.id === selected) ?? null
+
+  useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSelected(null)
+    }
+
+    window.addEventListener("keydown", closeOnEscape)
+    return () => window.removeEventListener("keydown", closeOnEscape)
+  }, [])
+
+  return (
+    <div
+      className="relative h-full w-full overflow-hidden"
+      style={{ containerType: "inline-size" }}
+      data-slide-interactive="true"
+      data-petal-state={selected ?? "idle"}
+      data-petal-hovered={hovered ?? "none"}
+    >
+      <img
+        src={SCREEN}
+        alt="心流移动端首页最终方案"
+        className="absolute inset-0 block h-full w-full object-cover select-none"
+        draggable={false}
+      />
+
+      <motion.img
+        src={CLEAN_BACKGROUND}
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-[1] block h-full w-full object-cover select-none"
+        draggable={false}
+        style={{
+          WebkitMaskImage:
+            "linear-gradient(to bottom, transparent 19.8%, black 22.1%, black 69.2%, transparent 72.2%)",
+          maskImage:
+            "linear-gradient(to bottom, transparent 19.8%, black 22.1%, black 69.2%, transparent 72.2%)",
+          willChange: "opacity, filter",
+        }}
+        animate={{
+          opacity: selected ? 1 : 0,
+          filter: selected
+            ? "brightness(0.97) saturate(0.95)"
+            : "brightness(1) saturate(1)",
+        }}
+        transition={
+          selected
+            ? {
+                duration: reduceMotion ? 0 : 0.2,
+                delay: reduceMotion ? 0 : 0.025,
+                ease: EASE,
+              }
+            : {
+                duration: reduceMotion ? 0 : 0.22,
+                delay: reduceMotion ? 0 : 0.09,
+                ease: EASE,
+              }
+        }
+      />
+
+      <div
+        className="absolute inset-x-0 z-[2] overflow-hidden"
+        style={{ top: "22.46%", height: "46.5261%" }}
+      >
+        <AnimatePresence>
+          {selected &&
+            PETALS.map((petal, index) => (
+              <motion.div
+                key={petal.id}
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  clipPath: petal.polygon,
+                  transformOrigin: "50% 50%",
+                  willChange: "transform, opacity",
+                }}
+                initial={{ opacity: 1, scale: 1, x: "0%", y: "0%" }}
+                animate={{
+                  opacity: 0,
+                  scale: 0.92,
+                  x: PETAL_COLLAPSE[petal.id].x,
+                  y: PETAL_COLLAPSE[petal.id].y,
+                }}
+                exit={{ opacity: 0 }}
+                transition={{
+                  duration: reduceMotion ? 0 : 0.24,
+                  delay: reduceMotion ? 0 : 0.035 + index * 0.006,
+                  ease: EXIT_EASE,
+                }}
+              >
+                <img
+                  src={SCREEN}
+                  alt=""
+                  className="absolute left-0 block w-full max-w-none object-cover select-none"
+                  style={{ top: "-48.274%", height: "214.9331%" }}
+                  draggable={false}
+                />
+              </motion.div>
+            ))}
+        </AnimatePresence>
+
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0"
+        >
+          {PETALS.map((petal) => (
+            <PetalArtwork
+              key={petal.id}
+              petal={petal}
+              highlighted={hovered === petal.id}
+            />
+          ))}
+        </div>
+
+        <div
+          className="absolute inset-0"
+          style={{ pointerEvents: selected ? "none" : "auto" }}
+          aria-hidden={selected ? "true" : undefined}
+        >
+          {PETALS.map((petal) => (
+            <button
+              key={petal.id}
+              type="button"
+              aria-label={`打开${petal.label}`}
+              className="absolute inset-0 cursor-pointer border-0 bg-transparent p-0 outline-none"
+              style={{ clipPath: petal.polygon }}
+              onMouseEnter={() => setHovered(petal.id)}
+              onMouseLeave={() =>
+                setHovered((current) => (current === petal.id ? null : current))
+              }
+              onFocus={() => setHovered(petal.id)}
+              onBlur={() =>
+                setHovered((current) => (current === petal.id ? null : current))
+              }
+              onClick={() => {
+                setHovered(null)
+                setSelected(petal.id)
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      <AnimatePresence mode="wait">
+        {activePetal && (
+          <CapabilitySheet
+            key={activePetal.id}
+            petal={activePetal}
+            reduceMotion={reduceMotion}
+            onClose={() => setSelected(null)}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
+function PetalArtwork({
+  petal,
+  highlighted,
+}: {
+  petal: (typeof PETALS)[number]
+  highlighted: boolean
+}) {
+  return (
+    <div
+      className="absolute"
+      style={{
+        left: petal.artLeft,
+        top: petal.artTop,
+        width: "31.91%",
+        height: "35.1%",
+        transform: `rotate(${petal.rotation}deg)`,
+        transformOrigin: "50% 50%",
+      }}
+    >
+      <div className="absolute" style={{ inset: "-37.99% -41.78%" }}>
+        <motion.img
+          src={PETAL_SHELL}
+          alt=""
+          className="absolute inset-0 block h-full w-full max-w-none"
+          draggable={false}
+          animate={{
+            opacity: highlighted ? 0.56 : 0,
+            filter: highlighted
+              ? "brightness(1.08) drop-shadow(0 1px 4px rgba(255, 255, 255, 0.18))"
+              : "brightness(1)",
+          }}
+          transition={{ duration: 0.18, ease: EASE }}
+        />
+      </div>
+    </div>
+  )
+}
+
+function CapabilitySheet({
+  petal,
+  reduceMotion,
+  onClose,
+}: {
+  petal: (typeof PETALS)[number]
+  reduceMotion: boolean
+  onClose: () => void
+}) {
+  const [draft, setDraft] = useState(() => PANEL_DRAFTS[petal.id])
+  const [activeChoice, setActiveChoice] = useState(() => {
+    if (petal.id === "code") return "网页"
+    if (petal.id === "call") return "预约"
+    if (petal.id === "write") return "文章"
+    if (petal.id === "document") return "总结"
+    return ""
+  })
+  const [languagesReversed, setLanguagesReversed] = useState(false)
+  const closeButtonRef = useRef<HTMLButtonElement>(null)
+  const cardHeight = PANEL_CARD_HEIGHT[petal.id]
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      closeButtonRef.current?.focus({ preventScroll: true })
+    })
+
+    return () => window.cancelAnimationFrame(frame)
+  }, [])
+
+  return (
+    <motion.section
+      role="dialog"
+      aria-modal="true"
+      aria-label={petal.label + "浮层"}
+      className="absolute inset-x-0 bottom-0 z-20 overflow-hidden"
+      style={{
+        top: "23.5%",
+        borderRadius: "6cqw 6cqw 0 0",
+        color: "#222733",
+        background:
+          "linear-gradient(180deg, rgba(255,255,255,0.992) 0%, rgba(245,247,251,0.99) 56%, rgba(213,218,226,0.99) 100%)",
+        boxShadow:
+          "0 -2.2cqw 8cqw rgba(35,48,72,0.12), 0 0.2cqw 0 rgba(255,255,255,0.95) inset",
+      }}
+      initial={
+        reduceMotion ? { opacity: 0 } : { opacity: 0, y: "18%", scale: 0.992 }
+      }
+      animate={{ opacity: 1, y: "0%", scale: 1 }}
+      exit={
+        reduceMotion
+          ? { opacity: 0 }
+          : {
+              opacity: 0,
+              y: "12%",
+              scale: 0.995,
+              transition: { duration: 0.25, ease: EXIT_EASE },
+            }
+      }
+      transition={{
+        duration: reduceMotion ? 0 : 0.36,
+        delay: reduceMotion ? 0 : 0.15,
+        ease: EASE,
+      }}
+    >
+      <motion.div
+        className="absolute right-[3.2cqw] left-[3.2cqw] overflow-hidden"
+        style={{
+          top: "4.2cqw",
+          height: cardHeight,
+          borderRadius: "5cqw",
+          background: "rgba(255,255,255,0.995)",
+          border: "0.3cqw solid rgba(94,79,255,0.92)",
+          boxShadow:
+            "0 3.2cqw 10cqw rgba(42,52,74,0.12), 0 0 0 0.14cqw rgba(99,235,235,0.12) inset",
+        }}
+        initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: "7%" }}
+        animate={{ opacity: 1, y: "0%" }}
+        transition={{
+          duration: reduceMotion ? 0 : 0.3,
+          delay: reduceMotion ? 0 : 0.22,
+          ease: EASE,
+        }}
+      >
+        <header
+          className="relative grid place-items-center"
+          style={{
+            height: "14.8cqw",
+            borderBottom: "0.18cqw solid rgba(35,41,55,0.08)",
+          }}
+        >
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={onClose}
+            aria-label="关闭能力浮层"
+            className="absolute left-[2.2cqw] grid cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0"
+            style={{
+              width: "10.4cqw",
+              height: "10.4cqw",
+              color: "#252a34",
+            }}
+          >
+            <X
+              style={{ width: "5.4cqw", height: "5.4cqw" }}
+              strokeWidth={1.9}
+            />
+          </button>
+
+          <h2
+            className="relative m-0"
+            style={{
+              color: "#20242d",
+              fontFamily: "'PingFang SC', sans-serif",
+              fontSize: "5.2cqw",
+              fontWeight: 650,
+              lineHeight: 1.2,
+              letterSpacing: "-0.02em",
+            }}
+          >
+            {getPanelTitle(petal.id)}
+            <span
+              aria-hidden="true"
+              className="absolute right-[-1cqw] bottom-[-0.6cqw] left-[-1cqw] -z-10 h-[1.7cqw] rounded-full"
+              style={{
+                background:
+                  "linear-gradient(90deg, rgba(211,92,229,0.82), rgba(101,239,234,0.9))",
+                transform: "rotate(-1.5deg)",
+              }}
+            />
+          </h2>
+        </header>
+
+        <div
+          className="flex min-h-0 flex-col overflow-y-auto"
+          style={{ height: "calc(100% - 14.8cqw)", padding: "3.5cqw" }}
+        >
+          <ToolPanel
+            petalId={petal.id}
+            draft={draft}
+            activeChoice={activeChoice}
+            languagesReversed={languagesReversed}
+            onDraftChange={setDraft}
+            onChoiceChange={setActiveChoice}
+            onLanguageSwap={() => setLanguagesReversed((current) => !current)}
+          />
+        </div>
+      </motion.div>
+
+      <MobileKeyboard
+        reduceMotion={reduceMotion}
+        top={`calc(4.2cqw + ${cardHeight} + 2.2cqw)`}
+      />
+    </motion.section>
+  )
+}
+
+function MobileKeyboard({
+  reduceMotion,
+  top,
+}: {
+  reduceMotion: boolean
+  top: string
+}) {
+  const rows = [
+    ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+    ["a", "s", "d", "f", "g", "h", "j", "k", "l"],
+    ["⇧", "z", "x", "c", "v", "b", "n", "m", "⌫"],
+  ]
+
+  return (
+    <motion.div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-x-0 bottom-0 overflow-hidden"
+      style={{
+        top,
+        color: "#1d222b",
+        background:
+          "linear-gradient(180deg, rgba(224,228,235,0.98), rgba(197,203,213,0.99))",
+        borderTop: "0.14cqw solid rgba(49,58,72,0.08)",
+      }}
+      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: "9%" }}
+      animate={{ opacity: 1, y: "0%" }}
+      transition={{
+        duration: reduceMotion ? 0 : 0.3,
+        delay: reduceMotion ? 0 : 0.24,
+        ease: EASE,
+      }}
+    >
+      <div
+        className="absolute inset-x-0 bottom-0 flex flex-col"
+        style={{ height: "min(72cqw, 100%)", padding: "1.8cqw 1.8cqw 1cqw" }}
+      >
+        <div
+          className="mb-[1.1cqw] grid grid-cols-3 items-center text-center"
+          style={{
+            height: "6.8cqw",
+            color: "#4d535e",
+            fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif",
+            fontSize: "3cqw",
+          }}
+        >
+          <span>「</span>
+          <span>翻译</span>
+          <span>完成</span>
+        </div>
+
+        <div className="flex min-h-0 flex-1 flex-col gap-[1cqw]">
+          {rows.map((row, rowIndex) => (
+            <div
+              key={row.join("")}
+              className="flex min-h-0 flex-1 justify-center gap-[1cqw]"
+              style={{ paddingInline: rowIndex === 1 ? "4.2cqw" : 0 }}
+            >
+              {row.map((key) => {
+                const isUtility = key === "⇧" || key === "⌫"
+
+                return (
+                  <span
+                    key={key}
+                    className="grid min-w-0 flex-1 place-items-center rounded-[1.35cqw]"
+                    style={{
+                      maxWidth: isUtility ? "10.4cqw" : "8.5cqw",
+                      background: isUtility
+                        ? "rgba(171,178,188,0.98)"
+                        : "rgba(255,255,255,0.985)",
+                      boxShadow:
+                        "0 0.45cqw 0 rgba(95,103,114,0.58), 0 0.1cqw 0.3cqw rgba(255,255,255,0.65) inset",
+                      fontFamily:
+                        "-apple-system, BlinkMacSystemFont, sans-serif",
+                      fontSize: isUtility ? "3.5cqw" : "3.9cqw",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {key}
+                  </span>
+                )
+              })}
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-[1.2cqw] flex h-[9cqw] gap-[1.2cqw]">
+          {[
+            { label: "123", grow: 0.78 },
+            { label: "空格", grow: 2.7 },
+            { label: "换行", grow: 1 },
+          ].map((key) => (
+            <span
+              key={key.label}
+              className="grid min-w-0 place-items-center rounded-[1.4cqw]"
+              style={{
+                flex: key.grow,
+                background:
+                  key.label === "空格"
+                    ? "rgba(255,255,255,0.985)"
+                    : "rgba(171,178,188,0.98)",
+                boxShadow:
+                  "0 0.45cqw 0 rgba(95,103,114,0.58), 0 0.1cqw 0.3cqw rgba(255,255,255,0.65) inset",
+                fontFamily: "-apple-system, BlinkMacSystemFont, sans-serif",
+                fontSize: "3.1cqw",
+              }}
+            >
+              {key.label}
+            </span>
+          ))}
+        </div>
+
+        <div className="relative mt-[1cqw] flex h-[7.2cqw] items-start justify-between px-[5cqw] pt-[0.8cqw]">
+          <span style={{ fontSize: "4cqw", lineHeight: 1 }}>◎</span>
+          <Mic
+            style={{ width: "4.2cqw", height: "4.2cqw" }}
+            strokeWidth={1.7}
+          />
+          <span
+            className="absolute bottom-[0.4cqw] left-1/2 h-[0.9cqw] w-[34cqw] -translate-x-1/2 rounded-full"
+            style={{ background: "rgba(25,28,33,0.88)" }}
+          />
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
+function getPanelTitle(petalId: PetalId) {
+  const titles: Record<PetalId, string> = {
+    code: "代码生成",
+    translate: "一键翻译",
+    call: "打电话",
+    write: "场景写作",
+    document: "读文档",
+    knowledge: "知识库",
+  }
+
+  return titles[petalId]
+}
+
+function ToolPanel({
+  petalId,
+  draft,
+  activeChoice,
+  languagesReversed,
+  onDraftChange,
+  onChoiceChange,
+  onLanguageSwap,
+}: {
+  petalId: PetalId
+  draft: string
+  activeChoice: string
+  languagesReversed: boolean
+  onDraftChange: (value: string) => void
+  onChoiceChange: (value: string) => void
+  onLanguageSwap: () => void
+}) {
+  if (petalId === "translate") {
+    return (
+      <div className="flex min-h-0 flex-1 flex-col">
+        <div className="flex items-center gap-[2.4cqw]">
+          <SelectPill
+            label={languagesReversed ? "中文" : "自动检测"}
+            className="flex-1 justify-center"
+          />
+          <button
+            type="button"
+            aria-label="交换翻译语言"
+            onClick={onLanguageSwap}
+            className="grid shrink-0 cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0"
+            style={{
+              width: "8cqw",
+              height: "8cqw",
+              color: "#353b48",
+            }}
+          >
+            <ArrowLeftRight
+              style={{ width: "4.6cqw", height: "4.6cqw" }}
+              strokeWidth={1.8}
+            />
+          </button>
+          <SelectPill
+            label={languagesReversed ? "自动检测" : "中文"}
+            className="flex-1 justify-center"
+          />
+        </div>
+
+        <Composer
+          className="mt-[4cqw]"
+          value={draft}
+          placeholder="输入或粘贴需要翻译的内容"
+          sourceLabel="图片 / 文件"
+          sourceIcon={
+            <ImagePlus
+              style={{ width: "4cqw", height: "4cqw" }}
+              strokeWidth={1.8}
+            />
+          }
+          onChange={onDraftChange}
+        />
+      </div>
+    )
+  }
+
+  if (petalId === "knowledge") {
+    const recommendations = ["找到项目最新结论", "对比两版方案差异"]
+
+    return (
+      <div className="flex min-h-0 flex-1 flex-col">
+        <div className="flex gap-[1.7cqw]">
+          {["知识范围", "时间范围", "引用来源"].map((field) => (
+            <SelectPill key={field} label={field} className="flex-1" compact />
+          ))}
+        </div>
+
+        <PanelLabel className="mt-[3.2cqw]">试试这样问</PanelLabel>
+        <div className="mt-[1.8cqw] flex flex-col gap-[1.2cqw]">
+          {recommendations.map((recommendation) => (
+            <button
+              key={recommendation}
+              type="button"
+              onClick={() => onDraftChange(recommendation)}
+              className="flex cursor-pointer items-center gap-[2cqw] rounded-[2.5cqw] border-0 text-left"
+              style={{
+                minHeight: "7.5cqw",
+                padding: "1.2cqw 2cqw",
+                color: "#4a505e",
+                background: "rgba(247,248,251,0.94)",
+                fontFamily: "'PingFang SC', sans-serif",
+                fontSize: "3.15cqw",
+              }}
+            >
+              <Search
+                className="shrink-0"
+                style={{ width: "3.5cqw", height: "3.5cqw" }}
+                strokeWidth={1.9}
+              />
+              <span className="min-w-0 flex-1 truncate">{recommendation}</span>
+              <ChevronRight
+                className="shrink-0"
+                style={{ width: "3.4cqw", height: "3.4cqw" }}
+                strokeWidth={1.7}
+              />
+            </button>
+          ))}
+        </div>
+
+        <Composer
+          className="mt-[2.5cqw]"
+          value={draft}
+          placeholder="基于我的资料提问"
+          sourceLabel="项目知识库"
+          sourceIcon={
+            <Search
+              style={{ width: "4cqw", height: "4cqw" }}
+              strokeWidth={1.8}
+            />
+          }
+          onChange={onDraftChange}
+        />
+      </div>
+    )
+  }
+
+  if (petalId === "document") {
+    return (
+      <div className="flex min-h-0 flex-1 flex-col">
+        <button
+          type="button"
+          className="flex cursor-pointer items-center gap-[2.6cqw] rounded-[3cqw] text-left"
+          style={{
+            minHeight: "12cqw",
+            padding: "2cqw 2.6cqw",
+            color: "#444b59",
+            background: "rgba(246,247,251,0.96)",
+            border: "0.18cqw dashed rgba(108,91,247,0.36)",
+          }}
+        >
+          <span
+            className="grid shrink-0 place-items-center rounded-[2.3cqw]"
+            style={{
+              width: "7.6cqw",
+              height: "7.6cqw",
+              color: "#6c5bf4",
+              background: "rgba(108,91,244,0.09)",
+            }}
+          >
+            <Upload
+              style={{ width: "4cqw", height: "4cqw" }}
+              strokeWidth={1.8}
+            />
+          </span>
+          <span className="min-w-0 flex-1">
+            <strong
+              className="block"
+              style={{
+                fontFamily: "'PingFang SC', sans-serif",
+                fontSize: "3.35cqw",
+                fontWeight: 600,
+              }}
+            >
+              选择文档
+            </strong>
+            <small
+              className="mt-[0.4cqw] block"
+              style={{
+                color: "#9aa0ad",
+                fontFamily: "'PingFang SC', sans-serif",
+                fontSize: "2.65cqw",
+              }}
+            >
+              支持 PDF / Word / MD
+            </small>
+          </span>
+          <ChevronRight
+            className="shrink-0"
+            style={{ width: "4cqw", height: "4cqw", color: "#9da2ad" }}
+            strokeWidth={1.6}
+          />
+        </button>
+
+        <PanelLabel className="mt-[3cqw]">任务</PanelLabel>
+        <ChoiceChips
+          className="mt-[1.7cqw]"
+          choices={["总结", "提取要点", "对比", "问答"]}
+          activeChoice={activeChoice}
+          onChange={onChoiceChange}
+        />
+
+        <div className="mt-[2.3cqw] flex gap-[1.8cqw]">
+          <SelectPill label="全文" className="flex-1" />
+          <SelectPill label="输出格式" className="flex-1" />
+        </div>
+
+        <Composer
+          className="mt-[2.5cqw]"
+          value={draft}
+          placeholder="你想从文档中了解什么？"
+          sourceLabel="项目资料.pdf"
+          sourceIcon={
+            <FileText
+              style={{ width: "4cqw", height: "4cqw" }}
+              strokeWidth={1.8}
+            />
+          }
+          onChange={onDraftChange}
+        />
+      </div>
+    )
+  }
+
+  if (petalId === "call") {
+    return (
+      <ConfigurationPanel
+        activeChoice={activeChoice}
+        choices={["预约", "咨询", "改签", "其他"]}
+        fields={["通话语言", "沟通语气", "结果记录"]}
+        draft={draft}
+        placeholder="说明代办事项，例如：预约今晚 7 点两人位"
+        sourceLabel="联系人"
+        sourceIcon={
+          <Phone style={{ width: "4cqw", height: "4cqw" }} strokeWidth={1.8} />
+        }
+        onChoiceChange={onChoiceChange}
+        onDraftChange={onDraftChange}
+        leading={
+          <>
+            <PanelLabel>对象</PanelLabel>
+            <button
+              type="button"
+              className="mt-[1.7cqw] flex w-full cursor-pointer items-center gap-[2cqw] rounded-[2.6cqw] text-left"
+              style={{
+                minHeight: "9.5cqw",
+                padding: "1.8cqw 2.4cqw",
+                color: "#858b98",
+                background: "#f7f8fa",
+                border: "0.18cqw solid #eceef2",
+                fontFamily: "'PingFang SC', sans-serif",
+                fontSize: "3.2cqw",
+              }}
+            >
+              <Phone
+                style={{ width: "3.8cqw", height: "3.8cqw" }}
+                strokeWidth={1.8}
+              />
+              <span className="flex-1">选择联系人或输入号码</span>
+              <ChevronRight
+                style={{ width: "3.8cqw", height: "3.8cqw" }}
+                strokeWidth={1.6}
+              />
+            </button>
+          </>
+        }
+        typeLabel="任务"
+        dense
+      />
+    )
+  }
+
+  if (petalId === "write") {
+    return (
+      <ConfigurationPanel
+        activeChoice={activeChoice}
+        choices={["文章", "作文", "宣传文案", "小说", "脚本"]}
+        fields={["写作风格", "长度", "语言"]}
+        draft={draft}
+        placeholder="输入写作主题与要求"
+        sourceLabel="参考资料"
+        sourceIcon={
+          <Paperclip
+            style={{ width: "4cqw", height: "4cqw" }}
+            strokeWidth={1.8}
+          />
+        }
+        onChoiceChange={onChoiceChange}
+        onDraftChange={onDraftChange}
+        typeLabel="类型"
+      />
+    )
+  }
+
+  return (
+    <ConfigurationPanel
+      activeChoice={activeChoice}
+      choices={["网页", "小程序", "脚本", "数据处理"]}
+      fields={["技术栈", "运行环境", "输出方式"]}
+      draft={draft}
+      placeholder="描述想实现的功能，例如：生成一个带登录和筛选的后台页面"
+      sourceLabel="参考文件"
+      sourceIcon={
+        <Paperclip
+          style={{ width: "4cqw", height: "4cqw" }}
+          strokeWidth={1.8}
+        />
+      }
+      onChoiceChange={onChoiceChange}
+      onDraftChange={onDraftChange}
+      typeLabel="类型"
+    />
+  )
+}
+
+function ConfigurationPanel({
+  activeChoice,
+  choices,
+  fields,
+  draft,
+  placeholder,
+  sourceLabel,
+  sourceIcon,
+  typeLabel,
+  leading,
+  dense = false,
+  onChoiceChange,
+  onDraftChange,
+}: {
+  activeChoice: string
+  choices: readonly string[]
+  fields: readonly string[]
+  draft: string
+  placeholder: string
+  sourceLabel: string
+  sourceIcon: ReactNode
+  typeLabel: string
+  leading?: ReactNode
+  dense?: boolean
+  onChoiceChange: (value: string) => void
+  onDraftChange: (value: string) => void
+}) {
+  return (
+    <div className="flex min-h-0 flex-1 flex-col">
+      {leading}
+
+      <PanelLabel className={leading ? "mt-[2.5cqw]" : undefined}>
+        {typeLabel}
+      </PanelLabel>
+      <ChoiceChips
+        className="mt-[1.7cqw]"
+        choices={choices}
+        activeChoice={activeChoice}
+        onChange={onChoiceChange}
+        compact={dense}
+      />
+
+      <PanelLabel className={dense ? "mt-[2.2cqw]" : "mt-[3.4cqw]"}>
+        要求
+      </PanelLabel>
+      <div className="mt-[1.7cqw] flex gap-[1.8cqw]">
+        {fields.map((field) => (
+          <SelectPill key={field} label={field} className="flex-1" compact />
+        ))}
+      </div>
+
+      <Composer
+        className={dense ? "mt-[2.2cqw]" : "mt-[3.2cqw]"}
+        value={draft}
+        placeholder={placeholder}
+        sourceLabel={sourceLabel}
+        sourceIcon={sourceIcon}
+        onChange={onDraftChange}
+      />
+    </div>
+  )
+}
+
+function PanelLabel({
+  children,
+  className,
+}: {
+  children: ReactNode
+  className?: string
+}) {
+  return (
+    <span
+      className={className}
+      style={{
+        color: "#717887",
+        fontFamily: "'PingFang SC', sans-serif",
+        fontSize: "3.25cqw",
+        lineHeight: 1.2,
+      }}
+    >
+      {children}
+    </span>
+  )
+}
+
+function ChoiceChips({
+  choices,
+  activeChoice,
+  onChange,
+  className,
+  compact = false,
+}: {
+  choices: readonly string[]
+  activeChoice: string
+  onChange: (value: string) => void
+  className?: string
+  compact?: boolean
+}) {
+  return (
+    <div
+      className={[
+        "flex min-w-0 gap-[1.6cqw] overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden",
+        className ?? "",
+      ].join(" ")}
+    >
+      {choices.map((choice) => {
+        const selected = activeChoice === choice
+
+        return (
+          <button
+            key={choice}
+            type="button"
+            aria-pressed={selected}
+            onClick={() => onChange(choice)}
+            className="shrink-0 cursor-pointer rounded-[2.4cqw] whitespace-nowrap"
+            style={{
+              minHeight: compact ? "7.6cqw" : "8.4cqw",
+              padding: compact ? "1.3cqw 2.2cqw" : "1.5cqw 2.7cqw",
+              color: selected ? "#6157e9" : "#3f4551",
+              background: selected ? "#f0efff" : "#fafafb",
+              border: selected
+                ? "0.18cqw solid rgba(102,83,236,0.08)"
+                : "0.18cqw solid #eceef2",
+              fontFamily: "'PingFang SC', sans-serif",
+              fontSize: compact ? "3.15cqw" : "3.3cqw",
+              fontWeight: selected ? 600 : 450,
+            }}
+          >
+            {choice}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
+function SelectPill({
+  label,
+  className,
+  compact = false,
+}: {
+  label: string
+  className?: string
+  compact?: boolean
+}) {
+  return (
+    <button
+      type="button"
+      className={[
+        "flex min-w-0 cursor-pointer items-center rounded-[2.4cqw] whitespace-nowrap",
+        className ?? "",
+      ].join(" ")}
+      style={{
+        minHeight: compact ? "7.6cqw" : "9.4cqw",
+        padding: compact ? "1.2cqw 1.8cqw" : "1.5cqw 2.8cqw",
+        color: "#3f4551",
+        background: "#f7f8fa",
+        border: "0.18cqw solid rgba(228,231,237,0.7)",
+        fontFamily: "'PingFang SC', sans-serif",
+        fontSize: compact ? "3.15cqw" : "3.4cqw",
+      }}
+    >
+      <span className="min-w-0 flex-1 truncate">{label}</span>
+      <ChevronDown
+        className="ml-[1cqw] shrink-0"
+        style={{ width: "3cqw", height: "3cqw" }}
+        strokeWidth={2}
+      />
+    </button>
+  )
+}
+
+function Composer({
+  value,
+  placeholder,
+  sourceLabel,
+  sourceIcon,
+  className,
+  onChange,
+}: {
+  value: string
+  placeholder: string
+  sourceLabel: string
+  sourceIcon: ReactNode
+  className?: string
+  onChange: (value: string) => void
+}) {
+  const hasContent = value.trim().length > 0
+
+  return (
+    <div
+      className={[
+        "flex min-h-0 flex-1 flex-col rounded-[3cqw]",
+        className ?? "",
+      ].join(" ")}
+      style={{
+        minHeight: "24cqw",
+        padding: "2.4cqw 2.2cqw 1.8cqw",
+        background: "rgba(255,255,255,0.84)",
+        border: "0.18cqw solid rgba(226,229,235,0.92)",
+        boxShadow: "0 1cqw 3cqw rgba(38,47,68,0.035) inset",
+      }}
+    >
+      <textarea
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        aria-label="工具需求输入"
+        placeholder={placeholder}
+        className="min-h-0 flex-1 resize-none border-0 bg-transparent p-0 outline-none placeholder:text-[#878e9a]"
+        style={{
+          color: "#2a2f39",
+          fontFamily: "'PingFang SC', sans-serif",
+          fontSize: "3.5cqw",
+          lineHeight: 1.58,
+          caretColor: "#6559ef",
+        }}
+      />
+
+      <div className="mt-[1.5cqw] flex items-center justify-between gap-[2cqw]">
+        <button
+          type="button"
+          className="flex min-w-0 cursor-pointer items-center gap-[1.2cqw] rounded-full border-0 bg-transparent p-0"
+          style={{ color: "#525965" }}
+        >
+          <span className="grid shrink-0 place-items-center" aria-hidden="true">
+            {sourceIcon}
+          </span>
+          <span
+            className="truncate"
+            style={{
+              fontFamily: "'PingFang SC', sans-serif",
+              fontSize: "3.15cqw",
+            }}
+          >
+            {sourceLabel}
+          </span>
+        </button>
+
+        <div className="flex shrink-0 items-center gap-[1.3cqw]">
+          <button
+            type="button"
+            aria-label="语音输入"
+            className="grid cursor-pointer place-items-center rounded-full border-0 bg-transparent p-0"
+            style={{
+              width: "10cqw",
+              height: "10cqw",
+              color: "#242a35",
+            }}
+          >
+            <Mic
+              style={{ width: "4.8cqw", height: "4.8cqw" }}
+              strokeWidth={1.75}
+            />
+          </button>
+          <button
+            type="button"
+            aria-label="发送"
+            disabled={!hasContent}
+            className="grid place-items-center rounded-full border-0 p-0"
+            style={{
+              width: "10cqw",
+              height: "10cqw",
+              color: hasContent ? "white" : "rgba(82,89,101,0.32)",
+              background: hasContent
+                ? "linear-gradient(145deg, #725eff, #59d9df)"
+                : "#f0f1f4",
+              boxShadow: hasContent
+                ? "0 1.2cqw 3cqw rgba(100,91,238,0.24)"
+                : "none",
+              cursor: hasContent ? "pointer" : "default",
+            }}
+          >
+            <Send
+              style={{ width: "3.8cqw", height: "3.8cqw" }}
+              strokeWidth={1.9}
+            />
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}

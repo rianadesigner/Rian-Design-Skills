@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { toCanvas } from "html-to-image";
 import { SLIDE_DESIGN_HEIGHT, SLIDE_DESIGN_WIDTH } from "./slide-design";
 import SlidePage0 from "./slide-page0";
@@ -596,10 +596,57 @@ function shouldUseStableFallback() {
   return Boolean(reducedMotion || slowConnection || lowMemory || lowCoreCount);
 }
 
-function StableCarouselFallback() {
+type EdgeCurlCanvasCarouselProps = {
+  onActiveIndexChange?: (index: number) => void;
+};
+
+function StableCarouselFallback({ onActiveIndexChange }: EdgeCurlCanvasCarouselProps) {
+  const viewportRef = useRef<HTMLDivElement>(null);
+  const scrollFrameRef = useRef<number | null>(null);
+  const lastActiveIndexRef = useRef(-1);
+
+  const syncActiveIndex = useCallback(() => {
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const viewportCenter = viewport.scrollLeft + viewport.clientWidth / 2;
+    let nextIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+    viewport.querySelectorAll<HTMLElement>("[data-carousel-panel-index]").forEach((panel) => {
+      const panelCenter = panel.offsetLeft + panel.offsetWidth / 2;
+      const distance = Math.abs(panelCenter - viewportCenter);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        nextIndex = Number(panel.dataset.carouselPanelIndex ?? 0);
+      }
+    });
+    if (lastActiveIndexRef.current !== nextIndex) {
+      lastActiveIndexRef.current = nextIndex;
+      onActiveIndexChange?.(nextIndex);
+    }
+  }, [onActiveIndexChange]);
+
+  useEffect(() => {
+    syncActiveIndex();
+    const viewport = viewportRef.current;
+    if (!viewport) return;
+    const observer = new ResizeObserver(syncActiveIndex);
+    observer.observe(viewport);
+    return () => {
+      observer.disconnect();
+      if (scrollFrameRef.current !== null) cancelAnimationFrame(scrollFrameRef.current);
+    };
+  }, [syncActiveIndex]);
+
+  const handleScroll = () => {
+    if (scrollFrameRef.current !== null) cancelAnimationFrame(scrollFrameRef.current);
+    scrollFrameRef.current = requestAnimationFrame(syncActiveIndex);
+  };
+
   return (
     <div
       aria-hidden
+      ref={viewportRef}
+      onScroll={handleScroll}
       style={{
         position: "absolute",
         left: 0,
@@ -622,12 +669,13 @@ function StableCarouselFallback() {
           padding: "0 72px",
         }}
       >
-        {PANELS.map((panel) => {
+        {PANELS.map((panel, index) => {
           const cardW = 880;
           const scale = cardW / DESIGN_W;
           return (
             <div
               key={panel.view}
+              data-carousel-panel-index={index}
               style={{
                 position: "relative",
                 width: cardW,
@@ -660,7 +708,7 @@ function StableCarouselFallback() {
   );
 }
 
-export function EdgeCurlCanvasCarousel() {
+export function EdgeCurlCanvasCarousel({ onActiveIndexChange }: EdgeCurlCanvasCarouselProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRefs = useRef<Array<HTMLDivElement | null>>([]);
   const domWrapRef = useRef<HTMLDivElement>(null);
@@ -677,7 +725,13 @@ export function EdgeCurlCanvasCarousel() {
   const pausedRef = useRef(false);
   const dragRef = useRef({ active: false, lastX: 0, velocityX: 0, momentumX: 0, lastTime: 0 });
   const didCenterInitialPanelRef = useRef(false);
+  const lastActiveIndexRef = useRef(-1);
+  const onActiveIndexChangeRef = useRef(onActiveIndexChange);
   const [useStableFallback, setUseStableFallback] = useState(false);
+
+  useEffect(() => {
+    onActiveIndexChangeRef.current = onActiveIndexChange;
+  }, [onActiveIndexChange]);
 
   useEffect(() => {
     if (shouldUseStableFallback()) {
@@ -951,6 +1005,24 @@ export function EdgeCurlCanvasCarousel() {
       const loopWidth = state.trackWidth / 2;
       if (loopWidth > 0 && Math.abs(state.x) > loopWidth) state.x += loopWidth;
 
+      /* The panel closest to the canvas centre is the panel currently being
+         presented. Keep React updates sparse by only reporting real changes. */
+      const viewportCenter = state.width / 2;
+      let nextActiveIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+      state.panels.forEach((panel) => {
+        const panelCenter = panel.x + state.x + panel.w / 2;
+        const distance = Math.abs(panelCenter - viewportCenter);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          nextActiveIndex = panel.index;
+        }
+      });
+      if (lastActiveIndexRef.current !== nextActiveIndex) {
+        lastActiveIndexRef.current = nextActiveIndex;
+        onActiveIndexChangeRef.current?.(nextActiveIndex);
+      }
+
       /* Must be (0,0,0,0): with premultipliedAlpha the RGB components may not
          exceed alpha. (1,1,1,0) is an illegal premultiplied colour — Chrome
          forgives it, but Safari/WebKit composites it as opaque WHITE, painting
@@ -1014,7 +1086,7 @@ export function EdgeCurlCanvasCarousel() {
 
   return (
     <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 10, pointerEvents: "none" }}>
-      {useStableFallback && <StableCarouselFallback />}
+      {useStableFallback && <StableCarouselFallback onActiveIndexChange={onActiveIndexChange} />}
       <canvas
         ref={canvasRef}
         style={{

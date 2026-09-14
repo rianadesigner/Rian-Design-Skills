@@ -384,7 +384,7 @@ function WorkflowGraphic({ useGeneratedCover = true }: CoverGraphicProps) {
   if (useGeneratedCover) {
     return (
       <GeneratedCover
-        src={`${GENERATED_COVERS}/workflow-cover-v5.webp`}
+        src={`${GENERATED_COVERS}/workflow-cover-v5.png`}
         focalPoint="center 38%"
         accent="#caff27"
       />
@@ -571,7 +571,7 @@ function CanvasGraphic({ useGeneratedCover = true }: CoverGraphicProps) {
   if (useGeneratedCover) {
     return (
       <GeneratedCover
-        src={`${GENERATED_COVERS}/canvas-cover-v5.webp`}
+        src={`${GENERATED_COVERS}/canvas-cover-v5.png`}
         focalPoint="center 39%"
         accent="#9a84ff"
       />
@@ -879,7 +879,7 @@ function SkillsGraphic({ useGeneratedCover = true }: CoverGraphicProps) {
   if (useGeneratedCover) {
     return (
       <GeneratedCover
-        src={`${GENERATED_COVERS}/skills-cover-v5.webp`}
+        src={`${GENERATED_COVERS}/skills-cover-v5.png`}
         focalPoint="center 39%"
         accent="#ff6f5d"
       />
@@ -1090,7 +1090,7 @@ function AssetsGraphic({ useGeneratedCover = true }: CoverGraphicProps) {
   if (useGeneratedCover) {
     return (
       <GeneratedCover
-        src={`${GENERATED_COVERS}/assets-cover-v6.webp`}
+        src={`${GENERATED_COVERS}/assets-cover-v6.png`}
         focalPoint="center 40%"
         accent="#59d9ff"
       />

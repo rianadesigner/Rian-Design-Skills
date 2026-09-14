@@ -1,0 +1,65 @@
+[
+  {
+    "active": [
+      {
+        "id": "translate",
+        "opacity": 0.557334
+      }
+    ],
+    "time": 1789093666581
+  },
+  {
+    "active": [
+      {
+        "id": "code",
+        "opacity": 0.667854
+      }
+    ],
+    "time": 1789093668396
+  },
+  {
+    "active": [
+      {
+        "id": "call",
+        "opacity": 0.68
+      }
+    ],
+    "time": 1789093670263
+  },
+  {
+    "active": [
+      {
+        "id": "document",
+        "opacity": 0.919396
+      }
+    ],
+    "time": 1789093672083
+  },
+  {
+    "active": [
+      {
+        "id": "knowledge",
+        "opacity": 0.900285
+      }
+    ],
+    "time": 1789093673887
+  },
+  {
+    "active": [
+      {
+        "id": "write",
+        "opacity": 0.800397
+      }
+    ],
+    "time": 1789093675725
+  },
+  {
+    "active": [
+      {
+        "id": "translate",
+        "opacity": 0.694529
+      }
+    ],
+    "time": 1789093677542
+  }
+]

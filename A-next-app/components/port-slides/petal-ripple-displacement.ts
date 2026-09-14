@@ -8,7 +8,7 @@ const FILTER_SCALE = 60
 const MAX_DISPLACEMENT = 16
 const WAVE_DURATION = 2200
 const WAVE_DELAYS = [0, 260, 520] as const
-const TOTAL_DURATION = WAVE_DURATION + WAVE_DELAYS[2]
+export const PETAL_RIPPLE_DURATION_MS = WAVE_DURATION + WAVE_DELAYS[2]
 const FRAME_INTERVAL = 1000 / 30
 const WAVE_WIDTH = 0.18
 const PROFILE_NORMALIZATION = 8 / (3 * Math.sqrt(3))
@@ -169,7 +169,7 @@ export function usePetalRippleDisplacement({
 
       elapsed += Math.max(0, timestamp - lastTick)
       lastTick = timestamp
-      if (elapsed >= TOTAL_DURATION) {
+      if (elapsed >= PETAL_RIPPLE_DURATION_MS) {
         finished = true
         lastTick = null
         imageRef.current?.setAttribute("href", neutralMap)

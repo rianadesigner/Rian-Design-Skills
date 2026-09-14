@@ -8,6 +8,7 @@ import {
   type RefObject,
 } from "react"
 
+import type { FullscreenCapability } from "./xinliu-fullscreen-controls"
 import styles from "./xinliu-figma-fullscreen-content.module.css"
 
 type FigmaCapability =
@@ -72,6 +73,12 @@ const CONTENT = {
     keyboardY: 1076.256836,
   },
 } as const
+
+export function isFigmaCapability(
+  kind: FullscreenCapability
+): kind is FigmaCapability {
+  return kind === "call" || Object.hasOwn(CONTENT, kind)
+}
 
 function Asset({
   name,
@@ -164,9 +171,7 @@ function TextCapability({ kind }: { kind: Exclude<FigmaCapability, "call"> }) {
     <>
       <div className={styles.hero}>
         <div className={styles.heroIcon}>
-          <Asset
-            name={kind === "code" ? "code/app-hero.svg" : `${kind}/hero.svg`}
-          />
+          <Asset name={kind === "code" ? "code/app-hero.svg" : `${kind}/hero.svg`} />
         </div>
         <h3>{content.heading}</h3>
         <p>{content.description}</p>

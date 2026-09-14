@@ -213,6 +213,7 @@ const NO_DRAG_SLIDES = new Set([
   "content0",
   "page0e",
   "page0f",
+  "page27",
   "ai-platform-overview",
   "if-studio-skills",
   "storyboard-video-skill",

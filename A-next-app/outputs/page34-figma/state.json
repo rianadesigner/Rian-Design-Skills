@@ -1,0 +1,59 @@
+{
+  "root": "49:870",
+  "rowIds": [
+    "49:874",
+    "49:875"
+  ],
+  "createdNodeIds": [
+    "50:899"
+  ],
+  "assetsRoot": "50:899",
+  "collections": [
+    "VariableCollectionId:50:870",
+    "VariableCollectionId:50:871"
+  ],
+  "variableIds": [
+    "VariableID:50:872",
+    "VariableID:50:873",
+    "VariableID:50:874",
+    "VariableID:50:875",
+    "VariableID:50:876",
+    "VariableID:50:877",
+    "VariableID:50:878",
+    "VariableID:50:879",
+    "VariableID:50:880",
+    "VariableID:50:881",
+    "VariableID:50:882",
+    "VariableID:50:883",
+    "VariableID:50:884",
+    "VariableID:50:885",
+    "VariableID:50:886",
+    "VariableID:50:887",
+    "VariableID:50:888",
+    "VariableID:50:889",
+    "VariableID:50:890",
+    "VariableID:50:891",
+    "VariableID:50:892",
+    "VariableID:50:893"
+  ],
+  "colors": {
+    "white": "VariableID:50:873",
+    "surface": "VariableID:50:875",
+    "control": "VariableID:50:877",
+    "ink": "VariableID:50:879",
+    "muted": "VariableID:50:881",
+    "hint": "VariableID:50:883",
+    "purple": "VariableID:50:885",
+    "purpleLight": "VariableID:50:887",
+    "keyboard": "VariableID:50:889",
+    "utility": "VariableID:50:891",
+    "border": "VariableID:50:893"
+  },
+  "textStyles": {
+    "标题": "S:1f687ea418dfc8b203aa05af90b1033c9f0dc537,",
+    "正文": "S:fb89bb973419224375c4c26666e44ea87a866d00,",
+    "控件": "S:e6ba4db452a55f7fc8a8602f280e00aa607eb524,",
+    "说明": "S:767befd490c240622be14cfa18012c1378ab73a6,"
+  },
+  "shadow": "S:93c4e401f000d5a76699f4a4e4df6dbcad1c71c5,"
+}
