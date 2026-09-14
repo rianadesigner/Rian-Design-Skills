@@ -1,10 +1,14 @@
+import RiffTemplateSheetPreview from "./riff-template-sheet-preview"
+
 const P27 = "/images/page27"
 
 function PhoneFrame({
   src,
   label,
   style,
+  sheetHandle = false,
 }: {
+  sheetHandle?: boolean
   src: string
   label: string
   style: React.CSSProperties
@@ -28,6 +32,9 @@ function PhoneFrame({
         draggable={false}
         className="h-full w-full object-cover"
       />
+      {sheetHandle && (
+        <RiffTemplateSheetPreview src={src} />
+      )}
     </div>
   )
 }
@@ -299,6 +306,7 @@ export default function SlidePage27() {
         <PhoneFrame
           src={`${P27}/riff-home-logged-out.webp`}
           label="Riff AI 视频创作未登录首页"
+          sheetHandle
           style={{
             left: "17%",
             top: "1%",

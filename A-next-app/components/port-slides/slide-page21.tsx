@@ -249,25 +249,27 @@ export default function SlidePage21() {
             role="group"
             aria-label="工作流步骤"
           >
-            <button
-              type="button"
-              aria-label="上一个工作流步骤"
-              disabled={activeIndex === 0}
-              onPointerDown={(event) => event.stopPropagation()}
-              onClick={(event) => {
-                event.stopPropagation()
-                showPrevious()
-              }}
-              className="pointer-events-auto absolute top-1/2 left-[14px] grid h-[36px] w-[36px] -translate-y-1/2 cursor-pointer place-items-center border-0 bg-transparent p-0 opacity-90 transition-opacity hover:opacity-100 focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#ef3b46] disabled:cursor-not-allowed disabled:opacity-20"
-            >
-              <Image
-                src="/icons/arrow-circle-left.svg"
-                alt=""
-                width={30}
-                height={30}
-                aria-hidden="true"
-              />
-            </button>
+            {activeIndex > 0 && (
+              <button
+                type="button"
+                aria-label="上一个工作流步骤"
+                onPointerDown={(event) => event.stopPropagation()}
+                onClick={(event) => {
+                  event.stopPropagation()
+                  showPrevious()
+                }}
+                className="pointer-events-auto absolute top-1/2 left-[14px] grid h-[36px] w-[36px] -translate-y-1/2 cursor-pointer place-items-center rounded-full border-0 bg-white p-0 shadow-[0_2px_10px_rgba(0,0,0,0.16)] transition-shadow hover:shadow-[0_3px_14px_rgba(0,0,0,0.24)] focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#ef3b46] disabled:cursor-not-allowed disabled:shadow-none"
+              >
+                <Image
+                  src="/icons/carousel-arrow-right.svg"
+                  className="rotate-180"
+                  alt=""
+                  width={22}
+                  height={22}
+                  aria-hidden="true"
+                />
+              </button>
+            )}
 
             <button
               type="button"
@@ -278,13 +280,14 @@ export default function SlidePage21() {
                 event.stopPropagation()
                 showNext()
               }}
-              className="pointer-events-auto absolute top-1/2 right-[14px] grid h-[36px] w-[36px] -translate-y-1/2 cursor-pointer place-items-center border-0 bg-transparent p-0 opacity-90 transition-opacity hover:opacity-100 focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#ef3b46] disabled:cursor-not-allowed disabled:opacity-20"
+              className="pointer-events-auto absolute top-1/2 right-[14px] grid h-[36px] w-[36px] -translate-y-1/2 cursor-pointer place-items-center rounded-full border-0 bg-white p-0 shadow-[0_2px_10px_rgba(0,0,0,0.16)] transition-shadow hover:shadow-[0_3px_14px_rgba(0,0,0,0.24)] focus-visible:rounded-full focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#ef3b46] disabled:cursor-not-allowed disabled:shadow-none"
             >
               <Image
-                src="/icons/arrow-circle-right.svg"
+                src="/icons/carousel-arrow-right.svg"
+                className={activeIndex === workflowScreens.length - 1 ? "opacity-30" : ""}
                 alt=""
-                width={30}
-                height={30}
+                width={22}
+                height={22}
                 aria-hidden="true"
               />
             </button>
