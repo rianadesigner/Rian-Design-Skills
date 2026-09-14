@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 const FONT = "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif";
 const FONT_EN = "Impact, 'Arial Black', sans-serif";
@@ -99,8 +99,8 @@ export default function SlidePage0f() {
         }
 
         .interaction-carousel-button:hover {
-          background: rgba(15,15,15,0.92) !important;
-          border-color: rgba(255,255,255,0.38) !important;
+          background: #fff !important;
+          box-shadow: 0 12px 32px rgba(0,0,0,0.36);
           transform: translateY(-50%) scale(1.05);
         }
 
@@ -326,16 +326,15 @@ export default function SlidePage0f() {
             height: 50,
             display: "grid",
             placeItems: "center",
-            border: "1px solid rgba(255,255,255,0.24)",
+            border: "none",
             borderRadius: "50%",
-            color: "#fff",
-            background: "rgba(7,7,7,0.72)",
-            backdropFilter: "blur(10px)",
+            color: "#202024",
+            background: "#fff",
             cursor: "pointer",
             boxShadow: "0 12px 32px rgba(0,0,0,0.28)",
           }}
         >
-          <ChevronLeft size={26} strokeWidth={1.8} />
+          <Image src="/icons/carousel-arrow-right.svg" alt="" width={26} height={26} className="rotate-180" aria-hidden="true" />
         </button>
 
         <button
@@ -352,16 +351,15 @@ export default function SlidePage0f() {
             height: 50,
             display: "grid",
             placeItems: "center",
-            border: "1px solid rgba(255,255,255,0.24)",
+            border: "none",
             borderRadius: "50%",
-            color: "#fff",
-            background: "rgba(7,7,7,0.72)",
-            backdropFilter: "blur(10px)",
+            color: "#202024",
+            background: "#fff",
             cursor: "pointer",
             boxShadow: "0 12px 32px rgba(0,0,0,0.28)",
           }}
         >
-          <ChevronRight size={26} strokeWidth={1.8} />
+          <Image src="/icons/carousel-arrow-right.svg" alt="" width={26} height={26} aria-hidden="true" />
         </button>
 
       </main>

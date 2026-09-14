@@ -1,4 +1,5 @@
 import { Play, ScanSearch, Upload } from "lucide-react"
+import RiffTemplateSheetPreview from "./riff-template-sheet-preview"
 import type { LucideIcon } from "lucide-react"
 import {
   SectionLabel,
@@ -116,6 +117,7 @@ function PhoneStage({ stage }: { stage: (typeof stages)[number] }) {
           className="h-full w-full object-cover"
           style={{ objectPosition: "center top" }}
         />
+        {index === "01" && <RiffTemplateSheetPreview src={image} />}
       </div>
     </article>
   )
