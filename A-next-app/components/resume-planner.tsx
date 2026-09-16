@@ -4,6 +4,7 @@ import { animate, motion, useMotionValue, useTransform } from "motion/react"
 import type { MotionValue } from "motion/react"
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Ballet } from "next/font/google"
+import Link from "next/link"
 
 import { cn } from "@/lib/utils"
 
@@ -39,33 +40,6 @@ export const skillDockItems: SkillDockItem[] = [
   { label: "AI Workflow",  src: iconAiWorkflow },
   { label: "AI Video",     src: iconAiVideo  },
 ]
-
-/**
- * Dock 图标：矢量优先。
- * — 与同名的 `/icons/*.svg` 会先尝试加载（锐利、任意缩放）。
- * — 若没有 SVG（或加载失败），回退现有 12×12 PNG，并用邻近插值减轻 Retina 上的糊边。
- */
-function SkillDockIcon({ pngFallbackSrc }: { pngFallbackSrc: string }) {
-  const svgSrc       = pngFallbackSrc.replace(/\.png$/i, ".svg")
-  const [mode, setMode] = useState<"svg" | "png">("svg")
-  const onImgError      = useCallback(() => setMode("png"), [])
-  const src             = mode === "svg" ? svgSrc : pngFallbackSrc
-  const isRasterFallback = mode === "png"
-
-  return (
-    <img
-      alt=""
-      src={src}
-      onError={isRasterFallback ? undefined : onImgError}
-      className={cn(
-        "absolute inset-0 block size-full max-h-none max-w-none object-contain",
-        isRasterFallback && "[image-rendering:-webkit-optimize-contrast] [image-rendering:pixelated]",
-      )}
-      style={isRasterFallback ? { imageRendering: "pixelated" } : undefined}
-      draggable={false}
-    />
-  )
-}
 
 /**
  * 右上双点装饰（Figma 基准：左小点实色、右长条半透明）
@@ -223,7 +197,7 @@ const careerEntries: CareerEntry[] = [
     body: {
       type: "paragraphs",
       paragraphs: [
-        "主导AI应用开发平台从0到1的系统设计，打造可视化工作流编辑器与智能体编排引擎, 显著降低内部用户使用门槛, 成为淘天内部重要AI能力输出平台, 已服务N+个业务团队, AI应用研发周期平均缩短 X%",
+        "主导AI应用开发平台0–1设计，打造可视化工作流与智能体编排引擎，降低使用门槛；作为淘天内部AI能力平台，已服务N+个团队，AI应用研发周期平均缩短X%。",
         "聚焦中小商家广告创意生产痛点, 以\"降低创意门槛, 提升广告渗透率\"为核心目标, 推动万相实验室、创意中心等创意工具的产品规划与体验升级,推动大模型能力在图文/视频创作场景的深度应用",
       ],
     },
@@ -259,6 +233,10 @@ export const workEntries = careerEntries.slice(0, 5)
 export const eduEntries  = careerEntries.slice(5)
 
 const bodyFont = "font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif]"
+const projectTitleText = "font-sans text-[11px] font-semibold leading-5 tracking-[0.02em] text-[#171717]"
+const projectDescriptionText = "text-[10px] leading-[18px] text-[#5a5652]"
+const careerPeriodText = "text-[9px] font-semibold leading-[15px] text-[#ba6d73]"
+const careerBodyText = "text-[9px] leading-[15px] text-[#5a5652]"
 
 export const PROFILE_BIO_LINES = [
   "同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验",
@@ -266,6 +244,39 @@ export const PROFILE_BIO_LINES = [
   "视野前瞻，业务拓展：沉淀LLM Wiki/AI搜/Skill等AI产品知识体系",
   "打磨能力，全栈发展：兼具产品思维/全链路设计/Vibe的全栈能力",
 ] as const
+
+// 页面渐变背景
+const GRAD_L = "linear-gradient(90deg,  #fdfbf9 0%, #fdfbf9 85%, #f4f1ed 95%, #ebe7e1 100%)"
+const GRAD_R = "linear-gradient(270deg, #fdfbf9 0%, #fdfbf9 85%, #f4f1ed 95%, #ebe7e1 100%)"
+
+const RESUME_DESIGN_W = 1000
+const RESUME_DESIGN_H = 700
+const RESUME_MOBILE_PAGE_W = 500
+const RESUME_MOBILE_PAGE_H = 700
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+function SkillDockIcon({ pngFallbackSrc }: { pngFallbackSrc: string }) {
+  const svgSrc       = pngFallbackSrc.replace(/\.png$/i, ".svg")
+  const [mode, setMode] = useState<"svg" | "png">("svg")
+  const onImgError      = useCallback(() => setMode("png"), [])
+  const src             = mode === "svg" ? svgSrc : pngFallbackSrc
+  const isRasterFallback = mode === "png"
+
+  return (
+    <img
+      alt=""
+      src={src}
+      onError={isRasterFallback ? undefined : onImgError}
+      className={cn(
+        "absolute inset-0 block size-full max-h-none max-w-none object-contain",
+        isRasterFallback && "[image-rendering:-webkit-optimize-contrast] [image-rendering:pixelated]",
+      )}
+      style={isRasterFallback ? { imageRendering: "pixelated" } : undefined}
+      draggable={false}
+    />
+  )
+}
 
 const PROFILE_BIO_MAX_FONT_PX = 13
 const PROFILE_BIO_MIN_FONT_PX = 8
@@ -300,7 +311,8 @@ function ProfileBioLines() {
   }, [])
 
   useLayoutEffect(() => {
-    fitFontSize()
+    const frame = requestAnimationFrame(fitFontSize)
+    return () => cancelAnimationFrame(frame)
   }, [fitFontSize])
 
   useEffect(() => {
@@ -315,7 +327,7 @@ function ProfileBioLines() {
     <div
       ref={containerRef}
       className={cn(bodyFont, "relative w-full py-1 text-[#5a5652]")}
-      style={{ fontSize: `${fontSize}px`, lineHeight: 1.35 }}
+      style={{ fontSize: `${fontSize}px`, lineHeight: 1.5 }}
     >
       <span
         ref={probeRef}
@@ -331,66 +343,193 @@ function ProfileBioLines() {
   )
 }
 
-// 页面渐变背景
-const GRAD_L = "linear-gradient(90deg,  #fdfbf9 0%, #fdfbf9 85%, #f4f1ed 95%, #ebe7e1 100%)"
-const GRAD_R = "linear-gradient(270deg, #fdfbf9 0%, #fdfbf9 85%, #f4f1ed 95%, #ebe7e1 100%)"
-
-const RESUME_DESIGN_W = 1000
-const RESUME_DESIGN_H = 700
-const RESUME_MOBILE_PAGE_W = 500
-const RESUME_MOBILE_PAGE_H = 700
-
-// ─────────────────────────────────────────────────────────────────────────────
-
-/** Career 页的稳定内容层，同时用于落地底页与翻动纸张背面。 */
-function CareerPageContent() {
+function CareerList({ entries, compact = false, projectLayout = false, titleClassName, renderBody }: { entries: CareerEntry[]; compact?: boolean; projectLayout?: boolean; titleClassName?: string; renderBody?: (entry: CareerEntry) => React.ReactNode }) {
   return (
-    <>
-      <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-        <span className={cn(bodyFont, "text-[12px] leading-5")}>Career</span>
-        <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-        <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>3/4</span>
-      </div>
-
-      <div className="absolute left-[56px] top-[76px] w-[388px]">
-        <div className="mb-4 flex items-baseline gap-x-2">
-          <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Career</h2>
-          <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>从学习到实习到正式工作的设计生涯</p>
-        </div>
-        <CareerList entries={workEntries} compact />
-      </div>
-    </>
+    <div className={projectLayout ? undefined : "pl-1"}>
+      {entries.map((item, index) => {
+        const isLast = index === entries.length - 1
+        return (
+          <div key={index} className={cn("relative", compact ? "pb-1.5" : "pb-2 last:pb-0")}>
+            {!isLast && (
+              <div
+                className={cn("absolute bottom-0 top-[14px] w-px", projectLayout ? "left-[-8.6px]" : "left-1")}
+                style={{ background: "linear-gradient(180deg, rgba(241,186,186,0.3) 0%, rgba(23,23,23,0.08) 100%)" }}
+              />
+            )}
+            <div aria-hidden className={cn("absolute rounded-full bg-[#ba6d73]", projectLayout ? "left-[-9.9px] top-[6.7px] size-[3.6px]" : "left-0 top-1 size-[9px]")} />
+            <div className={projectLayout ? undefined : "pl-[19px]"}>
+              <p className={cn(bodyFont, compact ? careerPeriodText : "text-[10px] font-semibold leading-[18px] text-[#ba6d73]")}>{item.period}</p>
+              <p className={cn(bodyFont, compact ? "mt-px text-[11px] font-semibold leading-[17px] text-[#171717]" : "mt-0.5 text-[11px] font-semibold leading-5 text-[#171717]", titleClassName)}>{item.title}</p>
+              <div className={cn(bodyFont, compact ? cn("space-y-1", careerBodyText) : "space-y-1.5 text-[10px] leading-[18px] text-[#5a5652]", renderBody ? "mt-2" : compact ? "mt-0.5" : "mt-1")}>
+                {renderBody ? renderBody(item) : item.body.type === "text" ? (
+                  <p>{item.body.text}</p>
+                ) : (
+                  item.body.paragraphs.map((p, i) => <p key={i}>{p}</p>)
+                )}
+              </div>
+            </div>
+          </div>
+        )
+      })}
+    </div>
   )
 }
 
-/** Highlights 页的稳定内容层，用于反向翻页时的右侧落地页。 */
-function HighlightsPageContent() {
+function TagRow({ labels }: { labels: readonly string[] }) {
   return (
-    <>
-      <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
-        <div className="-rotate-[5deg] size-[400px]">
-          <PlannerBotanicalWatermark />
+    <div className="flex w-full items-center justify-between">
+      {labels.map((label) => (
+        <div
+          key={label}
+          className={cn(
+            bodyFont,
+            "whitespace-nowrap rounded-[999px] border border-[rgba(23,23,23,0.08)] bg-[rgba(253,251,249,0.8)] px-[7px] py-1 text-center text-[10px] leading-[18px] text-[#5a5652]",
+          )}
+        >
+          {label}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function PlannerBotanicalWatermark() {
+  return (
+    <svg className="h-full w-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+      <path fill="currentColor" d="M100,20 C110,50 150,60 180,50 C160,80 150,120 170,150 C140,140 100,150 80,180 C90,150 50,140 20,150 C40,120 30,80 10,50 C40,60 80,50 100,20 Z" />
+      <path fill="none" d="M100,100 L100,180" stroke="currentColor" strokeWidth="1" opacity="0.5" />
+      <circle cx="100" cy="50" r="10" fill="currentColor" opacity="0.3" />
+    </svg>
+  )
+}
+
+function PortfolioBadge({ href = "/port" }: { href?: string }) {
+  const ref = useRef<HTMLAnchorElement>(null)
+  const [overlayPos, setOverlayPos] = useState<number | null>(null)
+
+  const onMove = (e: React.MouseEvent) => {
+    const el = ref.current
+    if (!el) return
+    const { left, right, top, bottom } = el.getBoundingClientRect()
+    const xc = (left + right) / 2, yc = (top + bottom) / 2
+    const angle = Math.atan2(e.clientY - yc, e.clientX - xc) * (180 / Math.PI)
+    setOverlayPos(angle)
+  }
+
+  const onLeave = () => setOverlayPos(null)
+
+  const uid = "ph-badge"
+
+  return (
+    <Link
+      prefetch={false}
+      ref={ref}
+      href={href}
+      className="block w-full"
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+    >
+      <style>{`
+        @keyframes ${uid}1{0%{transform:rotate(0deg)}50%{transform:rotate(10deg)}100%{transform:rotate(0deg)}}
+        @keyframes ${uid}2{0%{transform:rotate(10deg)}50%{transform:rotate(20deg)}100%{transform:rotate(10deg)}}
+        @keyframes ${uid}3{0%{transform:rotate(20deg)}50%{transform:rotate(30deg)}100%{transform:rotate(20deg)}}
+        @keyframes ${uid}4{0%{transform:rotate(30deg)}50%{transform:rotate(40deg)}100%{transform:rotate(30deg)}}
+        @keyframes ${uid}5{0%{transform:rotate(40deg)}50%{transform:rotate(50deg)}100%{transform:rotate(40deg)}}
+        @keyframes ${uid}6{0%{transform:rotate(50deg)}50%{transform:rotate(60deg)}100%{transform:rotate(50deg)}}
+        @keyframes ${uid}7{0%{transform:rotate(60deg)}50%{transform:rotate(70deg)}100%{transform:rotate(60deg)}}
+      `}</style>
+      <div style={{ borderRadius: "8px", overflow: "hidden" }}>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 388 54" className="block w-full h-auto">
+          <defs>
+            <filter id={`${uid}-blur`}><feGaussianBlur in="SourceGraphic" stdDeviation="3" /></filter>
+            <mask id={`${uid}-mask`}><rect width="388" height="54" fill="white" rx="8" /></mask>
+          </defs>
+          <defs>
+          </defs>
+          <rect width="388" height="54" rx="8" fill="#ddd" />
+          <rect x="4" y="4" width="380" height="46" rx="6" fill="transparent" stroke="rgba(255,255,255,0.6)" strokeWidth="1" />
+          <rect x="4" y="4" width="380" height="46" rx="6" fill="transparent" stroke="rgba(0,0,0,0.1)" strokeWidth="0.5" />
+          <text fontFamily="Helvetica-Bold, Helvetica" fontSize="9" fontWeight="bold" fill="#666" x="53" y="20">PORTFOLIO HUNT</text>
+          <text fontFamily="Helvetica-Bold, Helvetica" fontSize="14" fontWeight="bold" fill="#666" x="53" y="40">{"Rian's 2026 Portfolio"}</text>
+          <path d="M362 23l6 4-6 4" fill="none" stroke="#999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <g transform="translate(10, 9)">
+            <path fill="#666" d="M14.963 9.075c.787-3-.188-5.887-.188-5.887S12.488 5.175 11.7 8.175c-.787 3 .188 5.887.188 5.887s2.25-1.987 3.075-4.987m-4.5 1.987c.787 3-.188 5.888-.188 5.888S7.988 14.962 7.2 11.962c-.787-3 .188-5.887.188-5.887s2.287 1.987 3.075 4.987m.862 10.388s-.6-2.962-2.775-5.175C6.337 14.1 3.375 13.5 3.375 13.5s.6 2.962 2.775 5.175c2.213 2.175 5.175 2.775 5.175 2.775m3.3 3.413s-1.988-2.288-4.988-3.075-5.887.187-5.887.187 1.987 2.287 4.988 3.075c3 .787 5.887-.188 5.887-.188Zm6.75 0s1.988-2.288 4.988-3.075c3-.826 5.887.187 5.887.187s-1.988 2.287-4.988 3.075c-3 .787-5.887-.188-5.887-.188ZM32.625 13.5s-2.963.6-5.175 2.775c-2.213 2.213-2.775 5.175-2.775 5.175s2.962-.6 5.175-2.775c2.175-2.213 2.775-5.175 2.775-5.175M28.65 6.075s.975 2.887.188 5.887c-.826 3-3.076 4.988-3.076 4.988s-.974-2.888-.187-5.888c.788-3 3.075-4.987 3.075-4.987m-4.5 7.987s.975-2.887.188-5.887c-.788-3-3.076-4.988-3.076-4.988s-.974 2.888-.187 5.888c.788 3 3.075 4.988 3.075 4.988ZM18 26.1c.975-.225 3.113-.6 5.325 0 3 .788 5.063 3.038 5.063 3.038s-2.888.975-5.888.187a13 13 0 0 1-1.425-.525c.563.788 1.125 1.425 2.288 1.913l-.863 2.062c-2.063-.862-2.925-2.137-3.675-3.262-.262-.375-.525-.713-.787-1.05-.26.293-.465.586-.686.903l-.102.147-.048.068c-.775 1.108-1.643 2.35-3.627 3.194l-.862-2.062c1.162-.488 1.725-1.125 2.287-1.913-.45.225-.938.375-1.425.525-3 .788-5.887-.187-5.887-.187s1.987-2.288 4.987-3.075c2.212-.563 4.35-.188 5.325.037" />
+          </g>
+          <g style={{ mixBlendMode: "overlay" }} mask={`url(#${uid}-mask)`}>
+            {[
+              { hue: "hsl(358,100%,62%)", deg: 0 },
+              { hue: "hsl(30,100%,50%)", deg: 10 },
+              { hue: "hsl(60,100%,50%)", deg: 20 },
+              { hue: "hsl(96,100%,50%)", deg: 30 },
+              { hue: "hsl(233,85%,47%)", deg: 40 },
+              { hue: "hsl(271,85%,47%)", deg: 50 },
+              { hue: "hsl(300,20%,35%)", deg: 60 },
+            ].map((c, i) => (
+              <g key={i} style={{
+                transform: overlayPos !== null ? `rotate(${overlayPos + c.deg}deg)` : undefined,
+                transformOrigin: "center center",
+                transition: "transform 150ms ease-out",
+                animation: overlayPos === null ? `${uid}${i + 1} 5s infinite` : "none",
+              }}>
+                <polygon points="0,0 388,54 388,0 0,54" fill={c.hue} filter={`url(#${uid}-blur)`} opacity="0.5" />
+              </g>
+            ))}
+          </g>
+        </svg>
+      </div>
+    </Link>
+  )
+}
+
+function OriginalProjectPreview({ card, className }: { card: HighlightCardData; className: string }) {
+  return (
+    <div
+      className={cn("h-[120px] w-[170px] overflow-hidden border-[0.5px] border-[#f2f3f5]", card.frameRadius, className)}
+    >
+      <div
+        aria-hidden
+        className={cn("pointer-events-none absolute inset-0", card.frameRadius, card.frameTint === "white" ? "bg-white" : "bg-[rgba(255,255,255,0.5)]")}
+      />
+      <div className={cn("absolute inset-0 overflow-hidden", card.frameRadius)}>
+        <img
+          alt={`${card.title} 项目界面`}
+          src={card.image}
+          width={340}
+          height={240}
+          draggable={false}
+          className={cn(card.imgClassName)}
+        />
+      </div>
+    </div>
+  )
+}
+
+function HorizontalProjectCard({ card, body, title = card.title, showPeriod = true }: { card: HighlightCardData; body: CareerBody; title?: string; showPeriod?: boolean }) {
+  return (
+    <article
+      data-experience-project={card.title}
+      className={cn(bodyFont, "grid grid-cols-[minmax(0,1fr)_170px] items-start gap-3 overflow-hidden rounded-[8px] border border-[rgba(23,23,23,0.08)] p-3")}
+      style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}
+    >
+      <div className="min-w-0">
+        <div className="flex items-baseline justify-between gap-2">
+          <h3 className={projectTitleText}>{title}</h3>
+          {showPeriod && <span className={cn("shrink-0", careerPeriodText)}>{card.period}</span>}
+        </div>
+        <p className={cn("mt-1", projectDescriptionText)}>{card.description}</p>
+        <div className={cn("mt-1 space-y-1", careerBodyText)}>
+          {body.type === "text" ? <p>{body.text}</p> : body.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         </div>
       </div>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-6" style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
-      <CornerDecorDots variant="normal" />
+      <OriginalProjectPreview card={card} className="relative" />
+    </article>
+  )
+}
 
-      <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-        <span className={cn(bodyFont, "text-[12px] leading-5")}>Highlights</span>
-        <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-        <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>2/4</span>
-      </div>
-
-      <div className="absolute left-[56px] right-[56px] top-[76px] flex items-baseline gap-x-3">
-        <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Highlights</h2>
-        <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>AI 核心工作项目</p>
-      </div>
-
-      <div className="absolute left-[56px] top-[111px] w-[388px]">
-        <div className="grid w-[388px] grid-cols-2 gap-2">
-          {highlightCards.map((card) => (
+function OriginalProjectCard({ card }: { card: HighlightCardData }) {
+  return (
             <article
-              key={card.title}
+              data-experience-project={card.title}
               className={cn(
                 bodyFont,
                 "relative h-[134px] w-[190px] shrink-0 overflow-hidden border border-[rgba(23,23,23,0.08)]",
@@ -398,42 +537,171 @@ function HighlightsPageContent() {
               )}
               style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}
             >
-              <h3 className="absolute left-[9px] right-[36px] top-[7px] overflow-hidden whitespace-nowrap text-[11px] font-semibold leading-5 tracking-[0.02em] text-[#171717]">
+              <h3 className={cn("absolute left-[9px] right-[36px] top-[7px] overflow-hidden whitespace-nowrap", projectTitleText)}>
                 {card.title}
               </h3>
-              <p className="absolute left-[9px] top-[29px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">
+              <p className={cn("absolute left-[9px] top-[29px] w-[170px]", projectDescriptionText)}>
                 {card.description}
               </p>
-              <span className="absolute right-[9px] top-[8px] text-right text-[10px] leading-[18px] text-[#ba6d73]">
+              <span className={cn("absolute right-[9px] top-[8px] text-right", careerPeriodText)}>
                 {card.period}
               </span>
-              <div
-                className={cn(
-                  "absolute left-[9px] top-[52px] h-[120px] w-[170px] overflow-hidden border-[0.5px] border-[#f2f3f5]",
-                  card.frameRadius,
-                )}
-              >
-                <div
-                  aria-hidden
-                  className={cn(
-                    "pointer-events-none absolute inset-0",
-                    card.frameRadius,
-                    card.frameTint === "white" ? "bg-white" : "bg-[rgba(255,255,255,0.5)]",
-                  )}
-                />
-                <div className={cn("absolute inset-0 overflow-hidden", card.frameRadius)}>
-                  <img
-                    alt=""
-                    src={card.image}
-                    width={340}
-                    height={240}
-                    draggable={false}
-                    className={cn(card.imgClassName)}
-                  />
-                </div>
-              </div>
+              <OriginalProjectPreview card={card} className="absolute left-[9px] top-[52px]" />
             </article>
-          ))}
+  )
+}
+
+function ResumePageHeader({ label, page }: { label: string; page: number }) {
+  return (
+    <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+      <span className={cn(bodyFont, "text-[12px] leading-5")}>{label}</span>
+      <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+      <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>{page}/4</span>
+    </div>
+  )
+}
+
+function OriginalPageDecoration({ variant }: { variant: "swapped" | "normal" }) {
+  return (
+    <>
+      <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
+        <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
+      </div>
+      <CornerDecorDots variant={variant} />
+    </>
+  )
+}
+
+function ProfilePageContent({ avatarSrc, onAvatarError }: { avatarSrc: string; onAvatarError: () => void }) {
+  return (
+    <>
+      <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+        <span className={cn(bodyFont, "text-[12px] leading-5")}>Profile</span>
+        <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+        <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>1/4</span>
+      </div>
+      <div data-resume-page-content="1" className="absolute left-[56px] top-[110px] flex w-[388px] flex-col items-center gap-6">
+        <div className="flex flex-col items-center gap-4">
+          <img alt="Rian avatar" src={avatarSrc} onError={onAvatarError} className="h-[76px] w-[76px] rounded-full object-cover object-[center_12%]" />
+          <div className={cn(ballet.className, "text-[24px] leading-[32.56px] tracking-[0.02em] text-[#171717]")}>Rian</div>
+        </div>
+        <h1 className={cn(bodyFont, "w-full text-center text-[14px] font-semibold leading-[22px] text-[#5a5652]")}>AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放</h1>
+        <ProfileBioLines />
+        <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>
+          <div className="flex w-full items-center">
+            <div className="flex flex-1 items-center"><span className="w-12 text-[#a39e99]">电话</span><span className="whitespace-nowrap text-[#ba6d73]">18578323924</span></div>
+            <div className="flex flex-1 items-center gap-1.5"><span className="w-[30px] text-[#a39e99]">邮箱</span><span className="whitespace-nowrap text-[#ba6d73]">rianadesigner@gmail.com</span></div>
+          </div>
+          <div className="flex w-full items-center">
+            <div className="flex flex-1 items-center"><span className="w-12 text-[#a39e99]">工作地</span><span className="whitespace-nowrap text-[#ba6d73]">杭州/上海</span></div>
+            <div className="flex flex-1 items-center gap-1.5"><span className="w-[30px] text-[#a39e99]">微信</span><span className="whitespace-nowrap text-[#ba6d73]">rianadesigner</span></div>
+          </div>
+        </div>
+      </div>
+      <div data-resume-page-extras="1" className="absolute left-[56px] top-[610px] flex w-[388px] min-w-0 flex-col gap-3">
+        <TagRow labels={topTags} />
+        <TagRow labels={bottomTags} />
+      </div>
+    </>
+  )
+}
+
+function HighlightsPageContent() {
+  return (
+    <>
+      <OriginalPageDecoration variant="normal" />
+      <ResumePageHeader label="Career" page={2} />
+      <div data-resume-page-content="2" data-project-experience-page="2" className="absolute left-[56px] top-[76px] w-[388px]">
+        <section data-experience-stage="if-studio">
+          <CareerList
+            entries={[{ ...workEntries[0], body: { type: "text", text: "建设 Skill 开发验证与上线运营机制，运营技能广场；提炼案例与场景方案，探索技能商品化与商业闭环。" } }]}
+            compact
+            projectLayout
+            titleClassName="text-[12px]"
+            renderBody={(item) => <HorizontalProjectCard card={highlightCards[0]} body={item.body} title="if Studio 设计智能体" showPeriod={false} />}
+          />
+        </section>
+        <section data-experience-stage="iflow" className="mt-4">
+          <CareerList entries={[{ ...workEntries[1], body: { type: "text", text: "0–1 统筹 5 条产品线（LLM Wiki、问答、学术研究、Coding CLI、App Builder），DAU 10w+、次留 60%+。主导多 Agent 协同、知识接入与检索引用、CLI 体验及 App Builder 生成质量优化，沉淀 Design Skill。" } }]} compact projectLayout titleClassName="text-[12px]" />
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {highlightCards.slice(1, 5).map((card) => <OriginalProjectCard key={card.title} card={card} />)}
+          </div>
+        </section>
+      </div>
+    </>
+  )
+}
+
+function CareerPageContent() {
+  return (
+    <>
+      <ResumePageHeader label="Career" page={3} />
+      <div data-resume-page-content="3" data-project-experience-page="3" className="absolute left-[56px] top-[76px] w-[388px]">
+        <section data-experience-stage="creative-platforms">
+          <CareerList entries={[workEntries[2]]} compact projectLayout titleClassName="text-[12px]" />
+          <div className="mt-0.5 grid grid-cols-2 gap-2">
+            {highlightCards.slice(5, 7).map((card) => <OriginalProjectCard key={card.title} card={card} />)}
+          </div>
+        </section>
+        <section data-experience-stage="taotian-internship" className="mt-6">
+          <CareerList
+            entries={[workEntries[3]]}
+            compact
+            projectLayout
+            titleClassName="text-[12px]"
+            renderBody={(item) => <HorizontalProjectCard card={highlightCards[7]} body={item.body} showPeriod={false} />}
+          />
+        </section>
+        <section data-experience-stage="bytedance-internship" className="mt-6">
+          <CareerList entries={[workEntries[4]]} compact projectLayout titleClassName="text-[12px]" />
+        </section>
+      </div>
+    </>
+  )
+}
+
+function BackgroundPageContent() {
+  return (
+    <>
+      <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
+        <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
+      </div>
+      <CornerDecorDots variant="swapped" />
+      <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+        <span className={cn(bodyFont, "text-[12px] leading-5")}>Education/Skills</span>
+        <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
+        <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>4/4</span>
+      </div>
+      <div data-resume-page-content="4" className="absolute left-[56px] top-[72px] flex w-[388px] flex-col gap-6">
+        <div>
+          <div className="mb-4 flex items-baseline gap-x-2">
+            <h2 className={cn(bodyFont, "text-[14px] font-semibold leading-[26px] text-[#171717]")}>Education</h2>
+            <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>双学位硕士/设计/机械</p>
+          </div>
+          <CareerList entries={eduEntries} />
+        </div>
+        <div className="flex flex-col gap-4">
+          <div className="flex h-[26px] w-full items-baseline gap-x-2">
+            <h2 className={cn(bodyFont, "text-[14px] font-semibold leading-[26px] text-[#171717]")}>Skills</h2>
+            <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>Vibe Coding/Design</p>
+          </div>
+          <div className="flex w-full items-center justify-between overflow-hidden rounded-[12px] border border-[rgba(23,23,23,0.08)] px-[4px]">
+            {skillDockItems.map((item, idx) => (
+              <div key={item.label} className={cn("flex flex-col items-center gap-2 overflow-hidden pb-[8px] pt-[12px] px-[18px] shrink-0 w-[55px]", idx < skillDockItems.length - 1 && "-mr-px")}>
+                <div className="relative shrink-0 size-[16px]" aria-hidden>
+                  <SkillDockIcon pngFallbackSrc={item.src} />
+                </div>
+                <span className="whitespace-nowrap text-center text-[8px] leading-[16px] text-[#171717]" style={{ fontFamily: "'PingFang SC', 'SF Pro Text', -apple-system, sans-serif" }}>{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col gap-3">
+          <div className="flex h-[26px] w-full items-baseline gap-x-2">
+            <h2 className={cn(bodyFont, "text-[14px] font-semibold leading-[26px] text-[#171717]")}><span className="sm:hidden">作品集</span><span className="hidden sm:inline">Portfolio</span></h2>
+            <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>点击下方卡片进入作品集</p>
+          </div>
+          <PortfolioBadge />
         </div>
       </div>
     </>
@@ -626,131 +894,22 @@ export function ResumePlanner() {
               transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
             }}
           >
-            {/* ── Page 1: Profile ─────────────────────────────────────────── */}
+            {/* ── Page 1: Profile & Current Work ──────────────────────────── */}
             <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_L }}>
-              <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-                <span className={cn(bodyFont, "text-[12px] leading-5")}>2022-2026</span>
-                <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-                <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>1/4</span>
-              </div>
-              <div className="absolute left-[56px] top-[110px] flex w-[388px] flex-col items-center gap-6">
-                <div className="flex flex-col items-center gap-4">
-                  <img alt="Rian avatar" src={avatarSrc} onError={() => setAvatarSrc(AVATAR_FALLBACK)} className="h-[76px] w-[76px] rounded-full object-cover object-[center_12%]" />
-                  <div className={cn(ballet.className, "text-[24px] leading-[32.56px] tracking-[0.02em] text-[#171717]")}>Rian</div>
-                </div>
-                <h1 className={cn(bodyFont, "w-full text-center text-[14px] font-semibold leading-[22px] text-[#5a5652]")}>AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放</h1>
-                <ProfileBioLines />
-                <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>
-                  <div className="flex w-full items-center">
-                    <div className="flex flex-1 items-center"><span className="w-12 text-[#a39e99]">电话</span><span className="whitespace-nowrap text-[#ba6d73]">18578323924</span></div>
-                    <div className="flex flex-1 items-center gap-1.5"><span className="w-[30px] text-[#a39e99]">邮箱</span><span className="whitespace-nowrap text-[#ba6d73]">rianadesigner@gmail.com</span></div>
-                  </div>
-                  <div className="flex w-full items-center">
-                    <div className="flex flex-1 items-center"><span className="w-12 text-[#a39e99]">工作地</span><span className="whitespace-nowrap text-[#ba6d73]">杭州/上海 (优先)</span></div>
-                    <div className="flex flex-1 items-center gap-1.5"><span className="w-[30px] text-[#a39e99]">微信</span><span className="whitespace-nowrap text-[#ba6d73]">rianadesigner</span></div>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute left-[56px] top-[610px] flex w-[388px] min-w-0 flex-col gap-3">
-                <TagRow labels={topTags} />
-                <TagRow labels={bottomTags} />
-              </div>
+              <ProfilePageContent avatarSrc={avatarSrc} onAvatarError={() => setAvatarSrc(AVATAR_FALLBACK)} />
             </div>
 
-            {/* ── Page 2: Highlights ──────────────────────────────────────── */}
+            {/* ── Pages 2–3: 项目经历 ────────────────────────────────────── */}
             <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_R }}>
-              <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
-                <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
-              </div>
-              <div className="pointer-events-none absolute inset-y-0 left-0 w-6" style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
-              <CornerDecorDots variant="normal" />
-              <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-                <span className={cn(bodyFont, "text-[12px] leading-5")}>Highlights</span>
-                <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-                <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>2/4</span>
-              </div>
-              <div className="absolute left-[56px] right-[56px] top-[76px] flex items-baseline gap-x-3">
-                <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Highlights</h2>
-                <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>AI 核心工作项目</p>
-              </div>
-              <div className="absolute left-[56px] top-[111px] w-[388px]">
-                <div className="grid w-[388px] grid-cols-2 gap-2">
-                  {highlightCards.map((card) => (
-                    <article key={card.title} className={cn(bodyFont, "relative h-[134px] w-[190px] shrink-0 overflow-hidden border border-[rgba(23,23,23,0.08)]", card.outerRadius)} style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}>
-                      <h3 className="absolute left-[9px] right-[36px] top-[7px] overflow-hidden whitespace-nowrap text-[11px] font-semibold leading-5 tracking-[0.02em] text-[#171717]">{card.title}</h3>
-                      <p className="absolute left-[9px] top-[29px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">{card.description}</p>
-                      <span className="absolute right-[9px] top-[8px] text-right text-[10px] leading-[18px] text-[#ba6d73]">{card.period}</span>
-                      <div className={cn("absolute left-[9px] top-[52px] h-[120px] w-[170px] overflow-hidden border-[0.5px] border-[#f2f3f5]", card.frameRadius)}>
-                        <div aria-hidden className={cn("pointer-events-none absolute inset-0", card.frameRadius, card.frameTint === "white" ? "bg-white" : "bg-[rgba(255,255,255,0.5)]")} />
-                        <div className={cn("absolute inset-0 overflow-hidden", card.frameRadius)}>
-                          <img alt="" src={card.image} width={340} height={240} draggable={false} className={cn(card.imgClassName)} />
-                        </div>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
+              <HighlightsPageContent />
             </div>
-
-            {/* ── Page 3: Career ──────────────────────────────────────────── */}
             <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_L }}>
-              <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-                <span className={cn(bodyFont, "text-[12px] leading-5")}>Career</span>
-                <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-                <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>3/4</span>
-              </div>
-              <div className="absolute left-[56px] top-[76px] w-[388px]">
-                <div className="mb-4 flex items-baseline gap-x-2">
-                  <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Career</h2>
-                  <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>从学习到实习到正式工作的设计生涯</p>
-                </div>
-                <CareerList entries={workEntries} compact />
-              </div>
+              <CareerPageContent />
             </div>
 
-            {/* ── Page 4: Education / Skills ──────────────────────────────── */}
+            {/* ── Page 4: Background & Capabilities ───────────────────────── */}
             <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_R }}>
-              <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
-                <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
-              </div>
-              <CornerDecorDots variant="swapped" />
-              <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-                <span className={cn(bodyFont, "text-[12px] leading-5")}>Education/Skills</span>
-                <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-                <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>4/4</span>
-              </div>
-              <div className="absolute left-[56px] top-[76px] flex w-[388px] flex-col gap-6">
-                <div>
-                  <div className="mb-4 flex items-baseline gap-x-2">
-                    <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Education</h2>
-                    <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>双学位硕士/设计/机械</p>
-                  </div>
-                  <CareerList entries={eduEntries} />
-                </div>
-                <div className="flex flex-col gap-4">
-                  <div className="relative h-[26px] w-full">
-                    <h2 className={cn(bodyFont, "absolute left-0 top-0 text-[18px] font-semibold leading-[26px] text-[#171717]")}>Skills</h2>
-                    <p className={cn(bodyFont, "absolute left-[54px] top-[6px] text-[10px] leading-[18px] text-[#a39e99]")}>Vibe Coding/Design</p>
-                  </div>
-                  <div className="flex w-full items-center justify-between overflow-hidden rounded-[12px] border border-[rgba(23,23,23,0.08)] px-[4px]">
-                    {skillDockItems.map((item, idx) => (
-                      <div key={item.label} className={cn("flex flex-col items-center gap-2 overflow-hidden pb-[8px] pt-[12px] px-[18px] shrink-0 w-[55px]", idx < skillDockItems.length - 1 && "-mr-px")}>
-                        <div className="relative shrink-0 size-[16px]" aria-hidden>
-                          <SkillDockIcon pngFallbackSrc={item.src} />
-                        </div>
-                        <span className="whitespace-nowrap text-center text-[8px] leading-[16px] text-[#171717]" style={{ fontFamily: "'PingFang SC', 'SF Pro Text', -apple-system, sans-serif" }}>{item.label}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <div className="relative h-[26px] w-full">
-                    <h2 className={cn(bodyFont, "absolute left-0 top-0 text-[18px] font-semibold leading-[26px] text-[#171717]")}>作品集</h2>
-                    <p className={cn(bodyFont, "absolute left-[60px] top-[6px] text-[10px] leading-[18px] text-[#a39e99]")}>点击下方卡片进入作品集</p>
-                  </div>
-                  <PortfolioBadge />
-                </div>
-              </div>
+              <BackgroundPageContent />
             </div>
           </div>
         </div>
@@ -827,132 +986,12 @@ export function ResumePlanner() {
                 className="absolute inset-y-0 left-0 w-[500px] overflow-hidden rounded-l-[12px]"
                 style={{ opacity: layer0LeftOpacity, background: GRAD_L }}
               >
-                {/* 页眉 */}
-                <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-                  <span className={cn(bodyFont, "text-[12px] leading-5")}>2022-2026</span>
-                  <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-                  <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>1/4</span>
-                </div>
-
-                {/* 主体内容 */}
-                <div className="absolute left-[56px] top-[110px] flex w-[388px] flex-col items-center gap-6">
-                  <div className="flex flex-col items-center gap-4">
-                    <img
-                      alt="Rian avatar"
-                      src={avatarSrc}
-                      onError={() => setAvatarSrc(AVATAR_FALLBACK)}
-                      className="h-[76px] w-[76px] rounded-full object-cover object-[center_12%]"
-                    />
-                    <div className={cn(ballet.className, "text-[24px] leading-[32.56px] tracking-[0.02em] text-[#171717]")}>
-                      Rian
-                    </div>
-                  </div>
-
-                  <h1 className={cn(bodyFont, "w-full text-center text-[14px] font-semibold leading-[22px] text-[#5a5652]")}>
-                    AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放
-                  </h1>
-
-                  <ProfileBioLines />
-
-                  <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>
-                    <div className="flex w-full items-center">
-                      <div className="flex flex-1 items-center">
-                        <span className="w-12 text-[#a39e99]">电话</span>
-                        <span className="whitespace-nowrap text-[#ba6d73]">18578323924</span>
-                      </div>
-                      <div className="flex flex-1 items-center gap-1.5">
-                        <span className="w-[30px] text-[#a39e99]">邮箱</span>
-                        <span className="whitespace-nowrap text-[#ba6d73]">rianadesigner@gmail.com</span>
-                      </div>
-                    </div>
-                    <div className="flex w-full items-center">
-                      <div className="flex flex-1 items-center">
-                        <span className="w-12 text-[#a39e99]">工作地</span>
-                        <span className="whitespace-nowrap text-[#ba6d73]">杭州/上海 (优先)</span>
-                      </div>
-                      <div className="flex flex-1 items-center gap-1.5">
-                        <span className="w-[30px] text-[#a39e99]">微信</span>
-                        <span className="whitespace-nowrap text-[#ba6d73]">rianadesigner</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 底部标签（两行；标签内文字单行不换行） */}
-                <div className="absolute left-[56px] top-[610px] flex w-[388px] min-w-0 flex-col gap-3">
-                  <TagRow labels={topTags} />
-                  <TagRow labels={bottomTags} />
-                </div>
+                <ProfilePageContent avatarSrc={avatarSrc} onAvatarError={() => setAvatarSrc(AVATAR_FALLBACK)} />
               </motion.div>
 
-              {/* ── Layer 0：Education+Skills 页（右半，永远在底部） ──────── */}
+              {/* ── Layer 0：背景与能力页（右半） ────────────────────────── */}
               <div className="absolute inset-y-0 right-0 z-0 w-[500px] overflow-hidden rounded-r-[12px] bg-transparent">
-                {/* 水印 */}
-                <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
-                  <div className="-rotate-[5deg] size-[400px]">
-                    <PlannerBotanicalWatermark />
-                  </div>
-                </div>
-                {/* 右上装饰点：翻开后露出的底页（与 Highlights 呈对调色） */}
-                <CornerDecorDots variant="swapped" />
-
-                {/* 页眉：页面名称 + 页码 */}
-                <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-                  <span className={cn(bodyFont, "text-[12px] leading-5")}>Education/Skills</span>
-                  <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-                  <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>4/4</span>
-                </div>
-
-                <div className="absolute left-[56px] top-[76px] flex w-[388px] flex-col gap-6">
-                  {/* Education 时间轴 */}
-                  <div>
-                    <div className="mb-4 flex items-baseline gap-x-2">
-                      <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Education</h2>
-                      <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>双学位硕士/设计/机械</p>
-                    </div>
-                    <CareerList entries={eduEntries} />
-                  </div>
-
-                  {/* Skills 区块 */}
-                  <div className="flex flex-col gap-4">
-                    {/* 标题：对齐 Figma 72:1520 绝对定位结构 */}
-                    <div className="relative h-[26px] w-full">
-                      <h2 className={cn(bodyFont, "absolute left-0 top-0 text-[18px] font-semibold leading-[26px] text-[#171717]")}>Skills</h2>
-                      <p className={cn(bodyFont, "absolute left-[54px] top-[6px] text-[10px] leading-[18px] text-[#a39e99]")}>Vibe Coding/Design</p>
-                    </div>
-                    {/* Skill Dock — 对齐 Figma 72:1671 */}
-                    <div className="flex w-full items-center justify-between overflow-hidden rounded-[12px] border border-[rgba(23,23,23,0.08)] px-[4px]">
-                      {skillDockItems.map((item, i) => (
-                        <div
-                          key={item.label}
-                          className={cn(
-                            "flex flex-col items-center gap-2 overflow-hidden pb-[8px] pt-[12px] px-[18px] shrink-0 w-[55px]",
-                            i < skillDockItems.length - 1 && "-mr-px",
-                          )}
-                        >
-                          <div className="relative shrink-0 size-[16px]" aria-hidden>
-                            <SkillDockIcon pngFallbackSrc={item.src} />
-                          </div>
-                          <span
-                            className="whitespace-nowrap text-center text-[8px] leading-[16px] text-[#171717]"
-                            style={{ fontFamily: "'PingFang SC', 'SF Pro Text', -apple-system, sans-serif" }}
-                          >
-                            {item.label}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* 作品集入口 */}
-                  <div className="flex flex-col gap-3">
-                    <div className="relative h-[26px] w-full">
-                      <h2 className={cn(bodyFont, "absolute left-0 top-0 text-[18px] font-semibold leading-[26px] text-[#171717]")}>Portfolio</h2>
-                      <p className={cn(bodyFont, "absolute left-[81px] top-[6px] text-[10px] leading-[18px] text-[#a39e99]")}>点击下方卡片进入作品集</p>
-                    </div>
-                    <PortfolioBadge />
-                  </div>
-                </div>
+                <BackgroundPageContent />
               </div>
 
               {/* 反向翻页的目标右页：仅在跨越中线前淡入，与 Profile 同步形成 1/2 跨页。 */}
@@ -1012,81 +1051,7 @@ export function ResumePlanner() {
                       className="absolute inset-0"
                       style={{ background: GRAD_R }}
                     />
-                    {/* 水印 */}
-                    <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
-                      <div className="-rotate-[5deg] size-[400px]">
-                        <PlannerBotanicalWatermark />
-                      </div>
-                    </div>
-                    {/* 书脊阴影 */}
-                    <div className="pointer-events-none absolute inset-y-0 left-0 w-6" style={{ background: "linear-gradient(90deg, rgba(0,0,0,0.05) 0%, transparent 100%)" }} />
-                    {/* 右上装饰点：翻开前 Highlights（与底页 Education 呈对调色） */}
-                    <CornerDecorDots variant="normal" />
-
-                    {/* 页眉：页面名称 + 页码 */}
-                    <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
-                      <span className={cn(bodyFont, "text-[12px] leading-5")}>Highlights</span>
-                      <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
-                      <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>2/4</span>
-                    </div>
-
-                    {/* 标题区：大标题 + 副标题 */}
-                    <div className="absolute left-[56px] right-[56px] top-[76px] flex items-baseline gap-x-3">
-                      <h2 className={cn(bodyFont, "text-[18px] font-semibold leading-[26px] text-[#171717]")}>Highlights</h2>
-                      <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>AI 核心工作项目</p>
-                    </div>
-
-                    {/* 项目网格：2×4 + 每卡底部截图框 */}
-                    <div className="absolute left-[56px] top-[111px] w-[388px]">
-                      <div className="grid w-[388px] grid-cols-2 gap-2">
-                        {highlightCards.map((card) => (
-                          <article
-                            key={card.title}
-                            className={cn(
-                              bodyFont,
-                              "relative h-[134px] w-[190px] shrink-0 overflow-hidden border border-[rgba(23,23,23,0.08)]",
-                              card.outerRadius,
-                            )}
-                            style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}
-                          >
-                            <h3 className="absolute left-[9px] right-[36px] top-[7px] overflow-hidden whitespace-nowrap text-[11px] font-semibold leading-5 tracking-[0.02em] text-[#171717]">
-                              {card.title}
-                            </h3>
-                            <p className="absolute left-[9px] top-[29px] w-[170px] text-[10px] leading-[18px] text-[#5a5652]">
-                              {card.description}
-                            </p>
-                            <span className="absolute right-[9px] top-[8px] text-right text-[10px] leading-[18px] text-[#ba6d73]">
-                              {card.period}
-                            </span>
-                            <div
-                              className={cn(
-                                "absolute left-[9px] top-[52px] h-[120px] w-[170px] overflow-hidden border-[0.5px] border-[#f2f3f5]",
-                                card.frameRadius,
-                              )}
-                            >
-                              <div
-                                aria-hidden
-                                className={cn(
-                                  "pointer-events-none absolute inset-0",
-                                  card.frameRadius,
-                                  card.frameTint === "white" ? "bg-white" : "bg-[rgba(255,255,255,0.5)]",
-                                )}
-                              />
-                              <div className={cn("absolute inset-0 overflow-hidden", card.frameRadius)}>
-                                <img
-                                  alt=""
-                                  src={card.image}
-                                  width={340}
-                                  height={240}
-                                  draggable={false}
-                                  className={cn(card.imgClassName)}
-                                />
-                              </div>
-                            </div>
-                          </article>
-                        ))}
-                      </div>
-                    </div>
+                    <HighlightsPageContent />
 
                     {/* 折痕暗部：书脊弯折处，渐隐向外 */}
                     <motion.div
@@ -1271,144 +1236,6 @@ function PageCurlStack({
         <path d={rimPath} fill="none" stroke="rgba(255,255,255,0.58)" strokeWidth="1.2" strokeLinecap="round" />
       </svg>
     </motion.div>
-  )
-}
-
-// ── 通用：时间轴列表 ──────────────────────────────────────────────────────────
-function CareerList({ entries, compact = false }: { entries: CareerEntry[]; compact?: boolean }) {
-  return (
-    <div className="pl-1">
-      {entries.map((item, index) => {
-        const isLast = index === entries.length - 1
-        return (
-          <div key={index} className={cn("relative", compact ? "pb-1.5" : "pb-2")}>
-            {!isLast && (
-              <div
-                className="absolute bottom-0 left-1 top-[14px] w-px"
-                style={{ background: "linear-gradient(180deg, rgba(241,186,186,0.3) 0%, rgba(23,23,23,0.08) 100%)" }}
-              />
-            )}
-            <div className="absolute left-0 top-1 h-[9px] w-[9px] rounded-[4.5px] bg-[#ba6d73]" />
-            <div className="pl-[19px]">
-              <p className={cn(bodyFont, compact ? "text-[9px] font-semibold leading-[15px] text-[#ba6d73]" : "text-[10px] font-semibold leading-[18px] text-[#ba6d73]")}>{item.period}</p>
-              <p className={cn(bodyFont, compact ? "mt-px text-[11px] font-semibold leading-[17px] text-[#171717]" : "mt-0.5 text-[12px] font-semibold leading-5 text-[#171717]")}>{item.title}</p>
-              <div className={cn(bodyFont, compact ? "mt-0.5 space-y-1 text-[9px] leading-[15px] text-[#5a5652]" : "mt-1 space-y-1.5 text-[10px] leading-[18px] text-[#5a5652]")}>
-                {item.body.type === "text" ? (
-                  <p>{item.body.text}</p>
-                ) : (
-                  item.body.paragraphs.map((p, i) => <p key={i}>{p}</p>)
-                )}
-              </div>
-            </div>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-function TagRow({ labels }: { labels: readonly string[] }) {
-  return (
-    <div className="flex w-full items-center justify-between">
-      {labels.map((label) => (
-        <div
-          key={label}
-          className={cn(
-            bodyFont,
-            "whitespace-nowrap rounded-[999px] border border-[rgba(23,23,23,0.08)] bg-[rgba(253,251,249,0.8)] px-[7px] py-1 text-center text-[10px] leading-[18px] text-[#5a5652]",
-          )}
-        >
-          {label}
-        </div>
-      ))}
-    </div>
-  )
-}
-
-function PlannerBotanicalWatermark() {
-  return (
-    <svg className="h-full w-full" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-      <path fill="currentColor" d="M100,20 C110,50 150,60 180,50 C160,80 150,120 170,150 C140,140 100,150 80,180 C90,150 50,140 20,150 C40,120 30,80 10,50 C40,60 80,50 100,20 Z" />
-      <path fill="none" d="M100,100 L100,180" stroke="currentColor" strokeWidth="1" opacity="0.5" />
-      <circle cx="100" cy="50" r="10" fill="currentColor" opacity="0.3" />
-    </svg>
-  )
-}
-
-function PortfolioBadge({ href = "/port" }: { href?: string }) {
-  const ref = useRef<HTMLAnchorElement>(null)
-  const [overlayPos, setOverlayPos] = useState<number | null>(null)
-
-  const onMove = (e: React.MouseEvent) => {
-    const el = ref.current
-    if (!el) return
-    const { left, right, top, bottom } = el.getBoundingClientRect()
-    const xc = (left + right) / 2, yc = (top + bottom) / 2
-    const angle = Math.atan2(e.clientY - yc, e.clientX - xc) * (180 / Math.PI)
-    setOverlayPos(angle)
-  }
-
-  const onLeave = () => setOverlayPos(null)
-
-  const uid = "ph-badge"
-
-  return (
-    <a
-      ref={ref}
-      href={href}
-      className="block w-full"
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-    >
-      <style>{`
-        @keyframes ${uid}1{0%{transform:rotate(0deg)}50%{transform:rotate(10deg)}100%{transform:rotate(0deg)}}
-        @keyframes ${uid}2{0%{transform:rotate(10deg)}50%{transform:rotate(20deg)}100%{transform:rotate(10deg)}}
-        @keyframes ${uid}3{0%{transform:rotate(20deg)}50%{transform:rotate(30deg)}100%{transform:rotate(20deg)}}
-        @keyframes ${uid}4{0%{transform:rotate(30deg)}50%{transform:rotate(40deg)}100%{transform:rotate(30deg)}}
-        @keyframes ${uid}5{0%{transform:rotate(40deg)}50%{transform:rotate(50deg)}100%{transform:rotate(40deg)}}
-        @keyframes ${uid}6{0%{transform:rotate(50deg)}50%{transform:rotate(60deg)}100%{transform:rotate(50deg)}}
-        @keyframes ${uid}7{0%{transform:rotate(60deg)}50%{transform:rotate(70deg)}100%{transform:rotate(60deg)}}
-      `}</style>
-      <div style={{ borderRadius: "8px", overflow: "hidden" }}>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 388 54" className="block w-full h-auto">
-          <defs>
-            <filter id={`${uid}-blur`}><feGaussianBlur in="SourceGraphic" stdDeviation="3" /></filter>
-            <mask id={`${uid}-mask`}><rect width="388" height="54" fill="white" rx="8" /></mask>
-          </defs>
-          <defs>
-          </defs>
-          <rect width="388" height="54" rx="8" fill="#ddd" />
-          <rect x="4" y="4" width="380" height="46" rx="6" fill="transparent" stroke="rgba(255,255,255,0.6)" strokeWidth="1" />
-          <rect x="4" y="4" width="380" height="46" rx="6" fill="transparent" stroke="rgba(0,0,0,0.1)" strokeWidth="0.5" />
-          <text fontFamily="Helvetica-Bold, Helvetica" fontSize="9" fontWeight="bold" fill="#666" x="53" y="20">PORTFOLIO HUNT</text>
-          <text fontFamily="Helvetica-Bold, Helvetica" fontSize="14" fontWeight="bold" fill="#666" x="53" y="40">{"Rian's 2026 Portfolio"}</text>
-          <path d="M362 23l6 4-6 4" fill="none" stroke="#999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          <g transform="translate(10, 9)">
-            <path fill="#666" d="M14.963 9.075c.787-3-.188-5.887-.188-5.887S12.488 5.175 11.7 8.175c-.787 3 .188 5.887.188 5.887s2.25-1.987 3.075-4.987m-4.5 1.987c.787 3-.188 5.888-.188 5.888S7.988 14.962 7.2 11.962c-.787-3 .188-5.887.188-5.887s2.287 1.987 3.075 4.987m.862 10.388s-.6-2.962-2.775-5.175C6.337 14.1 3.375 13.5 3.375 13.5s.6 2.962 2.775 5.175c2.213 2.175 5.175 2.775 5.175 2.775m3.3 3.413s-1.988-2.288-4.988-3.075-5.887.187-5.887.187 1.987 2.287 4.988 3.075c3 .787 5.887-.188 5.887-.188Zm6.75 0s1.988-2.288 4.988-3.075c3-.826 5.887.187 5.887.187s-1.988 2.287-4.988 3.075c-3 .787-5.887-.188-5.887-.188ZM32.625 13.5s-2.963.6-5.175 2.775c-2.213 2.213-2.775 5.175-2.775 5.175s2.962-.6 5.175-2.775c2.175-2.213 2.775-5.175 2.775-5.175M28.65 6.075s.975 2.887.188 5.887c-.826 3-3.076 4.988-3.076 4.988s-.974-2.888-.187-5.888c.788-3 3.075-4.987 3.075-4.987m-4.5 7.987s.975-2.887.188-5.887c-.788-3-3.076-4.988-3.076-4.988s-.974 2.888-.187 5.888c.788 3 3.075 4.988 3.075 4.988ZM18 26.1c.975-.225 3.113-.6 5.325 0 3 .788 5.063 3.038 5.063 3.038s-2.888.975-5.888.187a13 13 0 0 1-1.425-.525c.563.788 1.125 1.425 2.288 1.913l-.863 2.062c-2.063-.862-2.925-2.137-3.675-3.262-.262-.375-.525-.713-.787-1.05-.26.293-.465.586-.686.903l-.102.147-.048.068c-.775 1.108-1.643 2.35-3.627 3.194l-.862-2.062c1.162-.488 1.725-1.125 2.287-1.913-.45.225-.938.375-1.425.525-3 .788-5.887-.187-5.887-.187s1.987-2.288 4.987-3.075c2.212-.563 4.35-.188 5.325.037" />
-          </g>
-          <g style={{ mixBlendMode: "overlay" }} mask={`url(#${uid}-mask)`}>
-            {[
-              { hue: "hsl(358,100%,62%)", deg: 0 },
-              { hue: "hsl(30,100%,50%)", deg: 10 },
-              { hue: "hsl(60,100%,50%)", deg: 20 },
-              { hue: "hsl(96,100%,50%)", deg: 30 },
-              { hue: "hsl(233,85%,47%)", deg: 40 },
-              { hue: "hsl(271,85%,47%)", deg: 50 },
-              { hue: "hsl(300,20%,35%)", deg: 60 },
-            ].map((c, i) => (
-              <g key={i} style={{
-                transform: overlayPos !== null ? `rotate(${overlayPos + c.deg}deg)` : undefined,
-                transformOrigin: "center center",
-                transition: "transform 150ms ease-out",
-                animation: overlayPos === null ? `${uid}${i + 1} 5s infinite` : "none",
-              }}>
-                <polygon points="0,0 388,54 388,0 0,54" fill={c.hue} filter={`url(#${uid}-blur)`} opacity="0.5" />
-              </g>
-            ))}
-          </g>
-        </svg>
-      </div>
-    </a>
   )
 }
 
