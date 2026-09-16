@@ -619,7 +619,7 @@ function HighlightsPageContent() {
   return (
     <>
       <OriginalPageDecoration variant="normal" />
-      <ResumePageHeader label="Career" page={2} />
+      <ResumePageHeader label="Highlight" page={2} />
       <div data-resume-page-content="2" data-project-experience-page="2" className="absolute left-[56px] top-[76px] w-[388px]">
         <section data-experience-stage="if-studio">
           <CareerList
@@ -648,7 +648,7 @@ function HighlightsPageContent() {
 function CareerPageContent() {
   return (
     <>
-      <ResumePageHeader label="Career" page={3} />
+      <ResumePageHeader label="Highlight" page={3} />
       <div data-resume-page-content="3" data-project-experience-page="3" className="absolute left-[56px] top-[76px] w-[388px]">
         <section data-experience-stage="creative-platforms">
           <CareerList entries={[workEntries[2]]} compact projectLayout titleClassName="text-[12px]" />
