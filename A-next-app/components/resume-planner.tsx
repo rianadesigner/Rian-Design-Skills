@@ -1,6 +1,6 @@
 "use client"
 
-import { animate, motion, useMotionValue, useTransform } from "motion/react"
+import { animate, motion, useMotionValue, useMotionValueEvent, useTransform } from "motion/react"
 import type { MotionValue } from "motion/react"
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { Ballet } from "next/font/google"
@@ -197,7 +197,7 @@ const careerEntries: CareerEntry[] = [
     body: {
       type: "paragraphs",
       paragraphs: [
-        "主导AI应用开发平台0–1设计，打造可视化工作流与智能体编排引擎，降低使用门槛；作为淘天内部AI能力平台，已服务N+个团队，AI应用研发周期平均缩短X%。",
+        "主导AI应用开发平台0–1设计，打造可视化工作流与智能体编排引擎，降低使用门槛；作为淘天内部AI平台，服务N+个团队，AI应用研发周期平均缩短X%。",
         "聚焦中小商家广告创意生产痛点, 以\"降低创意门槛, 提升广告渗透率\"为核心目标, 推动万相实验室、创意中心等创意工具的产品规划与体验升级,推动大模型能力在图文/视频创作场景的深度应用",
       ],
     },
@@ -233,10 +233,10 @@ export const workEntries = careerEntries.slice(0, 5)
 export const eduEntries  = careerEntries.slice(5)
 
 const bodyFont = "font-['Inter',-apple-system,BlinkMacSystemFont,sans-serif]"
-const projectTitleText = "font-sans text-[11px] font-semibold leading-5 tracking-[0.02em] text-[#171717]"
-const projectDescriptionText = "text-[10px] leading-[18px] text-[#5a5652]"
-const careerPeriodText = "text-[9px] font-semibold leading-[15px] text-[#ba6d73]"
-const careerBodyText = "text-[9px] leading-[15px] text-[#5a5652]"
+const projectTitleText = "resume-project-title font-sans text-[11px] font-semibold leading-4 tracking-[0.02em] text-[#171717]"
+const projectDescriptionText = "resume-project-description text-[10px] leading-[15px] text-[#5a5652]"
+const careerPeriodText = "resume-period text-[10px] font-medium leading-[15px] text-[#9d6468]"
+const careerBodyText = "resume-career-body text-[11px] leading-[16px] text-[#514d49]"
 
 export const PROFILE_BIO_LINES = [
   "同济&米兰理工大学双学位硕士，阿里四年，三年AI产品项目经验",
@@ -251,8 +251,6 @@ const GRAD_R = "linear-gradient(270deg, #fdfbf9 0%, #fdfbf9 85%, #f4f1ed 95%, #e
 
 const RESUME_DESIGN_W = 1000
 const RESUME_DESIGN_H = 700
-const RESUME_MOBILE_PAGE_W = 500
-const RESUME_MOBILE_PAGE_H = 700
 
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -326,7 +324,7 @@ function ProfileBioLines() {
   return (
     <div
       ref={containerRef}
-      className={cn(bodyFont, "relative w-full py-1 text-[#5a5652]")}
+      className={cn(bodyFont, "resume-profile-bio relative w-full py-1 text-[#5a5652]")}
       style={{ fontSize: `${fontSize}px`, lineHeight: 1.5 }}
     >
       <span
@@ -358,9 +356,9 @@ function CareerList({ entries, compact = false, projectLayout = false, titleClas
             )}
             <div aria-hidden className={cn("absolute rounded-full bg-[#ba6d73]", projectLayout ? "left-[-9.9px] top-[6.7px] size-[3.6px]" : "left-0 top-1 size-[9px]")} />
             <div className={projectLayout ? undefined : "pl-[19px]"}>
-              <p className={cn(bodyFont, compact ? careerPeriodText : "text-[10px] font-semibold leading-[18px] text-[#ba6d73]")}>{item.period}</p>
-              <p className={cn(bodyFont, compact ? "mt-px text-[11px] font-semibold leading-[17px] text-[#171717]" : "mt-0.5 text-[11px] font-semibold leading-5 text-[#171717]", titleClassName)}>{item.title}</p>
-              <div className={cn(bodyFont, compact ? cn("space-y-1", careerBodyText) : "space-y-1.5 text-[10px] leading-[18px] text-[#5a5652]", renderBody ? "mt-2" : compact ? "mt-0.5" : "mt-1")}>
+              <p className={cn(bodyFont, "resume-period", compact ? careerPeriodText : "text-[10px] font-semibold leading-[18px] text-[#9d6468]")}>{item.period}</p>
+              <p className={cn("resume-career-title font-sans", compact ? "mt-px text-[12px] font-semibold leading-[18px] text-[#171717]" : "mt-0.5 text-[11px] font-semibold leading-5 text-[#171717]", titleClassName)}>{item.title}</p>
+              <div className={cn(bodyFont, "resume-career-body", compact ? cn("space-y-1", careerBodyText) : "space-y-1.5 text-[11px] leading-[18px] text-[#514d49]", renderBody ? "mt-2" : compact ? "mt-1" : "mt-1")}>
                 {renderBody ? renderBody(item) : item.body.type === "text" ? (
                   <p>{item.body.text}</p>
                 ) : (
@@ -481,23 +479,36 @@ function PortfolioBadge({ href = "/port" }: { href?: string }) {
   )
 }
 
+const projectImageFraming: Record<string, { scale: number; origin: string; position?: string; contain?: boolean }> = {
+  "if Studio Design Agent": { scale: 1.73, origin: "54% 0%" },
+  "IFlow LLM Wiki": { scale: 1.99, origin: "54.5% 29.2%" },
+  "iFlow APP Builder": { scale: 1, origin: "50% 50%", contain: true },
+  "iFlow Agentic AI": { scale: 1.485, origin: "69.1% 56.2%" },
+  "iFlow AI搜索": { scale: 1.286, origin: "53.1% 76.6%" },
+  "AI应用开发": { scale: 1.239, origin: "77.3% 40.8%", position: "center top" },
+  "商家创意平台": { scale: 1.264, origin: "75.7% 12.3%" },
+  "广告外投": { scale: 1, origin: "50% 0%", position: "center top" },
+}
+
 function OriginalProjectPreview({ card, className }: { card: HighlightCardData; className: string }) {
+  const preview = projectImageFraming[card.title]
   return (
     <div
-      className={cn("h-[120px] w-[170px] overflow-hidden border-[0.5px] border-[#f2f3f5]", card.frameRadius, className)}
+      className={cn("resume-project-preview relative min-h-0 overflow-hidden rounded-[5px] border border-[#e9e5e1] bg-white", className)}
     >
       <div
         aria-hidden
         className={cn("pointer-events-none absolute inset-0", card.frameRadius, card.frameTint === "white" ? "bg-white" : "bg-[rgba(255,255,255,0.5)]")}
       />
-      <div className={cn("absolute inset-0 overflow-hidden", card.frameRadius)}>
+      <div className="absolute inset-0 overflow-hidden rounded-[4px]">
         <img
           alt={`${card.title} 项目界面`}
           src={card.image}
           width={340}
           height={240}
           draggable={false}
-          className={cn(card.imgClassName)}
+          className="absolute inset-0 h-full w-full max-w-none object-cover"
+          style={{ objectFit: preview?.contain ? "contain" : "cover", objectPosition: preview?.position ?? "center", transform: `scale(${preview?.scale ?? 1})`, transformOrigin: preview?.origin ?? "center" }}
         />
       </div>
     </div>
@@ -508,10 +519,10 @@ function HorizontalProjectCard({ card, body, title = card.title, showPeriod = tr
   return (
     <article
       data-experience-project={card.title}
-      className={cn(bodyFont, "grid grid-cols-[minmax(0,1fr)_170px] items-start gap-3 overflow-hidden rounded-[8px] border border-[rgba(23,23,23,0.08)] p-3")}
+      className={cn(bodyFont, "resume-project-horizontal relative grid grid-cols-[minmax(0,1fr)_156px] items-start gap-3 overflow-hidden rounded-[8px] border border-[rgba(23,23,23,0.08)] p-[10px]")}
       style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}
     >
-      <div className="min-w-0">
+      <div className="resume-project-copy min-w-0">
         <div className="flex items-baseline justify-between gap-2">
           <h3 className={projectTitleText}>{title}</h3>
           {showPeriod && <span className={cn("shrink-0", careerPeriodText)}>{card.period}</span>}
@@ -521,7 +532,7 @@ function HorizontalProjectCard({ card, body, title = card.title, showPeriod = tr
           {body.type === "text" ? <p>{body.text}</p> : body.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
         </div>
       </div>
-      <OriginalProjectPreview card={card} className="relative" />
+      <OriginalProjectPreview card={card} className="h-[106px] w-full" />
     </article>
   )
 }
@@ -532,28 +543,26 @@ function OriginalProjectCard({ card }: { card: HighlightCardData }) {
               data-experience-project={card.title}
               className={cn(
                 bodyFont,
-                "relative h-[134px] w-[190px] shrink-0 overflow-hidden border border-[rgba(23,23,23,0.08)]",
+                "resume-project-card relative flex h-[136px] min-w-0 flex-col gap-[7px] overflow-hidden border border-[rgba(23,23,23,0.08)] p-[9px]",
                 card.outerRadius,
               )}
               style={{ background: "linear-gradient(169.3deg, rgba(255,255,255,0.9) 7.735%, rgba(244,241,237,0.5) 92.265%)" }}
             >
-              <h3 className={cn("absolute left-[9px] right-[36px] top-[7px] overflow-hidden whitespace-nowrap", projectTitleText)}>
-                {card.title}
-              </h3>
-              <p className={cn("absolute left-[9px] top-[29px] w-[170px]", projectDescriptionText)}>
-                {card.description}
-              </p>
-              <span className={cn("absolute right-[9px] top-[8px] text-right", careerPeriodText)}>
-                {card.period}
-              </span>
-              <OriginalProjectPreview card={card} className="absolute left-[9px] top-[52px]" />
+              <div className="resume-project-copy min-w-0">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-1 gap-y-0.5">
+                  <h3 className={projectTitleText}>{card.title}</h3>
+                  <span className={cn("shrink-0", careerPeriodText)}>{card.period}</span>
+                </div>
+                <p className={cn("mt-1", projectDescriptionText)}>{card.description}</p>
+              </div>
+              <OriginalProjectPreview card={card} className="w-full flex-1" />
             </article>
   )
 }
 
 function ResumePageHeader({ label, page }: { label: string; page: number }) {
   return (
-    <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+    <div className="resume-page-header absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#9d6468]">
       <span className={cn(bodyFont, "text-[12px] leading-5")}>{label}</span>
       <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
       <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>{page}/4</span>
@@ -564,7 +573,7 @@ function ResumePageHeader({ label, page }: { label: string; page: number }) {
 function OriginalPageDecoration({ variant }: { variant: "swapped" | "normal" }) {
   return (
     <>
-      <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
+      <div className="resume-decoration pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
         <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
       </div>
       <CornerDecorDots variant={variant} />
@@ -575,19 +584,19 @@ function OriginalPageDecoration({ variant }: { variant: "swapped" | "normal" }) 
 function ProfilePageContent({ avatarSrc, onAvatarError }: { avatarSrc: string; onAvatarError: () => void }) {
   return (
     <>
-      <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+      <div className="resume-page-header absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#9d6468]">
         <span className={cn(bodyFont, "text-[12px] leading-5")}>Profile</span>
         <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
         <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>1/4</span>
       </div>
       <div data-resume-page-content="1" className="absolute left-[56px] top-[110px] flex w-[388px] flex-col items-center gap-6">
-        <div className="flex flex-col items-center gap-4">
+        <div className="resume-profile-identity flex flex-col items-center gap-4">
           <img alt="Rian avatar" src={avatarSrc} onError={onAvatarError} className="h-[76px] w-[76px] rounded-full object-cover object-[center_12%]" />
           <div className={cn(ballet.className, "text-[24px] leading-[32.56px] tracking-[0.02em] text-[#171717]")}>Rian</div>
         </div>
-        <h1 className={cn(bodyFont, "w-full text-center text-[14px] font-semibold leading-[22px] text-[#5a5652]")}>AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放</h1>
+        <h1 className={cn(bodyFont, "resume-profile-title w-full text-center text-[14px] font-semibold leading-[22px] text-[#5a5652]")}>AI 体验设计师 & 用户产品岗，聚焦AI产品落地及广告创意投放</h1>
         <ProfileBioLines />
-        <div className={cn(bodyFont, "w-full space-y-3 text-[12px] leading-5")}>
+        <div className={cn(bodyFont, "resume-contact-grid w-full space-y-3 text-[12px] leading-5")}>
           <div className="flex w-full items-center">
             <div className="flex flex-1 items-center"><span className="w-12 text-[#a39e99]">电话</span><span className="whitespace-nowrap text-[#ba6d73]">18578323924</span></div>
             <div className="flex flex-1 items-center gap-1.5"><span className="w-[30px] text-[#a39e99]">邮箱</span><span className="whitespace-nowrap text-[#ba6d73]">rianadesigner@gmail.com</span></div>
@@ -598,7 +607,7 @@ function ProfilePageContent({ avatarSrc, onAvatarError }: { avatarSrc: string; o
           </div>
         </div>
       </div>
-      <div data-resume-page-extras="1" className="absolute left-[56px] top-[610px] flex w-[388px] min-w-0 flex-col gap-3">
+      <div data-resume-page-extras="1" className="resume-tags absolute left-[56px] top-[610px] flex w-[388px] min-w-0 flex-col gap-3">
         <TagRow labels={topTags} />
         <TagRow labels={bottomTags} />
       </div>
@@ -622,8 +631,12 @@ function HighlightsPageContent() {
           />
         </section>
         <section data-experience-stage="iflow" className="mt-4">
-          <CareerList entries={[{ ...workEntries[1], body: { type: "text", text: "0–1 统筹 5 条产品线（LLM Wiki、问答、学术研究、Coding CLI、App Builder），DAU 10w+、次留 60%+。主导多 Agent 协同、知识接入与检索引用、CLI 体验及 App Builder 生成质量优化，沉淀 Design Skill。" } }]} compact projectLayout titleClassName="text-[12px]" />
-          <div className="mt-2 grid grid-cols-2 gap-2">
+          <CareerList entries={[workEntries[1]]} compact projectLayout titleClassName="text-[12px]" renderBody={() => (
+            <div>
+              <p>0–1 统筹 LLM Wiki、问答、学术研究、Coding CLI、App Builder 等 5 条产品线，DAU 10w+、次留 60%+；主导多 Agent 协同、知识接入与引用、生成质量优化，沉淀 Design Skill。</p>
+            </div>
+          )} />
+          <div className="resume-project-grid mt-2 grid grid-cols-2 gap-2">
             {highlightCards.slice(1, 5).map((card) => <OriginalProjectCard key={card.title} card={card} />)}
           </div>
         </section>
@@ -639,7 +652,7 @@ function CareerPageContent() {
       <div data-resume-page-content="3" data-project-experience-page="3" className="absolute left-[56px] top-[76px] w-[388px]">
         <section data-experience-stage="creative-platforms">
           <CareerList entries={[workEntries[2]]} compact projectLayout titleClassName="text-[12px]" />
-          <div className="mt-0.5 grid grid-cols-2 gap-2">
+          <div className="resume-project-grid mt-2 grid grid-cols-2 gap-2">
             {highlightCards.slice(5, 7).map((card) => <OriginalProjectCard key={card.title} card={card} />)}
           </div>
         </section>
@@ -663,11 +676,11 @@ function CareerPageContent() {
 function BackgroundPageContent() {
   return (
     <>
-      <div className="pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
+      <div className="resume-decoration pointer-events-none absolute left-[113px] top-[333px] flex size-[433px] items-center justify-center text-[#ba6d73]/40 opacity-[0.14]">
         <div className="-rotate-[5deg] size-[400px]"><PlannerBotanicalWatermark /></div>
       </div>
       <CornerDecorDots variant="swapped" />
-      <div className="absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#ba6d73]">
+      <div className="resume-page-header absolute left-[56px] top-[32px] flex w-[388px] items-center gap-3 text-[#9d6468]">
         <span className={cn(bodyFont, "text-[12px] leading-5")}>Education/Skills</span>
         <div className="h-px min-w-px flex-1 bg-[rgba(241,186,186,0.3)]" />
         <span className={cn(bodyFont, "text-[10px] leading-[18px]")}>4/4</span>
@@ -675,31 +688,31 @@ function BackgroundPageContent() {
       <div data-resume-page-content="4" className="absolute left-[56px] top-[72px] flex w-[388px] flex-col gap-6">
         <div>
           <div className="mb-4 flex items-baseline gap-x-2">
-            <h2 className={cn(bodyFont, "text-[14px] font-semibold leading-[26px] text-[#171717]")}>Education</h2>
-            <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>双学位硕士/设计/机械</p>
+            <h2 className={cn(bodyFont, "resume-section-title text-[14px] font-semibold leading-[26px] text-[#171717]")}>Education</h2>
+            <p className={cn(bodyFont, "resume-caption text-[10px] leading-[18px] text-[#8a827b]")}>双学位硕士/设计/机械</p>
           </div>
           <CareerList entries={eduEntries} />
         </div>
         <div className="flex flex-col gap-4">
           <div className="flex h-[26px] w-full items-baseline gap-x-2">
-            <h2 className={cn(bodyFont, "text-[14px] font-semibold leading-[26px] text-[#171717]")}>Skills</h2>
-            <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>Vibe Coding/Design</p>
+            <h2 className={cn(bodyFont, "resume-section-title text-[14px] font-semibold leading-[26px] text-[#171717]")}>Skills</h2>
+            <p className={cn(bodyFont, "resume-caption text-[10px] leading-[18px] text-[#8a827b]")}>Vibe Coding/Design</p>
           </div>
-          <div className="flex w-full items-center justify-between overflow-hidden rounded-[12px] border border-[rgba(23,23,23,0.08)] px-[4px]">
+          <div className="resume-skills flex w-full items-start justify-between overflow-hidden rounded-[12px] border border-[rgba(23,23,23,0.08)] px-[4px]">
             {skillDockItems.map((item, idx) => (
-              <div key={item.label} className={cn("flex flex-col items-center gap-2 overflow-hidden pb-[8px] pt-[12px] px-[18px] shrink-0 w-[55px]", idx < skillDockItems.length - 1 && "-mr-px")}>
+              <div key={item.label} className={cn("resume-skill-item flex flex-col items-center gap-2 overflow-hidden pb-[8px] pt-[12px] px-1 shrink-0 w-[54px]", idx < skillDockItems.length - 1 && "-mr-px")}>
                 <div className="relative shrink-0 size-[16px]" aria-hidden>
                   <SkillDockIcon pngFallbackSrc={item.src} />
                 </div>
-                <span className="whitespace-nowrap text-center text-[8px] leading-[16px] text-[#171717]" style={{ fontFamily: "'PingFang SC', 'SF Pro Text', -apple-system, sans-serif" }}>{item.label}</span>
+                <span className="resume-skill-label min-h-[28px] text-center text-[10px] leading-[14px] text-[#171717]" style={{ fontFamily: "'PingFang SC', 'SF Pro Text', -apple-system, sans-serif" }}>{item.label}</span>
               </div>
             ))}
           </div>
         </div>
         <div className="flex flex-col gap-3">
           <div className="flex h-[26px] w-full items-baseline gap-x-2">
-            <h2 className={cn(bodyFont, "text-[14px] font-semibold leading-[26px] text-[#171717]")}><span className="sm:hidden">作品集</span><span className="hidden sm:inline">Portfolio</span></h2>
-            <p className={cn(bodyFont, "text-[10px] leading-[18px] text-[#a39e99]")}>点击下方卡片进入作品集</p>
+            <h2 className={cn(bodyFont, "resume-section-title text-[14px] font-semibold leading-[26px] text-[#171717]")}><span className="sm:hidden">作品集</span><span className="hidden sm:inline">Portfolio</span></h2>
+            <p className={cn(bodyFont, "resume-caption text-[10px] leading-[18px] text-[#8a827b]")}>点击下方卡片进入作品集</p>
           </div>
           <PortfolioBadge />
         </div>
@@ -712,6 +725,11 @@ function BackgroundPageContent() {
 
 export function ResumePlanner() {
   const wrapperRef  = useRef<HTMLDivElement>(null)
+  const desktopScrollRef = useRef<HTMLDivElement>(null)
+  const profileFaceRef = useRef<HTMLDivElement>(null)
+  const frontFaceRef = useRef<HTMLDivElement>(null)
+  const backFaceRef = useRef<HTMLDivElement>(null)
+  const backgroundFaceRef = useRef<HTMLDivElement>(null)
   const [scale, setScale]         = useState(1)
   const [avatarSrc, setAvatarSrc] = useState(AVATAR_FROM_DEMO2)
   // 翻页方向与播放锁只参与交互控制，不参与渲染；使用 ref 避免动画收尾时
@@ -721,6 +739,22 @@ export function ResumePlanner() {
 
   // MotionValue 驱动 3D 翻页：角度 0 → -180
   const rotateY    = useMotionValue<number>(0)
+  const syncPageAccess = useCallback((angle: number) => {
+    const atFront = Math.abs(angle) < 0.5
+    const atBack = Math.abs(angle + 180) < 0.5
+    for (const [element, visible] of [
+      [profileFaceRef.current, atFront],
+      [frontFaceRef.current, atFront],
+      [backFaceRef.current, atBack],
+      [backgroundFaceRef.current, atBack],
+    ] as const) {
+      if (!element) continue
+      element.inert = !visible
+      element.setAttribute("aria-hidden", String(!visible))
+    }
+  }, [])
+  useMotionValueEvent(rotateY, "change", syncPageAccess)
+  useLayoutEffect(() => syncPageAccess(rotateY.get()), [rotateY, syncPageAccess])
   // 折叠阴影：峰值在翻页中点（书脊弯折暗部）
   const foldShadow = useMotionValue<number>(0)
   // 翻转亮边：光线打到纸张翻转的前缘
@@ -769,37 +803,15 @@ export function ResumePlanner() {
 
     const update = () => {
       const width = el.clientWidth
-      const height = el.clientHeight
+      const height = desktopScrollRef.current?.clientHeight ?? el.clientHeight
       if (width <= 0 || height <= 0) return
-      setScale(Math.min(width / RESUME_DESIGN_W, height / RESUME_DESIGN_H))
+      setScale(Math.min(1, width / RESUME_DESIGN_W, height / RESUME_DESIGN_H))
     }
 
     update()
     const ro = new ResizeObserver(update)
     ro.observe(el)
-    return () => ro.disconnect()
-  }, [])
-
-  // ── 移动端单页轮播 ────────────────────────────────────────────────────────────
-  const [mobilePage, setMobilePage]   = useState(0)
-  const mobileStageRef                = useRef<HTMLDivElement>(null)
-  const [mobileScale, setMobileScale] = useState(1)
-  const swipeStart                    = useRef(0)
-
-  useLayoutEffect(() => {
-    const el = mobileStageRef.current
-    if (!el) return
-
-    const update = () => {
-      const width = el.clientWidth
-      const height = el.clientHeight
-      if (width <= 0 || height <= 0) return
-      setMobileScale(Math.min(width / RESUME_MOBILE_PAGE_W, height / RESUME_MOBILE_PAGE_H))
-    }
-
-    update()
-    const ro = new ResizeObserver(update)
-    ro.observe(el)
+    if (desktopScrollRef.current) ro.observe(desktopScrollRef.current)
     return () => ro.disconnect()
   }, [])
 
@@ -810,8 +822,10 @@ export function ResumePlanner() {
    *   ±过冲 → 目标  (13%)  easeInOut — 回弹至静止，柔软落定
    * pageCurl + curlSize：翻起前期右下角/左下角短暂卷起，过 90° 前收回，与 foldShadow / edgeGlow 衔接。
    */
-  const doFlip = () => {
+  const doFlip = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (isAnimatingRef.current) return
+    const keyboardFlip = event.detail === 0
+    if (desktopScrollRef.current) desktopScrollRef.current.scrollTop = 0
     isAnimatingRef.current = true
 
     const forward   = !isFlippedRef.current
@@ -850,6 +864,10 @@ export function ResumePlanner() {
     }).then(() => {
       isFlippedRef.current = forward
       isAnimatingRef.current = false
+      if (keyboardFlip) {
+        const nextFace = forward ? backFaceRef.current : frontFaceRef.current
+        nextFace?.querySelector<HTMLButtonElement>("[data-resume-page-turn]")?.focus({ preventScroll: true })
+      }
     })
   }
 
@@ -865,84 +883,11 @@ export function ResumePlanner() {
   }
 
   return (
-    <main className="flex h-screen w-screen min-h-0 flex-col items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.94),_rgba(240,237,232,0.92)_50%,_rgba(227,222,216,0.96))] p-0 sm:p-[5%] text-[#171717]">
-
-      {/* ── 移动端单页轮播（< sm） ──────────────────────────────────────────── */}
-      <div className="flex min-h-0 w-full flex-1 flex-col sm:hidden">
-        <div
-          ref={mobileStageRef}
-          className="flex min-h-0 w-full flex-1 items-center justify-center"
-        >
-        {/* 滑动区域：一次只展示一页 500×700，按 mobileScale 缩放至可见区域 */}
-        <div
-          className="relative mx-auto shrink-0 overflow-hidden select-none"
-          style={{ width: `${RESUME_MOBILE_PAGE_W * mobileScale}px`, height: `${RESUME_MOBILE_PAGE_H * mobileScale}px` }}
-          onTouchStart={(e) => { swipeStart.current = e.touches[0].clientX }}
-          onTouchEnd={(e) => {
-            const dx = e.changedTouches[0].clientX - swipeStart.current
-            if (Math.abs(dx) > 40)
-              setMobilePage((p) => dx < 0 ? Math.min(3, p + 1) : Math.max(0, p - 1))
-          }}
-        >
-          {/* 4 页横向排列，translateX 切换当前页 */}
-          <div
-            className="absolute top-0 left-0 flex h-[700px]"
-            style={{
-              width: `${4 * 500}px`,
-              transformOrigin: "top left",
-              transform: `scale(${mobileScale}) translateX(${-mobilePage * 500}px)`,
-              transition: "transform 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
-            }}
-          >
-            {/* ── Page 1: Profile & Current Work ──────────────────────────── */}
-            <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_L }}>
-              <ProfilePageContent avatarSrc={avatarSrc} onAvatarError={() => setAvatarSrc(AVATAR_FALLBACK)} />
-            </div>
-
-            {/* ── Pages 2–3: 项目经历 ────────────────────────────────────── */}
-            <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_R }}>
-              <HighlightsPageContent />
-            </div>
-            <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_L }}>
-              <CareerPageContent />
-            </div>
-
-            {/* ── Page 4: Background & Capabilities ───────────────────────── */}
-            <div className="relative h-[700px] w-[500px] shrink-0 overflow-hidden rounded-[12px]" style={{ background: GRAD_R }}>
-              <BackgroundPageContent />
-            </div>
-          </div>
-        </div>
-        </div>
-
-        {/* 页码导航 */}
-        <div className="flex shrink-0 items-center justify-center gap-2 pt-5 pb-3">
-          <button
-            onClick={() => setMobilePage((p) => Math.max(0, p - 1))}
-            disabled={mobilePage === 0}
-            className={cn(
-              "flex size-9 items-center justify-center rounded-full text-xl transition-colors",
-              mobilePage === 0 ? "cursor-not-allowed text-[rgba(186,109,115,0.3)]" : "text-[#ba6d73] hover:bg-[rgba(241,186,186,0.15)]",
-            )}
-          >‹</button>
-          {[0, 1, 2, 3].map((i) => (
-            <button key={i} onClick={() => setMobilePage(i)} className="flex size-6 items-center justify-center" aria-label={`Page ${i + 1}`}>
-              <span className={cn("block rounded-full transition-all duration-200", mobilePage === i ? "size-[7px] bg-[#ba6d73]" : "size-[5px] bg-[rgba(186,109,115,0.3)]")} />
-            </button>
-          ))}
-          <button
-            onClick={() => setMobilePage((p) => Math.min(3, p + 1))}
-            disabled={mobilePage === 3}
-            className={cn(
-              "flex size-9 items-center justify-center rounded-full text-xl transition-colors",
-              mobilePage === 3 ? "cursor-not-allowed text-[rgba(186,109,115,0.3)]" : "text-[#ba6d73] hover:bg-[rgba(241,186,186,0.15)]",
-            )}
-          >›</button>
-        </div>
-      </div>
-
-      {/* ── 桌面端双页展开（≥ sm） ────────────────────────────────────────────── */}
-      <div ref={wrapperRef} className="hidden sm:flex flex-1 w-full min-h-0 items-center justify-center overflow-visible">
+    <main className="flex h-dvh min-h-dvh w-full flex-col items-center justify-center overflow-hidden bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.94),_rgba(240,237,232,0.92)_50%,_rgba(227,222,216,0.96))] p-2 text-[#171717] sm:p-4">
+      {/* 各种预览宽度均保持双页书本，按可用空间等比缩放。 */}
+      <div ref={wrapperRef} className="flex min-h-0 w-full flex-1 flex-col items-center justify-center">
+        <div ref={desktopScrollRef} className="min-h-0 w-full flex-1 overflow-auto">
+        <div className="flex min-h-full w-full items-center justify-center">
         <div className="relative mx-auto shrink-0 overflow-visible" style={{ width: `${RESUME_DESIGN_W * scale}px`, height: `${RESUME_DESIGN_H * scale}px` }}>
           <div
             className="absolute left-0 top-0 h-[700px] w-[1000px] origin-top-left"
@@ -977,12 +922,15 @@ export function ResumePlanner() {
               <div
                 className="absolute inset-y-0 left-0 w-[500px] overflow-hidden rounded-l-[12px]"
                 style={{ background: GRAD_L }}
+                inert
+                aria-hidden="true"
               >
                 <CareerPageContent />
               </div>
 
               {/* ── Layer 0：Profile 页（左半，永远在底部） ──────────────── */}
               <motion.div
+                ref={profileFaceRef}
                 className="absolute inset-y-0 left-0 w-[500px] overflow-hidden rounded-l-[12px]"
                 style={{ opacity: layer0LeftOpacity, background: GRAD_L }}
               >
@@ -990,7 +938,7 @@ export function ResumePlanner() {
               </motion.div>
 
               {/* ── Layer 0：背景与能力页（右半） ────────────────────────── */}
-              <div className="absolute inset-y-0 right-0 z-0 w-[500px] overflow-hidden rounded-r-[12px] bg-transparent">
+              <div ref={backgroundFaceRef} className="absolute inset-y-0 right-0 z-0 w-[500px] overflow-hidden rounded-r-[12px] bg-transparent">
                 <BackgroundPageContent />
               </div>
 
@@ -998,6 +946,8 @@ export function ResumePlanner() {
               <motion.div
                 className="pointer-events-none absolute inset-y-0 right-0 z-[1] w-[500px] overflow-hidden rounded-r-[12px]"
                 style={{ opacity: settledHighlightsOpacity, background: GRAD_R }}
+                inert
+                aria-hidden="true"
               >
                 <HighlightsPageContent />
               </motion.div>
@@ -1023,16 +973,14 @@ export function ResumePlanner() {
                   transformStyle: "preserve-3d" as const,
                   willChange:     "transform",
                   zIndex:         2,
-                  cursor:         "pointer",
+                  cursor:         "default",
                 }}
-                onClick={doFlip}
-                onHoverStart={handleHoverStart}
-                onHoverEnd={handleHoverEnd}
               >
                 {/* ── 正面：Highlights（右页样式）
                  *  face 容器不设 overflow:hidden，确保 backface-visibility 正常工作。
                  *  背景与内容统一在 clipPath 层内，裁角时二者同步 → 仅一张纸的视觉。 ── */}
                 <motion.div
+                  ref={frontFaceRef}
                   className="absolute inset-0"
                   style={{
                     backfaceVisibility: "hidden" as const,
@@ -1077,11 +1025,23 @@ export function ResumePlanner() {
 
                   {/* 正面右下角卷角（不参与内层 clip，否则会被裁掉） */}
                   <PageCurlStack corner="br" size={brCurlSize} faceVisible={frontFaceVisible} />
+                  <button
+                    type="button"
+                    aria-label="翻到第3、4页"
+                    data-resume-page-turn
+                    className="absolute bottom-0 right-0 z-20 size-12 cursor-pointer rounded-[12px] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#9d6468]"
+                    onClick={doFlip}
+                    onPointerEnter={handleHoverStart}
+                    onPointerLeave={handleHoverEnd}
+                    onFocus={handleHoverStart}
+                    onBlur={handleHoverEnd}
+                  />
                 </motion.div>
 
                 {/* ── 背面：Career Work（左页样式）
                  *  同理：face 容器不设 overflow:hidden，背景进入 clipPath 层内统一裁切 ── */}
                 <motion.div
+                  ref={backFaceRef}
                   className="absolute inset-0"
                   style={{
                     backfaceVisibility: "hidden" as const,
@@ -1127,6 +1087,17 @@ export function ResumePlanner() {
                   </motion.div>
 
                   <PageCurlStack corner="bl" size={blCurlSize} faceVisible={backFaceVisible} />
+                  <button
+                    type="button"
+                    aria-label="返回第1、2页"
+                    data-resume-page-turn
+                    className="absolute bottom-0 left-0 z-20 size-12 cursor-pointer rounded-[12px] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#9d6468]"
+                    onClick={doFlip}
+                    onPointerEnter={handleHoverStart}
+                    onPointerLeave={handleHoverEnd}
+                    onFocus={handleHoverStart}
+                    onBlur={handleHoverEnd}
+                  />
                 </motion.div>
               </motion.div>
 
@@ -1146,9 +1117,9 @@ export function ResumePlanner() {
             </div>
           </div>
         </div>
+        </div>
+        </div>
       </div>
-
-
     </main>
   )
 }
