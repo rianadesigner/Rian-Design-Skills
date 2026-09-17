@@ -95,9 +95,7 @@ const SLIDE_IMAGE_ASSETS: Record<string, string[]> = {
     "/images/page6/card-right.jpg",
   ],
   page7: [
-    "/images/page7/phone-screenshot.webp",
-    "/images/page7/ip-scenes.webp",
-    "/images/page7/ip-themes.webp",
+    "/images/page7/figma-home/ai-search-home.webp",
   ],
   page8: [
     "/images/page8/top-1.webp",

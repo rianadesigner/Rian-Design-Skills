@@ -876,8 +876,10 @@ export default function SlideContainer({
     // Keep Chrome's idle time free while the long /06 texture is animating.
     // Adjacent images still load normally when their slide becomes visible.
     if (slideIds[current] === "if-studio-skills") return
+    const preloadPolicy = getSlidePreloadPolicy()
+    if (preloadPolicy.assetLimit === 0) return
 
-    const adjacent = [current + 1, current - 1]
+    const adjacent = (preloadPolicy.assetLimit === 1 ? [current + 1] : [current + 1, current - 1])
       .filter((index) => index >= 0 && index < slideIds.length)
       .map((index) => slideIds[index])
 
@@ -887,14 +889,14 @@ export default function SlideContainer({
       }
     }
 
-    if (typeof requestIdleCallback !== "undefined") {
+    if (preloadPolicy.allowJumpPrefetch && typeof requestIdleCallback !== "undefined") {
       const idleId = requestIdleCallback(() => void decode(), { timeout: 1200 })
       return () => cancelIdleCallback(idleId)
     }
 
     // Safari lacks requestIdleCallback on many iPadOS versions. Keep image
     // fetching out of the 340ms slide transition when the fallback is used.
-    const timer = window.setTimeout(() => void decode(), 600)
+    const timer = window.setTimeout(() => void decode(), preloadPolicy.allowJumpPrefetch ? 600 : 2500)
     return () => window.clearTimeout(timer)
   }, [current])
 
@@ -1039,15 +1041,17 @@ export default function SlideContainer({
     // 只预取当前前后 1 页；用户确实进入封面/content0 后，再延后预热可点击跳转目标。
     const nearVisibleIndices =
       preloadPolicy.assetLimit === 0
-        ? [current + 1]
-        : [current + 1, current - 1]
+        ? []
+        : preloadPolicy.assetLimit === 1
+          ? [current + 1]
+          : [current + 1, current - 1]
     const near = Array.from(new Set(nearVisibleIndices))
       .filter(
         (visibleIndex) => visibleIndex >= 0 && visibleIndex < slideIds.length
       )
       .map((visibleIndex) => allSlideIds.indexOf(slideIds[visibleIndex]))
       .filter((index) => index >= 0 && index < allImports.length)
-    runSequential(near, 0, 900)
+    runSequential(near, preloadPolicy.allowJumpPrefetch ? 600 : 2500, 900)
 
     if (current === 1 && preloadPolicy.allowJumpPrefetch) {
       runSequential(JUMP_TARGETS, 2400, 1200)
