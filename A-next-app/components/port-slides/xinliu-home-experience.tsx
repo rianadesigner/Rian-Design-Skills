@@ -1,7 +1,16 @@
 "use client"
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
-import { lazy, Suspense, useEffect, useId, useRef, useState, type CSSProperties } from "react"
+import {
+  lazy,
+  Suspense,
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type CSSProperties,
+} from "react"
 import inputStyles from "./xinliu-input-sheet.module.css"
 import styles from "./xinliu-home-experience.module.css"
 import { XinliuAppPetal } from "./xinliu-app-petal"
@@ -12,16 +21,24 @@ import {
 } from "./petal-ripple-displacement"
 
 const XinliuInputSheet = lazy(() =>
-  import("./xinliu-input-sheet").then((module) => ({ default: module.XinliuInputSheet }))
+  import("./xinliu-input-sheet").then((module) => ({
+    default: module.XinliuInputSheet,
+  }))
 )
 const CapabilitySheet = lazy(() =>
-  import("./xinliu-fullscreen-panel").then((module) => ({ default: module.XinliuFullscreenPanel }))
+  import("./xinliu-fullscreen-panel").then((module) => ({
+    default: module.XinliuFullscreenPanel,
+  }))
 )
 
 // Native 750 × 1612 exports preserve both Figma homepage states.
 const SCREENS = {
   search: "/images/page7/figma-home/ai-search-home.webp",
   research: "/images/page7/figma-home/research-home.webp",
+}
+const FALLBACK_SCREENS = {
+  search: "/images/page7/figma-home/ai-search-home.png",
+  research: "/images/page7/figma-home/research-home.png",
 }
 export type XinliuHomeMode = keyof typeof SCREENS
 
@@ -165,7 +182,11 @@ export function XinliuHomeExperience({
   onModeChange: (mode: XinliuHomeMode) => void
 }) {
   const [inputOpen, setInputOpen] = useState(false)
-  const [homeReady, setHomeReady] = useState(false)
+  const [loadedScreen, setLoadedScreen] = useState<string | null>(null)
+  const [fallbackModes, setFallbackModes] = useState<
+    Partial<Record<XinliuHomeMode, boolean>>
+  >({})
+  const [screenError, setScreenError] = useState(false)
   const inputTrigger = useRef<HTMLButtonElement>(null)
   const reduceMotion = Boolean(useReducedMotion())
   const screenRef = useRef<HTMLDivElement>(null)
@@ -174,7 +195,26 @@ export function XinliuHomeExperience({
   const [pointerHovered, setPointerHovered] = useState<PetalId | null>(null)
   const [selected, setSelected] = useState<PetalId | null>(null)
   const [origin, setOrigin] = useState<PetalOrigin | null>(null)
-  const screenImage = SCREENS[mode]
+  const screenImage = fallbackModes[mode]
+    ? FALLBACK_SCREENS[mode]
+    : SCREENS[mode]
+  const homeReady = loadedScreen === screenImage
+
+  const handleHomeImageRef = useCallback(
+    (image: HTMLImageElement | null) => {
+      // Cached images can finish before hydration attaches the load handler.
+      if (!image?.complete) return
+      if (image.naturalWidth > 0) {
+        setLoadedScreen(screenImage)
+        setScreenError(false)
+      } else if (screenImage === SCREENS[mode]) {
+        setFallbackModes((current) => ({ ...current, [mode]: true }))
+      } else {
+        setScreenError(true)
+      }
+    },
+    [mode, screenImage]
+  )
   const petals = PETALS.map((petal, index) => {
     const capability =
       mode === "research" ? RESEARCH_CAPABILITIES[index] : petal
@@ -191,6 +231,7 @@ export function XinliuHomeExperience({
     if (selected || inputOpen || nextMode === mode) return
     setHovered(null)
     setPointerHovered(null)
+    setScreenError(false)
     onModeChange(nextMode)
   }
 
@@ -218,255 +259,303 @@ export function XinliuHomeExperience({
       data-figma-node={mode === "research" ? "37:2666" : "25:2078"}
     >
       <img
+        ref={handleHomeImageRef}
+        key={screenImage}
         src={screenImage}
         fetchPriority="high"
         decoding="async"
-        onLoad={() => setHomeReady(true)}
+        onLoad={() => {
+          setLoadedScreen(screenImage)
+          setScreenError(false)
+        }}
+        onError={() => {
+          setLoadedScreen(null)
+          if (!fallbackModes[mode]) {
+            setFallbackModes((current) => ({ ...current, [mode]: true }))
+          } else {
+            setScreenError(true)
+          }
+        }}
         alt={mode === "research" ? "心流高级研究首页" : "心流 AI 搜索首页"}
         width={750}
         height={1612}
         className="absolute inset-0 block h-full w-full object-cover select-none"
+        style={{ opacity: homeReady ? 1 : 0 }}
         draggable={false}
       />
-      {mode === "search" && (
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 750 1612"
-          preserveAspectRatio="none"
-          className="pointer-events-none absolute inset-0 h-full w-full"
-        >
-          <XinliuAppPetal />
-        </svg>
+      {!homeReady && (
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-[#1b2535] text-white/70">
+          <p role="status" className="text-xs">
+            {screenError ? "首页图片未能加载" : "首页加载中…"}
+          </p>
+          {screenError && (
+            <button
+              type="button"
+              className="rounded-full border border-white/20 px-4 py-2 text-xs"
+              onClick={() => {
+                setScreenError(false)
+                setFallbackModes((current) => ({ ...current, [mode]: false }))
+              }}
+            >
+              重新加载
+            </button>
+          )}
+        </div>
       )}
-
+      {/* Keep the replacement label and all hit areas together with their
+          loaded homepage, including during mode changes and asset fallback. */}
       <div
-        role="group"
-        aria-label="首页模式"
-        className={styles.modeSwitch}
-        inert={selected !== null || inputOpen}
-        aria-hidden={selected || inputOpen ? true : undefined}
+        className="absolute inset-0"
+        style={{ visibility: homeReady ? "visible" : "hidden" }}
+        inert={!homeReady}
+        aria-hidden={!homeReady}
       >
-        <button
-          type="button"
-          aria-label="AI搜索"
-          aria-pressed={mode === "search"}
-          onClick={() => changeMode("search")}
+        {mode === "search" && (
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 750 1612"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-0 h-full w-full"
+          >
+            <XinliuAppPetal />
+          </svg>
+        )}
+
+        <div
+          role="group"
+          aria-label="首页模式"
+          className={styles.modeSwitch}
+          inert={selected !== null || inputOpen}
+          aria-hidden={selected || inputOpen ? true : undefined}
         >
-          <span>AI搜索</span>
-        </button>
-        <button
-          type="button"
-          aria-label="高级研究"
-          aria-pressed={mode === "research"}
-          onClick={() => changeMode("research")}
+          <button
+            type="button"
+            aria-label="AI搜索"
+            aria-pressed={mode === "search"}
+            onClick={() => changeMode("search")}
+          >
+            <span>AI搜索</span>
+          </button>
+          <button
+            type="button"
+            aria-label="高级研究"
+            aria-pressed={mode === "research"}
+            onClick={() => changeMode("research")}
+          >
+            <span>高级研究</span>
+          </button>
+        </div>
+
+        <motion.img
+          src={CLEAN_BACKGROUND}
+          alt=""
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-[1] block h-full w-full object-cover select-none"
+          draggable={false}
+          style={{
+            WebkitMaskImage:
+              "linear-gradient(to bottom, transparent 19.8%, black 22.1%, black 69.2%, transparent 72.2%)",
+            maskImage:
+              "linear-gradient(to bottom, transparent 19.8%, black 22.1%, black 69.2%, transparent 72.2%)",
+            willChange: "opacity, filter",
+          }}
+          animate={{
+            opacity: selected ? 1 : 0,
+            filter: "brightness(1) saturate(1)",
+          }}
+          transition={
+            selected
+              ? {
+                  duration: reduceMotion ? 0 : 0.2,
+                  delay: reduceMotion ? 0 : 0.025,
+                  ease: EASE,
+                }
+              : {
+                  duration: reduceMotion ? 0 : 0.22,
+                  delay: reduceMotion ? 0 : 0.13,
+                  ease: EASE,
+                }
+          }
+        />
+
+        <PetalAmbientLight
+          screenImage={screenImage}
+          active={homeReady && !selected && !inputOpen}
+          pointerHovered={pointerHovered}
+          reduceMotion={reduceMotion}
+        />
+
+        <div
+          className="absolute inset-x-0 z-[2] overflow-hidden"
+          style={{ top: "22.46%", height: "46.5261%" }}
         >
-          <span>高级研究</span>
-        </button>
-      </div>
+          <AnimatePresence>
+            {selected &&
+              PETALS.map((petal, index) => (
+                <motion.div
+                  key={petal.id}
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0"
+                  style={{
+                    clipPath: petal.polygon,
+                    transformOrigin: "50% 50%",
+                    willChange: "transform, opacity",
+                  }}
+                  initial={{ opacity: 1, scale: 1, x: "0%", y: "0%" }}
+                  animate={{
+                    opacity: 0,
+                    scale: reduceMotion ? 1 : 0.97,
+                    x: reduceMotion ? "0%" : PETAL_COLLAPSE[petal.id].x,
+                    y: reduceMotion ? "0%" : PETAL_COLLAPSE[petal.id].y,
+                  }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    duration: reduceMotion ? 0 : 0.24,
+                    delay: reduceMotion ? 0 : 0.035 + index * 0.006,
+                    ease: EXIT_EASE,
+                  }}
+                >
+                  <img
+                    src={screenImage}
+                    alt=""
+                    className="absolute left-0 block w-full max-w-none object-cover select-none"
+                    style={{ top: "-48.274%", height: "214.9331%" }}
+                    draggable={false}
+                  />
+                  {mode === "search" && (
+                    <svg
+                      viewBox="0 0 750 750"
+                      preserveAspectRatio="none"
+                      className="absolute inset-0 h-full w-full"
+                    >
+                      <g transform="translate(0 -362.055)">
+                        <XinliuAppPetal />
+                      </g>
+                    </svg>
+                  )}
+                </motion.div>
+              ))}
+          </AnimatePresence>
 
-      <motion.img
-        src={CLEAN_BACKGROUND}
-        alt=""
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-[1] block h-full w-full object-cover select-none"
-        draggable={false}
-        style={{
-          WebkitMaskImage:
-            "linear-gradient(to bottom, transparent 19.8%, black 22.1%, black 69.2%, transparent 72.2%)",
-          maskImage:
-            "linear-gradient(to bottom, transparent 19.8%, black 22.1%, black 69.2%, transparent 72.2%)",
-          willChange: "opacity, filter",
-        }}
-        animate={{
-          opacity: selected ? 1 : 0,
-          filter: "brightness(1) saturate(1)",
-        }}
-        transition={
-          selected
-            ? {
-                duration: reduceMotion ? 0 : 0.2,
-                delay: reduceMotion ? 0 : 0.025,
-                ease: EASE,
-              }
-            : {
-                duration: reduceMotion ? 0 : 0.22,
-                delay: reduceMotion ? 0 : 0.13,
-                ease: EASE,
-              }
-        }
-      />
-
-      <PetalAmbientLight
-        screenImage={screenImage}
-        active={homeReady && !selected && !inputOpen}
-        pointerHovered={pointerHovered}
-        reduceMotion={reduceMotion}
-      />
-
-      <div
-        className="absolute inset-x-0 z-[2] overflow-hidden"
-        style={{ top: "22.46%", height: "46.5261%" }}
-      >
-        <AnimatePresence>
-          {selected &&
-            PETALS.map((petal, index) => (
-              <motion.div
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+          >
+            {PETALS.map((petal) => (
+              <PetalArtwork
                 key={petal.id}
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0"
-                style={{
-                  clipPath: petal.polygon,
-                  transformOrigin: "50% 50%",
-                  willChange: "transform, opacity",
-                }}
-                initial={{ opacity: 1, scale: 1, x: "0%", y: "0%" }}
-                animate={{
-                  opacity: 0,
-                  scale: reduceMotion ? 1 : 0.97,
-                  x: reduceMotion ? "0%" : PETAL_COLLAPSE[petal.id].x,
-                  y: reduceMotion ? "0%" : PETAL_COLLAPSE[petal.id].y,
-                }}
-                exit={{ opacity: 0 }}
-                transition={{
-                  duration: reduceMotion ? 0 : 0.24,
-                  delay: reduceMotion ? 0 : 0.035 + index * 0.006,
-                  ease: EXIT_EASE,
-                }}
-              >
-                <img
-                  src={screenImage}
-                  alt=""
-                  className="absolute left-0 block w-full max-w-none object-cover select-none"
-                  style={{ top: "-48.274%", height: "214.9331%" }}
-                  draggable={false}
-                />
-                {mode === "search" && (
-                  <svg
-                    viewBox="0 0 750 750"
-                    preserveAspectRatio="none"
-                    className="absolute inset-0 h-full w-full"
-                  >
-                    <g transform="translate(0 -362.055)">
-                      <XinliuAppPetal />
-                    </g>
-                  </svg>
-                )}
-              </motion.div>
+                petal={petal}
+                highlighted={
+                  hovered === petal.id && (reduceMotion || !pointerHovered)
+                }
+                reduceMotion={reduceMotion}
+              />
             ))}
+          </div>
+
+          <div
+            className="absolute inset-0"
+            style={{ pointerEvents: selected || inputOpen ? "none" : "auto" }}
+            aria-hidden={selected || inputOpen ? "true" : undefined}
+            inert={selected !== null || inputOpen}
+          >
+            {petals.map((petal) => (
+              <button
+                key={petal.id}
+                type="button"
+                aria-label={`打开${petal.label}`}
+                className="absolute inset-0 cursor-pointer border-0 bg-transparent p-0 outline-none"
+                style={{ clipPath: petal.polygon }}
+                onMouseEnter={() => {
+                  setHovered(petal.id)
+                  setPointerHovered(petal.id)
+                }}
+                onMouseLeave={() => {
+                  setHovered((current) =>
+                    current === petal.id ? null : current
+                  )
+                  setPointerHovered((current) =>
+                    current === petal.id ? null : current
+                  )
+                }}
+                onFocus={() => setHovered(petal.id)}
+                onBlur={() =>
+                  setHovered((current) =>
+                    current === petal.id ? null : current
+                  )
+                }
+                onClick={(event) => {
+                  const screen = screenRef.current
+                  if (!screen) return
+                  triggerRef.current = event.currentTarget
+                  setOrigin({
+                    x:
+                      (Number.parseFloat(petal.labelLeft) / 100) *
+                      screen.clientWidth,
+                    y:
+                      (0.2246 +
+                        (0.465261 * (Number.parseFloat(petal.labelTop) + 8)) /
+                          100) *
+                      screen.clientHeight,
+                    width: screen.clientWidth,
+                    height: screen.clientHeight,
+                  })
+                  setHovered(null)
+                  setPointerHovered(null)
+                  setSelected(petal.id)
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <button
+          ref={inputTrigger}
+          className={inputStyles.trigger}
+          aria-label="向心流提问"
+          aria-haspopup="dialog"
+          aria-expanded={inputOpen}
+          disabled={selected !== null}
+          onClick={() => setInputOpen(true)}
+        />
+        <AnimatePresence
+          onExitComplete={() =>
+            inputTrigger.current?.focus({ preventScroll: true })
+          }
+        >
+          {inputOpen && (
+            <Suspense
+              fallback={<PanelLoading onClose={() => setInputOpen(false)} />}
+            >
+              <XinliuInputSheet
+                reduceMotion={reduceMotion}
+                onClose={() => setInputOpen(false)}
+              />
+            </Suspense>
+          )}
         </AnimatePresence>
 
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
+        <AnimatePresence
+          mode="wait"
+          onExitComplete={() =>
+            triggerRef.current?.focus({ preventScroll: true })
+          }
         >
-          {PETALS.map((petal) => (
-            <PetalArtwork
-              key={petal.id}
-              petal={petal}
-              highlighted={
-                hovered === petal.id && (reduceMotion || !pointerHovered)
-              }
-              reduceMotion={reduceMotion}
-            />
-          ))}
-        </div>
-
-        <div
-          className="absolute inset-0"
-          style={{ pointerEvents: selected || inputOpen ? "none" : "auto" }}
-          aria-hidden={selected || inputOpen ? "true" : undefined}
-          inert={selected !== null || inputOpen}
-        >
-          {petals.map((petal) => (
-            <button
-              key={petal.id}
-              type="button"
-              aria-label={`打开${petal.label}`}
-              className="absolute inset-0 cursor-pointer border-0 bg-transparent p-0 outline-none"
-              style={{ clipPath: petal.polygon }}
-              onMouseEnter={() => {
-                setHovered(petal.id)
-                setPointerHovered(petal.id)
-              }}
-              onMouseLeave={() => {
-                setHovered((current) => (current === petal.id ? null : current))
-                setPointerHovered((current) =>
-                  current === petal.id ? null : current
-                )
-              }}
-              onFocus={() => setHovered(petal.id)}
-              onBlur={() =>
-                setHovered((current) => (current === petal.id ? null : current))
-              }
-              onClick={(event) => {
-                const screen = screenRef.current
-                if (!screen) return
-                triggerRef.current = event.currentTarget
-                setOrigin({
-                  x:
-                    (Number.parseFloat(petal.labelLeft) / 100) *
-                    screen.clientWidth,
-                  y:
-                    (0.2246 +
-                      (0.465261 * (Number.parseFloat(petal.labelTop) + 8)) /
-                        100) *
-                    screen.clientHeight,
-                  width: screen.clientWidth,
-                  height: screen.clientHeight,
-                })
-                setHovered(null)
-                setPointerHovered(null)
-                setSelected(petal.id)
-              }}
-            />
-          ))}
-        </div>
+          {activePetal && origin && (
+            <Suspense
+              key={activePetal.id}
+              fallback={<PanelLoading onClose={() => setSelected(null)} />}
+            >
+              <CapabilitySheet
+                petal={{ ...activePetal, id: activePetal.capabilityId }}
+                reduceMotion={reduceMotion}
+                origin={origin}
+                onClose={() => setSelected(null)}
+              />
+            </Suspense>
+          )}
+        </AnimatePresence>
       </div>
-
-      <button
-        ref={inputTrigger}
-        className={inputStyles.trigger}
-        aria-label="向心流提问"
-        aria-haspopup="dialog"
-        aria-expanded={inputOpen}
-        disabled={selected !== null}
-        onClick={() => setInputOpen(true)}
-      />
-      <AnimatePresence
-        onExitComplete={() =>
-          inputTrigger.current?.focus({ preventScroll: true })
-        }
-      >
-        {inputOpen && (
-          <Suspense fallback={<PanelLoading onClose={() => setInputOpen(false)} />}>
-            <XinliuInputSheet
-              reduceMotion={reduceMotion}
-              onClose={() => setInputOpen(false)}
-            />
-          </Suspense>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence
-        mode="wait"
-        onExitComplete={() =>
-          triggerRef.current?.focus({ preventScroll: true })
-        }
-      >
-        {activePetal && origin && (
-          <Suspense
-            key={activePetal.id}
-            fallback={<PanelLoading onClose={() => setSelected(null)} />}
-          >
-            <CapabilitySheet
-              petal={{ ...activePetal, id: activePetal.capabilityId }}
-              reduceMotion={reduceMotion}
-              origin={origin}
-              onClose={() => setSelected(null)}
-            />
-          </Suspense>
-        )}
-      </AnimatePresence>
     </div>
   )
 }
@@ -488,8 +577,15 @@ function PanelLoading({ onClose }: { onClose: () => void }) {
         }
       }}
     >
-      <p role="status" className="text-sm">正在打开…</p>
-      <button ref={returnButton} type="button" onClick={onClose} className="rounded-full bg-white px-5 py-3 text-sm">
+      <p role="status" className="text-sm">
+        正在打开…
+      </p>
+      <button
+        ref={returnButton}
+        type="button"
+        onClick={onClose}
+        className="rounded-full bg-white px-5 py-3 text-sm"
+      >
         返回首页
       </button>
     </div>
@@ -596,7 +692,8 @@ function PetalAmbientLight({
           <div className={styles.outerOrbitSweep} />
         </div>
       </motion.div>
-      {running && allowRefraction &&
+      {running &&
+        allowRefraction &&
         (hoverPetal ? (
           <PetalRippleLayer
             key={`hover-${screenImage}-${hoverPetal.id}`}
@@ -827,7 +924,8 @@ function PetalWaterRipple({
             height="1611.99825"
             preserveAspectRatio="none"
           />
-          {screenImage === SCREENS.search && (
+          {(screenImage === SCREENS.search ||
+            screenImage === FALLBACK_SCREENS.search) && (
             <g transform="translate(0 -362.055)">
               <XinliuAppPetal />
             </g>
