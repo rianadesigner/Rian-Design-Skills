@@ -271,6 +271,19 @@
   }
 }
 
+/* Keep the glass lighting on touch devices without perpetual compositing. */
+@media (hover: none), (pointer: coarse) {
+  .lightRiver,
+  .shadowRiver,
+  .warmReflection,
+  .surfaceLight,
+  .surfaceShade,
+  .outerOrbitSweep {
+    animation: none;
+    will-change: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ambientLight,
   .capabilityLight,

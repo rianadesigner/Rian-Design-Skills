@@ -619,7 +619,7 @@ function HighlightsPageContent() {
   return (
     <>
       <OriginalPageDecoration variant="normal" />
-      <ResumePageHeader label="Career" page={2} />
+      <ResumePageHeader label="Highlight" page={2} />
       <div data-resume-page-content="2" data-project-experience-page="2" className="absolute left-[56px] top-[76px] w-[388px]">
         <section data-experience-stage="if-studio">
           <CareerList
@@ -648,7 +648,7 @@ function HighlightsPageContent() {
 function CareerPageContent() {
   return (
     <>
-      <ResumePageHeader label="Career" page={3} />
+      <ResumePageHeader label="Highlight" page={3} />
       <div data-resume-page-content="3" data-project-experience-page="3" className="absolute left-[56px] top-[76px] w-[388px]">
         <section data-experience-stage="creative-platforms">
           <CareerList entries={[workEntries[2]]} compact projectLayout titleClassName="text-[12px]" />
@@ -822,7 +822,7 @@ export function ResumePlanner() {
    *   ±过冲 → 目标  (13%)  easeInOut — 回弹至静止，柔软落定
    * pageCurl + curlSize：翻起前期右下角/左下角短暂卷起，过 90° 前收回，与 foldShadow / edgeGlow 衔接。
    */
-  const doFlip = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const doFlip = (event: React.MouseEvent<HTMLElement>) => {
     if (isAnimatingRef.current) return
     const keyboardFlip = event.detail === 0
     if (desktopScrollRef.current) desktopScrollRef.current.scrollTop = 0
@@ -871,7 +871,18 @@ export function ResumePlanner() {
     })
   }
 
-  /** 悬停：不抬页，仅用页脚卷边提示可交互（正面右下 / 背面左下） */
+  // 整张活动纸页均可翻动；链接、控件和选中文字保留各自的操作。
+  const handlePageClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.defaultPrevented) return
+    const target = event.target
+    if (target instanceof Element && target.closest(
+      "a, button, input, textarea, select, summary, [role='button'], [role='link'], [contenteditable]:not([contenteditable='false'])",
+    )) return
+    if (window.getSelection()?.isCollapsed === false) return
+    doFlip(event)
+  }
+
+  /** 悬停整页时用页角卷边提示可交互（正面右下 / 背面左下） */
   const handleHoverStart = () => {
     if (isAnimatingRef.current) return
     curlDir.set(isFlippedRef.current ? -1 : 1)
@@ -981,7 +992,10 @@ export function ResumePlanner() {
                  *  背景与内容统一在 clipPath 层内，裁角时二者同步 → 仅一张纸的视觉。 ── */}
                 <motion.div
                   ref={frontFaceRef}
-                  className="absolute inset-0"
+                  className="absolute inset-0 cursor-pointer"
+                  onClick={handlePageClick}
+                  onPointerEnter={(event) => { if (event.pointerType !== "touch") handleHoverStart() }}
+                  onPointerLeave={handleHoverEnd}
                   style={{
                     backfaceVisibility: "hidden" as const,
                     WebkitBackfaceVisibility: "hidden" as const,
@@ -1031,8 +1045,6 @@ export function ResumePlanner() {
                     data-resume-page-turn
                     className="absolute bottom-0 right-0 z-20 size-12 cursor-pointer rounded-[12px] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#9d6468]"
                     onClick={doFlip}
-                    onPointerEnter={handleHoverStart}
-                    onPointerLeave={handleHoverEnd}
                     onFocus={handleHoverStart}
                     onBlur={handleHoverEnd}
                   />
@@ -1042,7 +1054,10 @@ export function ResumePlanner() {
                  *  同理：face 容器不设 overflow:hidden，背景进入 clipPath 层内统一裁切 ── */}
                 <motion.div
                   ref={backFaceRef}
-                  className="absolute inset-0"
+                  className="absolute inset-0 cursor-pointer"
+                  onClick={handlePageClick}
+                  onPointerEnter={(event) => { if (event.pointerType !== "touch") handleHoverStart() }}
+                  onPointerLeave={handleHoverEnd}
                   style={{
                     backfaceVisibility: "hidden" as const,
                     WebkitBackfaceVisibility: "hidden" as const,
@@ -1093,8 +1108,6 @@ export function ResumePlanner() {
                     data-resume-page-turn
                     className="absolute bottom-0 left-0 z-20 size-12 cursor-pointer rounded-[12px] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-[#9d6468]"
                     onClick={doFlip}
-                    onPointerEnter={handleHoverStart}
-                    onPointerLeave={handleHoverEnd}
                     onFocus={handleHoverStart}
                     onBlur={handleHoverEnd}
                   />

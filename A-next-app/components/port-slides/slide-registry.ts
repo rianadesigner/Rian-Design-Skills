@@ -1,6 +1,5 @@
 export const HIDDEN_SLIDE_IDS = new Set<string>([
   "page0",
-  "page0a",
   "page14",
   "page15",
   "page16",

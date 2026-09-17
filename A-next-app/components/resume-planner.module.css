@@ -1,0 +1,288 @@
+.mobilePage {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  margin-inline: auto;
+  padding: 24px;
+  overflow: hidden;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.65;
+  overflow-wrap: break-word;
+}
+
+.mobilePage > :global(.pointer-events-none) {
+  z-index: -1;
+  opacity: 0.08;
+}
+
+.mobilePage :global(.resume-page-header),
+.mobilePage [data-resume-page-content],
+.mobilePage [data-resume-page-extras] {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.mobilePage :global(.resume-page-header) {
+  margin-bottom: 28px;
+}
+
+.mobilePage :global(.resume-page-header) > span {
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.mobilePage [data-resume-page-extras] {
+  margin-top: 28px;
+}
+
+.mobilePage [data-experience-stage] + [data-experience-stage] {
+  margin-top: 32px;
+}
+
+.mobilePage :global(.resume-profile-identity) {
+  margin-top: 8px;
+}
+
+.mobilePage :global(.resume-profile-title) {
+  font-size: 16px;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+/* The desktop biography sets its fitted font size inline. */
+.mobilePage :global(.resume-profile-bio) {
+  font-size: 14px !important;
+  white-space: normal;
+}
+
+.mobilePage :global(.resume-profile-bio) > p {
+  line-height: 1.65;
+  text-align: left;
+  white-space: normal;
+}
+
+.mobilePage :global(.resume-profile-bio) > p + p {
+  margin-top: 8px;
+}
+
+.mobilePage :global(.resume-contact-grid) {
+  display: grid;
+  gap: 12px;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.mobilePage :global(.resume-contact-grid) > div {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin: 0;
+}
+
+.mobilePage :global(.resume-contact-grid) > div > div {
+  display: grid;
+  grid-template-columns: 48px minmax(0, 1fr);
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+
+.mobilePage :global(.resume-contact-grid) span {
+  width: auto;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.mobilePage :global(.resume-tags) {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mobilePage :global(.resume-tags) > div {
+  display: contents;
+}
+
+.mobilePage :global(.resume-tags) > div > div {
+  max-width: 100%;
+  padding: 6px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+.mobilePage :global(.resume-project-grid) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.mobilePage :global(.resume-project-card) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: auto;
+  min-height: 134px;
+  padding: 12px;
+}
+
+.mobilePage :global(.resume-project-copy) {
+  position: relative;
+  inset: auto;
+  min-width: 0;
+  width: auto;
+}
+
+.mobilePage :global(.resume-project-title),
+.mobilePage :global(.resume-project-description),
+.mobilePage :global(.resume-period) {
+  position: static;
+  inset: auto;
+  width: auto;
+  overflow: visible;
+  white-space: normal;
+}
+
+.mobilePage :global(.resume-project-title),
+.mobilePage :global(.resume-career-title),
+.mobilePage :global(.resume-section-title) {
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.mobilePage :global(.resume-project-description),
+.mobilePage :global(.resume-career-body) {
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.mobilePage :global(.resume-project-description),
+.mobilePage :global(.resume-career-body) {
+  margin-top: 8px;
+}
+
+.mobilePage :global(.resume-career-body) > p + p {
+  margin-top: 12px;
+}
+
+.mobilePage :global(.resume-period),
+.mobilePage :global(.resume-caption) {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.mobilePage :global(.resume-project-copy) :global(.resume-period) {
+  display: block;
+  margin-top: 8px;
+  text-align: left;
+}
+
+.mobilePage :global(.resume-project-preview) {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  aspect-ratio: 19 / 10;
+}
+
+.mobilePage :global(.resume-project-preview) img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+}
+
+.mobilePage :global(.resume-project-horizontal) {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+.mobilePage :global(.resume-project-horizontal) :global(.resume-project-preview) {
+  height: auto;
+}
+
+.mobilePage :global(.resume-skills) {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 16px 8px;
+  padding: 16px 8px;
+}
+
+.mobilePage :global(.resume-skill-item) {
+  width: auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+}
+
+.mobilePage :global(.resume-skill-item) > div {
+  width: 24px;
+  height: 24px;
+}
+
+.mobilePage :global(.resume-skill-label) {
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: normal;
+}
+
+.mobileNav {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 24px max(12px, env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(23, 23, 23, 0.08);
+  background: rgba(253, 251, 249, 0.95);
+  backdrop-filter: blur(12px);
+  font-size: 12px;
+  line-height: 1.5;
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.mobileNav button {
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: 999px;
+}
+
+.mobileNav button:focus-visible {
+  outline: 2px solid #ba6d73;
+  outline-offset: 3px;
+}
+
+@media (min-width: 600px) {
+  .mobilePage {
+    padding: 32px;
+  }
+
+  .mobilePage :global(.resume-contact-grid) > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+}
+
+.mobilePage :global(.resume-skills) :global(.resume-skill-item) {
+  height: 72px;
+}

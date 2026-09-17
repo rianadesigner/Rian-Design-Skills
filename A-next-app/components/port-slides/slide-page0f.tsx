@@ -3,7 +3,6 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { useState } from "react";
-import Image from "next/image";
 
 const FONT = "'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', sans-serif";
 const FONT_EN = "Impact, 'Arial Black', sans-serif";
@@ -94,19 +93,8 @@ export default function SlidePage0f() {
           animation: interactionCarouselIn 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
         }
 
-        .interaction-carousel-button {
-          transition: background 160ms ease-out, border-color 160ms ease-out, transform 160ms ease-out;
-        }
-
-        .interaction-carousel-button:hover {
-          background: #fff !important;
-          box-shadow: 0 12px 32px rgba(0,0,0,0.36);
-          transform: translateY(-50%) scale(1.05);
-        }
-
         @media (prefers-reduced-motion: reduce) {
-          .interaction-carousel-image,
-          .interaction-carousel-button {
+          .interaction-carousel-image {
             animation: none;
             transition: none;
           }
@@ -311,56 +299,6 @@ export default function SlidePage0f() {
             {activeSlide.sourceLabel}
           </span>
         </div>
-
-        <button
-          type="button"
-          aria-label={`上一张：${SLIDES[(activeIndex - 1 + SLIDES.length) % SLIDES.length].label}`}
-          onClick={showPrevious}
-          className="interaction-carousel-button"
-          style={{
-            position: "absolute",
-            left: -74,
-            top: "50%",
-            transform: "translateY(-50%)",
-            width: 50,
-            height: 50,
-            display: "grid",
-            placeItems: "center",
-            border: "none",
-            borderRadius: "50%",
-            color: "#202024",
-            background: "#fff",
-            cursor: "pointer",
-            boxShadow: "0 12px 32px rgba(0,0,0,0.28)",
-          }}
-        >
-          <Image src="/icons/carousel-arrow-right.svg" alt="" width={26} height={26} className="rotate-180" aria-hidden="true" />
-        </button>
-
-        <button
-          type="button"
-          aria-label={`下一张：${SLIDES[(activeIndex + 1) % SLIDES.length].label}`}
-          onClick={showNext}
-          className="interaction-carousel-button"
-          style={{
-            position: "absolute",
-            right: -74,
-            top: "50%",
-            transform: "translateY(-50%)",
-            width: 50,
-            height: 50,
-            display: "grid",
-            placeItems: "center",
-            border: "none",
-            borderRadius: "50%",
-            color: "#202024",
-            background: "#fff",
-            cursor: "pointer",
-            boxShadow: "0 12px 32px rgba(0,0,0,0.28)",
-          }}
-        >
-          <Image src="/icons/carousel-arrow-right.svg" alt="" width={26} height={26} aria-hidden="true" />
-        </button>
 
       </main>
     </div>

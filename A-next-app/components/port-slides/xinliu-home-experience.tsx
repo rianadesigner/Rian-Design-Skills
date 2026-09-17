@@ -1,22 +1,27 @@
 "use client"
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
-import { useEffect, useId, useRef, useState, type CSSProperties } from "react"
-import { XinliuInputSheet } from "./xinliu-input-sheet"
+import { lazy, Suspense, useEffect, useId, useRef, useState, type CSSProperties } from "react"
 import inputStyles from "./xinliu-input-sheet.module.css"
 import styles from "./xinliu-home-experience.module.css"
 import { XinliuAppPetal } from "./xinliu-app-petal"
-import { XinliuFullscreenPanel as CapabilitySheet } from "./xinliu-fullscreen-panel"
 import type { FullscreenCapability } from "./xinliu-fullscreen-controls"
 import {
   PETAL_RIPPLE_DURATION_MS,
   usePetalRippleDisplacement,
 } from "./petal-ripple-displacement"
 
+const XinliuInputSheet = lazy(() =>
+  import("./xinliu-input-sheet").then((module) => ({ default: module.XinliuInputSheet }))
+)
+const CapabilitySheet = lazy(() =>
+  import("./xinliu-fullscreen-panel").then((module) => ({ default: module.XinliuFullscreenPanel }))
+)
+
 // Native 750 × 1612 exports preserve both Figma homepage states.
 const SCREENS = {
-  search: "/images/page7/figma-home/ai-search-home.png",
-  research: "/images/page7/figma-home/research-home.png",
+  search: "/images/page7/figma-home/ai-search-home.webp",
+  research: "/images/page7/figma-home/research-home.webp",
 }
 export type XinliuHomeMode = keyof typeof SCREENS
 
@@ -160,6 +165,7 @@ export function XinliuHomeExperience({
   onModeChange: (mode: XinliuHomeMode) => void
 }) {
   const [inputOpen, setInputOpen] = useState(false)
+  const [homeReady, setHomeReady] = useState(false)
   const inputTrigger = useRef<HTMLButtonElement>(null)
   const reduceMotion = Boolean(useReducedMotion())
   const screenRef = useRef<HTMLDivElement>(null)
@@ -190,7 +196,10 @@ export function XinliuHomeExperience({
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setSelected(null)
+      if (event.key === "Escape") {
+        setSelected(null)
+        setInputOpen(false)
+      }
     }
 
     window.addEventListener("keydown", closeOnEscape)
@@ -208,9 +217,11 @@ export function XinliuHomeExperience({
       data-home-mode={mode}
       data-figma-node={mode === "research" ? "37:2666" : "25:2078"}
     >
-      <link rel="preload" as="image" href={SCREENS.research} />
       <img
         src={screenImage}
+        fetchPriority="high"
+        decoding="async"
+        onLoad={() => setHomeReady(true)}
         alt={mode === "research" ? "心流高级研究首页" : "心流 AI 搜索首页"}
         width={750}
         height={1612}
@@ -287,7 +298,7 @@ export function XinliuHomeExperience({
 
       <PetalAmbientLight
         screenImage={screenImage}
-        active={!selected && !inputOpen}
+        active={homeReady && !selected && !inputOpen}
         pointerHovered={pointerHovered}
         reduceMotion={reduceMotion}
       />
@@ -427,10 +438,12 @@ export function XinliuHomeExperience({
         }
       >
         {inputOpen && (
-          <XinliuInputSheet
-            reduceMotion={reduceMotion}
-            onClose={() => setInputOpen(false)}
-          />
+          <Suspense fallback={<PanelLoading onClose={() => setInputOpen(false)} />}>
+            <XinliuInputSheet
+              reduceMotion={reduceMotion}
+              onClose={() => setInputOpen(false)}
+            />
+          </Suspense>
         )}
       </AnimatePresence>
 
@@ -441,15 +454,44 @@ export function XinliuHomeExperience({
         }
       >
         {activePetal && origin && (
-          <CapabilitySheet
+          <Suspense
             key={activePetal.id}
-            petal={{ ...activePetal, id: activePetal.capabilityId }}
-            reduceMotion={reduceMotion}
-            origin={origin}
-            onClose={() => setSelected(null)}
-          />
+            fallback={<PanelLoading onClose={() => setSelected(null)} />}
+          >
+            <CapabilitySheet
+              petal={{ ...activePetal, id: activePetal.capabilityId }}
+              reduceMotion={reduceMotion}
+              origin={origin}
+              onClose={() => setSelected(null)}
+            />
+          </Suspense>
         )}
       </AnimatePresence>
+    </div>
+  )
+}
+
+function PanelLoading({ onClose }: { onClose: () => void }) {
+  const returnButton = useRef<HTMLButtonElement>(null)
+  useEffect(() => returnButton.current?.focus({ preventScroll: true }), [])
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label="正在打开工具"
+      className="absolute inset-0 z-30 flex flex-col items-center justify-center gap-4 bg-[#edf2f9] text-[#465971]"
+      onKeyDown={(event) => {
+        if (event.key === "Tab") {
+          event.preventDefault()
+          returnButton.current?.focus()
+        }
+      }}
+    >
+      <p role="status" className="text-sm">正在打开…</p>
+      <button ref={returnButton} type="button" onClick={onClose} className="rounded-full bg-white px-5 py-3 text-sm">
+        返回首页
+      </button>
     </div>
   )
 }
@@ -466,6 +508,17 @@ function PetalAmbientLight({
   reduceMotion: boolean
 }) {
   const [pageVisible, setPageVisible] = useState(true)
+  const [allowRefraction, setAllowRefraction] = useState(false)
+
+  useEffect(() => {
+    // Keep the CSS glass lighting on touch devices without continuously
+    // encoding displacement PNGs and repainting SVG filters on the main thread.
+    const pointer = window.matchMedia("(hover: hover) and (pointer: fine)")
+    const update = () => setAllowRefraction(pointer.matches)
+    update()
+    pointer.addEventListener("change", update)
+    return () => pointer.removeEventListener("change", update)
+  }, [])
 
   useEffect(() => {
     const updateVisibility = () => setPageVisible(!document.hidden)
@@ -543,7 +596,7 @@ function PetalAmbientLight({
           <div className={styles.outerOrbitSweep} />
         </div>
       </motion.div>
-      {running &&
+      {running && allowRefraction &&
         (hoverPetal ? (
           <PetalRippleLayer
             key={`hover-${screenImage}-${hoverPetal.id}`}

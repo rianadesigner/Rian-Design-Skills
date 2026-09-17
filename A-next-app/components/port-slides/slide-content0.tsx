@@ -56,8 +56,8 @@ const PROJECTS = [
     cover: "/images/page0-landing/llm-wiki-v2-home.jpg",
     aspect: COVER_ASPECT,
     accent: "#818cf8",
-    pages: "20 – 26",
-    slideIndex: 33,
+    pages: "20 – 27",
+    slideIndex: 32,
   },
   {
     id: "xinliu",
@@ -67,7 +67,7 @@ const PROJECTS = [
     cover: "/images/page0/content0-card-xinliu.webp",
     aspect: COVER_ASPECT,
     accent: "#60a5fa",
-    pages: "27 – 36",
+    pages: "28 – 37",
     slideIndex: 41,
   },
 ]
